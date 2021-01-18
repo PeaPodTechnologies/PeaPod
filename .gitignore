@@ -1,3 +1,5 @@
+### ARDUINO
+
 # Prerequisites
 *.d
 
@@ -30,3 +32,8 @@
 *.exe
 *.out
 *.app
+
+### NODE
+
+node_modules/
+package-lock.json
