@@ -1,6 +1,6 @@
 # Design Brief
 
-## The Opportunity
+# The Opportunity
 
 > A botanical research tool for evaluating the relationship between a plant’s surrounding environmental conditions and its phenomic expression.
 
@@ -22,11 +22,11 @@
 4. Schools
 5. Standard consumer
 
-## Objectives
+# Objectives
 
 > What do our stakeholders **value** in a solution, alongside/about necessary functions? What should be valued in a candidate design?
 
-### High-Level
+## High-Level
 
 1. DIY/"`Maker`" friendly (S1, S4)
 2. Option for `pre-assembled` units or kits (S1, S2, S3, S4, S5)
@@ -34,27 +34,28 @@
 4. Collects scientifically `meaningful` data on plant growth and environment (**R2**, **R3**, S2, S3, S4)
 5. Controls the `meaningful` components of the plant environment (**R1**, S1, S2, S3, S4)
 6. Internal environment is `isolated` from external environment (**R1, R2, R3**)
-7. Connectivity and `fleet` deployability (S2, S3)
-8. Ease of use (S1, S4, S5)
-9. `Aesthetics`, visual appeal (S1, S4, S5)
+7. Environment actuation is `self-homeostatic`, meaning that if you turn the lights on, the environment *doesn't* warm up (**R1, R2, R3**)
+8. Connectivity and `fleet` deployability (S2, S3)
+9. Ease of use (S1, S4, S5)
+10. `Aesthetics`, visual appeal (S1, S4, S5)
 
-### Low-Level
+## Low-Level
 
 1. DIY has "light fabrication" `manufacturing` requirements (HL1)
 2. Totally `open-source` - well-documented source code, BoM, schematics, etc. as well as manufacturing, and assembly processes (HL1)
 3. Easy/reliable to source parts (HL1)
 4. Accessible, justifiable cost (HL1, HL2)
-5. Ease of `troubleshooting`, straightforward solutions (HL1, HL3, HL8)
-6. Standalone/`offline` operation (HL1, HL3, HL8)
+5. Ease of `troubleshooting`, straightforward solutions (HL1, HL3, HL9)
+6. Standalone/`offline` operation (HL1, HL3, HL9)
 7. Intuitive and low-complexity `assembly` (HL2)
 8. Option for purchasing full `kits`, "minerals"-only kits (electronics AND not commonly manufacturable parts, i.e PCB) (HL2)
 9. Option for singular part purchasing (i.e. bare PCB, singular sensor, etc.) (HL2, HL3)
 10. `Sense` current temperature, humidity, air quality, and plant mass (HL4)
 11. Timed `camera` capture and/or live feed (HL4)
 12. Control internal temperature, humidity, lighting, and watering (HL5)
-13. Networked and/or `cloud` operation (HL7)
+13. Networked and/or `cloud` operation (HL8)
 
-## Metrics
+# Metrics
 
 > How do we measure the degree to which our objectives are being achieved? How do we compare candidate designs?
 
