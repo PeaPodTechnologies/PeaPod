@@ -8,6 +8,8 @@ Raspberry Pi software is located in this folder. Arduino sketches are located in
 
 ...
 
+Check out: https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide
+
 # Development
 
 <!-- ## Requirements

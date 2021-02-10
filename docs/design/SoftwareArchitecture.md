@@ -47,7 +47,9 @@ Tell computer 'ready', wait to receive `program`.
 
 ## Setup
 
-Receive initial `program`, set actuator settings.
+Receive initial `program` - JSON object in the form `{ "actuator" : setting, ... }`
+
+Set actuator settings.
 
 ## Main Cycle
 
@@ -64,9 +66,8 @@ List of all `sensor` objects - abstract superclass for sensor library wrappers/i
  - last read timestamp (unsigned long `lastread`)
 > Note: Millis() is long, overflows after 2^32-1 (~49.7 days), so if the current time is **less** than the previous time, something has gone wrong. Skip read, reset to Millis().
 
-Store the latest copy of sesnor data locally as a list of (environment variable name - value) pairs.
+Send the latest read individual sensor data to the Computer as JSON over serial - `{ "type" : "data", "msg" : { "variable" : value }}`
 
-Send the latest read individual sensor data to the Computer as JSON over serial.
 > Let the main controller handle timestamping. Makes more sense, since that's where data is ***really*** being managed, and where the big decisions are made surrounding sed data. Also, microcontroller RTC sucks ass.
 
 ### Plan, Act

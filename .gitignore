@@ -33,7 +33,5 @@
 *.out
 *.app
 
-### NODE
-
-node_modules/
-package-lock.json
+### OTHER SHIT
+.vscode
