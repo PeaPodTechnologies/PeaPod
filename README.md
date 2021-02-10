@@ -10,8 +10,6 @@ A [cloud-enabled](https://github.com/openformtech/cloudponics-app/) IoT automate
 
 In the most relevant terms, the "plant growth environment" is used to simultaneously describe *a)* the collection of "`environment variables`" that determine plant growth (watering and amount of sunlight come to mind) and/or *b)* the physical `enclosure`, materials, methods, or otherwise that impose the former with the specific goal of plant growth - this can be anything from a farmer's field to a greenhouse.
 
-<!-- ### (Intro to Hydroponics) -->
-
 ## How is this automated? What is the value derived from automation?
 
 The key determining factors of agricultural efficacy are climate, land fertility, and agricultural practices. "Natural" agriculture - that which is performed in open fields, with direct exposure to the elements - is entire at the mercy of the climate and soil fertility. Most crops in North America and across the world can only be grown a fraction of the year due to regular climate fluctuations (aka seasons)\[[1](#References)\], and limitations due to soil conditions mean that crops have to be rotated\[[2](#References)\]. Economic losses from natural disasters and changing climate alone have reached a staggering average of 250-300 billion USD a year\[[3](#References)\]. 
