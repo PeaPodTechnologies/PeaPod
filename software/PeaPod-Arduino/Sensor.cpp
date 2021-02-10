@@ -34,6 +34,7 @@ float Sensor::getRead(){
         //Reset the last read time to now
         //BUFFER - Happens post-read
         lastread = millis();
+        cachedread = result;
     }
     return result;
 }

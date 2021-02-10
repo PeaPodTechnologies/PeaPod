@@ -6,7 +6,7 @@
 class Actuator{
   protected:
     // Wrapper functions
-    virtual float set(float value) = 0;
+    virtual void update() = 0;
     virtual bool init() = 0;
     //Has begin() been performed by THIS object?
     bool ready = false;
@@ -23,10 +23,9 @@ class Actuator{
      * Preformatted (lowercase and underscored) name of the environment variable the actuator controls.
     */
     String evname;
+    float target;
     Actuator(String name, String id, String evname);
-    //Calls set()
-    void setTarget(float target);
-    //Sets ready in accordance with init()
+    void updateActuator();
     bool begin();
 };
 

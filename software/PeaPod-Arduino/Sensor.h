@@ -14,6 +14,7 @@ class Sensor{
     virtual bool init() = 0;
     //Has begin() been performed by THIS object?
     bool ready = false;
+    float cachedread;
   public:
     /**
      * Hardware ID.

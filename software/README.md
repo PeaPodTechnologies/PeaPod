@@ -2,7 +2,7 @@
  
 Includes all libraries and code for PeaPod. 
 
-Raspberry Pi software is located in this folder. Arduino sketches are located in the `arduino` folder.
+Raspberry Pi software is located in this folder. Arduino software are located in the `PeaPod-Arduino` folder.
 
 ## References
 

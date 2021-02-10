@@ -64,6 +64,7 @@ List of all `sensor` objects - abstract superclass for sensor library wrappers/i
  - environment variable readable name (string `evname`)
  - sensor read time delta in ms (unsigned int `delta`)
  - last read timestamp (unsigned long `lastread`)
+ - last read value (float `cachedread`, updated at `read` time)
 > Note: Millis() is long, overflows after 2^32-1 (~49.7 days), so if the current time is **less** than the previous time, something has gone wrong. Skip read, reset to Millis().
 
 Send the latest read individual sensor data to the Computer as JSON over serial - `{ "type" : "data", "msg" : { "variable" : value }}`
@@ -75,10 +76,13 @@ Send the latest read individual sensor data to the Computer as JSON over serial 
 > Compare the sensor data to the required current state.
 
 List of `actuator` objects - abstract superclass for actuator library wrappers/outputs:
-- `set` function - sets actuator target, performs any necessary calculations (i.e. PID) (takes float arg, returns void)
+- **public** `target` - float, is the actuator's target value
+- `update` function - looks at target, performs any necessary calculations (i.e. PID) (takes void, returns void)
 - hardware id (string `id`)
 - actuator readable name (string `name`)
 - environment variable *dataset* name (string `evname`)
+
+> For actuators that rely *directly* on reading from sensors, a pointer to the sensor object should be passed at construction. Update should then access the `cachedread`.
 
 Actuate each actuator.
 

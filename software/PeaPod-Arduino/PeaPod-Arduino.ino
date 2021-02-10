@@ -4,13 +4,17 @@
 #include "K30.h"
 #include "FloatSensor.h"
 #include "Scale.h"
+#include "LED.h"
+#include "Actuator.h"
 
 //MACRO DEFINITIONS
 #define NUM_SENSORS 5
 #define FLOATSENSOR_PIN 5
+#define NUM_ACTUATORS 1
+#define LED_PIN 4
 #define REVISION 0
 
-//Setup
+// Sensors
 SHT31 sht31;
 SHT31_temp temp = SHT31_temp(&sht31);
 SHT31_hum hum = SHT31_hum(&sht31);
@@ -18,7 +22,8 @@ K30 k30;
 Scale scale;
 FloatSensor fs = FloatSensor(FLOATSENSOR_PIN);
 
-unsigned int sensor = 0;
+// Actuators
+LED led(LED_PIN);
 
 Sensor *sensors [NUM_SENSORS] = {
     &temp,
@@ -26,6 +31,10 @@ Sensor *sensors [NUM_SENSORS] = {
     &k30,
     &fs,
     &scale
+};
+
+Actuator* actuators [NUM_ACTUATORS] = {
+    &led
 };
 
 void setup()
@@ -61,16 +70,21 @@ void loop()
         handleInstructions(in);
     }
 
-    float read = sensors[sensor]->getRead();
-    if(!isnan(read)){
-        Serial.print("{\"type\":\"data\",\"msg\":{\"label\":\"");
-        Serial.print(sensors[sensor]->evname);
-        Serial.print("\",\"value\":");
-        Serial.print(read);
-        Serial.println("}}");
+    for(int i = 0; i < NUM_SENSORS; i++){
+        float read = sensors[i]->getRead();
+        if(!isnan(read)){
+            Serial.print("{\"type\":\"data\",\"msg\":{\"label\":\"");
+            Serial.print(sensors[i]->evname);
+            Serial.print("\",\"value\":");
+            Serial.print(read);
+            Serial.println("}}");
+        }
     }
-    sensor = (sensor+1)%NUM_SENSORS;
-    delay(1);
+
+    for(int i = 0; i < NUM_ACTUATORS; i++){
+        actuators[i]->updateActuator();
+    }
+    delay(10);
 }
 
 /**
@@ -89,6 +103,18 @@ bool handleInstruction(String in){
             scale.calibrate(value);
             return true;
         }
+        for(int i = 0; i < NUM_ACTUATORS; i++){
+            if(var.equals(actuators[i]->evname)){
+                Serial.print("{\"type\":\"debug\",\"msg\":\"Actuator '");
+                Serial.print(actuators[i]->name);
+                Serial.print("' target set to ");
+                Serial.print(value);
+                Serial.println(".\"}");
+                actuators[i]->target = value;
+                return true;
+            }
+        }
+
         Serial.print("{\"type\":\"error\",\"msg\":\"Unknown target '");
         Serial.print(var);
         Serial.println("'\"}");
@@ -157,6 +183,20 @@ bool post(){
         } else {
             Serial.print("{\"type\":\"debug\",\"msg\":\"Sensor '");
             Serial.print(sensors[i]->name);
+            Serial.println("' initialized successfully.\"}");
+        }
+    }
+
+    for(int i = 0; i < NUM_ACTUATORS; i++){
+        bool latest = actuators[i]->begin();
+        success &= latest;
+        if(!latest){
+            Serial.print("{\"type\":\"error\",\"msg\":\"Failed to initialize actuator '");
+            Serial.print(actuators[i]->name);
+            Serial.println("'. Check wiring.\"}");
+        } else {
+            Serial.print("{\"type\":\"debug\",\"msg\":\"Actuator '");
+            Serial.print(actuators[i]->name);
             Serial.println("' initialized successfully.\"}");
         }
     }

@@ -16,13 +16,9 @@ Actuator::Actuator(String name, String id, String evname){
     this->evname.replace(' ','-');
 }
 
-/**
- * Wrapper for more complex set function.
- * @return Sensor read, or nan. Usually nan. Like 99% of the time nan.
- **/
-void Actuator::setTarget(float target){
+void Actuator::updateActuator(){
     if(this->ready){
-        this->set(target);
+        this->update();
     }
 }
 
