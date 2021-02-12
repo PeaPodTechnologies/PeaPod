@@ -1,10 +1,9 @@
 import SerialPort from 'serialport';
+import { PeaPodMessage } from './PeaPod';
 
 const BAUDRATE = 9600;
 const REVISION_CHECK = 0;
 const REVISION_STOP = 1;
-
-export type MessageType = 'info' | 'data' | 'debug' | 'error';
 
 async function findSerialPath() : Promise<string> {
     let ports = await SerialPort.list();
@@ -29,17 +28,12 @@ export class ArduinoInstructionsError extends Error {
 }
 
 export interface IPeaPodArduino {
-    start(onMessage : (msg : ArduinoMessage)=> any): void;
+    start(onMessage : (msg : PeaPodMessage)=> any): void;
     stop(): Promise<void>;
 }
 
 export type ArduinoInstructions = {
     [key: string]: number
-}
-
-export type ArduinoMessage = {
-    type: MessageType,
-    msg: any
 }
 
 export class PeaPodArduinoInterface implements IPeaPodArduino{
@@ -48,7 +42,7 @@ export class PeaPodArduinoInterface implements IPeaPodArduino{
     private revisionchecked : boolean = false;
     private initialInstructionsSent : boolean = false;
     constructor(){}
-    async start(onMessage : (msg : ArduinoMessage)=> any, arduinoRevision : number = 0, initialInstructions : ArduinoInstructions = {"scale":0}): Promise<void> {
+    async start(onMessage : (msg : PeaPodMessage)=> any, arduinoRevision : number = 0, initialInstructions : ArduinoInstructions = {"scale":0}): Promise<void> {
         let serialpath = await findSerialPath();
         this.serial = new SerialPort(serialpath, {baudRate: BAUDRATE, autoOpen: true});
         this.parser = new SerialPort.parsers.Readline({ delimiter: '\n', includeDelimiter: false });
@@ -74,14 +68,14 @@ export class PeaPodArduinoInterface implements IPeaPodArduino{
                     this.write(initialInstructions);
                     this.initialInstructionsSent = true;
                 } else {
-                    onMessage(msg as ArduinoMessage);
+                    onMessage(msg as PeaPodMessage);
                 }
             } else {
-                onMessage(msg as ArduinoMessage);
+                onMessage(msg as PeaPodMessage);
             }
         });
         this.parser?.on('data', (msg : string)=>{
-            return JSON.parse(msg) as ArduinoMessage;
+            return JSON.parse(msg) as PeaPodMessage;
         });
     }
     write(msg : ArduinoInstructions){

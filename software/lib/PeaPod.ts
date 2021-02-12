@@ -3,6 +3,13 @@ import firebase from 'firebase';
 import { IPeaPodArduino, PeaPodArduinoInterface } from './PeaPodArduino';
 import { ArduinoSimulator } from './PeaPodSimulator'
 
+export type MessageType = 'info' | 'data' | 'debug' | 'error';
+
+export type PeaPodMessage = {
+    type: MessageType,
+    msg: any
+}
+
 const firebaseConfig : Object = {
     apiKey: "AIzaSyC7iBFv4PEmWss4h_Ul01Mpkzgpu2GuXao",
     authDomain: "peapod-283416.firebaseapp.com",
@@ -26,18 +33,18 @@ const authConfig : DeviceFlowUIOptions = {
     }
 }
 
-class PeaPod {
+export default class PeaPod {
     arduino : IPeaPodArduino | undefined;
     constructor(readonly simulated : boolean = true){
         firebase.initializeApp(firebaseConfig);
     }
 
-    authenticate = async () : Promise<firebase.User> => {
+    async authenticate() : Promise<firebase.User> {
         let login = new DeviceFlowUI(firebase.app(), authConfig);
         return login.signIn();
     }
 
-    post = async () : Promise<void> => {
+    async post() : Promise<void> {
         if(this.simulated){
             this.arduino = new ArduinoSimulator({
                 air_temperature: {
@@ -56,5 +63,3 @@ class PeaPod {
         }
     }
 }
-
-export = PeaPod;

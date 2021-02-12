@@ -1,4 +1,5 @@
-import { ArduinoMessage, IPeaPodArduino } from './PeaPodArduino';
+import { IPeaPodArduino } from './PeaPodArduino';
+import { PeaPodMessage } from './PeaPod';
 
 function stringTuple<T extends [string] | string[]>(...data: T): T {
     return data;
@@ -14,7 +15,7 @@ type SimulatorParameters = {
     }
 }
 
-type ArduinoData = ArduinoMessage & {
+type ArduinoData = PeaPodMessage & {
     type: 'data', msg: {
         [key: string]: number
     }
@@ -37,7 +38,7 @@ export class ArduinoSimulator implements IPeaPodArduino{
             clearInterval(interval);
         }
     }
-    start(onMessage: (msg: ArduinoMessage) => any): void {
+    start(onMessage: (msg: PeaPodMessage) => any): void {
         for(const label in this.parameters){
             this.intervals.push(setInterval(()=>{
                 onMessage(generateData(

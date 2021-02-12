@@ -2,6 +2,7 @@ import * as dns from 'dns';
 import ora from 'ora';
 import chalk from 'chalk';
 import PeaPod from './lib/PeaPod';
+
 const sleep = (millis : number) => {
     return new Promise(resolve => {
         setTimeout(resolve, millis);
@@ -45,7 +46,7 @@ function checkInternet (timeout : number = 5000) : Promise<boolean> {
     const resolver = new dns.Resolver({timeout: timeout});
     return new Promise<boolean>(ret=>{
         resolver.resolve('www.google.com',err=> {
-            if (err && err.code == "ENOTFOUND") {
+            if (err) {
                 ret(false);
             } else {
                 ret(true);
@@ -61,7 +62,8 @@ async function main(){
     }).start();
 
     if(!(await checkInternet(5))){
-        throw new Error('Could not connect to the Internet.');
+        loading.fail('Could not connect to the Internet.');
+        return;
     }
     loading.succeed(`Connected to the ${chalk.blue('Internet')}!`);
     await sleep(1500);
