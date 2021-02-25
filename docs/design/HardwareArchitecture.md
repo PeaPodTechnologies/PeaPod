@@ -1,6 +1,6 @@
 # PeaPod Hardware Architecture
 
-Coming Soon
+Coming Soon.
 
 ## Necessary Features
 
