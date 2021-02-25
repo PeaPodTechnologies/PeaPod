@@ -1,6 +1,6 @@
-# PeaPod Arduino Firmware
+# PeaPod Arduino Software
  
-Includes all libraries and code ("firmware") for PeaPod's Arduino Micro.
+Includes all libraries and code for PeaPod's Arduino Micro.
 
 ## References
 
