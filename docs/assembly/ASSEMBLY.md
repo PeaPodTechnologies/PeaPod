@@ -22,6 +22,7 @@
 
 - Wire strippers capable of 0.6mm dia. (22AWG);
 - Metric Allan key set;
+- Soldering iron, flux-core solder, etc. soldering tools -> **soldering station**;
 - A 3D printer (with filament, duh).
 
 ## 0.3 - BOM Components
