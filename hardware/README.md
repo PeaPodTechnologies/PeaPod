@@ -1,6 +1,8 @@
 # PeaPod Hardware
 
-Includes all bill of materials (BOM), 3D printing files, schematics, manufacturing and assembly instructions, etc.
+Includes all bill of materials (BOM), 3D printing files, schematics, etc.
+
+See [ASSEMBLY.md](../docs/assembly/ASSEMBLY.md) for fabrication and assembly instructions.
 
 ## References
 
