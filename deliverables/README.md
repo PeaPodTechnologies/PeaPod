@@ -2,7 +2,8 @@
 
 Make a subfolder for your deliverable containing:
 
-- PCB Export (EasyEDA JSON and PNG)
-- Schematic Export (EasyEDA JSON and PNG)
-- PCB CAD 3D model
-- Any other files not easily stored in notion
+- Hardware Folder
+  - PCB Export (EasyEDA JSON, PNG, 3D CAD OBJ)
+  - Schematic Export (EasyEDA JSON and PNG)
+  - Components BOM
+- Software Folder (Testing scripts, libraries, readme, etc.)
