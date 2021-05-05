@@ -2,13 +2,13 @@
 #include "Actuator.h"
 
 #define NUM_ACTUATORS 5
-#define LED_PIN_BLUE 4
+#define LED_PIN_BLUE 3
 #define LED_PIN_COOL 5
 #define LED_PIN_WARM 6
-#define LED_PIN_RED 7
-#define LED_PIN_FAR 8
+#define LED_PIN_RED 9
+#define LED_PIN_FAR 10
 
-LED ledBlue(LED_PIN_BLUE);
+LED ledBlue(LED_PIN_BLUE, LED_);
 LED ledCool(LED_PIN_COOL);
 LED ledWarm(LED_PIN_WARM);
 LED ledRed(LED_PIN_RED);
