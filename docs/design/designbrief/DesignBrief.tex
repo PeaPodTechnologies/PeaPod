@@ -111,7 +111,9 @@ Phase 1 development, testing, and assessment is scoped to terrestrial/Earth-like
 \end{itemize}
 
 In addition, it is important to note that the solution "need not meet the full nutritional requirements of 
-future crews, but can contribute significantly to, and integrate with, a comprehensive food system." \cite{applicantguide}
+future crews, but can contribute significantly to, and integrate with, a comprehensive food system." \cite{applicantguide} 
+However, in implementation it can be assumed that this would be the only crop growth system on-board, and as such would
+need to provide the majority.
 
 The three underlined criteria in the challenge statement in Section \ref{sec:purpose} have also helped to define the 
 scope of this brief:
@@ -312,257 +314,247 @@ Extracted from scoping:
 \subsection{Metrics}
 \label{sec:metrics}
 
-\begin{center}
-    \begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
-        \hline
-        \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
-        \hline
-        Number of Suitable Crop Species \hfill (LL1) & \# (per crop) \\
-        \hline
-        Quality/Palatability of Crop Output \hfill (LL2) & 1-10 (per crop) \\
-        \hline
-        Crop Nutrient Concentration \hfill (LL3) & \% (per crop) \\
-        \hline
-        Protein Output Density \hfill (LL3) & g/kg \\
-        \hline
-        Protein Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
-        \hline
-        Carbohydrate Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
-        \hline
-        Lipid Output\hfill (LL3) & kCal/crewmember (\%TDEI) \\
-        \hline
-        $\Omega$-6 Fatty Acid Output\hfill (LL3) & g/day/crewmember \\
-        \hline
-        $\Omega$-3 Fatty Acid Output\hfill (LL3) & g/day/crewmember \\
-        \hline
-        Saturated Fat Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
-        \hline
-        Trans Fatty Acids Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
-        \hline
-        Cholesterol Output \hfill (LL3) & mg/day/crewmember \\
-        \hline
-        Fiber Output \hfill (LL3) & g/day/crewmember \\
-        \hline
-        Caloric Output per Day \hfill (LL4) & kCal/24hr \\
-        \hline
-        Air Temperature Control Range \hfill (LL5) & min, max °C \\
-        \hline
-        Air Temperature Control Rate \hfill (LL5) & °C/sec at each °C \\
-        \hline
-        Air Temperature Control Stability \hfill (LL5) & $\pm$°C at each °C \\
-        \hline
-        Air Humidity Control Range \hfill (LL6) & min, max \%RH \\
-        \hline
-        Air Humidity Control Rate \hfill (LL6) & \%RH/sec at each \%RH \\
-        \hline
-        Air Humidity Control Stability \hfill (LL6) & $\pm$\%RH at each \%RH \\
-        \hline
-        CO${}_2$ Concentration Control Range \hfill (LL7) & min, max ppm CO${}_2$ \\
-        \hline
-        CO${}_2$ Concentration Control Rate \hfill (LL7) & ppm CO${}_2$/sec at each ppm 
-        CO${}_2$ \\
-        \hline
-        CO${}_2$ Concentration Control Stability \hfill (LL7) & $\pm$ppm CO${}_2$ at 
-        each ppm CO${}_2$ \\
-        \hline
-        O${}_2$ Concentration Control Range \hfill (LL7) & min, max ppm O${}_2$ \\
-        \hline
-        O${}_2$ Concentration Control Rate \hfill (LL7) & ppm O${}_2$/sec at each ppm 
-        O${}_2$  \\
-        \hline
-        O${}_2$ Concentration Control Stability \hfill (LL7) & $\pm$ppm O${}_2$ at each 
-        ppm O${}_2$ \\
-        \hline
-        Light Spectrum Wavelength Control Range \hfill (LL8) & min, max nm \\
-        \hline
-        Light Spectrum PAR Match \hfill (LL8) & \% (each crop) \\
-        \hline
-        Light Spectrum Intensity Control Range \hfill (LL8) & min, max $\mu$mol 
-        m${}^{-2}$sec${}^{-1}$ at each nm \\
-        \hline
-        Light Spectrum Intensity Control Stability \hfill (LL8) & $\pm\mu$mol 
-        m${}^{-2}$sec${}^{-1}$ at each nm \\
-        \hline
-        Light Captured by Non-Photosynthetic Surfaces \hfill (LL9) & \% \\
-        \hline
-        Outside Light Penetration \hfill (LL9) & \% \\
-        \hline
-        Heat Transfer \hfill (LL10) & $\pm$W at each °C \\
-        \hline
-        Water Loss due to Leaks, Evaporation \hfill (LL11) & mL/hr \\
-        \hline
-        Internal Circulation Airflow Control Range \hfill (LL12) & min, max m${}^3$/min \\
-        \hline
-        Gas Exchange due to Leaks \hfill (LL12) & m${}^3$/min \\
-        \hline
-        Maximum Intentional Gas Exchange \hfill (LL12) & m${}^3$/min \\
-        \hline
-        Nutrient Solution Delivery Rate Control Range \hfill (LL13) & min, max 
-        mL/plant/sec \\
-        \hline
-        Nutrient Solution Delivery Rate Control Rate \hfill (LL13) & mL/plant/sec${}^2$ at each mL/plant/sec  \\
-        \hline
-        Nutrient Solution Delivery Rate Control Stability \hfill (LL13) & 
-        $\pm$mL/sec/plant at each mL/sec/plant \\
-        \hline
-   \end{tabular}
-\end{center}
+\begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
+    \hline
+    \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \hline
+    Number of Suitable Crop Species \hfill (LL1) & \# (per crop) \\
+    \hline
+    Quality/Palatability of Crop Output \hfill (LL2) & 1-10 (per crop) \\
+    \hline
+    Crop Nutrient Concentration \hfill (LL3) & \% (per crop) \\
+    \hline
+    Protein Output Density \hfill (LL3) & g/kg \\
+    \hline
+    Protein Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    \hline
+    Carbohydrate Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    \hline
+    Lipid Output\hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    \hline
+    $\Omega$-6 Fatty Acid Output\hfill (LL3) & g/day/crewmember \\
+    \hline
+    $\Omega$-3 Fatty Acid Output\hfill (LL3) & g/day/crewmember \\
+    \hline
+    Saturated Fat Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    \hline
+    Trans Fatty Acids Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    \hline
+    Cholesterol Output \hfill (LL3) & mg/day/crewmember \\
+    \hline
+    Fiber Output \hfill (LL3) & g/day/crewmember \\
+    \hline
+    Caloric Output per Day \hfill (LL4) & kCal/24hr \\
+    \hline
+    Air Temperature Control Range \hfill (LL5) & min, max °C \\
+    \hline
+    Air Temperature Control Rate \hfill (LL5) & °C/sec at each °C \\
+    \hline
+    Air Temperature Control Stability \hfill (LL5) & $\pm$°C at each °C \\
+    \hline
+    Air Humidity Control Range \hfill (LL6) & min, max \%RH \\
+    \hline
+    Air Humidity Control Rate \hfill (LL6) & \%RH/sec at each \%RH \\
+    \hline
+    Air Humidity Control Stability \hfill (LL6) & $\pm$\%RH at each \%RH \\
+    \hline
+    CO${}_2$ Concentration Control Range \hfill (LL7) & min, max ppm CO${}_2$ \\
+    \hline
+    CO${}_2$ Concentration Control Rate \hfill (LL7) & ppm CO${}_2$/sec at each ppm 
+    CO${}_2$ \\
+    \hline
+    CO${}_2$ Concentration Control Stability \hfill (LL7) & $\pm$ppm CO${}_2$ at 
+    each ppm CO${}_2$ \\
+    \hline
+    O${}_2$ Concentration Control Range \hfill (LL7) & min, max ppm O${}_2$ \\
+    \hline
+    O${}_2$ Concentration Control Rate \hfill (LL7) & ppm O${}_2$/sec at each ppm 
+    O${}_2$  \\
+    \hline
+    O${}_2$ Concentration Control Stability \hfill (LL7) & $\pm$ppm O${}_2$ at each 
+    ppm O${}_2$ \\
+    \hline
+    Light Spectrum Wavelength Control Range \hfill (LL8) & min, max nm \\
+    \hline
+    Light Spectrum PAR Match \hfill (LL8) & \% (each crop) \\
+    \hline
+    Light Spectrum Intensity Control Range \hfill (LL8) & min, max $\mu$mol 
+    m${}^{-2}$sec${}^{-1}$ at each nm \\
+    \hline
+    Light Spectrum Intensity Control Stability \hfill (LL8) & $\pm\mu$mol 
+    m${}^{-2}$sec${}^{-1}$ at each nm \\
+    \hline
+    Light Captured by Non-Photosynthetic Surfaces \hfill (LL9) & \% \\
+    \hline
+    Outside Light Penetration \hfill (LL9) & \% \\
+    \hline
+    Heat Transfer \hfill (LL10) & $\pm$W at each °C \\
+    \hline
+    Water Loss due to Leaks, Evaporation \hfill (LL11) & mL/hr \\
+    \hline
+    Internal Circulation Airflow Control Range \hfill (LL12) & min, max m${}^3$/min \\
+    \hline
+    Gas Exchange due to Leaks \hfill (LL12) & m${}^3$/min \\
+    \hline
+    Maximum Intentional Gas Exchange \hfill (LL12) & m${}^3$/min \\
+    \hline
+    Nutrient Solution Delivery Rate Control Range \hfill (LL13) & min, max 
+    mL/plant/sec \\
+    \hline
+    Nutrient Solution Delivery Rate Control Rate \hfill (LL13) & mL/plant/sec${}^2$ at each mL/plant/sec  \\
+    \hline
+    Nutrient Solution Delivery Rate Control Stability \hfill (LL13) & 
+    $\pm$mL/sec/plant at each mL/sec/plant \\
+    \hline
+\end{tabular}
 \newpage
 
 \textbf{\large{2.5 \ \ Metrics (Cont'd)}}
 \normalsize
 
-\begin{center}
-    \begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
-        \hline
-        \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
-        \hline
-        Nutrient Solution Temperature Control Range \hfill (LL14) & min, max °C \\
-        \hline
-        Nutrient Solution Temperature Control Rate \hfill (LL14) & °C/sec at each °C  \\
-        \hline
-        Nutrient Solution Temperature Control Stability \hfill (LL14) & 
-        $\pm$°C at each °C  \\
-        \hline
-        Germination Success Rate \hfill (LL15) & \% \\
-        \hline
-        Required Human Intervention Time - Maintenance \hfill (LL16) & hrs/week \\
-        \hline
-        Required Human Intervention Time - Setup \hfill (LL16) & hrs \\
-        \hline
-        Energy Efficiency - In (Power) vs. Out (kCal + Loss) \hfill (LL17) & \% \\
-        \hline
-        Necessary Water Waste per Day \hfill (LL18) & L/day \\
-        \hline
-        Water Recycling from Spacecraft Systems \hfill (LL18) & L/day \\
-        \hline
-        Initial Water Requirement \hfill (LL18) & L \\
-        \hline
-        Plant Matter Usage \hfill (LL19) & \% \\
-        \hline
-        CO${}_2$ Capture - Fraction of Typical Reclaimer Consumption \hfill (LL20) & \% \\
-        \hline
-        O${}_2$ Production - Fraction of Typical Reclaimer Production \hfill (LL20) & \% \\
-        \hline
-        Number of Harvests per Planting \hfill (LL21) & \# (each crop)\\
-        \hline
-        Harvest to Reharvest - Fruiting Crops \hfill (LL22) & min (each crop)  \\
-        \hline
-        Seedling to Harvest \hfill (LL22, LL24) & min (each crop) \\
-        \hline
-        Germination Time \hfill (LL23) & min (each crop) \\
-        \hline
-        Potential for Cross-Contamination - Germination \hfill (LL25) & \% (each event)\\
-        \hline
-        Potential for Cross-Contamination - Planting \hfill (LL25) & \% (each event)\\
-        \hline
-        Potential for Cross-Contamination - Harvest \hfill (LL25) & \% (each event)\\
-        \hline
-        Factor of Safety \hfill (LL26) & FOS (each structure)\\
-        \hline
-        Mounting Stability - System to Surroundings \hfill (LL26) & FOS (each mount) \\
-        \hline
-        Mounting Stability - Infrastructure to System \hfill (LL26) & FOS (each mount) \\
-        \hline
-        Risk of Electrical Malfunction \hfill (LL27) & \% \\
-        \hline
-        Backup Power Systems? \hfill (LL28) & Y/N \\
-        \hline
-        Incremental Power-On? \hfill (LL28) & Y/N \\
-        \hline
-        Backup Water Systems? \hfill (LL29) & Y/N \\
-        \hline
-        Infrastructure Failure Notification? \hfill (LL29) & Y/N \\
-        \hline
-        Independent Crop Growth Environments? \hfill (LL30) & Y/N \\
-        \hline
-        Support for N+1 Crop Growth Environments? \hfill (LL31) & Y/N \\
-        \hline
-        Lighting System Swappable? \hfill (LL32) & Y/N \\
-        \hline
-        Heating/Cooling System(s) Swappable? \hfill (LL32) & Y/N \\
-        \hline
-        Water Delivery System(s) Swappable? \hfill (LL32) & Y/N \\
-        \hline
-        Lighting System Swappable? \hfill (LL32) & Y/N \\
-        \hline
-        Computer Subsystems Swappable? \hfill (LL33) & Y/N \\
-        \hline
-        All Fabrication Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
-        \hline
-        All Assembly Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
-        \hline
-        All Repair Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
-        \hline
-        Total Fabrication, Assembly, and Startup Time \hfill (LL35) & min \\
-        \hline
-        Total Number of Tools Required \hfill (LL36) & \# \\
-        \hline
-    \end{tabular}
-\end{center}
+\begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
+    \hline
+    \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \hline
+    Nutrient Solution Temperature Control Range \hfill (LL14) & min, max °C \\
+    \hline
+    Nutrient Solution Temperature Control Rate \hfill (LL14) & °C/sec at each °C  \\
+    \hline
+    Nutrient Solution Temperature Control Stability \hfill (LL14) & 
+    $\pm$°C at each °C  \\
+    \hline
+    Germination Success Rate \hfill (LL15) & \% \\
+    \hline
+    Required Human Intervention Time - Maintenance \hfill (LL16) & hrs/week \\
+    \hline
+    Required Human Intervention Time - Setup \hfill (LL16) & hrs \\
+    \hline
+    Energy Efficiency - In (Power) vs. Out (kCal + Loss) \hfill (LL17) & \% \\
+    \hline
+    Necessary Water Waste per Day \hfill (LL18) & L/day \\
+    \hline
+    Water Recycling from Spacecraft Systems \hfill (LL18) & L/day \\
+    \hline
+    Initial Water Requirement \hfill (LL18) & L \\
+    \hline
+    Plant Matter Usage \hfill (LL19) & \% \\
+    \hline
+    CO${}_2$ Capture - Fraction of Typical Reclaimer Consumption \hfill (LL20) & \% \\
+    \hline
+    O${}_2$ Production - Fraction of Typical Reclaimer Production \hfill (LL20) & \% \\
+    \hline
+    Number of Harvests per Planting \hfill (LL21) & \# (each crop)\\
+    \hline
+    Harvest to Reharvest - Fruiting Crops \hfill (LL22) & min (each crop)  \\
+    \hline
+    Seedling to Harvest \hfill (LL22, LL24) & min (each crop) \\
+    \hline
+    Germination Time \hfill (LL23) & min (each crop) \\
+    \hline
+    Potential for Cross-Contamination - Germination \hfill (LL25) & \% (each event)\\
+    \hline
+    Potential for Cross-Contamination - Planting \hfill (LL25) & \% (each event)\\
+    \hline
+    Potential for Cross-Contamination - Harvest \hfill (LL25) & \% (each event)\\
+    \hline
+    Factor of Safety \hfill (LL26) & FOS (each structure)\\
+    \hline
+    Mounting Stability - System to Surroundings \hfill (LL26) & FOS (each mount) \\
+    \hline
+    Mounting Stability - Infrastructure to System \hfill (LL26) & FOS (each mount) \\
+    \hline
+    Risk of Electrical Malfunction \hfill (LL27) & \% \\
+    \hline
+    Backup Power Systems? \hfill (LL28) & Y/N \\
+    \hline
+    Incremental Power-On? \hfill (LL28) & Y/N \\
+    \hline
+    Backup Water Systems? \hfill (LL29) & Y/N \\
+    \hline
+    Infrastructure Failure Notification? \hfill (LL29) & Y/N \\
+    \hline
+    Independent Crop Growth Environments? \hfill (LL30) & Y/N \\
+    \hline
+    Support for N+1 Crop Growth Environments? \hfill (LL31) & Y/N \\
+    \hline
+    Lighting System Swappable? \hfill (LL32) & Y/N \\
+    \hline
+    Heating/Cooling System(s) Swappable? \hfill (LL32) & Y/N \\
+    \hline
+    Water Delivery System(s) Swappable? \hfill (LL32) & Y/N \\
+    \hline
+    Lighting System Swappable? \hfill (LL32) & Y/N \\
+    \hline
+    Computer Subsystems Swappable? \hfill (LL33) & Y/N \\
+    \hline
+    All Fabrication Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
+    \hline
+    All Assembly Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
+    \hline
+    All Repair Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
+    \hline
+    Total Fabrication, Assembly, and Startup Time \hfill (LL35) & min \\
+    \hline
+    Total Number of Tools Required \hfill (LL36) & \# \\
+    \hline
+\end{tabular}
 
 \newpage
 
 \textbf{\large{2.5 \ \ Metrics (Cont'd)}}
 \normalsize
 
-\begin{center}
-    \begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | p{11.5cm} | p{3.2cm} |} 
-        \hline
-        \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
-        \hline
-        Number of New Tools Required \hfill (LL36) & \# \\
-        \hline
-        Cost \hfill (LL37) & CAD \\
-        \hline
-        Outer Dimensions \hfill (LL38) & m (W, D, H) \\
-        \hline
-        Outer Volume \hfill (LL38) & m${}^3$ \\
-        \hline
-        Power Consumption \hfill (LL38) & W \\
-        \hline
-        Mass \hfill (LL38) & kg \\
-        \hline
-    \end{tabular}
-\end{center}
+\begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | p{11.5cm} | p{3.2cm} |} 
+    \hline
+    \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \hline
+    Number of New Tools Required \hfill (LL36) & \# \\
+    \hline
+    Cost \hfill (LL37) & CAD \\
+    \hline
+    Outer Dimensions \hfill (LL38) & m (W, D, H) \\
+    \hline
+    Outer Volume \hfill (LL38) & m${}^3$ \\
+    \hline
+    Power Consumption \hfill (LL38) & W \\
+    \hline
+    Mass \hfill (LL38) & kg \\
+    \hline
+\end{tabular}
 
 \subsection{Constraints}
-\begin{center}
-    \begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
-        \hline
-        \textbf{Metric} & \textbf{Constraint} & \textbf{Source} \\
-        \hline
-        M45 & 4 hrs/week & \cite{applicantguide}\\
-        \hline
-        M83 & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m & \cite{applicantguide} \\
-        \hline
-        M84 & $\le$ 2 m${}^3$ & \cite{applicantguide}\\
-        \hline
-        M85 & Avg. <1500W; Peak < 3000W & \cite{applicantguide}\\
-        \hline
-    \end{tabular}
-\end{center}
+\begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
+    \hline
+    \textbf{Metric} & \textbf{Constraint} & \textbf{Source} \\
+    \hline
+    M45 & 4 hrs/week & \cite{applicantguide}\\
+    \hline
+    M83 & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m & \cite{applicantguide} \\
+    \hline
+    M84 & $\le$ 2 m${}^3$ & \cite{applicantguide}\\
+    \hline
+    M85 & Avg. <1500W; Peak < 3000W & \cite{applicantguide}\\
+    \hline
+\end{tabular}
 
 \subsection{Criteria}
-\begin{center}
-    \begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
-        \hline
-        \textbf{Metric} & \textbf{Criteria; Reason} & \textbf{Source} \\
-        \hline
-        M34 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
-        \hline
-        M48 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
-        \hline
-        M49 & Maximize; Reduce System Inputs & \cite{applicantguide} \\
-        \hline
-        M50 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
-        \hline
-        M86 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
-        \hline
-    \end{tabular}
-\end{center}
+\begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
+    \hline
+    \textbf{Metric} & \textbf{Criteria; Reason} & \textbf{Source} \\
+    \hline
+    M34 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    \hline
+    M48 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    \hline
+    M49 & Maximize; Reduce System Inputs & \cite{applicantguide} \\
+    \hline
+    M50 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    \hline
+    M86 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    \hline
+\end{tabular}
 
-Refer to Appendix \ref{sec:reportassessment} for Assessment Criteria (categories, weights, etc.).
+Refer to Appendix \ref{sec:assessment} for prototype verification Assessment Criteria (categories, weights, etc.).
 
 \newpage
 
