@@ -7,6 +7,7 @@
 \usepackage{geometry}
 \usepackage{multicol}
 \usepackage{array,etoolbox}
+\usepackage{fancyhdr}
 \geometry{
 letterpaper,
 left=1in,
@@ -15,7 +16,10 @@ bottom=1in,
 top=1in,
 }
 
-% \preto\tabular{\setcounter{magicrownumbers}{0}}
+\pagestyle{fancy}
+\lhead{PeaPod - Design Brief}
+\rhead{UTAG}
+
 \newcounter{metricnumber}
 \setcounter{metricnumber}{0}
 \newcommand\rownumber{\stepcounter{metricnumber}\arabic{metricnumber}}
@@ -37,27 +41,25 @@ top=1in,
     \begin{center}
         \vspace*{1.2cm}
         
-        \textbf{\large{The Eden Initiative - Design Brief}}
+        \textbf{\large{PeaPod - Design Brief}}
         
         \vspace{0.5cm}
         Submission to the NASA/CSA Deep Space Food Challenge
 
         \vfill
         
-        Jayden Lefebvre - Principal Design Engineer\\\small{jayden.lefebvre@mail.utoronto.ca}
-
-        \vspace{0.5cm}
-
-        \normalsize{Luke Kowalski - CEO}\\\small{luke@projectgap.ca}\\
+        Jayden Lefebvre - Lead Engineer\\\small{jayden.lefebvre@mail.utoronto.ca}
         
         \vspace{2.5cm}
         
         Revision 0.2\\
-        The Eden Initiative\\
-        May 3rd, 2021
+        University of Toronto Agritech\\
+        May 5th, 2021
         
     \end{center}
  \end{titlepage}
+
+\thispagestyle{plain}
 
 \tableofcontents
 \newpage
@@ -69,7 +71,8 @@ top=1in,
 \label{sec:purpose}
 
 The purpose of this design brief is to outline the requirements for a submission 
-to the NASA/CSA Deep Space Food Challenge Phase 1 \cite{dsfc}.
+to the NASA/CSA Deep Space Food Challenge Phase 1 \cite{dsfc}. In doing so, it also
+documents the scope of a design submitted by University of Toronto Agritech (UTAG).
 
 The goal of the Deep Space Food Challenge is for participants to "Create novel 
 food production technologies or systems that require \myuline{minimal inputs} and 
