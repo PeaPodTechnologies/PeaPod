@@ -225,6 +225,7 @@ Compiled from DSFC Applicant Guide details \cite{applicantguide} and an excerpt 
         \item Able to operate in harsh and remote environments;
     \end{enumerate}
     \item Achieve the \textbf{greatest amount of food output} with \textbf{minimal inputs} and \textbf{minimal waste};
+    \item Transmits \textbf{operational data and limited video} to a remote location, and receives periodic \textbf{operational commands}.
 \end{enumerate}
 
 % \newpage
@@ -319,7 +320,7 @@ Extracted from scoping:
 \begin{center}
     \begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
         \hline
-        \multicolumn{1}{| @{\makebox[2em][l]{\#}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+        \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
         \hline
         Number of Suitable Crop Species \hfill (LL1) & \# (per crop) \\
         \hline
@@ -379,7 +380,7 @@ Extracted from scoping:
         \hline
         Light Spectrum Wavelength Control Range \hfill (LL8) & min, max nm \\
         \hline
-        Light Spectrum PAR Spectrum, Intensity Coverage \hfill (LL8) & \% (each crop) \\
+        Light Spectrum PAR Match \hfill (LL8) & \% (each crop) \\
         \hline
         Light Spectrum Intensity Control Range \hfill (LL8) & min, max $\mu$mol 
         m${}^{-2}$sec${}^{-1}$ at each nm \\
@@ -393,7 +394,7 @@ Extracted from scoping:
         \hline
         Heat Transfer \hfill (LL10) & $\pm$W at each °C \\
         \hline
-        Unintentional Water Loss due to Leaks, Evaporation \hfill (LL11) & mL/hr \\
+        Water Loss due to Leaks, Evaporation \hfill (LL11) & mL/hr \\
         \hline
         Internal Circulation Airflow Control Range \hfill (LL12) & min, max m${}^3$/min \\
         \hline
@@ -419,7 +420,7 @@ Extracted from scoping:
 \begin{center}
     \begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
         \hline
-        \multicolumn{1}{| @{\makebox[2em][l]{\#}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+        \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
         \hline
         Nutrient Solution Temperature Control Range \hfill (LL14) & min, max °C \\
         \hline
@@ -430,9 +431,9 @@ Extracted from scoping:
         \hline
         Germination Success Rate \hfill (LL15) & \% \\
         \hline
-        Required Human Intervention Time - Maintenance \hfill (LL16) & min/day \\
+        Required Human Intervention Time - Maintenance \hfill (LL16) & hrs/week \\
         \hline
-        Required Human Intervention Time - Setup \hfill (LL16) & min \\
+        Required Human Intervention Time - Setup \hfill (LL16) & hrs \\
         \hline
         Energy Efficiency - In (Power) vs. Out (kCal + Loss) \hfill (LL17) & \% \\
         \hline
@@ -511,34 +512,57 @@ Extracted from scoping:
 \normalsize
 
 \begin{center}
-    \begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | p{11.5cm} | p{3.5cm} |} 
+    \begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | p{11.5cm} | p{3.2cm} |} 
         \hline
-        \multicolumn{1}{| @{\makebox[2em][l]{\#}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+        \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
         \hline
         Number of New Tools Required \hfill (LL36) & \# \\
         \hline
         Cost \hfill (LL37) & CAD \\
         \hline
-        Outer Dimensions \hfill (LL38) & m (x,y,z) \\
+        Outer Dimensions \hfill (LL38) & m (W, D, H) \\
         \hline
         Outer Volume \hfill (LL38) & m${}^3$ \\
         \hline
         Power Consumption \hfill (LL38) & W \\
+        \hline
+        Mass \hfill (LL38) & kg \\
         \hline
     \end{tabular}
 \end{center}
 
 \subsection{Constraints}
 \begin{center}
-    \begin{tabular}{|l|l|}
+    \begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
         \hline
-        \textbf{Metric} & \textbf{Constraint} \\
+        \textbf{Metric} & \textbf{Constraint} & \textbf{Source} \\
         \hline
-        M4 & a \\
+        M45 & 4 hrs/week & \cite{applicantguide}\\
         \hline
-        M75 & $\le$ 2 m${}^3$ \cite{applicantguide} \\
+        M83 & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m & \cite{applicantguide} \\
         \hline
-        M76 & $\le$ 2 m${}^3$ \cite{applicantguide} \\
+        M84 & $\le$ 2 m${}^3$ & \cite{applicantguide}\\
+        \hline
+        M85 & Avg. <1500W; Peak < 3000W & \cite{applicantguide}\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Criteria}
+\begin{center}
+    \begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
+        \hline
+        \textbf{Metric} & \textbf{Criteria; Reason} & \textbf{Source} \\
+        \hline
+        M34 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+        \hline
+        M48 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+        \hline
+        M49 & Maximize; Reduce System Inputs & \cite{applicantguide} \\
+        \hline
+        M50 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+        \hline
+        M86 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
         \hline
     \end{tabular}
 \end{center}
