@@ -25,14 +25,6 @@ top=1in,
 \setcounter{metricnumber}{0}
 \newcommand\rownumber{\stepcounter{metricnumber}\arabic{metricnumber}}
 
-\renewcommand{\ULdepth}{1.5pt}
-\contourlength{0.8pt}
-
-\newcommand{\myuline}[1]{%
-  \uline{\phantom{#1}}%
-  \llap{\contour{white}{#1}}%
-}
-
 % \renewcommand{\baselinestretch}{1.5}
 \setstretch{1.5}
 
@@ -45,7 +37,7 @@ top=1in,
         \textbf{\large{PeaPod - Design Brief}}
         
         \vspace{0.5cm}
-        Submission to the NASA/CSA Deep Space Food Challenge
+        Submission to the NASA/CSA Deep Space Food Challenge - Phase 1
 
         \vfill
         
@@ -53,7 +45,7 @@ top=1in,
         
         \vspace{2.5cm}
         
-        Revision 0.2\\
+        Revision 0.3\\
         University of Toronto Agritech\\
         May 5th, 2021
         
@@ -76,9 +68,8 @@ to the NASA/CSA Deep Space Food Challenge Phase 1 \cite{dsfc}. In doing so, it a
 documents the scope of a design submitted by University of Toronto Agritech (UTAG).
 
 The goal of the Deep Space Food Challenge is for participants to "Create novel 
-food production technologies or systems that require \myuline{minimal inputs} and 
-\myuline{maximize safe, nutritious, and palatable food outputs} for 
-\myuline{long-duration space missions}, and which have potential to benefit 
+food production technologies or systems that require \uline{minimal inputs} and \uline{maximize safe}, nutritious, and palatable food outputs for 
+\uline{long-duration space missions}, and which have potential to benefit 
 people on Earth." \cite{applicantguide}
 
 \subsection{Framing Structure}
@@ -86,9 +77,9 @@ people on Earth." \cite{applicantguide}
 
 This document achieves its purpose via "top-down" framing (Section \ref{sec:framing}), with each subsection's 
 entries being derived from the entries of the previous\footnote{Each objective and metric has 
-a numbered reference to the entry it was derived from (\myuline{\textbf{S}}takeholder 
-\myuline{\textbf{1}} : S1, \myuline{\textbf{H}}igh-\myuline{\textbf{L}}evel Objective 
-\myuline{\textbf{8}} : HL8, etc.)}.
+a numbered reference to the entry it was derived from (\uline{\textbf{S}}takeholder 
+\uline{\textbf{1}} : S1, \uline{\textbf{H}}igh-\uline{\textbf{L}}evel Objective 
+\uline{\textbf{8}} : HL8, etc.)}.
 
 \begin{itemize}
     \item \textbf{\ref{sec:opportunity} - Opportunity}: A succinct scoped challenge 
@@ -102,6 +93,9 @@ a numbered reference to the entry it was derived from (\myuline{\textbf{S}}takeh
     \item \textbf{\ref{sec:metrics} - Metrics}: Quantitative measures of design success, fit, 
     utility, etc; derived from LLOs.
 \end{itemize}
+
+In addition to framing the challenge, this document serves to outline the structural requirements 
+of the Phase 1 prototypes (See Appendices \ref{sec:assessment}, \ref{sec:application}).
 
 \newpage
 
@@ -574,6 +568,7 @@ Refer to Appendix \ref{sec:reportassessment} for Assessment Criteria (categories
 
 \begin{appendices}
 \section{Assessment Criteria}
+\label{sec:assessment}
 \subsection{Report Assessment Criteria}
 \label{sec:reportassessment}
 
@@ -605,7 +600,7 @@ for developing the Phase 1 prototype.
 A complete application package consists of the Challenge Application Form, with the following sections:
 
 \begin{enumerate}
-    \item Applicant details;
+    \item Applicant details (basic information, primary contact);
     \item Proposed solution details:
     \begin{enumerate}
         \item Design Abstract;
@@ -613,13 +608,9 @@ A complete application package consists of the Challenge Application Form, with 
         \item Design Animation (video; See Appendix \ref{sec:animassessment});
         \item Intellectual Property Details;
     \end{enumerate}
-    \item Declaration;
+    \item Declaration (terms and conditions, Consent for Use, Disclosure and Copyright requirements);
     \item Survey (optional);
 \end{enumerate}
-
-\subsection{Design Abstract}
-
-
 
 \end{appendices}
 
