@@ -65,7 +65,7 @@
 \fi
 
 % load last
-\RequirePackage[pdfusetitle]{hyperref} % 5.1 of http://mirrors.ctan.org/macros/latex/contrib/hyperref/doc/paper.pdf
+\RequirePackage[pdfusetitle, hidelinks]{hyperref} % 5.1 of http://mirrors.ctan.org/macros/latex/contrib/hyperref/doc/paper.pdf
 \if@narrowmargins
     \RequirePackage[margin=1in]{geometry} % after hyperref, per manual
 \fi

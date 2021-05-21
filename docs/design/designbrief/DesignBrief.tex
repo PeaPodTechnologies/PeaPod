@@ -8,6 +8,7 @@
 \usepackage{multicol}
 \usepackage{array,etoolbox}
 \usepackage{fancyhdr}
+\usepackage{enumitem}
 \usepackage[toc,page]{appendix}
 \geometry{
 letterpaper,
@@ -22,8 +23,8 @@ top=1in,
 \rhead{UTAG}
 
 \newcounter{metricnumber}
-\setcounter{metricnumber}{0}
-\newcommand\rownumber{\stepcounter{metricnumber}\arabic{metricnumber}}
+\setcounter{metricnumber}{1}
+\newcommand\metricrow{M\arabic{metricnumber}}
 
 % \renewcommand{\baselinestretch}{1.5}
 \setstretch{1.5}
@@ -37,7 +38,7 @@ top=1in,
         \textbf{\large{PeaPod - Design Brief}}
         
         \vspace{0.5cm}
-        Submission to the NASA/CSA Deep Space Food Challenge - Phase 1
+        Outlining the Requirements for a Submission to the \\NASA/CSA Deep Space Food Challenge - Phase 1
 
         \vfill
         
@@ -45,9 +46,9 @@ top=1in,
         
         \vspace{2.5cm}
         
-        Revision 0.3\\
+        Revision 0.4\\
         University of Toronto Agritech\\
-        May 5th, 2021
+        May 18th, 2021
         
     \end{center}
  \end{titlepage}
@@ -84,14 +85,19 @@ a numbered reference to the entry it was derived from (\uline{\textbf{S}}takehol
 \begin{itemize}
     \item \textbf{\ref{sec:opportunity} - Opportunity}: A succinct scoped challenge 
     statement.
-    \item \textbf{\ref{sec:requirements} - Requirements}: Categorical or scoping constraints.
+    \item \textbf{\ref{sec:requirements} - Challenge Requirements}: Categorical/unscoped 
+    requirements for \textit{any} submission.
     \item \textbf{\ref{sec:stakeholders} - Stakeholders}: Persons and groups in 
     consideration.
     \item \textbf{\ref{sec:hlos} - High-Level Objectives}: Conceptual aims, DfX; derived 
     from Requirements and Stakeholders.
     \item \textbf{\ref{sec:llos} - Low-Level Objectives}: Tactical goals; derived from HLOs.
     \item \textbf{\ref{sec:metrics} - Metrics}: Quantitative measures of design success, fit, 
-    utility, etc; derived from LLOs.
+    utility, etc.; derived from LLOs.
+    \item \textbf{\ref{sec:constraints} - Constraints}: Scoped \textit{mandatory} requirements for 
+    the proposed design.
+    \item \textbf{\ref{sec:criteria} - Criteria}: Scoped \textit{optional} requirements for 
+    the proposed design.
 \end{itemize}
 
 In addition to framing the challenge, this document serves to outline the structural requirements 
@@ -140,9 +146,9 @@ scope of this brief:
     environment that:
     \begin{enumerate}
         \item provides of all necessary crop growth inputs (water, nutrients, lighting, 
-        etc.)
+        etc.);
         \item contains or otherwise encompasses a viable crop growth environment 
-        (temperature, humidity, gas concentrations, airflow, etc.)
+        (temperature, humidity, gas concentrations, airflow, etc.);
         \item has control over all parameters of both a) and b) (environment parameters); 
         these together are the (crop growth) environment conditions.
     \end{enumerate}
@@ -150,14 +156,6 @@ scope of this brief:
     inputs (required human interaction), the environment should be automated and isolated 
     from the spacecraft cabin with regards to all environment conditions (thermally, 
     water-tight, etc.) unless beneficial and efficient (i.e no loss).
-
-% \end{enumerate}
-% \newpage
-% \large
-% \textbf{1.3 \ \ \ Scope and Justification (Cont'd)}
-% \normalsize
-% \begin{enumerate}
-
 \item A greater degree of nutrition and palatability of food outputs implies a greater 
     variety of crops (incl. leafy greens, fruits/fruiting vegetables, root vegetables, 
     algaes, etc.); as such the food production system should be able to generate a 
@@ -165,25 +163,33 @@ scope of this brief:
     could be grown within.
 \item The demand for high crop variety, automation, parameter control, etc. implies 
     the use of a hydroponic/aeroponic/hybrid crop growth method.
+\item Output nutrient and yield maximization in a controlled-environment implies environment
+    parameter optimization. This is best accomplished via collection of both plant-growth and 
+    environment metrics and cross-growth-environment networking 
+    (data versatility, sharing, and machine intelligence).
 \end{enumerate}
+
+\newpage
 
 \subsection{Definitions}
 \label{sec:definitions}
 A number of useful definitions have emerged from the above scoping:
 
 \begin{enumerate}
-\item (Crop Growth) Environment - The environment within which the crop grows/with which 
-the crop interacts; the environment parameters in terms of their relationship with the 
+\item \textbf{(Crop Growth) Environment} - The environment within which the crop grows/with which 
+the crop interacts; the Environment Parameters in terms of their relationship with the 
 crop and its growth.
-\item (Crop Growth) Environment Parameters - The (often quantitative) parameters of the 
-crop environment, as well as any and all other parameters relevant to crop growth.
-\item Crop Growth System - Includes the physical enclosure (containing the crops and the 
+\item \textbf{(Crop Growth) Environment Parameters} - The (often quantitative) parameters of the 
+Crop Growth Environment, as well as any and all other parameters influencing crop growth.
+\item \textbf{Crop Growth System} - Includes the physical enclosure (containing the crops and the 
 controlled environment; incl. isolation) as well as any infrastructure required to 
 generate the crop growth environment and control all environment conditions; satisfies 
 all requirements of this brief.
+\item \textbf{Crop Growth Metrics} - The (often quantitative) measures of crop growth optimization,
+    including yield mass, growth rate, nutrient/etc. concentrations, etc.
+\item \textbf{Environment Program} - The to-date most optimized set of Environment Parameters 
+for a given Crop Growth Metric, implemented by the Grop Growth System.
 \end{enumerate}
-
-\newpage
 
 \section{Framing}
 \label{sec:framing}
@@ -193,119 +199,108 @@ all requirements of this brief.
 
 Design a fully automated and isolated hydroponic/aeroponic crop growth system for the 
 Deep Space Food Challenge Phase 1\cite{dsfc}, able to generate any environment from a 
-combination of independent environment parameters.
+combination of independent environment parameters, with crop-growth and environment data
+collection.
 
-\subsection{Requirements}
+\newpage
+
+\subsection{Challenge Requirements}
 \label{sec:requirements}
 
-Compiled from DSFC Applicant Guide details \cite{applicantguide} and an excerpt of NASA-STD-3001: Section 7.1 Food and Nutrition\footnote{Additional nutrition and caloric output constraints relative to activity level, crew details, etc. are provided; however they are not in direct consideration as of Phase 1.} \cite{nutrition}:
-\begin{enumerate}
-    \item \textit{Helps} fill food gaps for a \textbf{three-year} round-trip mission with 
-    \textbf{no resupply}:
-    \begin{enumerate}
-        \item Feeds a crew of \textbf{four (4)} people;
-        \item Provides the capability to maintain food safety and nutrition \textbf{during all phases} of the mission;
-        \item Provides food that is \textit{acceptable} to the crew \textbf{for the duration} of the mission;
-        \item Produces \textbf{varied, safe, nutritious, and palatable} food outputs that 
-        can provide \textbf{all 
-        daily nutritional needs} and require \textbf{little processing time}\footnote{It is 
+The following are the overall challenge requirements compiled from DSFC Applicant Guide details \cite{applicantguide} and an excerpt of NASA-STD-3001: Section 7.1 Food and Nutrition\footnote{Additional nutrition and caloric output constraints relative to activity level, crew details, etc. are provided; however they are not in direct consideration as of Phase 1.} \cite{nutrition}:
+\begin{enumerate}[label=R\arabic*., ref=R\arabic*]
+    \item \label{r:1} \textbf{Must} help fill food gaps for a \textit{three-year} round-trip mission with 
+    \textit{no resupply}:
+    \begin{enumerate}[ref=R1\alph*]
+        \item \label{r:1a} \textbf{Should} aim to produce food outputs that fulfill \textbf{all 
+        daily nutritional needs} for a crew of \textit{four (4)} people;
+        \item \label{r:1b} \textbf{Must} maintain food output \textit{safety} and \textit{nutrition} during \textit{all phases} of the mission;
+        \item \label{r:1c} \textbf{Must} output food that is \textit{acceptable} to the crew for the \textit{duration} of the mission;
+        \item \label{r:1d} \textbf{Must} produce \textit{varied palatable} food outputs that require \textit{no additional processing time}\footnote{It is 
         assumed that fresh (or packaged unprepared) edible plant products are already 
-        prepared on existing space missions, and that this preparation meets this requirement; 
-        thus, preparation time is outside the scope of this design brief.} for crew members;
+        prepared on existing space missions, and that this preparation meets this requirement.};
     \end{enumerate}
-    \item Improve the accessibility of food on Earth; in particular, via production 
+    \item \label{r:2} \textbf{Should} improve the accessibility of food on Earth; in particular, via production 
     directly in urban centres and in remote and harsh environments:
-    \begin{enumerate}
-        \item Enhance local production;
-        \item Reduce food supply chain shortages;
-        \item Reduce the impact on the resources needed for food production;
-        \item Able to operate in harsh and remote environments;
+    \begin{enumerate}[ref=R2\alph*]
+        \item \label{r:2a} \textbf{Should} enhance local production;
+        \item \label{r:2b} \textbf{Should} reduce food supply chain shortages;
+        \item \label{r:2c} \textbf{Should} reduce the impact on the resources needed for food production;
+        \item \label{r:2d} \textbf{Should} be able to operate in harsh and remote environments;
     \end{enumerate}
-    \item Achieve the \textbf{greatest amount of food output} with \textbf{minimal inputs} and \textbf{minimal waste};
-    \item Transmits \textbf{operational data and limited video} to a remote location, and receives periodic \textbf{operational commands}.
-\end{enumerate}
-
-% \newpage
-% \large
-% \textbf{2.2 \ \ \ Requirements (Cont'd)}
-% \normalsize
-
-Extracted from scoping:
-\begin{enumerate}
-    \setcounter{enumi}{3}
-    \item Must be able to operate under Earth-like conditions (See Section \ref{sec:scope});
-    % TODO: more
+    \item \label{r:3} \textbf{Must} aim to achieve the \textit{greatest of food output} with \textit{minimal inputs} and \textit{minimal waste};
+    \item \label{r:4} \textbf{Must} transmit \textit{operational data and limited video} to a remote location, and be able to receive periodic \textit{operational commands}.
+    \item \label{r:5} \textbf{Must} operate under Earth-like conditions (See Section \ref{sec:scope});
+    % TODO: more?
 \end{enumerate}
 
 \setstretch{1}
 
+\newpage
+
 \subsection{Stakeholders}
 \label{sec:stakeholders}
 
-\begin{enumerate}
-    \item Food Product Consumers
-    \item NASA/CSA Stakeholders - Spacecraft feasability and optimization criteria
-    \item Crops - Crop growth metrics
-    % \item G7, G20, UN, and other global development entities
+\begin{enumerate}[label=S\arabic*., ref=S\arabic*]
+    \item \label{s:1} Food Product Consumers - Palatability, output
+    \item \label{s:2} NASA/CSA Stakeholders - Feasability, input, optimization
 \end{enumerate}
-
-\newpage
 
 \subsection{Objectives}
 \label{sec:objectives}
 
 \begin{multicols}{2}[\subsubsection{High-Level}\label{sec:hlos}]
-    \begin{enumerate}
-        \item Food Output Suitability \hfill (S1, R1, R1a, R2a)
-        \item Environment Control, Automation, and Optimization \hfill (S2, S3, R1b, R2c, R2d, R3)
-        \item Efficiency \hfill (S1, S2, R1, R2a, R2c, R3)
-        \item Cross-Contamination \hfill (S1, S2, R1c)
-        \item Safety, Redundancy \hfill (S1, S2, R1b, R2b)
-        \item Modularity, Repairability \hfill (S1, S2, R2d)
-        \item Feasability \hfill (S2)
+    \begin{enumerate}[label=HL\arabic*., ref=HL\arabic*]
+        \item \label{hl:1} Food Output Suitability \hfill (\ref{s:1}, \ref{r:1}, \ref{r:1a}, \ref{r:2a})
+        \item \label{hl:2} Environment Control, Automation, and Optimization \hfill (\ref{s:2}, \ref{r:1b}, \ref{r:2c}, \ref{r:2d}, \ref{r:3}, \ref{r:4})
+        \item \label{hl:3} Efficiency \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1}, \ref{r:2a}, \ref{r:2c}, \ref{r:3})
+        \item \label{hl:4} Cross-Contamination \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1c})
+        % \item \label{hl:5} Safety, Redundancy \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1b}, \ref{r:2b})
+        % \item \label{hl:6} Modularity, Repairability \hfill (\ref{s:1}, \ref{s:2}, \ref{r:2d})
+        \item \label{hl:7} Feasability \hfill (\ref{s:2}, \ref{r:2c})
     \end{enumerate}
 \end{multicols}
 
 \begin{multicols}{2}[\subsubsection{Low-Level}\label{sec:llos}]
-    \begin{enumerate}
-        \item Output Food Variety \hfill (HL1)
-        \item Output Food Palatability \hfill (HL1)
-        \item Nutrient Output \hfill (HL1)
-        \item Energy Output \hfill (HL1, HL4)
-        \item Air Temperature Control \hfill (HL2)
-        \item Air Humidity Control \hfill (HL2)
-        \item Gas Concentration Control \hfill (HL2)
-        \item Lighting Control \hfill (HL2)
-        \item Light Isolation \hfill (HL2)
-        \item Thermal Isolation \hfill (HL2)
-        \item Water-tightness \hfill (HL2, HL5)
-        \item Airflow \hfill (HL2)
-        \item Water Flow Rate \hfill (HL2)
-        \item Water Temperature \hfill (HL2)
-        \item Germination Success \hfill (HL2)
-        \item High Degree of Automation \hfill (HL3)
-        \item Energy Efficiency \hfill (HL3)
-        \item Water Usage Efficiency \hfill (HL3)
-        \item Plant Matter Usage \hfill (HL3)
-        \item Gas Exchange Incentive \hfill (HL3)
-        \item Number of Harvests \hfill (HL3)
-        \item Time-To-Harvest/-Reharvest \hfill (HL3)
-        \item Germination Time \hfill (HL3)
-        \item Growth Time \hfill (HL3)
-        \item Potential for Cross-Contamination \hfill (HL4)
-        \item Structural Safety \hfill (HL5)
-        \item Electrical/Power Safety \hfill (HL5)
-        \item Power Supply Redundancy \hfill (HL5)
-        \item Infrastructure Redundancy \hfill (HL5)
-        \item Growth Container Modularity \hfill (HL6)
-        \item Infrastructure Modularity Support \hfill (HL6)
-        \item Growth Container Repairability \hfill (HL6)
-        \item Infrastructure Repairability \hfill (HL6)
-        \item Documentation Completion \hfill (HL6)
-        \item Design Complexity \hfill (HL6)
-        \item Tool Speciality and Number \hfill (HL6)
-        \item Cost \hfill (HL7)
-        \item Size \hfill (HL7)
+    \begin{enumerate}[label=LL\arabic*., ref=LL\arabic*]
+        \item \label{ll:1} Output Food Variety \hfill (\ref{hl:1})
+        \item \label{ll:2} Output Food Palatability \hfill (\ref{hl:1})
+        \item \label{ll:3} Nutrient Output \hfill (\ref{hl:1}, \ref{hl:3})
+        \item \label{ll:4} Energy Output \hfill (\ref{hl:1}, \ref{hl:3})
+        \item \label{ll:5} Air Temperature Control \hfill (\ref{hl:2})
+        \item \label{ll:6} Air Humidity Control \hfill (\ref{hl:2})
+        % \item \label{ll:7} Gas Concentration Control \hfill (\ref{hl:2})
+        \item \label{ll:8} Lighting Control \hfill (\ref{hl:2})
+        \item \label{ll:9} Light Isolation \hfill (\ref{hl:2}, \ref{hl:3})
+        \item \label{ll:10} Thermal Isolation \hfill (\ref{hl:2}, \ref{hl:3})
+        \item \label{ll:11} Water-tightness \hfill (\ref{hl:2}, \ref{hl:4})
+        \item \label{ll:12} Airflow \hfill (\ref{hl:2}, \ref{hl:4})
+        \item \label{ll:13} Water Flow Rate \hfill (\ref{hl:2})
+        \item \label{ll:14} Water Temperature \hfill (\ref{hl:2})
+        \item \label{ll:15} Germination Success \hfill (\ref{hl:2})
+        \item \label{ll:16} High Degree of Automation \hfill (\ref{hl:3}, \ref{hl:4})
+        \item \label{ll:17} Energy Efficiency \hfill (\ref{hl:3})
+        \item \label{ll:18} Water Usage Efficiency \hfill (\ref{hl:3})
+        % \item \label{ll:19} Plant Matter Usage \hfill (\ref{hl:3})
+        % \item \label{ll:20} Gas Exchange Incentive \hfill (\ref{hl:3})
+        % \item \label{ll:21} Number of Harvests \hfill (\ref{hl:3})
+        \item \label{ll:22} Time-To-Harvest/-Reharvest \hfill (\ref{hl:3})
+        \item \label{ll:23} Germination Time \hfill (\ref{hl:3})
+        \item \label{ll:24} Growth Time \hfill (\ref{hl:3})
+        \item \label{ll:25} Potential for Cross-Contamination \hfill (\ref{hl:4})
+        % \item \label{ll:26} Structural Safety \hfill (\ref{hl:5})
+        % \item \label{ll:27} Electrical/Power Safety \hfill (\ref{hl:5})
+        % \item \label{ll:28} Power Supply Redundancy \hfill (\ref{hl:5})
+        % \item \label{ll:29} Infrastructure Redundancy \hfill (\ref{hl:5})
+        % \item \label{ll:30} Growth Container Modularity \hfill (\ref{hl:6})
+        % \item \label{ll:31} Infrastructure Modularity Support \hfill (\ref{hl:6})
+        % \item \label{ll:32} Growth Container Repairability \hfill (\ref{hl:6})
+        % \item \label{ll:33} Infrastructure Repairability \hfill (\ref{hl:6})
+        % \item \label{ll:34} Documentation Completion \hfill (\ref{hl:6})
+        % \item \label{ll:35} Design Complexity \hfill (\ref{hl:6})
+        % \item \label{ll:36} Tool Speciality and Number \hfill (\ref{hl:6})
+        \item \label{ll:37} Cost \hfill (\ref{hl:7})
+        \item \label{ll:38} Size \hfill (\ref{hl:7})
     \end{enumerate}
 \end{multicols}
 
@@ -314,243 +309,258 @@ Extracted from scoping:
 \subsection{Metrics}
 \label{sec:metrics}
 
-\begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
+\begin{tabular}{| @{\makebox[2.2em][l]{\metricrow}} | p{8.7cm} | p{5.9cm} |} 
     \hline
-    \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \multicolumn{1}{| @{\makebox[2.2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
     \hline
-    Number of Suitable Crop Species \hfill (LL1) & \# (per crop) \\
+    Variety of Suitable Crops \refstepcounter{metricnumber}\label{m:1} \hfill (\ref{ll:1}) & Y/N (per crop) \\
     \hline
-    Quality/Palatability of Crop Output \hfill (LL2) & 1-10 (per crop) \\
+    % TODO: ref hedonic scale
+    Palatability of Crop Output vs. Commercial \refstepcounter{metricnumber}\label{m:2} \hfill (\ref{ll:2}) & 1-10 Hedonic (per crop) \\
     \hline
-    Crop Nutrient Concentration \hfill (LL3) & \% (per crop) \\
+    Crop Nutrient Concentration vs. Commercial \refstepcounter{metricnumber}\label{m:3} \hfill (\ref{ll:3}) & \% (per crop) \\
     \hline
-    Protein Output Density \hfill (LL3) & g/kg \\
+    % Protein Output Density \refstepcounter{metricnumber}\label{m:4} \hfill (\ref{ll:3}) & g/kg \\
+    % \hline
+    % Protein Output \refstepcounter{metricnumber}\label{m:5} \hfill (\ref{ll:3}) & kCal/crewmember (\%TDEI) \\
+    % \hline
+    % Carbohydrate Output \refstepcounter{metricnumber}\label{m:6} \hfill (\ref{ll:3}) & kCal/crewmember (\%TDEI) \\
+    % \hline
+    % Lipid Output \refstepcounter{metricnumber}\label{m:7} \hfill (\ref{ll:3}) & kCal/crewmember (\%TDEI) \\
+    % \hline
+    % $\Omega$-6 Fatty Acid Output \refstepcounter{metricnumber}\label{m:8} \hfill (\ref{ll:3}) & g/day/crewmember \\
+    % \hline
+    % $\Omega$-3 Fatty Acid Output \refstepcounter{metricnumber}\label{m:9} \hfill (\ref{ll:3}) & g/day/crewmember \\
+    % \hline
+    % Saturated Fat Output \refstepcounter{metricnumber}\label{m:10} \hfill (\ref{ll:3}) & kCal/crewmember (\%TDEI) \\
+    % \hline
+    % Trans Fatty Acids Output \refstepcounter{metricnumber}\label{m:11} \hfill (\ref{ll:3}) & kCal/crewmember (\%TDEI) \\
+    % \hline
+    % Cholesterol Output \refstepcounter{metricnumber}\label{m:12} \hfill (\ref{ll:3}) & mg/day/crewmember \\
+    % \hline
+    % Fiber Output \refstepcounter{metricnumber}\label{m:13} \hfill (\ref{ll:3}) & g/day/crewmember \\
+    % \hline
+    Crew Nutrient Requirement Coverage \refstepcounter{metricnumber}\label{m:14} \hfill (\ref{ll:3}) & \% (best crop combo) \\
     \hline
-    Protein Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    Caloric Output per Day \refstepcounter{metricnumber}\label{m:15} \hfill (\ref{ll:4}) & kCal/24hr (best crop combo) \\
     \hline
-    Carbohydrate Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    Air Temperature Control Range \refstepcounter{metricnumber}\label{m:16} \hfill (\ref{ll:5}) & min, max °C \\
     \hline
-    Lipid Output\hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    Air Temperature Control Rate \refstepcounter{metricnumber}\label{m:17} \hfill (\ref{ll:5}) & $\Delta$°C/sec at each °C \\
     \hline
-    $\Omega$-6 Fatty Acid Output\hfill (LL3) & g/day/crewmember \\
+    Air Temperature Control Stability \refstepcounter{metricnumber}\label{m:18} \hfill (\ref{ll:5}) & $\pm$°C at each °C \\
     \hline
-    $\Omega$-3 Fatty Acid Output\hfill (LL3) & g/day/crewmember \\
+    Air Humidity Control Range \refstepcounter{metricnumber}\label{m:19} \hfill (\ref{ll:6}) & min, max \%RH \\
     \hline
-    Saturated Fat Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    Air Humidity Control Rate \refstepcounter{metricnumber}\label{m:20} \hfill (\ref{ll:6}) & $\Delta$\%RH/sec at each \%RH \\
     \hline
-    Trans Fatty Acids Output \hfill (LL3) & kCal/crewmember (\%TDEI) \\
+    Air Humidity Control Stability \refstepcounter{metricnumber}\label{m:21} \hfill (\ref{ll:6}) & $\pm$\%RH at each \%RH \\
     \hline
-    Cholesterol Output \hfill (LL3) & mg/day/crewmember \\
+    % CO${}_2$ Concentration Control Range \refstepcounter{metricnumber}\label{m:22} \hfill (\ref{ll:7}) & min, max ppm CO${}_2$ \\
+    % \hline
+    % CO${}_2$ Concentration Control Rate \refstepcounter{metricnumber}\label{m:23} \hfill (\ref{ll:7}) & ppm CO${}_2$/sec at each ppm 
+    % CO${}_2$ \\
+    % \hline
+    % CO${}_2$ Concentration Control Stability \refstepcounter{metricnumber}\label{m:24} \hfill (\ref{ll:7}) & $\pm$ppm CO${}_2$ at 
+    % each ppm CO${}_2$ \\
+    % \hline
+    % O${}_2$ Concentration Control Range \refstepcounter{metricnumber}\label{m:25} \hfill (\ref{ll:7}) & min, max ppm O${}_2$ \\
+    % \hline
+    % O${}_2$ Concentration Control Rate \refstepcounter{metricnumber}\label{m:26} \hfill (\ref{ll:7}) & ppm O${}_2$/sec at each ppm 
+    % O${}_2$  \\
+    % \hline
+    % O${}_2$ Concentration Control Stability \refstepcounter{metricnumber}\label{m:27} \hfill (\ref{ll:7}) & $\pm$ppm O${}_2$ at each 
+    % ppm O${}_2$ \\
+    % \hline
+    Light Spectrum Wavelength Range \refstepcounter{metricnumber}\label{m:28} \hfill (\ref{ll:8}) & min, max nm \\
     \hline
-    Fiber Output \hfill (LL3) & g/day/crewmember \\
+    Light Spectrum PAR Match \refstepcounter{metricnumber}\label{m:29} \hfill (\ref{ll:8}) & \% (each crop) \\
     \hline
-    Caloric Output per Day \hfill (LL4) & kCal/24hr \\
-    \hline
-    Air Temperature Control Range \hfill (LL5) & min, max °C \\
-    \hline
-    Air Temperature Control Rate \hfill (LL5) & °C/sec at each °C \\
-    \hline
-    Air Temperature Control Stability \hfill (LL5) & $\pm$°C at each °C \\
-    \hline
-    Air Humidity Control Range \hfill (LL6) & min, max \%RH \\
-    \hline
-    Air Humidity Control Rate \hfill (LL6) & \%RH/sec at each \%RH \\
-    \hline
-    Air Humidity Control Stability \hfill (LL6) & $\pm$\%RH at each \%RH \\
-    \hline
-    CO${}_2$ Concentration Control Range \hfill (LL7) & min, max ppm CO${}_2$ \\
-    \hline
-    CO${}_2$ Concentration Control Rate \hfill (LL7) & ppm CO${}_2$/sec at each ppm 
-    CO${}_2$ \\
-    \hline
-    CO${}_2$ Concentration Control Stability \hfill (LL7) & $\pm$ppm CO${}_2$ at 
-    each ppm CO${}_2$ \\
-    \hline
-    O${}_2$ Concentration Control Range \hfill (LL7) & min, max ppm O${}_2$ \\
-    \hline
-    O${}_2$ Concentration Control Rate \hfill (LL7) & ppm O${}_2$/sec at each ppm 
-    O${}_2$  \\
-    \hline
-    O${}_2$ Concentration Control Stability \hfill (LL7) & $\pm$ppm O${}_2$ at each 
-    ppm O${}_2$ \\
-    \hline
-    Light Spectrum Wavelength Control Range \hfill (LL8) & min, max nm \\
-    \hline
-    Light Spectrum PAR Match \hfill (LL8) & \% (each crop) \\
-    \hline
-    Light Spectrum Intensity Control Range \hfill (LL8) & min, max $\mu$mol 
+    Light Intensity Control Range \refstepcounter{metricnumber}\label{m:30} \hfill (\ref{ll:8}) & min, max $\mu$mol 
     m${}^{-2}$sec${}^{-1}$ at each nm \\
     \hline
-    Light Spectrum Intensity Control Stability \hfill (LL8) & $\pm\mu$mol 
+    Light Intensity Control Stability \refstepcounter{metricnumber}\label{m:31} \hfill (\ref{ll:8}) & $\pm\mu$mol 
     m${}^{-2}$sec${}^{-1}$ at each nm \\
     \hline
-    Light Captured by Non-Photosynthetic Surfaces \hfill (LL9) & \% \\
+    Light Loss, Capture by Surfaces \refstepcounter{metricnumber}\label{m:32} \hfill (\ref{ll:9}) & \% \\
     \hline
-    Outside Light Penetration \hfill (LL9) & \% \\
+    Outside Light Penetration \refstepcounter{metricnumber}\label{m:33} \hfill (\ref{ll:9}) & \% \\
     \hline
-    Heat Transfer \hfill (LL10) & $\pm$W at each °C \\
+    Heat Loss \refstepcounter{metricnumber}\label{m:34} \hfill (\ref{ll:10}) & $\pm$W at each °C \\
     \hline
-    Water Loss due to Leaks, Evaporation \hfill (LL11) & mL/hr \\
+    Water Loss due to Leaks, Evaporation \refstepcounter{metricnumber}\label{m:35} \hfill (\ref{ll:11}) & mL/hr \\
     \hline
-    Internal Circulation Airflow Control Range \hfill (LL12) & min, max m${}^3$/min \\
+    Internal Circulation Airflow Control Range \refstepcounter{metricnumber}\label{m:36} \hfill (\ref{ll:12}) & min, max m${}^3$/min \\
     \hline
-    Gas Exchange due to Leaks \hfill (LL12) & m${}^3$/min \\
+    Gas Exchange due to Leaks \refstepcounter{metricnumber}\label{m:37} \hfill (\ref{ll:12}) & m${}^3$/min \\
     \hline
-    Maximum Intentional Gas Exchange \hfill (LL12) & m${}^3$/min \\
+    Maximum Intentional Gas Exchange \refstepcounter{metricnumber}\label{m:38} \hfill (\ref{ll:12}) & m${}^3$/min \\
     \hline
-    Nutrient Solution Delivery Rate Control Range \hfill (LL13) & min, max 
-    mL/plant/sec \\
+    Nutrient Solution Delivery Control Range \refstepcounter{metricnumber}\label{m:39} \hfill (\ref{ll:13}) & min, max 
+    mL/sec \\
     \hline
-    Nutrient Solution Delivery Rate Control Rate \hfill (LL13) & mL/plant/sec${}^2$ at each mL/plant/sec  \\
+    Nutrient Solution Delivery Control Rate \refstepcounter{metricnumber}\label{m:40} \hfill (\ref{ll:13}) & $\Delta$mL/sec${}^2$ at each mL/sec  \\
     \hline
-    Nutrient Solution Delivery Rate Control Stability \hfill (LL13) & 
-    $\pm$mL/sec/plant at each mL/sec/plant \\
+    Nutrient Solution Delivery Control Stability \refstepcounter{metricnumber}\label{m:41} \hfill (\ref{ll:13}) & 
+    $\pm$mL/sec at each mL/sec \\
     \hline
-\end{tabular}
-\newpage
+% \end{tabular}
+% \newpage
 
-\textbf{\large{2.5 \ \ Metrics (Cont'd)}}
-\normalsize
+% \textbf{\large{2.5 \ \ Metrics (Cont'd)}}
+% \normalsize
 
-\begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | l | l |} 
+% \begin{tabular}{| @{\makebox[2em][l]{\metricrow}} | p{11.5cm} | p{3.2cm} |} 
+    % \hline
+    % \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    % \hline
+    Nutrient Solution Temp. Control Range \refstepcounter{metricnumber}\label{m:42} \hfill (\ref{ll:14}) & min, max °C \\
     \hline
-    \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    Nutrient Solution Temp. Control Rate \refstepcounter{metricnumber}\label{m:43} \hfill (\ref{ll:14}) & °C/sec at each °C  \\
     \hline
-    Nutrient Solution Temperature Control Range \hfill (LL14) & min, max °C \\
-    \hline
-    Nutrient Solution Temperature Control Rate \hfill (LL14) & °C/sec at each °C  \\
-    \hline
-    Nutrient Solution Temperature Control Stability \hfill (LL14) & 
+    Nutrient Solution Temp. Control Stability \refstepcounter{metricnumber}\label{m:44} \hfill (\ref{ll:14}) & 
     $\pm$°C at each °C  \\
     \hline
-    Germination Success Rate \hfill (LL15) & \% \\
+    Germination Success Rate \refstepcounter{metricnumber}\label{m:45} \hfill (\ref{ll:15}) & \% \\
     \hline
-    Required Human Intervention Time - Maintenance \hfill (LL16) & hrs/week \\
+    Time Requirement - Maintenance \refstepcounter{metricnumber}\label{m:46} \hfill (\ref{ll:16}) & hrs/week \\
     \hline
-    Required Human Intervention Time - Setup \hfill (LL16) & hrs \\
+    Time Requirement - Setup \refstepcounter{metricnumber}\label{m:47} \hfill (\ref{ll:16}) & hrs \\
     \hline
-    Energy Efficiency - In (Power) vs. Out (kCal + Loss) \hfill (LL17) & \% \\
+    Energy Efficiency - Power vs. kCal \refstepcounter{metricnumber}\label{m:48} \hfill (\ref{ll:17}) & \% \\
     \hline
-    Necessary Water Waste per Day \hfill (LL18) & L/day \\
+    Necessary Water Waste per Day \refstepcounter{metricnumber}\label{m:49} \hfill (\ref{ll:18}) & L/day \\
     \hline
-    Water Recycling from Spacecraft Systems \hfill (LL18) & L/day \\
+    % Water Recycling from Spacecraft Systems \refstepcounter{metricnumber}\label{m:50} \hfill (\ref{ll:18}) & L/day \\
+    % \hline
+    Initial Water Requirement \refstepcounter{metricnumber}\label{m:51} \hfill (\ref{ll:18}) & L \\
     \hline
-    Initial Water Requirement \hfill (LL18) & L \\
+    % Plant Matter Usage \refstepcounter{metricnumber}\label{m:52} \hfill (\ref{ll:19}) & \% \\
+    % \hline
+    % CO${}_2$ Capture - Fraction of Typical Reclaimer Consumption \refstepcounter{metricnumber}\label{m:53} \hfill (\ref{ll:20}) & \% \\
+    % \hline
+    % O${}_2$ Production - Fraction of Typical Reclaimer Production \refstepcounter{metricnumber}\label{m:54} \hfill (\ref{ll:20}) & \% \\
+    % \hline
+    % Number of Harvests per Planting \refstepcounter{metricnumber}\label{m:55} \hfill (\ref{ll:21}) & \# (each crop)\\
+    % \hline
+    Harvest to Reharvest - Fruiting Crops \refstepcounter{metricnumber}\label{m:56} \hfill (\ref{ll:22}) & min (each crop)  \\
     \hline
-    Plant Matter Usage \hfill (LL19) & \% \\
+    Germination Time \refstepcounter{metricnumber}\label{m:57} \hfill (\ref{ll:23}) & min (each crop) \\
     \hline
-    CO${}_2$ Capture - Fraction of Typical Reclaimer Consumption \hfill (LL20) & \% \\
+    Seedling to Harvest \refstepcounter{metricnumber}\label{m:58} \hfill (\ref{ll:24}) & min (each crop) \\
     \hline
-    O${}_2$ Production - Fraction of Typical Reclaimer Production \hfill (LL20) & \% \\
+    Potential for Contamination - Germination \refstepcounter{metricnumber}\label{m:59} \hfill (\ref{ll:25}) & \% (each event)\\
     \hline
-    Number of Harvests per Planting \hfill (LL21) & \# (each crop)\\
-    \hline
-    Harvest to Reharvest - Fruiting Crops \hfill (LL22) & min (each crop)  \\
-    \hline
-    Seedling to Harvest \hfill (LL22, LL24) & min (each crop) \\
-    \hline
-    Germination Time \hfill (LL23) & min (each crop) \\
-    \hline
-    Potential for Cross-Contamination - Germination \hfill (LL25) & \% (each event)\\
-    \hline
-    Potential for Cross-Contamination - Planting \hfill (LL25) & \% (each event)\\
-    \hline
-    Potential for Cross-Contamination - Harvest \hfill (LL25) & \% (each event)\\
-    \hline
-    Factor of Safety \hfill (LL26) & FOS (each structure)\\
-    \hline
-    Mounting Stability - System to Surroundings \hfill (LL26) & FOS (each mount) \\
-    \hline
-    Mounting Stability - Infrastructure to System \hfill (LL26) & FOS (each mount) \\
-    \hline
-    Risk of Electrical Malfunction \hfill (LL27) & \% \\
-    \hline
-    Backup Power Systems? \hfill (LL28) & Y/N \\
-    \hline
-    Incremental Power-On? \hfill (LL28) & Y/N \\
-    \hline
-    Backup Water Systems? \hfill (LL29) & Y/N \\
-    \hline
-    Infrastructure Failure Notification? \hfill (LL29) & Y/N \\
-    \hline
-    Independent Crop Growth Environments? \hfill (LL30) & Y/N \\
-    \hline
-    Support for N+1 Crop Growth Environments? \hfill (LL31) & Y/N \\
-    \hline
-    Lighting System Swappable? \hfill (LL32) & Y/N \\
-    \hline
-    Heating/Cooling System(s) Swappable? \hfill (LL32) & Y/N \\
-    \hline
-    Water Delivery System(s) Swappable? \hfill (LL32) & Y/N \\
-    \hline
-    Lighting System Swappable? \hfill (LL32) & Y/N \\
-    \hline
-    Computer Subsystems Swappable? \hfill (LL33) & Y/N \\
-    \hline
-    All Fabrication Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
-    \hline
-    All Assembly Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
-    \hline
-    All Repair Procedures, Tools, and Materials Documented? \hfill (LL34) & Y/N \\
-    \hline
-    Total Fabrication, Assembly, and Startup Time \hfill (LL35) & min \\
-    \hline
-    Total Number of Tools Required \hfill (LL36) & \# \\
+    Potential for Contamination - Planting \refstepcounter{metricnumber}\label{m:60} \hfill (\ref{ll:25}) & \% (each event)\\
     \hline
 \end{tabular}
-
 \newpage
 
 \textbf{\large{2.5 \ \ Metrics (Cont'd)}}
 \normalsize
 
-\begin{tabular}{| @{\makebox[2em][l]{\rownumber}} | p{11.5cm} | p{3.2cm} |} 
+\begin{tabular}{| @{\makebox[2.2em][l]{\metricrow}} | p{9.65cm} | p{4.9cm} |} 
     \hline
-    \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \multicolumn{1}{| @{\makebox[2.2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
     \hline
-    Number of New Tools Required \hfill (LL36) & \# \\
+    Potential for Contamination - Harvest \refstepcounter{metricnumber}\label{m:61} \hfill (\ref{ll:25}) & \% (each event)\\
     \hline
-    Cost \hfill (LL37) & CAD \\
+    % Factor of Safety \refstepcounter{metricnumber}\label{m:62} \hfill (\ref{ll:26}) & FOS (each structure)\\
+    % \hline
+    % Mounting Stability - System to Surroundings \refstepcounter{metricnumber}\label{m:63} \hfill (\ref{ll:26}) & FOS (each mount) \\
+    % \hline
+    % Mounting Stability - Infrastructure to System \refstepcounter{metricnumber}\label{m:64} \hfill (\ref{ll:26}) & FOS (each mount) \\
+    % \hline
+    % Risk of Electrical Malfunction \refstepcounter{metricnumber}\label{m:65} \hfill (\ref{ll:27}) & \% \\
+    % \hline
+    % Backup Power Systems? \refstepcounter{metricnumber}\label{m:66} \hfill (\ref{ll:28}) & Y/N \\
+    % \hline
+    % Incremental Power-On? \refstepcounter{metricnumber}\label{m:67} \hfill (\ref{ll:28}) & Y/N \\
+    % \hline
+    % Backup Water Systems? \refstepcounter{metricnumber}\label{m:68} \hfill (\ref{ll:29}) & Y/N \\
+    % \hline
+    % Infrastructure Failure Notification? \refstepcounter{metricnumber}\label{m:69} \hfill (\ref{ll:29}) & Y/N \\
+    % \hline
+    % Independent Crop Growth Environments? \refstepcounter{metricnumber}\label{m:70} \hfill (\ref{ll:30}) & Y/N \\
+    % \hline
+    % Support for N+1 Crop Growth Environments? \refstepcounter{metricnumber}\label{m:71} \hfill (\ref{ll:31}) & Y/N \\
+    % \hline
+    % Lighting System Swappable? \refstepcounter{metricnumber}\label{m:72} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Heating/Cooling System(s) Swappable? \refstepcounter{metricnumber}\label{m:73} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Water Delivery System(s) Swappable? \refstepcounter{metricnumber}\label{m:74} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Lighting System Swappable? \refstepcounter{metricnumber}\label{m:75} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Computer Subsystems Swappable? \refstepcounter{metricnumber}\label{m:76} \hfill (\ref{ll:33}) & Y/N \\
+    % \hline
+    % All Fabrication Procedures, Tools, and Materials Documented? \refstepcounter{metricnumber}\label{m:77} \hfill (\ref{ll:34}) & Y/N \\
+    % \hline
+    % All Assembly Procedures, Tools, and Materials Documented? \refstepcounter{metricnumber}\label{m:78} \hfill (\ref{ll:34}) & Y/N \\
+    % \hline
+    % All Repair Procedures, Tools, and Materials Documented? \refstepcounter{metricnumber}\label{m:79} \hfill (\ref{ll:34}) & Y/N \\
+    % \hline
+    % Total Fabrication, Assembly, and Startup Time \refstepcounter{metricnumber}\label{m:80} \hfill (\ref{ll:35}) & min \\
+    % \hline
+    % Total Number of Tools Required \refstepcounter{metricnumber}\label{m:81} \hfill (\ref{ll:36}) & \# \\
+    % \hline
+% \end{tabular}
+
+% \newpage
+
+% \textbf{\large{2.5 \ \ Metrics (Cont'd)}}
+% \normalsize
+
+% \begin{tabular}{| @{\makebox[2em][l]{\metricrow}} | p{11.5cm} | p{3.2cm} |} 
+%     \hline
+%     \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+%     \hline
+    % Number of New Tools Required \refstepcounter{metricnumber}\label{m:82} \hfill (\ref{ll:36}) & \# \\
+    % \hline
+    Cost \refstepcounter{metricnumber}\label{m:83} \hfill (\ref{ll:37}) & CAD \\
     \hline
-    Outer Dimensions \hfill (LL38) & m (W, D, H) \\
+    Outer Dimensions \refstepcounter{metricnumber}\label{m:84} \hfill (\ref{ll:38}) & m (W, D, H) \\
     \hline
-    Outer Volume \hfill (LL38) & m${}^3$ \\
+    Outer Volume \refstepcounter{metricnumber}\label{m:85} \hfill (\ref{ll:38}) & m${}^3$ \\
     \hline
-    Power Consumption \hfill (LL38) & W \\
+    Power Consumption \refstepcounter{metricnumber}\label{m:86} \hfill (\ref{ll:38}) & W \\
     \hline
-    Mass \hfill (LL38) & kg \\
+    Mass \refstepcounter{metricnumber}\label{m:87} \hfill (\ref{ll:38}) & kg \\
     \hline
 \end{tabular}
 
 \subsection{Constraints}
-\begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
+\label{sec:constraints}
+\begin{tabular}{|l|p{12.55cm}|p{1.3cm}|}
     \hline
     \textbf{Metric} & \textbf{Constraint} & \textbf{Source} \\
     \hline
-    M45 & 4 hrs/week & \cite{applicantguide}\\
+    M\ref{m:45} & 4 hrs/week & \cite{applicantguide}\\
     \hline
-    M83 & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m & \cite{applicantguide} \\
+    M\ref{m:83} & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m & \cite{applicantguide} \\
     \hline
-    M84 & $\le$ 2 m${}^3$ & \cite{applicantguide}\\
+    M\ref{m:84} & $\le$ 2 m${}^3$ & \cite{applicantguide}\\
     \hline
-    M85 & Avg. <1500W; Peak < 3000W & \cite{applicantguide}\\
+    M\ref{m:85} & Avg. <1500W; Peak < 3000W & \cite{applicantguide}\\
     \hline
 \end{tabular}
 
 \subsection{Criteria}
-\begin{tabular}{|l|p{12.6cm}|p{1.3cm}|}
+\label{sec:criteria}
+\begin{tabular}{|l|p{12.55cm}|p{1.3cm}|}
     \hline
     \textbf{Metric} & \textbf{Criteria; Reason} & \textbf{Source} \\
     \hline
-    M34 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    M\ref{m:34} & Minimize; Reduce System Inputs & \cite{applicantguide} \\
     \hline
-    M48 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    M\ref{m:48} & Minimize; Reduce System Inputs & \cite{applicantguide} \\
     \hline
-    M49 & Maximize; Reduce System Inputs & \cite{applicantguide} \\
+    M\ref{m:49} & Maximize; Reduce System Inputs & \cite{applicantguide} \\
     \hline
-    M50 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
-    \hline
-    M86 & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    % M\ref{m:50} & Minimize; Reduce System Inputs & \cite{applicantguide} \\
+    % \hline
+    M\ref{m:86} & Minimize; Reduce System Inputs & \cite{applicantguide} \\
     \hline
 \end{tabular}
 
