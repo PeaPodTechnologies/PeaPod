@@ -1,8 +1,8 @@
 \documentclass{report}
 \usepackage{setspace} % Setting line spacing
 \usepackage{ulem} % Underline
-\usepackage{caption} % Captioning figures
-\usepackage{subcaption} % Subfigures
+% \usepackage{caption} % Captioning figures
+% \usepackage{subcaption} % Subfigures
 \usepackage{geometry} % Page layout
 \usepackage{multicol} % Columned pages
 \usepackage{array,etoolbox}
@@ -23,7 +23,7 @@
 \newcounter{metricnumber}
 \setcounter{metricnumber}{1}
 \newcommand{\metricrow}{M\arabic{metricnumber}}
-\newcommand{\mlabel}[1]{\refstepcounter{metricnumber}\label{#1}}
+\newcommand{\mlabel}[1]{\addtocounter{metricnumber}{-1}\refstepcounter{metricnumber}\label{#1}\addtocounter{metricnumber}{1}}
 \newcommand{\mref}[1]{M\ref{#1}}
 
 \begin{document}
@@ -44,7 +44,7 @@
 
         \vspace{2.5cm}
 
-        Revision 0.5\\
+        Revision 0.6\\
         University of Toronto Agritech\\
         May 21st, 2021
 
@@ -105,7 +105,7 @@ The three underlined criteria in the challenge statement in Section \ref{sec:pur
 \item \label{sc:4} To maximise safety (of both the crops and the crew) and redundancy, and to minimize inputs (required human interaction), the environment should be \uline{automated and isolated} from the spacecraft cabin with regards to all environment conditions (thermally, water-tight, etc.) unless beneficial and efficient (i.e no loss).
 \newpage
 \item \label{sc:5} A greater degree of nutrition and palatability of food outputs implies a greater variety of crops (incl. leafy greens, fruits/fruiting vegetables, root vegetables, algaes, etc.); as such the food production system should be able to \uline{generate a continuous and wide variety of environmental conditions} such that \uline{virtually any food crops} could be grown within.
-\item \label{sc:6} The demand for high crop variety, automation, parameter control, water input minimization, etc. implies the use of a \uline{hydroponic/aeroponic/hybrid crop growth method}.
+\item \label{sc:6} The demand for high crop variety, automation, parameter control, efficiency/input minimization (water, nutrients, footprint per crop), etc. implies the use of an \uline{aeroponic crop growth method} \cite{spinoff}.
 \item \label{sc:7} Output nutrient and yield maximization in a controlled-environment implies \uline{environment parameter optimization}. 
     This is best accomplished via data collection of both plant-growth and environment metrics and cross-growth-environment networking (data versatility, sharing, and machine intelligence).
 \item \label{sc:8} A solution focussed on palatability (focus on enjoyable crops) and variety (adaptability to many distinct environment requirements) is not suited to high caloric output. 
@@ -142,6 +142,7 @@ A number of useful definitions have emerged from the above scoping:
 \label{sec:opportunity}
 
 Design an automated and isolated hydroponic/aeroponic crop growth system for the Deep Space Food Challenge Phase 1\cite{dsfc}, able to generate any environment from a combination of independent environment parameters, with both environment and crop growth data collection.
+Design an automated and isolated aeroponic crop growth system for the Deep Space Food Challenge Phase 1\cite{dsfc}, able to generate any environment from a combination of independent environment parameters, with both environment and crop growth data collection.
 
 \subsection{Challenge Requirements}
 \label{sec:requirements}
@@ -447,7 +448,7 @@ The following are the overall challenge requirements compiled from DSFC Applican
 
 \begin{tabular}{|l|p{14.35cm}|}
     \hline
-    \textbf{Metric} & \textbf{Constraint} \\
+    \textbf{Metric} & \textbf{Constraint \hfill Justification} \\
     \hline
     \mref{m:2} & $\ge$ 6.0 \hfill \cite{applicantguide}\\
     \hline
@@ -488,7 +489,7 @@ The following are the overall challenge requirements compiled from DSFC Applican
 
 \begin{tabular}{|l|p{14.35cm}|}
     \hline
-    \textbf{Metric} & \textbf{Criteria} \\
+    \textbf{Metric} & \textbf{Criteria \hfill Justification} \\
     \hline
     \mref{m:1} & Should Maximize \hfill (\ref{r:1c}, \ref{r:3}) \\
     \hline
@@ -570,7 +571,7 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \hline
 \end{tabular}
 
-Refer to Appendix \ref{sec:assessment} for prototype verification Assessment Criteria (categories, weights, etc.).
+% Refer to Appendix \ref{sec:assessment} for prototype verification Assessment Criteria (categories, weights, etc.).
 
 \newpage
 \begin{appendices}
