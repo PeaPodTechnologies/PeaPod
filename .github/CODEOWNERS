@@ -1,0 +1,27 @@
+#                   DEFAULT
+# This owner will be the default owners for everything in
+# the repo. Unless a later match takes precedence, they will
+# be requested for review when someone opens a pull request.
+
+*                           @jlefebvre55
+
+#                   ADMIN
+# Repo administration code
+
+/.github/                   @utagritech/admins
+LICENSE                     @utagritech/admins
+.gitignore                  @utagritech/admins
+
+#                   DOCUMENTATION
+# TODO: other file types?
+
+/docs/                      @utagritech/documentation-review
+*.tex                       @utagritech/documentation-review
+*.md                        @utagritech/documentation-review
+
+#                   ELECTRONICS
+# Electronics software
+
+/software/PeaPod-Arduino/   @utagritech/electronics
+
+# TODO: Per-deliverable code ownership?
