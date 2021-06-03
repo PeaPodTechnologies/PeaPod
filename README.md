@@ -10,7 +10,7 @@ A [cloud-enabled](https://github.com/openformtech/cloudponics-app/) IoT automate
 
 ## Description 
 
-(include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram)
+<!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
 
 ### Features list
 
@@ -26,20 +26,20 @@ A [cloud-enabled](https://github.com/openformtech/cloudponics-app/) IoT automate
 
 ### Usage
 
-(w/ examples, i.e. GIF of expected output, inline code)
+<!-- w/ examples, i.e. GIF of expected output, inline code -->
 
 ## Contribution
 
-(maybe add guidelines and adapt to a `CONTRIBUTING.md`
+<!-- maybe add guidelines and adapt to a `CONTRIBUTING.md` -->
 
 ### Development
-(dependencies, environment, language)
+<!-- dependencies, environment, language -->
 
 ### Support
-(issues page, discussion board/Discord?)
+<!-- issues page, discussion board/Discord? -->
 
 ### Roadmap
-(adapted from milestones/project boards)
+<!-- adapted from milestones/project boards -->
 
 ## Acknowledgements
-(authors, UTAG)
+<!-- authors, UTAG -->
