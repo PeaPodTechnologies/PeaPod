@@ -34,6 +34,9 @@ See our [`assembly documentation`](/docs/assembly/ASSEMBLY.md) for details.
 
 ### Installation
 
+1. Download the contents of [`/software/`](software/) to the main computer (Raspberry PI)
+2. Follow the software setup instructions in [`/software/README`](software/README.md#Installation) to load Node.js dependencies and install the microcontroller (Arduino) code ([`/software/PeaPod-Arduino`](software/PeaPod-Arduino))
+
 ### Usage
 
 <!-- w/ examples, i.e. GIF of expected output, inline code -->
