@@ -41,12 +41,19 @@ See our [`assembly documentation`](/docs/assembly/ASSEMBLY.md) for details.
 
 <!-- w/ examples, i.e. GIF of expected output, inline code -->
 
+### Development
+<!-- dependencies, environment, language -->
+
 ## Contribution
 
 <!-- maybe add guidelines and adapt to a `CONTRIBUTING.md` -->
 
-### Development
-<!-- dependencies, environment, language -->
+1. Open an issue with the features you'd like to add/bugs you'd like to see squashed (admins will add labels, assignments, etc.)
+2. Discuss the scope and specifics in the issue, and either:
+   1. Make a new branch, make changes, open a **PR Draft** (if you have permissions); or
+   2. Fork, make changes, open a **PR Draft**
+3. Request review by changing the **PR Draft** to a full-blown **PR** when you think it's ready
+4. If the reviewer(s) accept the changes, they will merge the **PR** and close the related issue
 
 ### Support
 <!-- issues page, discussion board/Discord? -->
