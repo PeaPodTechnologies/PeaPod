@@ -26,11 +26,11 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 
 ### Innovations
-PeaPod is not a fancy container with a light stand. 
+PeaPod is *not* a fancy container with a light stand. 
 
-PeaPod can precisely replicate climates for optimal growing conditions but also has the ability to collect data during the growing cycles. This data is then used to further optimize climate parameters so food grown in PeaPods will taste better over time.
+PeaPod can **precisely** replicate climates for optimal growing conditions, and also has the ability to collect plant growth data during the growing cycle. This data is then used to further *optimize climate parameters* so food grown in PeaPods will taste better over time.
 
-PeaPod is modular and easy to assemble. Construction with aluminum extrusion allows PeaPods to be transported like IKEA furniture, useful for situations where a lot of food is required at the end of a long journey. Alot of PeaPods can be collapsed into a tiny space. This also means PeaPods can be configured to be any size to grow any type of plant.
+PeaPod is *modular* and *easy to assemble*. Construction with aluminum extrusion allows PeaPods to be transported like IKEA furniture, useful for situations where a lot of food is required at the end of a long journey. Alot of PeaPods can be collapsed into a tiny space. This also means PeaPods can be configured to be any size to grow any type of plant.
 
 PeaPod is self-optimizing, versatile, easy to assemble, and it makes food.
 ## Production
@@ -44,9 +44,9 @@ See our [assembly documentation](/docs/assembly/ASSEMBLY.md) for details.
 1. Download the contents of [`software/`](software/) to the main computer (Raspberry PI)
 2. Follow the software setup instructions in [`software/README`](software/README.md#Installation) to load Node.js dependencies and install the microcontroller (Arduino) code ([`software/PeaPod-Arduino`](software/PeaPod-Arduino))
 
-### Usage
+<!-- ### Usage
 
-WIP.
+WIP. -->
 
 <!-- w/ examples, i.e. GIF of expected output, inline code -->
 
