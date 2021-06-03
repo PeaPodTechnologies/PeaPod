@@ -4,7 +4,7 @@ A cloud-connected isolated and automated plant growth environment, able to gener
 
 Designed as both a hassle-free food production system and a research tool for precise and distributed mapping of the plant-environment relationship.
 
-![issuesopen](https://img.shields.io/github/issues/utagritech/peapod) ![issuesopen](https://img.shields.io/github/issues-closed/utagritech/peapod) ![opensource](https://img.shields.io/badge/open-source-red) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![247](https://img.shields.io/badge/24-7-blue) ![PackingIKEA](https://img.shields.io/badge/Packing-IKEA-yellow) ![hungryhippos](https://img.shields.io/badge/Hungry-Hippos-purple) ![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)
+![issuesopen](https://img.shields.io/github/issues/utagritech/peapod) ![issuesopen](https://img.shields.io/github/issues-closed/utagritech/peapod) ![opensource](https://img.shields.io/badge/open-source-red) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![247](https://img.shields.io/badge/Eat,%20Sleep-PeaPod-darkgreen) ![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)
 
 Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
 
