@@ -6,8 +6,6 @@ A [cloud-enabled](https://github.com/openformtech/cloudponics-app/) IoT automate
 
 ![issuesopen](https://img.shields.io/github/issues/utagritech/peapod) ![issuesopen](https://img.shields.io/github/issues-closed/utagritech/peapod) ![opensource](https://img.shields.io/badge/open-source-red) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown)
 
-`README.md` has some useless clog, and is missing useful stuff. See https://www.makeareadme.com/.
-
 ## Description 
 
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
