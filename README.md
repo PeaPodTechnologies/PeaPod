@@ -4,7 +4,7 @@ A cloud-connected isolated and automated plant growth environment, able to gener
 
 Designed as both a hassle-free food production system and a research tool for precise and distributed mapping of the plant-environment relationship.
 
-![issuesopen](https://img.shields.io/github/issues/utagritech/peapod) ![issuesopen](https://img.shields.io/github/issues-closed/utagritech/peapod) ![opensource](https://img.shields.io/badge/open-source-red) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![247](https://img.shields.io/badge/24-7-blue) ![PackingIKEA](https://img.shields.io/badge/Packing-IKEA-yellow) ![hungryhippos](https://img.shields.io/badge/Hungry-Hippos-purple) ![FLDSMDFR](https://img.shields.io/badge/%23-FLDSMDFR-orange)
+![issuesopen](https://img.shields.io/github/issues/utagritech/peapod) ![issuesopen](https://img.shields.io/github/issues-closed/utagritech/peapod) ![opensource](https://img.shields.io/badge/open-source-red) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![247](https://img.shields.io/badge/24-7-blue) ![PackingIKEA](https://img.shields.io/badge/Packing-IKEA-yellow) ![hungryhippos](https://img.shields.io/badge/Hungry-Hippos-purple) ![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)
 
 Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
 
@@ -14,15 +14,15 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 <!-- TODO: Build statuses? etc. -->
 
+## Background
+
+> See our [design brief](/docs/design/designbrief/DesignBrief.pdf) for details.
+
 ### Features
 
+> See our [proposal](/docs/design/designproposal/DesignProposal.pdf) (WIP) for details.
+
 <img src="assets/features.png" width=70%/>
-
-See our [proposal](/docs/design/designproposal/DesignProposal.pdf) (WIP) for details.
-
-### Background
-
-See our [design brief](/docs/design/designbrief/DesignBrief.pdf) for details.
 
 
 ### Innovations
@@ -32,7 +32,7 @@ PeaPod can precisely replicate climates for optimal growing conditions but also 
 
 PeaPod is modular and easy to assemble. Construction with aluminum extrusion allows PeaPods to be transported like IKEA furniture, useful for situations where a lot of food is required at the end of a long journey. Alot of PeaPods can be collapsed into a tiny space. This also means PeaPods can be configured to be any size to grow any type of plant.
 
-PeaPod is self optimizing, versatile, easy to assemble, and it makes food.
+PeaPod is self-optimizing, versatile, easy to assemble, and it makes food.
 ## Production
 
 ### Assembly
@@ -50,10 +50,10 @@ WIP.
 
 <!-- w/ examples, i.e. GIF of expected output, inline code -->
 
-### Development
+## Development
 <!-- dependencies, environment, language -->
 
-See [`software/README`](software/README.md#Development) and [`hardware/README`](hardware/README.md#Development) for their respective dependencies.
+> See [`software/README`](software/README.md#Development) and [`hardware/README`](hardware/README.md#Development) for their respective dependencies.
 
 ## Contribution
 
@@ -64,11 +64,16 @@ See [`software/README`](software/README.md#Development) and [`hardware/README`](
 3. Request review by changing the **PR Draft** to a full-blown **PR** when you think it's ready
 4. If the reviewer(s) accept the changes, they will merge the **PR** and close the related issue
 
-### Support
+<!-- ### Support -->
 <!-- issues page, discussion board/Discord? -->
 
 ### Roadmap
 <!-- adapted from milestones/project boards -->
 
+> See our [projects](https://github.com/UTAgritech/PeaPod/projects).
+
 ## Acknowledgements
-<!-- authors, UTAG -->
+
+Innumerable thanks to the following individuals and groups:
+- University of Toronto Agritech's active members ([here](https://github.com/orgs/UTAgritech/people))
+- The Open Source community
