@@ -8,17 +8,21 @@ A [cloud-enabled](https://github.com/openformtech/cloudponics-app/) IoT automate
 
 ## Description 
 
+
+
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
 
-### Features list
+### Features List
 
 ### Background
 
-### Differences from alternatives
+### Differences from Alternatives
 
 ## Production
 
 ### Assembly
+
+See [`/docs/assembly/ASSEMBLY.md`](/docs/assembly/ASSEMBLY.md) for details
 
 ### Installation
 
