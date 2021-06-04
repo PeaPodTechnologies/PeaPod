@@ -2,7 +2,7 @@
 name: Feature Request
 about: Suggest an idea for this project
 title: "[FEATURE] - Feature Name"
-labels: 'Scope: Deliverable, Status: Open, Type: Enhancement'
+labels: 'Scope: Deliverable, Status: Open, Type: New Feature'
 assignees: ''
 
 ---
