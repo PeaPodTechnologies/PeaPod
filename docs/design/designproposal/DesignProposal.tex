@@ -64,7 +64,7 @@
 \subsection{Purpose}
 \label{sec:purpose}
 
-The purpose of this document is to outline a the fuction and features of a proposal to the PeaPod design brief.
+The purpose of this document is to outline the fuction and features of a proposal to the PeaPod Design Brief.
 
 It accomplishes this by answering the following questions on a recursively-scoping basis:
 \begin{enumerate}
@@ -102,15 +102,28 @@ PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop grow
 \subsection{Automation}
 \label{sec:automation}
 
-\textbf{What}: Performing tasks (i.e. actuating various systems, reading sensors) autonomously on a schedule or necessity basis
 
-\textbf{How}: Fixed schedule (i.e. fixed-time-delta sensing, cyclical watering) \textbf{OR} "Sense, Plan, Act" robotics/control model:
-\begin{enumerate}
-    \item \textit{Senses} current conditions;
-    \item \textit{Plans} a path to desired condition;
-    \item \textit{Acts} to change current condition to desired condition;
-\end{enumerate}
-\textbf{Why}: Increased accuracy/precision over human interference, minimize human hours spent
+\textbf{What}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity.
+
+\textbf{How}:
+\begin{itemize}
+    \item Schedule:
+    \begin{itemize}
+        \item User inputs time/action pairs
+        \item E.g. Water at 08:00, Turn light to setting X at 14:00
+        \item \textit{Bonus:} Can notify user if action's resource is missing (i.e. water tank low)
+    \end{itemize}
+    \item Necessity:
+    \begin{itemize}
+        \item "Sense, Plan, Act" robotics/control model:
+        \begin{enumerate}
+            \item \textit{Senses} current conditions
+            \item \textit{Plans} a path to desired condition
+            \item \textit{Acts} to change current condition to desired condition
+        \end{enumerate}
+    \end{itemize}
+\end{itemize}
+\textbf{Why}: Increase accuracy/precision, minimize human hours spent
 
 \subsection{Isolation/Insulation and Housing}
 \label{sec:isolationinsulation}
