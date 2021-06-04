@@ -109,41 +109,41 @@ PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop grow
 \begin{itemize}
     \item Schedule:
     \begin{itemize}
-        \item User inputs time/action pairs
-        \item E.g. Water at 08:00, Turn light to setting X at 14:00
+        \item User inputs time/action pairs;
+        \item E.g. Water at 08:00, Turn light to setting X at 14:00;
         \item \textit{Bonus:} Can notify user if action's resource is missing (i.e. water tank low)
     \end{itemize}
     \item Necessity:
     \begin{itemize}
         \item "Sense, Plan, Act" robotics/control model:
         \begin{enumerate}
-            \item \textit{Senses} current conditions
-            \item \textit{Plans} a path to desired condition
-            \item \textit{Acts} to change current condition to desired condition
+            \item \textit{Senses} current conditions;
+            \item \textit{Plans} a path to desired condition;
+            \item \textit{Acts} to change current condition to desired condition;
         \end{enumerate}
     \end{itemize}
 \end{itemize}
-\textbf{Why}: Increase accuracy/precision, minimize human hours spent
+\textbf{Why}: Increased accuracy/precision over human interference, minimize human hours spent.
 
 \subsection{Isolation/Insulation and Housing}
 \label{sec:isolationinsulation}
 
 \textbf{What}: Isolates the growth environment from the exterior environment, provides structural integrity and mounting points.
 
-\textbf{How}: Cube exoskeleton (aluminum extrusion) holds solid (acrylic/foam/corrugated board) interenally-reflective (mylar) panels in place and aids in mounting plant growth platforms, lights, etc.
+\textbf{How}: Cube exoskeleton (aluminum extrusion) holds solid (acrylic/foam/corrugated board) internally-reflective (mylar) panels in place and aids in mounting plant growth platforms, lights, etc.
 
 \textbf{Why}: Increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances. Simple and strong construction with dedicated mounting channels.
+
+\newpage
 
 \subsection{Aeroponics}
 \label{sec:aeroponics}
 
-\textbf{What}: Medium-free growing method that uses nutrients dissolved within atomized water
+\textbf{What}: Medium-free growing method that uses nutrients dissolved within atomized water.
 
-\textbf{How}: High-pressure (pump-tank-switch system) nozzles deliver atomized ($\approx$50 micron droplet) nutrient solution to plant roots. Parallel distribution topology (T-quick-connects at every unit height, solenoid ball valves at tank out and in each tray)
+\textbf{How}: High-pressure (pump-tank-switch system) nozzles deliver atomized ($\approx$50 micron droplet) nutrient solution to plant roots. Parallel distribution topology (T-quick-connects at every unit height, solenoid ball valves at tank out and in each tray).
 
-\textbf{Why}: No water parameter feedback, 98\% more water efficient, minimizes pathogens and waste water
-
-\newpage
+\textbf{Why}: No water parameter feedback, 98\% more water efficient, minimizes pathogens and waste water.
 
 \subsection{Environment Control}
 \label{sec:environment}
@@ -153,77 +153,77 @@ The environment control feature can be broken up into \textbf{control systems} (
 \subsubsection{Air Temperature}
 \label{sec:airtemp}
 
-\textbf{What}: Maintaining desired air temperature within the enclosure
+\textbf{What}: Maintaining desired air temperature within the enclosure.
 
-\textbf{How}: Thermoelectric heating/cooling system (peltier tiles w/ polarity switch and 'dimming' current control) on a heat sink w/ fan
+\textbf{How}: Thermoelectric heating/cooling system (peltier tiles w/ polarity switch, 'dimming' current control, PID) on a heat sink w/ fan, feedback from distributed temp sensors
 
-\textbf{Why}: Better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), better control
+\textbf{Why}: TECs have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), better control vs other methods. PID provides best control.
 
 \subsubsection{Air Humidification}
 \label{sec:airhum}
 
-\textbf{What}: Adding water vapour to air
+\textbf{What}: Adding water vapour to air.
 
 \textbf{How}: Ultrasonic nebulizer (piezo disc w/ custom driver circuit), RO water
 
 \textbf{Why}: Piezo for droplet size, commonly used; RO for purity of water vapour
 
+\newpage
+
 \subsubsection{Air Dehumidification}
 \label{sec:dehum}
 
-\textbf{What}: Absorbs water vapour from the air
+\textbf{What}: Absorbs water vapour from the air.
 
-\textbf{How}: Silica gel beads, controlling airflow rate across
+\textbf{How}: Silica gel bead cartridges with fans/valves to control airflow across.
 
-\textbf{Why}: Non-toxic, safe, cheap, effective. Color-changing indication at saturation, easily reset by baking and recapturing water
+\textbf{Why}: Non-toxic, safe, cheap, effective. Color-changing indication at saturation, easily reset by baking and recapturing water.
 
 \subsubsection{Solution Temperature}
 \label{sec:watertemp}
 
-\textbf{What}: Maintaining desired water temperature within the water store
+\textbf{What}: Maintaining desired water temperature within the water store.
 
 \textbf{How}: Same as \ref{sec:airtemp}; on a water block
 
 \textbf{Why}: Same as \ref{sec:airtemp}
 
-\newpage
-
 \subsubsection{Solution Nutrients}
 \label{sec:nutrients}
 
-\textbf{What}: Precisely dosing the correct amount of nutrients to the water system at setup/water addition
+\textbf{What}: Precisely dosing the correct amount of various nutrients (K${}^+$, NO${}_3^-$, etc.) to the water system at setup/water addition.
 
-\textbf{How}: Syringe dosage via servo motor to set ppm based on fill volume
+% TODO: List of nutrients?
 
-\textbf{Why}: Syringe dosage is precise, easy to refill
+\textbf{How}: Syringe-like dosage via servo motor to set ppm based on fill volume.
+
+\textbf{Why}: Syringe dosage is precise, easy to refill.
 
 \subsubsection{Solution pH}
 \label{sec:ph}
 
-\textbf{What}: Precisely adds pH up/down solutions to set the solution pH at setup/water addition
+\textbf{What}: Precisely adds pH up/down solutions to set the solution pH at setup/water addition.
 
-\textbf{How}: Same as \ref{sec:nutrients}
+\textbf{How}: Same as \ref{sec:nutrients}.
 
-\textbf{Why}: Same as \ref{sec:nutrients}
+\textbf{Why}: Same as \ref{sec:nutrients}.
+
+\newpage
 
 \subsubsection{Lighting}
 \label{sec:lighting}
 
-\textbf{What}: Wide spectrum precision LED lighting targeting PAR
+\textbf{What}: Wide spectrum precision LED lighting targeting PAR.
 
-\textbf{How}: N LED series/colors, N controlled-current PWM drivers, M LEDs per series = NxM LEDs. Custom LED boards wired in series, one power board per tray, w/ diffusion
+\textbf{How}: N LED series/colors, N controlled-current PWM drivers, M LEDs per series = NxM LEDs. Custom LED boards wired in series, one power board per tray, w/ diffusion.
 
-\textbf{Why}: LED > every other type in every way, PWM easy protocol, CC because they’re LEDs
+\textbf{Why}: LED > every other type in every way, PWM easy protocol, CC because they’re LEDs.
 
 % \textbf{What}: 
 % \textbf{How}: 
 % \textbf{Why}:
 
 % \newpage
-
-% \textbf{What}: 
-% \textbf{How}: 
-% \textbf{Why}:
 
 % References
 % \bibliographystyle{IEEEtran}
