@@ -1,0 +1,242 @@
+\documentclass{report}
+\usepackage{setspace} % Setting line spacing
+\usepackage{ulem} % Underline
+\usepackage{caption} % Captioning figures
+\usepackage{subcaption} % Subfigures
+\usepackage{geometry} % Page layout
+\usepackage{multicol} % Columned pages
+\usepackage{array,etoolbox}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[toc,page]{appendix}
+
+% Page layout (margins, size, line spacing)
+\geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
+\setstretch{1.5}
+
+% Headers
+\pagestyle{fancy}
+\lhead{PeaPod - Design Report}
+\rhead{UTAG}
+
+% Metric counter, referencing commands
+% \newcounter{metricnumber}
+% \setcounter{metricnumber}{1}
+% \newcommand{\metricrow}{M\arabic{metricnumber}}
+% \newcommand{\mlabel}[1]{\addtocounter{metricnumber}{-1}\refstepcounter{metricnumber}\label{#1}\addtocounter{metricnumber}{1}}
+% \newcommand{\mref}[1]{M\ref{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.2cm}
+
+        \textbf{\large{PeaPod - Design Report}}
+
+        \vspace{0.5cm}
+
+        Primary Written Deliverable for the Deep Space Food Challenge Phase 1
+
+        \vfill
+
+        Jayden Lefebvre - Lead Engineer\\\small{jayden.lefebvre@mail.utoronto.ca}\\
+        \vspace{1cm}
+        Nathan Chareunsouk, Navin Vanderwert, Chris Lansdale - Design Engineers
+
+        \vspace{2.5cm}
+
+        Revision 0.1\\
+        University of Toronto Agritech\\
+        June 9th, 2021
+
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{plain}
+
+\tableofcontents
+\newpage
+
+\section{Design Abstract}
+% Please provide a brief summary description of your proposed food production technology within a 1,500 character limit. The abstract may answer some of the following questions: What is your proposed solution? What is novel, sustainable, and innovative about your proposed solution? What types of food does your solution create? How are you minimizing inputs and maximizing food outputs?
+% Our solution is a modular aeroponic plant growth environment that can accurately simulate any climate found on earth. The ability to precisely control environmental parameters allows our system to grow any plant imaginable.
+
+\section{Design Report}
+
+\subsection{Description}
+% Part A: Please provide a more fulsome description of your food production technology within a 3,000 character limit. Your description needs to include information about what the technology is, what it does, how it functions, and how the crew will interact with it. Be sure to also provide any descriptions of major hardware components and processes in relation to your technology.
+
+An automated and isolated aeroponic crop growth system, able to generate any environment from a combination of independent environment parameters, with both environment and crop growth data collection.
+
+% TODO: List me
+
+% Environment Parameters
+% Nutrient Solution (pH, Watering Cycle, Plant Nutrient Dosages)
+% Leaf- and root-zone temperatures
+% Leaf-zone humidity
+% Lighting intensity, spectrum, cycle
+% Outputs
+% Plant Mass, O2, Waste
+% Data Collection
+% Environment Parameters
+% Plant Metrics
+% Post-harvest analysis (harvest weight/wt.\%, chemical composition i.e. nutrients, flavour)
+% Live Mass/Growth Rate
+% Visual analysis via computer vision (canopy surface area, leaf health indicators, number of leaves, plant height, etc.)
+% Crew Interaction
+% Planting
+% Manual inputs (nutrient cartridges)
+% Setup (Assembly, hookup to peripheral systems)
+% Harvest?
+
+% Part B: Please provide a 1,500 character description of the basic operations concept of the food production technology. In your response, describe assumptions required of operation. You can also include, for example, details about whether a sterile/aseptic environment is needed, if special steps are required between production cycles, or if fluids or materials must be removed or added to prime/inoculate a system.
+Operations concept follows Figure 1:
+
+% TODO: Import figure 1
+
+% TODO: List me
+
+% Setup
+% Prime plant inputs (connect power/water supply, prime aeroponic pump/tank/etc.)
+% Set parameters (set manually or to a preset e.g. “Spinach”)
+% Operation is then automatic, with PeaPod regulating conditions and notifying the user if maintenance is required
+% Maintenance can include:
+% Replenishing water and nutrient stores
+% Replacing/repairing failed components
+% Checking
+% Cleaning the aeroponic nozzle
+% Collection is removing the plant from the enclosure
+% Priming for next cycle is dependent on required maintenance as informed by PeaPod
+
+\subsection{Innovation}
+% This question seeks to establish an understanding of how your technology is different from other technologies that currently exist. Your description needs to be clear and well defined using simple language when detailing how your food production technology is novel, innovative and sustainable. Ensure to provide examples that will portray the novelty of your technology. 
+Wide, continuous, precise control
+Environment optimization for output metrics
+
+\subsection{Adherence to Constraints}
+% Whether in space or in a remote community on Earth, there are several constraints that your food production technology should adhere to. This question outlines key constraints on volume, power, water, mass, data connection, crew time and operational constraints that your technology will need to address. Please ensure your responses are clear and concise as there is a 300 character limit associated with each constraint that you need to address. 
+% In Phase 1, Adherence to Constraints is not meant to determine whether the Design Report itself is complete in including all the required information. This question is meant to ensure that Teams have considered the constraints, and that the food production technology design, at a minimum, falls within those constraints. In future Phases, Teams’ food production technologies will be evaluated and scored on whether or not the design stays within the constraints so that it ultimately can meet CSA’s needs and deliver value.
+Power Consumption
+Heating/cooling
+Lighting
+ 
+\subsection{Performance Criteria}
+% This question seeks to understand how the proposed food production technology addresses the performance criteria of the Challenge. Describe how the food production technology addresses the following performance criteria.
+\subsubsection{Acceptability}
+
+\textbf{Process}
+
+% Acceptability of the food production process
+% NOTE: The process must be something crew members could be expected to accomplish in a reasonable amount of time, on a daily basis in a small kitchen-like space after a busy workday.
+% Target: Teams should consider the current target for Astronauts is 1 hour per meal (30 minutes for preparation, 30 minutes for the meal itself). 
+
+% ACCEPTABILITY - Process
+% Within a 3,000 character limit, describe in detail the processes and procedures of using your technology. Your response should include the operational footprint (how much space is needed for the solution and its related processes?), the steps needed for a person to follow in setting up and using the solution, the food production cycle, the handling of food, the cleaning and stowage procedures, along with the estimated time needed for the crew to operate the solution.
+% Please also provide an assessment (using industry standards and/or existing research) that your technology processes are likely to be user friendly and acceptable to the crew.
+
+\textbf{Food Products}
+% Acceptability of the resulting food product
+% NOTE: This assessment should include appearance, aroma, palatability, flavor, and texture. 
+% Target: A food item measuring an overall acceptability rating of 6.0 or better on a 9-point hedonic scale for the duration of the mission is considered acceptable. 
+
+% ACCEPTABILITY - Food products 
+% Please provide an assessment (using industry standards and existing research) that the food outputs of your technology are likely to meet the acceptability target within a 3,000 character limit. Make sure to address the appearance, aroma, palatability, flavor, and texture of the food output. You should be as descriptive as possible in your response.
+% Rate and describe the potential acceptability of your food products on a 9 point hedonic scale.
+% The hedonic scale is a quantitative method that is accepted throughout the food science industry as a means to determine acceptability. Further information regarding methods for determining food acceptability can be found in references such as Meilgaard, Morten C., B. Thomas Carr, and Gail Vance Civille. Sensory evaluation techniques. CRC press, 2006.
+
+% Optional - Additional comments
+% This additional text box with a 1,000 character limit allows you to provide any other information on acceptability and palatability you would like to submit to the Judging Panel.
+
+\subsubsection{Safety}
+
+% The overall safety of the food production process and the food products are a top priority for this Challenge.
+% NOTE: No pathogens are permitted to exist within the food technology or its outputs.  Teams must take this into account in their Phase 1 designs. Designs that fail to account for pathogens will receive a "fail" score on the Safety category.
+
+\textbf{Process}
+
+% Safety of the food production process
+% Targets: Environmental & process safety:
+% Avoidance of hazardous compounds or materials used or produced (e.g., microbes, off-gassing, toxic components) 
+% Avoidance of hazards associated with cleaning this technology prior to and/or after use
+% Avoidance of physical, chemical, or biological hazards associated with the hardware or the process
+% No pathogens (i.e. nitrogen fixing bacteria); all nutrients provided directly
+% Clear mitigation strategies to address the aforementioned risks
+% Safety of the resulting food products
+
+% SAFETY - Process
+% Your answer will need to describe, in 3,000 characters, the safety associated with the food production process using your technology. The food production process includes: the safety of the food handling or processing procedures and environmental safety. Please include all food safety procedures that need to be followed. Your answer must demonstrate an understanding of the risk(s), and potential mitigation.
+
+\textbf{Products}
+
+% Target: Consumption safety: Resulting food product is safe for repeated human consumption as defined by NASA-STD-3001 (see Reference Materials)
+
+% SAFETY - Food products 
+% Your 3,000 characters answer will need to describe the safety of the resulting food products (outputs), including safety for repeated human consumption.
+% Optional - Additional comments
+% This additional text box with a 1,000 character limit allows you to provide any other information on the safety associated with the food production process using your technology.
+
+\subsubsection{Resource Inputs and Outputs}
+
+% In your response, you will need to describe the resource requirements of the food production process (inputs) and all outputs. You will need to also include the estimated quantities of each input and output, as well as the nutritional quality of the food product.
+
+% Inputs and Outputs associated with the technology & Quantity of nutritious food output in relation to the quantity of inputs and quantity of waste output
+% Targets:
+% Maximum quantity food output relative to quantity of system inputs
+% Maximum quantity food output relative to quantity of waste output
+
+\textbf{Inputs}
+
+% In a 3,000 character limit response, indicate the inputs needed to run your food production technology
+% Inputs may include: Raw materials, energy, water, or other materials that enter the system.
+
+\textbf{Outputs}
+
+% Nutritional potential of food produced
+% Targets:
+% Maximum macronutrients supplied, as a percentage of a crewmember’s complete dietary needs
+% Maximum micronutrients supplied, as a percentage of a crewmember’s complete dietary needs
+% Maximum variety of nutrients supplied
+
+% In a 3,000 character limit response, indicate the outputs generated from your food production technology. 
+% Outputs may include: Food products, waste, heat (latent and sensible), and other usable or unusable products exiting the system, including liquid and gaseous process flows (e.g., water vapor, low-molecular weight organic and inorganic compounds, water, oils, etc.).
+
+% Please describe in 3,000 characters the nutritional quality of the resulting food products from your technology. You will need to provide the nutritional potential of the food produced with your technology. Use values based on reasonable literature information that you can reference. For example, as defined by NASA-STD-3001 (see Reference Materials).
+
+\textbf{Optimization}
+
+% Within a 1,500 character limit, provide a description on how the food production technology achieves the greatest amount of food output in relation to the quantity of inputs and quantity of waste output. 
+
+% Optional - Additional comments
+% This additional text box with a 1,000 character limit allows you to provide any additional information on the resource inputs and outputs related to the use of the food production technology.
+
+\subsubsection{Reliability and/or Stability}
+
+\textbf{Process Reliability}
+% Reliability of the food production technology
+% Target: Less than 10\% loss of functionality or food production throughout a three-year mission.
+% RELIABILITY - Process
+% Please provide a description of the reliability of your technology within a 3,000 character limit, which may include an estimate of your technology’s operational lifespan (i.e., how long is the solution designed to last?) and percentage of functionality loss over three years. Your answer should also account for an overview of the maintenance process and procedures, including the maintenance schedule, component maintenance or replacement as well as all critical spare parts that would be needed for the length of the mission.
+\textbf{Input and Output Stability}
+% Stability of the input products used and food product outputs.
+% Target: Longest possible shelf-life of the input and food products. They must remain safe, without any significant loss of nutritional value or quality at ambient conditions
+% STABILITY 
+% Provide a 1,500 character description of the stability of both the input products used and food product outputs. Your description should include a rationalization of the estimated time the inputs and outputs will be fit for use and/or consumption (i.e., shelf-life).
+% Optional - Additional comments
+% This additional text box with a 1,000 character limit allows you to provide any other information on reliability and stability you would like to submit to the Judging Panel.
+
+\subsection{Terrestrial Potential}
+% In 3,000 characters, describe your vision of your food production technology’s potential to improve food production on Earth. Provide a concrete scenario in which your technology would serve the community in which it operates. 
+
+% Q2.6. Supporting Material 
+% Q2.6.1. Include any visual representations of the food production technology, which may include models, schematics, or drawings.
+% You are required to submit (a) visual representation(s) of your proposed technology. You should submit these visuals in a document in PDF format, of maximum five (5) Letter Size pages (8.5” x 11”).
+% Q.2.6.2. Optional: Include any preliminary data or calculations that support the design and operation of the food production technology.
+% You may submit a document in PDF format, of maximum two (2) Letter Size pages (8.5” x 11”), including preliminary data or calculations. 
+
+% \newpage
+
+% References
+% \bibliographystyle{IEEEtran}
+% \bibliography{references}
+\end{document}
