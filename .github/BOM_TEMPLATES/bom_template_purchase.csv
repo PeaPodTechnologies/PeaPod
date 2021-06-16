@@ -1,2 +1,2 @@
-Part,Quantity,Supplier,Supplier Part Number,Unit Cost (CAD),Reference
-E.g. Foam Board,6,Home Depot,142-978D,12.64,www.homedepot.ca/foam-board
+Part,Description,Quantity,Supplier,Supplier Part Number,Unit Cost (CAD),Reference
+E.g. Foam Board,"2"" Polypropylene",6,Home Depot,142-978D,12.64,www.homedepot.ca/foam-board
