@@ -1,2 +1,3 @@
-Part,Quantity,Materials,Materials Unit Cost (CAD),Process,Time (min),Reference
-E.g. L Bracket A,8,PETG,1.23,3D Printing,47,/hardware/frame/brackets/LBracket.step
+Part,Quantity,Materials,Materials Unit Cost (CAD),Process,Time Each (min),Reference
+L Bracket 2xM5+1xM6,8,PETG,0.24,3D Printing,47,/hardware/frame/brackets/LBracketA.step
+L Bracket 3xM5,8,PETG,0.24,3D Printing,47,/hardware/frame/brackets/LBracketB.step
