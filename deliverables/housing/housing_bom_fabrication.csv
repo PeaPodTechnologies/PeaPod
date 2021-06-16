@@ -1,12 +1,12 @@
 Part,Quantity,Materials,Materials Unit Cost (CAD),Process,Time Each (min),Reference
-L Bracket 2xM5+1xM6,8,PETG Filament,0.24,3D Printing,47,universal/brackets/LBracketA.step
-L Bracket 3xM5,8,PETG Filament,0.24,3D Printing,47,universal/brackets/LBracketB.step
-T Bracket 4xM5,6,PETG Filament,TBA,3D Printing,TBA,universal/brackets/TBracket.step
-Extrusion Cap,8,PETG Filament,TBA,3D Printing,TBA,universal/ExtrusionCap.step
-Tray Mount A,4,PETG Filament,TBA,3D Printing,TBA,trays/TrayMountA.step
-Tray Mount B,4,PETG Filament,TBA,3D Printing,TBA,trays/TrayMountB.step
-Grow Plate Quarters,4,210x210x5mm PET Sheet,TBA,CNC/Vinyl Cutting,TBA,trays/growtray/GrowPlateQuarter.step
-Grow Plate Washer,1,PETG Filament,TBA,3D Printing,TBA,trays/growtray/GrowPlateWasher.step
-Seal Strips,16,PETG Filament,TBA,3D Printing,TBA,trays/growtray/SealStrip.step
-Nozzle Mount A,2,PETG Filament,TBA,3D Printing,TBA,trays/growtray/NozzleMountA.step
-Nozzle Mount B,2,PETG Filament,TBA,3D Printing,TBA,trays/growtray/NozzleMountB.step
+L Bracket 2xM5+1xM6,8,PETG Filament,0.24,3D Printing,47,frame/brackets/LBracketA.stl
+L Bracket 3xM5,8,PETG Filament,0.24,3D Printing,47,frame/brackets/LBracketB.stl
+T Bracket 4xM5,6,PETG Filament,TBA,3D Printing,TBA,frame/brackets/TBracket.stl
+Extrusion Cap,8,PETG Filament,TBA,3D Printing,TBA,frame/ExtrusionCap.stl
+Tray Mount A,4,PETG Filament,TBA,3D Printing,TBA,trays/TrayMountA.stl
+Tray Mount B,4,PETG Filament,TBA,3D Printing,TBA,trays/TrayMountB.stl
+Grow Plate Quarters,4,210x210x5mm PET Sheet,TBA,CNC/Vinyl Cutting,TBA,trays/growtray/GrowPlateQuarter.stl
+Grow Plate Washer,1,PETG Filament,TBA,3D Printing,TBA,trays/growtray/GrowPlateWasher.stl
+Seal Strips,16,PETG Filament,TBA,3D Printing,TBA,trays/growtray/SealStrip.stl
+Nozzle Mount A,2,PETG Filament,TBA,3D Printing,TBA,trays/growtray/NozzleMountA.stl
+Nozzle Mount B,2,PETG Filament,TBA,3D Printing,TBA,trays/growtray/NozzleMountB.stl
