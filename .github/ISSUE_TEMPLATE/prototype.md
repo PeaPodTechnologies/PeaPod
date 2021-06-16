@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-Briefly introduce the subsystem and major prototyping deliverables (i.e. most 'unbelievable' part).
+Briefly introduce the subsystem and major prototyping deliverables (i.e. most 'unbelievable' parts).
 
 ### Deliverables
 
