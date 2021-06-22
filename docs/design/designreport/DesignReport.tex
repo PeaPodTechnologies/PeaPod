@@ -10,6 +10,10 @@
 \usepackage{enumitem}
 \usepackage[toc,page]{appendix}
 
+
+%READ THIS:
+%mark comments with OpenComment or ClosedComment as you write, so we can ctrl+f as needed.
+
 % Page layout (margins, size, line spacing)
 \geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
 \setstretch{1.5}
@@ -66,8 +70,9 @@
 
 \subsection{Description}
 % Part A: Please provide a more fulsome description of your food production technology within a 3,000 character limit. Your description needs to include information about what the technology is, what it does, how it functions, and how the crew will interact with it. Be sure to also provide any descriptions of major hardware components and processes in relation to your technology.
+%OpenComment [ ]GET 2nd opinion on 4 sections - NV
+An automated and isolated aeroponic crop growth system, able to generate any environment from a combination of independent environment parameters, with both environment and crop growth data collection. The system takes the form of an enclosed cube, with most crew interaction limited to water and nutrient refill. Hardware components can be broken down into 4 primary categories: Feedback Systems, Resource Supply, Support Structures, and Electronic Control. Together, these 4 components create the "Black Box" seen in Figure X.
 
-An automated and isolated aeroponic crop growth system, able to generate any environment from a combination of independent environment parameters, with both environment and crop growth data collection.
 
 % TODO: List me
 
@@ -117,9 +122,42 @@ Environment optimization for output metrics
 \subsection{Adherence to Constraints}
 % Whether in space or in a remote community on Earth, there are several constraints that your food production technology should adhere to. This question outlines key constraints on volume, power, water, mass, data connection, crew time and operational constraints that your technology will need to address. Please ensure your responses are clear and concise as there is a 300 character limit associated with each constraint that you need to address. 
 % In Phase 1, Adherence to Constraints is not meant to determine whether the Design Report itself is complete in including all the required information. This question is meant to ensure that Teams have considered the constraints, and that the food production technology design, at a minimum, falls within those constraints. In future Phases, Teams’ food production technologies will be evaluated and scored on whether or not the design stays within the constraints so that it ultimately can meet CSA’s needs and deliver value.
-Power Consumption
-Heating/cooling
-Lighting
+
+\subsubsection{Palatability of Crop Output} %>= 6.0
+Hydroponic crops have seen commercial success, suggesting that their output is of sufficient hedonic quality to be desired. Additionally, PeaPod is designed to optimize for edible plant mass, nutrient denisty, and other health indicators---pushing hedonic quality up over time.
+
+\subsubsection{Air Temperature Control Range} %Min < 15 degC, Max > 30 degC
+
+
+\subsubsection{Air Humidity Control Range} %Min < 20 %RH, Max > 90 %RH
+
+\subsubsection{Light Spectrum Wavelength Range} %Min < 300 nm (Near-UV), Max > 800 nm (Near-IR)
+
+\subsubsection{Light Spectrum PAR Match} %>= 95% match
+
+\subsubsection{Light Intensity Control Range} %Min = 0, Max >= typical horitculture
+
+\subsubsection{Internal Circulation Airflow Control Range} %Min = 0 m^3/min, Max >= 2 m^3/min
+
+\subsubsection{Nutrient Solution Delivery Control Range} %Min = 0, Max >= max plant requirement
+
+\subsubsection{Nutrient Solution Temp. Control Range} %Min < 10 degC, Max > 25 degC
+
+\subsubsection{Nutrient Concentrations Control Range} %Min = 0, Max >= max plant requirement
+
+\subsubsection{Time Requirement - Maintenance} %4 hrs/week
+
+\subsubsection{Loss of Functionality Over 3 Years} %<= 10%
+
+\subsubsection{Input Lifetime while Safe, Useful} %>= 3 years
+
+\subsubsection{Outer Dimensions} %Fits through 1.07m x 1.90m doorway; W < 1.820m, D < 2.438m, H < 2.591m
+
+\subsubsection{Outer Volume} %<= 2m^3
+
+\subsubsection{Power Consumption} %Avg <1500 W, Peak < 3000 W
+
+\subsubsection{}
  
 \subsection{Performance Criteria}
 % This question seeks to understand how the proposed food production technology addresses the performance criteria of the Challenge. Describe how the food production technology addresses the following performance criteria.
@@ -220,7 +258,7 @@ In addition, the array of sensors used to collect data double as input for PID c
 % RELIABILITY - Process
 % Please provide a description of the reliability of your technology within a 3,000 character limit, which may include an estimate of your technology’s operational lifespan (i.e., how long is the solution designed to last?) and percentage of functionality loss over three years. Your answer should also account for an overview of the maintenance process and procedures, including the maintenance schedule, component maintenance or replacement as well as all critical spare parts that would be needed for the length of the mission.
 
-%pretty barebones, might need citations for material duration... feel free to add anything else that sells the reliability - NV
+%OpenComment pretty barebones, might need citations for material duration... feel free to add anything else that sells the reliability - NV
 By nature of its design, PeaPod will last three years at near 100\% functionality on minimal maintenance.
 This is achieved by self-monitoring component health, using servicable materials, and providing smart notifications to the user when maintenance is needed.
 For one, PeaPod is designed to be assembled by a single user with readily available tools. This means it can be disassembled, cleaned, and put back together by one person in a non-restrictive amount of time.
@@ -244,8 +282,7 @@ Finally, plant harvesting is a quick task that simply constitues opening the uni
 \subsection{Terrestrial Potential}
 % In 3,000 characters, describe your vision of your food production technology’s potential to improve food production on Earth. Provide a concrete scenario in which your technology would serve the community in which it operates.
 
-%just spitballing ideas, feel free to edit/change/update/replace anything - NV
-\subsubsection{Customer-facing Food Service} %does this make sense? feels a little weak/unfounded - NV
+\subsubsection{Customer-facing Food Service} %OpenComment does this make sense? feels a little weak/unfounded - NV
 At present, a restaurant requires either a local supplier or a substantial amount of outdoor space (and labour) to serve fresh produce. Both of these are cost-prohibitive, and the latter is entirely impossible in many situations. Local suppliers' high costs are the result of a few things:
 \begin{itemize}
     \item Limited seasonal availability
@@ -254,10 +291,10 @@ At present, a restaurant requires either a local supplier or a substantial amoun
 \end{itemize}
 PeaPod has the potential to reduce these barriers in a cyclic way. Partnerships between local suppliers and restaurants will provide these restuarants with space- and time-efficient PeaPod units with the purpose of generating both produce and data. The increase in produce will reduce the frequency at which suppliers need to make deliveries, while the data produced will let suppliers maximize output. Over time, this can increase efficiency to the point where local suppliers can provide produce at a lower price.
 
-\subsubsection{Crowdsourced Research} %feel better about this one, almost like a better version of the above ^ - NV
+\subsubsection{Crowdsourced Research} %ClosedComment feel better about this one, almost like a better version of the above ^ - NV
 Due to PeaPod's automated nature, off-site research is a feasibile method of collecting data. As a result, universities and other institutions can save costs related to space and energy usage by subsidizing PeaPods to consumers, schools, or even restaurants. Users would receive sets of paramters within which to grow crops, and the data would be sent back to the institution. The user can use the produce, at the cost of space and energy, while the institution continues to provide parameters with which to grow. The end result is a massive set of data, conducted in identical conditions in different places, verified by comparison with the myriad devices conducting the same tests.
 
-\subsubsection{De-centralized Production} %I like this one, should add more though - NV
+\subsubsection{De-centralized Production} %ClosedComment I like this one, should add more though - NV
 Many crops are only feasible in certain climates, making global transport a necessity to sell them worldwide. This reduces freshness, necessitates various preservatives, and increases carbon consumption. By upscaling PeaPod technology to a farm scale, it becomes possible to produce climate-bound crops in any location. This creates region-based farms that can produce a tremendous variety of crops, vastly reducing transport needs and making it easier to have a local food diet.
 
 
