@@ -18,8 +18,6 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
   - [Assembly](#assembly)
   - [Installation](#installation)
 
-<img src="docs/design/designproposal/images/blackbox.png" width=90%/>
-
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
 
 <!-- TODO: Build statuses? etc. -->
@@ -27,6 +25,8 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 ## Background
 
 > See our [design brief](/docs/design/designbrief/DesignBrief.pdf) for details.
+
+<img src="docs/design/designproposal/images/blackbox.png" width=90%/>
 
 ### Features
 
