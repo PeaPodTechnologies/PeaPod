@@ -8,6 +8,10 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
 
+### Table of Contents
+
+<!-- - [Background](#background) -->
+
 <img src="docs/design/designproposal/images/blackbox.png" width=90%/>
 
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
