@@ -18,6 +18,13 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
   - [Assembly](#assembly)
   - [Installation](#installation)
 
+- [Development](#development)
+
+- [Contribution](#contribution)
+   - [Roadmap](#roadmap)
+
+- [Acknowledgements](#acknowledgements)
+
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
 
 <!-- TODO: Build statuses? etc. -->
