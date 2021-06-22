@@ -10,8 +10,9 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 ### Table of Contents
 
-- Jonas man
-<!-- - [Background](#background) -->
+- [Background](#background)
+  - [Features](#features)
+  - [Innovations](#innovations)
 
 <img src="docs/design/designproposal/images/blackbox.png" width=90%/>
 
