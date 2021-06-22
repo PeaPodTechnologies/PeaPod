@@ -14,6 +14,10 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
   - [Features](#features)
   - [Innovations](#innovations)
 
+- [Production](#production)
+  - [Assembly](#assembly)
+  - [Installation](#installation)
+
 <img src="docs/design/designproposal/images/blackbox.png" width=90%/>
 
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
