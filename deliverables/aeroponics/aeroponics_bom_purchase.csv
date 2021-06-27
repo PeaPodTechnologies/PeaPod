@@ -1,13 +1,14 @@
 Part,Description,Quantity,Supplier,Supplier Part Number,Unit Cost (CAD),Reference
-Pump,SAILFLO - 4.1L/Min/1.1GPM,1,Amazon,,$36.99,https://www.amazon.ca/SAILFLO-Pressure-Diaphragm-Caravan-Marine/dp/B0711RC7DB/ref=bmx_3/143-7020979-3755464?pd_rd_w=BK5Po&pf_rd_p=f12d1f71-1aef-4157-8ec6-cd9c56be1212&pf_rd_r=VZMH967RJK177SWRR8KB&pd_rd_r=eb51dcf3-8c4c-4657-bd6b-b511d34178a4&pd_rd_wg=LN2MR&pd_rd_i=B0711RC7DB&th=1
-Tank,Accumulator Tank - 0.75L 125 psi,1,Amazon,,$57.79,https://www.amazon.ca/dp/B08J3W7742/ref=sspa_dk_detail_0?psc=1&pd_rd_i=B08J3W7742&pd_rd_w=SjbNm&pf_rd_p=2a57199d-cf65-4ff4-a8c5-2c6d2e794176&pd_rd_wg=zWuWE&pf_rd_r=QAKSAR6PARHBCK8QV1TY&pd_rd_r=1501021f-2360-402e-9cb9-bb06cdd51b05&smid=AHSL5HR4HP3O4&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFaSzNQSDBWVDJSR0omZW5jcnlwdGVkSWQ9QTAxNDMyNTAzT1dRN09NVUFINFA2JmVuY3J5cHRlZEFkSWQ9QTA0ODA4ODZSVkJGVEpaMEYzUzQmd2lkZ2V0TmFtZT1zcF9kZXRhaWwmYWN0aW9uPWNsaWNrUmVkaXJlY3QmZG9Ob3RMb2dDbGljaz10cnVl
-Solenoid Valve,"ZAOJIAO 1/4in. DC 12V N/C",1,Amazon,,$10.99,https://www.amazon.ca/ZAOJIAO-Normally-Closed-Solenoid-Connect/dp/B0743CSRFF/ref=sr_1_11?dchild=1&keywords=solenoid+valve+12v+normally+closed&qid=1623824723&sr=8-11
-"Nozzles, 1/4in. OD Tubing",Gesentur Misting Cooling System - 5m,1,Amazon,,$21.99,https://www.amazon.ca/Upgraded-Gesentur-Misting-Cooling-System/dp/B0739Z7WZB/ref=pd_sbs_8/130-3127038-8343027?pd_rd_w=AQI5U&pf_rd_p=4dc33e2e-16b5-4e12-aab9-e86d5748e0cb&pf_rd_r=WP5KTVBA3ZMHNZBPMV3S&pd_rd_r=446dd7a5-8f46-4790-893e-f116014cb013&pd_rd_wg=1EWUs&pd_rd_i=B0739Z7WZB&th=1
-3/8in. Tubing,"3/8in. ID x 1/2in. OD x 25ft. Coil, Polyethylene",1,Home Depot (CA),1001002123,$15.97,https://www.homedepot.ca/product/canada-tubing-polythylene-tubing-3-8-inch-inside-diameter-x-1-2-inch-outside-diameter-x-25-ft-coil-/1001002123
-Teflon Tape,"1/2in. x 40ft. Roll, White",1,Home Depot (CA),1000153549,$0.75,https://www.homedepot.ca/product/masters-1-2-inch-x-480-inch-white-tape/1000153549
-1/2in. x 3/8in. FPT Coupling,Brass,1,Home Depot (CA),1001001856,$6.28,https://www.homedepot.ca/product/sioux-chief-1-2-inch-x-3-8-inch-lead-free-brass-fip-coupling/1001001856
-3/8in. Barb x 3/8in. MIP Adapter,Brass,1,Home Depot (CA),1001002023,$3.42,https://www.homedepot.ca/product/sioux-chief-3-8-inch-x-3-8-inch-brass-barb-x-mip-adapter/1001002023
-1/2in. x 1/2in. FPT Coupling,Brass,1,Home Depot (CA),1001001112,$5.70,https://www.homedepot.ca/product/sioux-chief-1-2-inch-lead-free-brass-fpt-x-fpt-coupling/1001001112
-1/4in. OD x 1/2in. MPT Adapter,"Brass, Ander-Lign Compression Fitting",1,Home Depot (CA),1001000667,$4.77,https://www.homedepot.ca/product/sioux-chief-1-4-inch-ander-lign-adapter-x-1-2-inch-mip-lead-free/1001000667
-3/4in. Hose Female x 3/8in Barb,"Brass, Swivel",1,Home Depot (CA),1001001898,$8.98,https://www.homedepot.ca/product/sioux-chief-3-4-inch-x-3-8-inch-lead-free-brass-fgh-x-barb-swivel-adapter/1001001898
-9/16in. to 1-1/16in. Hose Clamp,Steel,3,Home Depot (CA),1000123472,$1.65,https://www.homedepot.ca/product/waterline-sae-10-9-16-inch-to-1-1-16-inch-steel-clamp/1000123472
+Diaphragm Pump,"4.1L/min @80PSI Auto-Shutoff",1,Amazon,,36.99,https://www.amazon.ca/SAILFLO-Pressure-Diaphragm-Caravan-Marine/dp/B0711RC7DB
+Accumulator Tank,0.75L 125psi Max,1,Amazon,,57.79,https://www.amazon.ca/dp/B08J3W7742
+Solenoid Valve,"1/4in. DC 12V NC",1,Amazon,,10.99,https://www.amazon.ca/ZAOJIAO-Normally-Closed-Solenoid-Connect/dp/B0743CSRFF
+"Nozzles, 1/4in. OD Push-Connect Fittings","8 Metal Nozzles @200-280mL/min, 7 Ts + 1 Straight",1,Amazon,,21.99,https://www.amazon.ca/Upgraded-Gesentur-Misting-Cooling-System/dp/B0739Z7WZB
+3/8in. Tubing,"3/8in. ID x 1/2in. OD x 25ft. Coil, Polyethylene",1,Home Depot (CA),1001002123,15.97,https://www.homedepot.ca/product/canada-tubing-polythylene-tubing-3-8-inch-inside-diameter-x-1-2-inch-outside-diameter-x-25-ft-coil-/1001002123
+Teflon Tape,"1/2in. x 40ft. Roll, White",1,Home Depot (CA),1000153549,0.75,https://www.homedepot.ca/product/masters-1-2-inch-x-480-inch-white-tape/1000153549
+1/2in. x 3/8in. FPT Coupling,Brass,1,Home Depot (CA),1001001856,6.28,https://www.homedepot.ca/product/sioux-chief-1-2-inch-x-3-8-inch-lead-free-brass-fip-coupling/1001001856
+3/8in. Barb x 3/8in. MIP Adapter,Brass,1,Home Depot (CA),1001002023,3.42,https://www.homedepot.ca/product/sioux-chief-3-8-inch-x-3-8-inch-brass-barb-x-mip-adapter/1001002023
+1/2in. x 1/2in. FPT Coupling,Brass,1,Home Depot (CA),1001001112,5.70,https://www.homedepot.ca/product/sioux-chief-1-2-inch-lead-free-brass-fpt-x-fpt-coupling/1001001112
+1/4in. OD x 1/2in. MPT Adapter,"Brass, Ander-Lign Compression Fitting",1,Home Depot (CA),1001000667,4.77,https://www.homedepot.ca/product/sioux-chief-1-4-inch-ander-lign-adapter-x-1-2-inch-mip-lead-free/1001000667
+3/4in. Hose Female x 3/8in Barb,"Brass, Swivel",1,Home Depot (CA),1001001898,8.98,https://www.homedepot.ca/product/sioux-chief-3-4-inch-x-3-8-inch-lead-free-brass-fgh-x-barb-swivel-adapter/1001001898
+9/16in. to 1-1/16in. Hose Clamp,Steel,3,Home Depot (CA),1000123472,1.65,https://www.homedepot.ca/product/waterline-sae-10-9-16-inch-to-1-1-16-inch-steel-clamp/1000123472
+1/4in. OD Tubing,"0.17in. ID x 1/4in. OD x 25ft. Coil, Polyethylene",1,Home Depot (CA),1001002217,7.92,https://www.homedepot.ca/product/canada-tubing-polythylene-tubing-0-17-inside-diameter-x-1-4-inch-outside-diameter-x-25-ft-coil/1001002217
