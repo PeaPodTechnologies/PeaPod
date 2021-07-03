@@ -12,7 +12,7 @@
 
 % Page layout (margins, size, line spacing)
 \geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
-\setstretch{1.5}
+\setstretch{1.15}
 
 % Headers
 \pagestyle{fancy}
@@ -131,36 +131,53 @@ The primary function of the overall design are derived from both the overall pur
 
 \textbf{Justification}: 
 \begin{itemize}
-    \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
+    \item \textbf{Function}: Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
     \item \textbf{Process}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is common is well suited for controlled-environment agriculture.
     \item \textbf{Features}: Automation implies computers. Sensors and actuators directly parallel process components.
 \end{itemize}
 
 \newpage
 
-\subsection{Isolation/Insulation and Housing}
-\label{sec:isolationinsulation}
+\subsection{Housing}
+\label{sec:housing}
 
-\textbf{What}: Isolates growth environment from exterior environment, provides structural integrity and mounting points.
+\textbf{Function}: \textit{Isolates} and \textit{Insulates} growth environment from exterior environment (heat, light, humidity). Provides structural integrity and mounting points for other subsystems (\textit{Frame}).
 
-\textbf{How}: Cube exoskeleton (aluminum extrusion) holds solid (acrylic/foam/corrugated board), internally-reflective (mylar) panels in place and aids in mounting plant growth platforms, lights, etc.
+\textbf{Process}:
 \begin{itemize}
-    \item Isolation:
+    \item Insulation (\textit{keep in}):
     \begin{itemize}
-        \item Heat - Held in by mylar, blocked out by solid insulation via panels;
-        \item Light - Blocked out by panels, reflected in by mylar;
-        \item Moisture - Retained by caulking/other sealing around panels;
+        \item Heat - Insulative/reflective internal shell
+        \item Light - Reflective internal shell
+        \item Moisture - "Sealed" shell
     \end{itemize}
-    \item Mounting:
+    \item Isolation (\textit{keep out}):
     \begin{itemize}
-        \item Growth trays - Mounted to rails fastened to aluminum extrusion channels;
-        \item Lights - Many boards mounted to sheet fastened to aluminum extrusion channels;
-        \item Nozzles - Mounted to inside-bottom face of growth tray;
-        \item Sensors - Mounted to various points (per-sensor), often fastened to aluminum extrusion channels;
+        \item Heat - Insulative shell
+        \item Light - Opaque shell
+        \item Moisture - "Sealed" shell
+    \end{itemize}
+    \item $\therefore$ Frame skeleton w/ solid, internally-reflective, "sealed" panels;
+    \item Standard subframes for mounting entire subsystems modularly;
+\end{itemize}
+
+\textbf{Features}:
+\begin{itemize}
+    \item Aluminum extrusion skeleton w/ standard mounting channels;
+    \item Foam insulation panels w/ mylar internal coating slide into exoskeleton channels;
+    \item Trays - base subframe unit, adaptable; mounted to vertical internal channels for vertical repositioning:
+    \begin{itemize}
+        \item Grow trays - Hold up plants, aeroponic nozzles (See \ref{sec:aeroponics}, and misting container.
+        \item Lighting trays - Many LED boards, one driver board (See \ref{sec:lighting}).
     \end{itemize}
 \end{itemize}
 
-\textbf{Why}: Increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances. Simple and strong construction with dedicated mounting channels.
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Function}: Insulation increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances.
+    \item \textbf{Process}: Solid frame-and-panel construction is efficient for packing away, and is honestly just simple. Adaptable tray subframes make future feature development easier, and allows to modularly swap subsystems.
+    \item \textbf{Features}: Aluminum extrusion is commonly used for frames. Allows strong, repositionable mounting via channels. Foam insulation is highly insulative and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
+\end{itemize}
 
 \newpage
 
