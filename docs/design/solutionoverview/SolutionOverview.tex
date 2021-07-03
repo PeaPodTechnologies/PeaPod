@@ -48,7 +48,7 @@
 
         Revision 0.3\\
         University of Toronto Agritech\\
-        July 1st, 2021
+        July 3rd, 2021
 
     \end{center}
 \end{titlepage}
@@ -64,31 +64,31 @@
 \subsection{Purpose}
 \label{sec:purpose}
 
-The purpose of this document is to outline the fuction and features of a proposal to the PeaPod Requirements.
+The purpose of this document is to outline the fuction and features of a design proposed to meet the PeaPod Requirements.
 
-It accomplishes this by answering the following questions on a recursively-scoping basis:
+It accomplishes this by addressing the following prompts on a recursive tree basis:
 \begin{enumerate}
-    \item \textbf{What} is the design? What does it accomplish/what is its function? 
-    \item \textbf{How} does it accomplish this? What are its features? 
-    \item \textbf{Why} that functionality? Why that way?
+    \item \textbf{What} is the design's \uline{purpose} and \uline{function}?
+    \item \textbf{How} does it accomplish this? What is the \uline{method/process}?
+    \item \uline{Justification} on how the selected features meet the method better than alternatives.
 \end{enumerate}
 
 \newpage
 
 \section{Design}
 
-Functions of the design are derived from the input and output requirements.
+The purpose of the design is derived from the opportunity statement:
+
+PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop growth system, able to generate any \uline{growth environment} from a combination of independent \uline{environment parameters}, with both environment and crop growth \uline{data collection} for \uline{optimization}".
+
+The primary function of the overall design are derived from both the overall purpose as well as the system inputs and outputs as defined by the DSFC Applicant Guide \cite{applicantguide}.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=15cm]{images/blackbox.png}
     \hfill
-    \caption{"Black box" input-output model of PeaPod.}
+    \caption{"Black box" function diagram of PeaPod.}
 \end{figure}
-
-Features of the design are developed to meet the function, and are derived from the opportunity statement:
-
-PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop growth system, able to generate any \uline{growth environment} from a combination of independent \uline{environment parameters}, with both environment and crop growth \uline{data collection}".
 
 \begin{figure}[h]
     \centering
@@ -103,27 +103,31 @@ PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop grow
 \label{sec:automation}
 
 
-\textbf{What}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity.
+\textbf{Purpose}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time.
 
-\textbf{How}:
+\textbf{Function}: Accomplishes this via a central computer system with a set of connected sensors and actuators, an internal clock, and a "program" of time-series and/or control target instructions.
+
+\textbf{Process}:
+\begin{enumerate}
+    \item User inputs program:
+    \begin{itemize}
+        \item Action-at-timestamp, e.g. lights on at 08:00;
+        \item Control target with start/end, e.g. hold air temperature at 22°C from 11:00 to 18:00;
+    \end{itemize}
+    \item Notification on maintenance requirement (i.e. non-automated input/output management);
+    \item "Sense, Plan, Act" robotics/control model:
+    \begin{enumerate}
+        \item \textit{Senses} current conditions;
+        \item \textit{Plans} a path to desired condition;
+        \item \textit{Acts} to change current condition to desired condition;
+    \end{enumerate}
+\end{enumerate}
+\textbf{Justification}: 
 \begin{itemize}
-    \item Schedule:
-    \begin{itemize}
-        \item User inputs time/action pairs;
-        \item E.g. Water at 08:00, Turn light to setting X at 14:00;
-        \item \textit{Bonus:} Can notify user if action's resource is missing (i.e. water tank low)
-    \end{itemize}
-    \item Necessity:
-    \begin{itemize}
-        \item "Sense, Plan, Act" robotics/control model:
-        \begin{enumerate}
-            \item \textit{Senses} current conditions;
-            \item \textit{Plans} a path to desired condition;
-            \item \textit{Acts} to change current condition to desired condition;
-        \end{enumerate}
-    \end{itemize}
+    \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent.
+    \item \textbf{Function}: Automation implies computers. Sensor-actuator control loop-style topology is common is well suited for controlled-environment agriculture.
+    \item \textbf{Process}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}).
 \end{itemize}
-\textbf{Why}: Increased accuracy/precision over human interference, minimize human hours spent.
 
 \newpage
 
@@ -248,9 +252,12 @@ The environment control feature can be broken up into \textbf{control systems} (
 % \textbf{How}: 
 % \textbf{Why}:
 
-% \newpage
+\subsection{Optimization}
+\label{sec:optimization}
+
+\newpage
 
 % References
-% \bibliographystyle{IEEEtran}
-% \bibliography{references}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 \end{document}
