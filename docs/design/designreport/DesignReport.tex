@@ -161,7 +161,7 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 
 % 300chars
 
-The PeaPod design is a modular system of "unit cells", each consisting of a .5 x .5 x .5 meter cube frame with insertable insulation walls. This cell is able to be expanded to physically link with neighbouring cells, creating a single frame. An "expanded system" may share a single control module and have no separating wall (thus producing the same environment), or may have multiple control modules operating in either a master-slave topology (again, producing a homogenous system with no separation) or may be linked only physically (having no sharing of environment or control).
+PeaPod is a modular system of "unit cells," each consisting of a .5 x .5 x .5 meter cube frame with insertable insulation walls. This cell is expandable to physically link with neighbouring cells, creating a single frame. An "expanded system" may share a single control module and have no separating wall (thus producing the same environment), or may have multiple control modules operating in either a master-slave topology (again, producing a homogenous system with no separation) or may be linked only physically (having no sharing of environment or control).
 
 % TODO: Figures showing frame dimensions (export CAD picture?)
 
@@ -206,7 +206,7 @@ The PeaPod design is a modular system of "unit cells", each consisting of a .5 x
 
 \subsubsection{Crew Time Requirement - Setup \& Maintenance} 
 % ===== PROMPT =====
-
+PeaPod automates data collection and nutrient transfer, meaning its operational costs are near-zero. After initial assembly, crews need only check for notifications to harvest and fill resources. Aeroponic harvesting is simple, since the plant is just removed from its cup. Since nutrient balance is maintained automatically, resource refilling is simply filling nutrient syringes and the water tank to max capacity. This results in mere minutes of work per week.
 %4 hrs/week
 
 % How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
@@ -234,7 +234,28 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
 
 % ===== WRITE =====
 % 300chars
- 
+Gravity informed the use of an aeroponic system, as this allows plants to be placed in a hanging cup secured only on one side. Ambient pressure is critical for component selection regarding the tank, bladder, and nozzle, all of which are designed to produce the outputs we desire at this air pressure. Ambient temperature and humidity allow the use of mylar as an insulator, as it is of sufficient quality to work in these conditions.
+
+\subsubsection{Processing Time for Outputs} 
+% ===== PROMPT =====
+% Processing Time of food outputs (none)
+
+% How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+
+% ===== WRITE =====
+% 300chars
+By creating a solution to "grow plants," PeaPod has been designed from the ground up to produce food that requires no additional processing time. Harvesting is an instantaneous process, and raw produce is immediately consumable, as the user can decide precisely what they wish to grow.
+
+\subsubsection{Operational Data, Video, and Commands} 
+% ===== PROMPT =====
+% Must transmit this to a remote location
+
+% How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+
+% ===== WRITE =====
+% 300chars
+The defining characteristic of PeaPod is its ability to maintain a constant environment through data collection and adjustment. As a result of these sensors, which include computer vision capability, it is trivial to collect any datastream desired by the user, as well as to submit new sets of instructions to the device.
+
 \subsection{Performance Criteria}
 
 % NOTE: This section seeks to understand how the proposed food production technology addresses the performance criteria of the Challenge. Describe how the food production technology addresses the following performance criteria.
