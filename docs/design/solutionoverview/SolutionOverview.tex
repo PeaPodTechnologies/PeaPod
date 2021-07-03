@@ -103,9 +103,7 @@ The primary function of the overall design are derived from both the overall pur
 \label{sec:automation}
 
 
-\textbf{Purpose}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time.
-
-\textbf{Function}: Accomplishes this via a central computer system with a set of connected sensors and actuators, an internal clock, and a "program" of time-series and/or control target instructions.
+\textbf{Function}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time. Maintains the homogeneity of the internal environment.
 
 \textbf{Process}:
 \begin{enumerate}
@@ -122,11 +120,20 @@ The primary function of the overall design are derived from both the overall pur
         \item \textit{Acts} to change current condition to desired condition;
     \end{enumerate}
 \end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item Central computer system with internal clock and cloud connection;
+    \item Environment sensors (\textit{Sense});
+    \item "Program" of time-series and/or control target instructions (\textit{Plan});
+    \item Actuators (\textit{Act});
+\end{itemize}
+
 \textbf{Justification}: 
 \begin{itemize}
-    \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent.
-    \item \textbf{Function}: Automation implies computers. Sensor-actuator control loop-style topology is common is well suited for controlled-environment agriculture.
-    \item \textbf{Process}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}).
+    \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
+    \item \textbf{Process}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is common is well suited for controlled-environment agriculture.
+    \item \textbf{Features}: Automation implies computers. Sensors and actuators directly parallel process components.
 \end{itemize}
 
 \newpage
