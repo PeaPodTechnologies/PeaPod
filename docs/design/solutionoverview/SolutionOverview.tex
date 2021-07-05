@@ -243,7 +243,40 @@ The environment control feature can be broken up into \textbf{control systems} (
 
 \textbf{Why}: TECs have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), better control vs other methods. PID provides best control.
 
+
+\textbf{Function}: \textit{Regulates temperature} of the air in growth environment at a desired temperature through automation.
+
+\textbf{Process}:
+\begin{itemize}
+    \item Air Management (\textit{circulate air and measure temperature}):
+    \begin{itemize}
+        \item Fans - Located in growth environment to circulate air evenly.
+        \item Temperature Sensor - Located in growth environment to measure air temperature.
+    \end{itemize}
+    \item Thermal Exchange (\textit{mixing solution into water stream}):
+    \begin{itemize}
+        \item Heat Sinks - Connected to peltier devices. Exchanges heat between air and peltier devices.
+        \item Peltier Devices - Moves heat from one side to another. Subsequently moves heat into or out off growth envrionment.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Features}:
+\begin{itemize}
+    \item Both heating and cooling can be accomplished by the same peltier devices through switching the polarity of the peltier devices.
+    \item Peltier devices require no refridgerant and compressor to operate as a cooler.
+    \item Peltier devices have no moving parts (increases reliability) and are compact, only requiring low voltage dc electrical connection.
+    \item Heat sinks and peltier devices are cheap and readily available.
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Function}: Air management ensures an even temperature throughout the entire growth environment. Thermal exchange effectively pumps heat into or out of the growth envrionment.
+    \item \textbf{Process}:  Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID.
+    \item \textbf{Features}: Peltier devices are commonly used as cooling components in mini refridgerators.
+\end{itemize}
+
 \newpage
+
 
 \subsubsection{Air Humidification}
 \label{sec:airhum}
