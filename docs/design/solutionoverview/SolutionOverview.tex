@@ -188,10 +188,10 @@ The primary function of the overall design are derived from both the overall pur
 
 \textbf{Process}:
 \begin{itemize}
-    \item Solution Formulation (\textit{PH and Nutrients}):
+    \item Solution Formulation (\textit{pH and Nutrients}):
     \begin{itemize}
         \item Filter - Water is sourced from an external RO system.
-        \item PH - PH solution is added to the water either through a resevoir or manifold. This process is controlled through automation.
+        \item pH - pH solution is added to the water either through a resevoir or manifold. This process is controlled through automation.
         \item Nutrients - Nutrient solution is added to the water either through a resevoir or manifold. This process is controlled through automation.
     \end{itemize}
     \item Pressurization (\textit{Maintaining 80-100 psi}):
@@ -311,24 +311,94 @@ The environment control feature can be broken up into \textbf{control systems} (
 \subsubsection{Solution Nutrients}
 \label{sec:nutrients}
 
-\textbf{What}: Precisely dosing the correct amount of various nutrients (K${}^+$, NO${}_3^-$, etc.) to the water system at setup/water addition.
+\textbf{Function}: Formulates the correct concentration of nutrient solution by \textit{precisely injecting} the correct amounts of nutrient solution into the water stream.
 
-% TODO: List of nutrients?
+\textbf{Process}:
+\begin{itemize}
+    \item Water Supply (\textit{water into system}):
+    \begin{itemize}
+        \item RO System - External filtration system. 
+        \item Unidirectional Valve - Located between RO system and venturi syphons to prevent backflow into RO system.
+        \item Pump - Same pump as \ref{sec:aeroponics}. Draws water from RO system.
+    \end{itemize}
+    \item Injection (\textit{mixing solution into water stream}):
+    \begin{itemize}
+        \item Venturi Syphon - Located between unidirectional valve and pump. Creates a vacuum that draws nutrient solution into main water stream.
+        \item Proportional Control Solenoid - Located at side inlet of venturi syphon. Enables controlling flow of nutrient solution into water stream.
+        \item Unidirectional Valve - Located between proportional control solenoid and nutrient solution container. Prevents dilution of nutrient solution container.
+        \item Nutrient Solution Container - Holds nutrient solutions.
+    \end{itemize}
+    \item Control (\textit{maintaining solution ratio}):
+    \begin{itemize}
+        \item Flow Sensor - Located at intlet of venturi syphon. Measures flow into venturi syphon.
+        \item Solution Sensor - Located at outlet of venturi syphon. Measures solution concentration. Data is combined with flow sensor to control the porportional solenoid valve through automation.
+    \end{itemize}
+    \item $\therefore$ All appropriate fittings and tubing.
+\end{itemize}
 
-\textbf{How}: Syringe-like dosage via servo motor to set ppm based on fill volume.
+\textbf{Features}:
+\begin{itemize}
+    \item Venturi syphon is passive and relies on the main pump to draw solution into main stream.
+    \item Proportional control solenoid is very precise and allows for precision control over solution ratio.
+    \item System has minimal moving parts which increases reliability.
+    \item Both venturi syphon and proportional control solenoid can be bought as off the shelf components.
+\end{itemize}
 
-\textbf{Why}: Syringe dosage is precise, easy to refill.
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Function}: Water supply moves water into system. Injection formulates correct solution ratio. Control enables injection management through automation.
+    \item \textbf{Process}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
+    \item \textbf{Features}: All parts are common and can be bought off the shelf. Venturi syphon is a proven reliable way to mix solution into a main stream. Is used in many applications from paint sprayers to fertilizer injectors.
+\end{itemize}
+
+\newpage
+
 
 \subsubsection{Solution pH}
 \label{sec:ph}
 
-\textbf{What}: Precisely adds pH up/down solutions to set the solution pH at setup/water addition.
+\textbf{Function}: Formulates the correct pH of the solution by \textit{precisely injecting} the correct amounts of pH up/down solutions into the water stream.
 
-\textbf{How}: Same as \ref{sec:nutrients}.
+\textbf{Process}:
+\begin{itemize}
+    \item Water Supply (\textit{water into system}):
+    \begin{itemize}
+        \item RO System - External filtration system. 
+        \item Unidirectional Valve - Located between RO system and venturi syphons to prevent backflow into RO system.
+        \item Pump - Same pump as \ref{sec:aeroponics}. Draws water from RO system.
+    \end{itemize}
+    \item Injection (\textit{mixing solution into water stream}):
+    \begin{itemize}
+        \item Venturi Syphon - Located between unidirectional valve and pump. Creates a vacuum that draws nutrient solution into main water stream.
+        \item Proportional Control Solenoids - Located at side inlet of venturi syphon. Enables controlling flow of pH up/down solutions into water stream. One for each solution.
+        \item Unidirectional Valve - Located between proportional control solenoid and nutrient solution container. Prevents dilution of pH up/down solution containers.
+        \item pH Solution Containers - Holds pH up/down solutions. One for each solution.
+    \end{itemize}
+    \item Control (\textit{maintaining solution ratio}):
+    \begin{itemize}
+        \item Flow Sensor - Located at intlet of venturi syphon. Measures flow into venturi syphon.
+        \item Solution Sensor - Located at outlet of venturi syphon. Measures solution pH. Data is combined with flow sensor to control the porportional solenoid valves through automation.
+    \end{itemize}
+    \item $\therefore$ All appropriate fittings and tubing.
+\end{itemize}
 
-\textbf{Why}: Same as \ref{sec:nutrients}.
+\textbf{Features}:
+\begin{itemize}
+    \item Venturi syphon is passive and relies on the main pump to draw solution into main stream.
+    \item Proportional control solenoid is very precise and allows for precision control over solution ratio.
+    \item System has minimal moving parts which increases reliability.
+    \item Both venturi syphon and proportional control solenoid can be bought as off the shelf components.
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Function}: Water supply moves water into system. Injection formulates correct solution pH. Control enables injection management through automation.
+    \item \textbf{Process}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
+    \item \textbf{Features}: All parts are common and can be bought off the shelf. Venturi syphon is a proven reliable way to mix solution into a main stream. Is used in many applications from paint sprayers to fertilizer injectors.
+\end{itemize}
 
 \newpage
+
 
 \subsubsection{Lighting}
 \label{sec:lighting}
