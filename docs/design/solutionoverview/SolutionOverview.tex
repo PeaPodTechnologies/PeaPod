@@ -184,19 +184,50 @@ The primary function of the overall design are derived from both the overall pur
 \subsection{Aeroponics}
 \label{sec:aeroponics}
 
-\textbf{What}: Medium-free growing method that uses nutrients dissolved within atomized water.
+\textbf{Function}: \textit{Delivers} \textit{nutrients} to the plants via a fine mist. Utilizing a diaphram pump and pressure accumulator tank, filtered water with correct ph and nutrient concentration is pressurized to 80 psi before being atomized by the nozzle and subsequently abosorbed by the roots.
 
-\textbf{How}: High-pressure nozzles deliver atomized nutrient solution to plant roots. Uses parallel distribution topology.
+\textbf{Process}:
 \begin{itemize}
-    \item Pump fills tank with water that has nutrients dissolved within;
-    \item Tank uses an air bladder to hold water at desired PSI;
-    \item Switch checks line pressure and activates/deactivates pump to maintain PSI;
-    \item Solenoid ball valve feeds water to nozzle;
-    \item Nozzle atomizes water to $\approx$50 micron droplets;
-    \item T-quick connects with solenoid ball valves at every unit height feed individual trays;
+    \item Solution Formulation (\textit{PH and Nutrients}):
+    \begin{itemize}
+        \item Filter - Water is sourced from an external RO system.
+        \item PH - PH solution is added to the water either through a resevoir or manifold. This process is controlled through automation.
+        \item Nutrients - Nutrient solution is added to the water either through a resevoir or manifold. This process is controlled through automation.
+    \end{itemize}
+    \item Pressurization (\textit{Maintaining 80-100 psi}):
+    \begin{itemize}
+        \item Pump - Pump pressurizes water to 80 psi.
+        \item Accumulator Tank - Uses an air bladder to stabilize and maintain 80 psi.
+        \item Pressure Sensor - Located between tank and solenoid to monitor the pressure of the system. Data is used in automation.
+    \end{itemize}
+    \item Delivery (\textit{Atomizing}):
+    \begin{itemize}
+        \item Solenoid Valve - Located between tank and nozzle. Enables on demand misting for automation.
+        \item Quick Connector - Connects nozzle to main supply line (from solenoid). Allows grow trays to be removed quickly and efficiently. 
+        \item Nozzle - 0.4mm - 0.6mm orifice produces 5 - 50 micron water droplets. Mist is sprayed onto plant roots. 
+    \end{itemize}
+
+    \item $\therefore$ Correct fittings and tubing for all components.
+    \item All components rated for 125 psi.
 \end{itemize}
 
-\textbf{Why}: No water parameter feedback, 98\% more water efficient, minimizes pathogens and waste water.
+\textbf{Features}:
+\begin{itemize}
+    \item Pump is self-priming.
+    \item Pump has auto pressure regulation, will automatically turn off at 80 psi of back pressure.
+    \item Tank has safety valve that prevents over pressure.
+    \item Quick connects allow grow tray to be removed and installed very quickly without the need for tools.
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Function}: A high pressure aeroponics system eliminates water parameter feedback. Nozzles are located in root zone on grow platforms, grow platforms are completely passive and only require the quick connect to the main supply line. grow 5 - 50 micron droplet size is the optimal range for root abosorbtion. 
+    \item \textbf{Process}: System is medium-free, eliminating risk of pathogens developing within root zone. System is 98\% more water efficient. Using a nozzle ensures the nutrient solution is evenly distributed. Using RO filtered water eliminates the common problem of the nozzles clogging with calcium.
+    \item \textbf{Features}: Components are non-specialized and can be sourced easily at attainable prices. Diamphram pumps are reliable due to less moving parts and self-priming so the pump can draw its own water without the need for back pressure. 
+\end{itemize}
+
+\newpage
+
 
 \subsection{Environment Control}
 \label{sec:environment}
