@@ -33,13 +33,13 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 > See our [design brief](/docs/design/designbrief/DesignBrief.pdf) for details.
 
-<img src="docs/design/designproposal/images/blackbox.png" width=90%/>
+<img src="docs/design/solutionoverview/images/blackbox.png" width=90%/>
 
 ### Features
 
 > See our [proposal](/docs/design/designproposal/DesignProposal.pdf) (WIP) for details.
 
-<img src="docs/design/designproposal/images/features.png" width=70%/>
+<img src="docs/design/solutionoverview/images/features.png" width=70%/>
 
 
 ### Innovations
