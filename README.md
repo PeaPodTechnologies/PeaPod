@@ -10,20 +10,18 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 ### Table of Contents
 
-- [Background](#background)
-  - [Features](#features)
-  - [Innovations](#innovations)
-
-- [Production](#production)
-  - [Assembly](#assembly)
-  - [Installation](#installation)
-
-- [Development](#development)
-
-- [Contribution](#contribution)
-   - [Roadmap](#roadmap)
-
-- [Acknowledgements](#acknowledgements)
+- [PeaPod](#peapod)
+    - [Table of Contents](#table-of-contents)
+  - [Background](#background)
+    - [Features](#features)
+    - [Innovations](#innovations)
+  - [Production](#production)
+    - [Assembly](#assembly)
+    - [Installation](#installation)
+  - [Development](#development)
+  - [Contribution](#contribution)
+    - [Roadmap](#roadmap)
+  - [Acknowledgements](#acknowledgements)
 
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
 
