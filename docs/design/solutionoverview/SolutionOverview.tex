@@ -46,9 +46,9 @@
 
         \vspace{2.5cm}
 
-        Revision 0.3\\
+        Revision 0.4\\
         University of Toronto Agritech\\
-        July 3rd, 2021
+        July 7th, 2021
 
     \end{center}
 \end{titlepage}
@@ -102,8 +102,13 @@ The primary function of the overall design are derived from both the overall pur
 \subsection{Automation}
 \label{sec:automation}
 
+\textbf{Purpose}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time. Maintains the homogeneity of the internal environment.
 
-\textbf{Function}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time. Maintains the homogeneity of the internal environment.
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, network connection, environment sensor reading signals, program
+    \item \textbf{Outputs}: Actuator control signals, crew messaging
+\end{itemize}
 
 \textbf{Process}:
 \begin{enumerate}
@@ -123,7 +128,7 @@ The primary function of the overall design are derived from both the overall pur
 
 \textbf{Features}:
 \begin{itemize}
-    \item Central computer system with internal clock and cloud connection;
+    \item Central computer system with internal clock and network connection;
     \item Environment sensors (\textit{Sense});
     \item "Program" of time-series and/or control target instructions (\textit{Plan});
     \item Actuators (\textit{Act});
