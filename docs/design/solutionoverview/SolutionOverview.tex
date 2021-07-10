@@ -314,42 +314,33 @@ The environment control feature can be broken up into \textbf{control systems} (
 \subsubsection{Air Temperature}
 \label{sec:airtemp}
 
-\textbf{What}: Maintaining desired air temperature within the enclosure.
+\textbf{Purpose}: Maintaining desired air temperature within the enclosure.
 
-\textbf{How}: Thermoelectric heating/cooling system (peltier tiles w/ polarity switch, 'dimming' current control, PID) on a heat sink w/ fan, feedback from distributed temp sensors.
-
-\textbf{Why}: TECs have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), better control vs other methods. PID provides best control.
-
-
-\textbf{Function}: \textit{Regulates temperature} of the air in growth environment at a desired temperature through automation.
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation})
+    \item \textbf{Outputs}: Heating/cooling, air circulation, air temperature signal (\ref{sec:automation})
+\end{itemize}
 
 \textbf{Method}:
 \begin{itemize}
-    \item Air Management (\textit{circulate air and measure temperature}):
-    \begin{itemize}
-        \item Fans - Located in growth environment to circulate air evenly.
-        \item Temperature Sensor - Located in growth environment to measure air temperature.
-    \end{itemize}
-    \item Thermal Exchange (\textit{mixing solution into water stream}):
-    \begin{itemize}
-        \item Heat Sinks - Connected to peltier devices. Exchanges heat between air and peltier devices.
-        \item Peltier Devices - Moves heat from one side to another. Subsequently moves heat into or out off growth envrionment.
-    \end{itemize}
+    \item Air is circulated and temperature is measured;
+    \item Temperature is used to inform control signal;
+    \item Heat is pumped into or out of the box (direction and magnitude depending on the control signal) and radiated;
 \end{itemize}
 
 \textbf{Features}:
 \begin{itemize}
-    \item Both heating and cooling can be accomplished by the same peltier devices through switching the polarity of the peltier devices.
-    \item Peltier devices require no refridgerant and compressor to operate as a cooler.
-    \item Peltier devices have no moving parts (increases reliability) and are compact, only requiring low voltage dc electrical connection.
-    \item Heat sinks and peltier devices are cheap and readily available.
+    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a PID control loop (\ref{sec:automation});
+    \item \textit{Peltier Devices}: Pumps heat from one side of a tile to the other via the thermoelectric effect. Direction and magnitude of heat transferred depends on control signal polarity (\textit{H-bridge}) and voltage (respectively).
+    \item \textit{Heat Sinks}: Connected to peltier devices. Exchanges heat between air and peltier devices.
+    \item \textit{Fans}: Located on heat sinks and in growth environment to circulate air for better heat dispersal and even temperature distribution.
 \end{itemize}
 
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Function}: Air management ensures an even temperature throughout the entire growth environment. Thermal exchange effectively pumps heat into or out of the growth envrionment.
-    \item \textbf{Method}:  Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID.
-    \item \textbf{Features}: Peltier devices are commonly used as cooling components in mini refridgerators.
+    \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically.
 \end{itemize}
 
 \newpage
