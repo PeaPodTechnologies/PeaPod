@@ -260,7 +260,7 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item \textit{Inline Water Heater/Cooler}: Thermoelectric heater/cooler
     \item \textit{Accumulator Tank}: Uses an air bladder to create and stabilize pressure.
     \item \textit{Pressure Sensor} reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
-    \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per ). See \ref{sec:manifold}.
+    \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per solution). See \ref{sec:manifold}.
     \item \textit{Solenoid Valve} - Enables on-demand (\ref{sec:automation}) misting.
     \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
     \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4$\to$0.6mm orifice produces 5$\to$50 micron water droplets. %TODO: Source??
@@ -278,29 +278,33 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 \subsubsection{Solution Injection Manifold}
 \label{sec:manifold}
 
-\textbf{Purpose}:
+\textbf{Purpose}: A manifold of venturi-based \textit{siphons} for in-line, \textit{adjustable flow-ratio} injection and mixing of nutrient and pH-adjustment solutions.
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}:
-    \item \textbf{Outputs}:
+    \item \textbf{Inputs}: Pressurized RO water, per-solution flow-ratio control signal (calculated from desired per-nutrient concentrations; \ref{sec:program}), pH flow-ratio control signal (calculated from desired pH; \ref{sec:program})
+    \item \textbf{Outputs}: Pressurized mixed solution with set pH and nutrient concentrations
 \end{itemize}
 
 \textbf{Method}:
 \begin{enumerate}
-    \item 
+    \item Manifold splits off into branches (one per solution)
+    \item Each solution branch:
+    \begin{itemize}
+        \item A venturi siphon for fixed flow-ratio injection;
+        \item An adjustable-flow valve controlling solution flow rate;
+    \end{itemize}
+    \item Manifold recombines
 \end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
-    \item 
+    \item \textit{Siphon Injectors}
+    \item \textit{Needle Valves}: Completely adjustable flow control
+    \item \textit{One-way Valves}: Prevents backflow through siphon inlet
 \end{itemize}
 
-\textbf{Justification}:
-\begin{itemize}
-    \item \textbf{Purpose}:
-    \item \textbf{Method}:
-\end{itemize}
+% TODO: Justification?
 
 \subsection{Environment Control}
 \label{sec:environment}
