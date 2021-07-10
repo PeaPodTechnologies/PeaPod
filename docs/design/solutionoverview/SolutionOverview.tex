@@ -112,7 +112,7 @@ The primary function of the overall design are derived from both the overall pur
     \item \textbf{Outputs}: Actuator control signals, crew messaging
 \end{itemize}
 
-\textbf{Process}:
+\textbf{Method}:
 \begin{enumerate}
     \item User inputs program:
     \begin{itemize}
@@ -139,7 +139,7 @@ The primary function of the overall design are derived from both the overall pur
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
-    \item \textbf{Process}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is common is well suited for controlled-environment agriculture.
+    \item \textbf{Method}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is common is well suited for controlled-environment agriculture.
 \end{itemize}
 
 \subsubsection{Computer System}
@@ -148,15 +148,19 @@ The primary function of the overall design are derived from both the overall pur
 \textbf{Purpose}: Primary operating infrastructure. Automation, data transmission, remote control.
 
 \textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}:
+    \item \textbf{Outputs}:
+\end{itemize}
 
-\textbf{Process}:
+\textbf{Method}:
 
 \textbf{Features}:
 
 \textbf{Justification}:
 \begin{itemize}
     \item \textbf{Purpose}:
-    \item \textbf{Process}:
+    \item \textbf{Method}:
 \end{itemize}
 
 \subsubsection{Program}
@@ -165,15 +169,19 @@ The primary function of the overall design are derived from both the overall pur
 \textbf{Purpose}: Set of environment parameter instructions for the automation system.
 
 \textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}:
+    \item \textbf{Outputs}:
+\end{itemize}
 
-\textbf{Process}:
+\textbf{Method}:
 
 \textbf{Features}:
 
 \textbf{Justification}:
 \begin{itemize}
     \item \textbf{Purpose}:
-    \item \textbf{Process}:
+    \item \textbf{Method}:
 \end{itemize}
 
 \newpage
@@ -181,9 +189,9 @@ The primary function of the overall design are derived from both the overall pur
 \subsection{Housing}
 \label{sec:housing}
 
-\textbf{Function}: \textit{Isolates} and \textit{Insulates} growth environment from exterior environment (heat, light, humidity). Provides structural integrity and mounting points for other subsystems (\textit{Frame}).
+\textbf{Purpose \& Function}: \textit{Isolates} and \textit{Insulates} growth environment from exterior environment (heat, light, humidity). Provides structural integrity and mounting points for other subsystems (\textit{Frame}).
 
-\textbf{Process}:
+\textbf{Method}:
 \begin{itemize}
     \item Insulation (\textit{keep in}):
     \begin{itemize}
@@ -205,17 +213,17 @@ The primary function of the overall design are derived from both the overall pur
 \begin{itemize}
     \item Aluminum extrusion skeleton w/ standard mounting channels;
     \item Foam insulation panels w/ mylar internal coating slide into exoskeleton channels;
-    \item Trays - base subframe unit, adaptable; mounted to vertical internal channels for vertical repositioning:
+    \item Trays - base subframe unit, adaptable; mounted to vertical internal channels for vertical repositioning; all connections are \textit{quick-disconnect} (i.e. quick-connect tubing for grow tray, push connectors for lighting):
     \begin{itemize}
-        \item Grow trays - Hold up plants, aeroponic nozzles (See \ref{sec:aeroponics}, and misting container.
-        \item Lighting trays - Many LED boards, one driver board (See \ref{sec:lighting}).
+        \item Grow trays - Support plants (via grow cups), aeroponic nozzles (See \ref{sec:aeroponics}, and misting container.
+        \item Lighting trays - Support LED boards, driver board (See \ref{sec:lighting}).
     \end{itemize}
 \end{itemize}
 
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Function}: Insulation increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances.
-    \item \textbf{Process}: Solid frame-and-panel construction is efficient for packing away, and is honestly just simple. Adaptable tray subframes make future feature development easier, and allows to modularly swap subsystems.
+    \item \textbf{Method}: Solid frame-and-panel construction is efficient for packing away, and is honestly just simple. Adaptable tray subframes make future feature development easier, and allows to modularly swap subsystems.
     \item \textbf{Features}: Aluminum extrusion is commonly used for frames. Allows strong, repositionable mounting via channels. Foam insulation is highly insulative and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
 \end{itemize}
 
@@ -224,50 +232,75 @@ The primary function of the overall design are derived from both the overall pur
 \subsection{Aeroponics}
 \label{sec:aeroponics}
 
-\textbf{Function}: \textit{Delivers} \textit{nutrients} to the plants via a fine mist. Utilizing a diaphram pump and pressure accumulator tank, filtered water with correct ph and nutrient concentration is pressurized to 80 psi before being atomized by the nozzle and subsequently abosorbed by the roots.
+\textbf{Purpose}: Delivers \textit{nutrients} and \textit{pH}-balanced, \textit{temperature}-controlled \textit{water} to the plants via a \textit{fine mist} (~50 micron mean droplet diameter).
 
-\textbf{Process}:
+\textbf{Function}:
 \begin{itemize}
-    \item Solution Formulation (\textit{pH and Nutrients}):
-    \begin{itemize}
-        \item Filter - Water is sourced from an external RO system.
-        \item pH - pH solution is added to the water either through a resevoir or manifold. This process is controlled through automation.
-        \item Nutrients - Nutrient solution is added to the water either through a resevoir or manifold. This process is controlled through automation.
-    \end{itemize}
-    \item Pressurization (\textit{Maintaining 80-100 psi}):
-    \begin{itemize}
-        \item Pump - Pump pressurizes water to 80 psi.
-        \item Accumulator Tank - Uses an air bladder to stabilize and maintain 80 psi.
-        \item Pressure Sensor - Located between tank and solenoid to monitor the pressure of the system. Data is used in automation.
-    \end{itemize}
-    \item Delivery (\textit{Atomizing}):
-    \begin{itemize}
-        \item Solenoid Valve - Located between tank and nozzle. Enables on demand misting for automation.
-        \item Quick Connector - Connects nozzle to main supply line (from solenoid). Allows grow trays to be removed quickly and efficiently. 
-        \item Nozzle - 0.4mm - 0.6mm orifice produces 5 - 50 micron water droplets. Mist is sprayed onto plant roots. 
-    \end{itemize}
-
-    \item $\therefore$ Correct fittings and tubing for all components.
-    \item All components rated for 125 psi.
+    \item \textbf{Inputs}: Filtered/RO water under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off relay to pump power), nozzle control (on/off relay to solenoid)
+    \item \textbf{Outputs}: Mist
 \end{itemize}
 
-\textbf{Features}:
+Utilizing a diaphram pump and pressure accumulator tank, filtered water with correct ph and nutrient concentration is pressurized to 80 psi before being atomized by the nozzle and subsequently abosorbed by the roots.
+
+\textbf{Method}:
+\begin{itemize} 
+    \item Water is sourced from an external RO system with positive pressure;
+    \item Water is pressurized to constant 80psi;
+    \item Water is heated or cooled to a given temp (\ref{sec:program}); % TODO: Add water temp to environment control?
+    \item Nutrient and pH-adjustment solutions are mixed in-line at an adjustable ratio (\ref{sec:program}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
+    \item Flow to nozzle is controlled (on/off) (\ref{sec:automation}
+    );
+    \item Nozzle turns pressurized water into mist;
+\end{itemize}
+
+\textbf{Features} (in order of plumbing; source $\to$ nozzle):
 \begin{itemize}
-    \item Pump is self-priming.
-    \item Pump has auto pressure regulation, will automatically turn off at 80 psi of back pressure.
-    \item Tank has safety valve that prevents over pressure.
-    \item Quick connects allow grow tray to be removed and installed very quickly without the need for tools.
+    \item \textit{Water Source}: Input for filtered, reverse-osmosis water.
+    \item \textit{Diaphragm Pump}: Self-priming, auto-shutoff at 80psi. Power is controlled by external relay signal (\ref{sec:automation}).
+    \item \textit{Inline Water Heater/Cooler}: Thermoelectric heater/cooler
+    \item \textit{Accumulator Tank}: Uses an air bladder to create and stabilize pressure.
+    \item \textit{Pressure Sensor} reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
+    \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per ). See \ref{sec:manifold}.
+    \item \textit{Solenoid Valve} - Enables on-demand (\ref{sec:automation}) misting.
+    \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
+    \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4$\to$0.6mm orifice produces 5$\to$50 micron water droplets. %TODO: Source??
 \end{itemize}
 
 \textbf{Justification}: 
 \begin{itemize}
-    \item \textbf{Function}: A high pressure aeroponics system eliminates water parameter feedback. Nozzles are located in root zone on grow platforms, grow platforms are completely passive and only require the quick connect to the main supply line. grow 5 - 50 micron droplet size is the optimal range for root abosorbtion. 
-    \item \textbf{Process}: System is medium-free, eliminating risk of pathogens developing within root zone. System is 98\% more water efficient. Using a nozzle ensures the nutrient solution is evenly distributed. Using RO filtered water eliminates the common problem of the nozzles clogging with calcium.
-    \item \textbf{Features}: Components are non-specialized and can be sourced easily at attainable prices. Diamphram pumps are reliable due to less moving parts and self-priming so the pump can draw its own water without the need for back pressure. 
+    \item \textbf{Purpose}: A high pressure aeroponics system eliminates water parameter feedback, and is 98\% more water efficient than traditional farming.
+    \item \textbf{Function}: RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.
+    \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. 5-50 micron mean droplet size is optimal for plant growth. %TODO: Source?? also more detail here
 \end{itemize}
 
 \newpage
 
+\subsubsection{Solution Injection Manifold}
+\label{sec:manifold}
+
+\textbf{Purpose}:
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}:
+    \item \textbf{Outputs}:
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\textbf{Justification}:
+\begin{itemize}
+    \item \textbf{Purpose}:
+    \item \textbf{Method}:
+\end{itemize}
 
 \subsection{Environment Control}
 \label{sec:environment}
@@ -286,7 +319,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 
 \textbf{Function}: \textit{Regulates temperature} of the air in growth environment at a desired temperature through automation.
 
-\textbf{Process}:
+\textbf{Method}:
 \begin{itemize}
     \item Air Management (\textit{circulate air and measure temperature}):
     \begin{itemize}
@@ -311,7 +344,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Function}: Air management ensures an even temperature throughout the entire growth environment. Thermal exchange effectively pumps heat into or out of the growth envrionment.
-    \item \textbf{Process}:  Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID.
+    \item \textbf{Method}:  Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID.
     \item \textbf{Features}: Peltier devices are commonly used as cooling components in mini refridgerators.
 \end{itemize}
 
@@ -332,7 +365,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 
 \textbf{Function}: \textit{Removes moisture} from the growth environment on demand. Used in conjunction with humidity sensor and humidification system to maintain a desired humidity.
 
-\textbf{Process}:
+\textbf{Method}:
 \begin{itemize}
     \item Circulation (\textit{moving air through system}):
     \begin{itemize}
@@ -364,7 +397,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Function}: Silica beads are completely passive and provide very efficient dehumidification.
-    \item \textbf{Process}: Cartridges make replacing the silica beads very quick and easy. 
+    \item \textbf{Method}: Cartridges make replacing the silica beads very quick and easy. 
     \item \textbf{Features}: Silica gel is non-toxic and non-organic. Silica beads can be sourced easily and are not too expensive. Silica beads change color to indicate saturation, making it easy to tell when they need to be rejuvenated.
 \end{itemize}
 
@@ -386,7 +419,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 
 \textbf{Function}: Formulates the correct concentration of nutrient solution by \textit{precisely injecting} the correct amounts of nutrient solution into the water stream.
 
-\textbf{Process}:
+\textbf{Method}:
 \begin{itemize}
     \item Water Supply (\textit{water into system}):
     \begin{itemize}
@@ -420,7 +453,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Function}: Water supply moves water into system. Injection formulates correct solution ratio. Control enables injection management through automation.
-    \item \textbf{Process}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
+    \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
     \item \textbf{Features}: All parts are common and can be bought off the shelf. Venturi syphon is a proven reliable way to mix solution into a main stream. Is used in many applications from paint sprayers to fertilizer injectors.
 \end{itemize}
 
@@ -432,7 +465,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 
 \textbf{Function}: Formulates the correct pH of the solution by \textit{precisely injecting} the correct amounts of pH up/down solutions into the water stream.
 
-\textbf{Process}:
+\textbf{Method}:
 \begin{itemize}
     \item Water Supply (\textit{water into system}):
     \begin{itemize}
@@ -466,7 +499,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Function}: Water supply moves water into system. Injection formulates correct solution pH. Control enables injection management through automation.
-    \item \textbf{Process}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
+    \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
     \item \textbf{Features}: All parts are common and can be bought off the shelf. Venturi syphon is a proven reliable way to mix solution into a main stream. Is used in many applications from paint sprayers to fertilizer injectors.
 \end{itemize}
 
@@ -491,7 +524,7 @@ The environment control feature can be broken up into \textbf{control systems} (
 
 \textbf{Function}: Continuously improve yield/etc. of crops as more environment parameter and crop metric data is gathered.
 
-\textbf{Process}: 
+\textbf{Method}: 
 
 Assume a plant's growth rate (or state change) is related to its current internal state $\vec P \in \R^n$ (for $n$ plant metrics) and the environment conditions $\vec E \in \R^m$ (for $m$ environment parameters). Let these both be functions $\vec P (t),\vec E(t)$ defined at each $t$, where $t=0$ indicates the time of planting. Assume that this relationship is constant for all members of a given species.
 
@@ -526,15 +559,25 @@ $$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
 % \textbf{Purpose}:
 
 % \textbf{Function}:
+% \begin{itemize}
+%     \item \textbf{Inputs}:
+%     \item \textbf{Outputs}:
+% \end{itemize}
 
-% \textbf{Process}:
+% \textbf{Method}:
+% \begin{enumerate}
+%     \item 
+% \end{enumerate}
 
 % \textbf{Features}:
+% \begin{itemize}
+%     \item 
+% \end{itemize}
 
 % \textbf{Justification}:
 % \begin{itemize}
 %     \item \textbf{Purpose}:
-%     \item \textbf{Process}:
+%     \item \textbf{Method}:
 % \end{itemize}
 
 % References
