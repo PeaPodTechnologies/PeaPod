@@ -345,20 +345,39 @@ The environment control feature can be broken up into \textbf{control systems} (
 
 \newpage
 
-
 \subsubsection{Air Humidification}
 \label{sec:airhum}
 
-\textbf{What}: Adding water vapour to air.
+\textbf{Purpose}: Increasing air humidity on command.
 
-\textbf{How}: Ultrasonic nebulizer (piezo disc w/ custom driver circuit), RO water.
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water;
+    \item \textbf{Outputs}: Water vapour;
+\end{itemize}
 
-\textbf{Why}: Piezo for droplet size, commonly used; RO for purity of water vapour.
+\textbf{Method}:
+\begin{enumerate}
+    \item Power and control signal activate a nebulizer driver;
+    \item Water is delivered to the nebulizer and nebulized;
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Driver Circuit}: Fixed-frequency (113kHz) 555 timer circuit driving an amplifier/LC circuit generates a 25V AC signal. %TODO: why 113kHz?
+    \item \textit{Mesh Piezo Disc}: Driven by the circuit, generates a vapour when water is passed over it.
+\end{itemize}
+
+\textbf{Justification}:
+\begin{itemize}
+    \item \textbf{Function}: RO water contains no minerals/particulate, and as such prevents the common problem of piezo/mesh calcification.
+    \item \textbf{Method \& Features}: The nebulizer approach is easily electrically controllable and produces a consistent fine vapour. 
+\end{itemize}
 
 \subsubsection{Air Dehumidification}
 \label{sec:dehum}
 
-\textbf{Function}: \textit{Removes moisture} from the growth environment on demand. Used in conjunction with humidity sensor and humidification system to maintain a desired humidity.
+\textbf{Purpose}: \textit{Removes moisture} from the growth environment on demand. Used in conjunction with humidity sensor and humidification system to maintain a desired humidity.
 
 \textbf{Method}:
 \begin{itemize}
