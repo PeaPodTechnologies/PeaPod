@@ -50,9 +50,9 @@
 
         \vspace{2.5cm}
 
-        Revision 0.2\\
+        Revision 0.3\\
         University of Toronto Agritech\\
-        July 1st, 2021
+        July 11th, 2021
 
     \end{center}
 \end{titlepage}
@@ -169,7 +169,15 @@ PeaPod is a modular system of "unit cells," each consisting of a .5 x .5 x .5 me
 
 %Avg <1500 W, Peak < 3000 W
 
-% How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+% How did we consider this constra≈int in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+
+Electrical power is consumed by most subsystems. Most are negligible (<100W, i.e. the computer), so only the greatest consuming systems are listed.
+
+\textit{Lighting} - Highly efficient drivers (up to 96\%) were selected to minimize energy waste. 5 LED series x 3 LEDs per series x 9 LED boards = 135 LEDs. The maximum consumption per LED is 3V @1.2A = 3.6W. Max Consumption: \textbf{486W}
+
+\textit{Air \& Water Thermoregulation} - Although less energy efficient than compressor- or resistance-based heating/cooling mechanisms, this is offset by both their reduced footprint and complexity, as well as the ability to be directly controlled electrically. This allows us to further tune the efficiency via PID control. The maximum consumption per thermoelectric tile is 8.5A @15.4V = 131W. Max Consumption (2+2 Tiles): \textbf{524W}
+
+\textbf{Overall Max Consumption: 1000-1200W}\footnote{\textit{NOTE}: This is running ALL LEDs and both air and water thermoregulation at max power. The system's power output is over-engineered, and will likely never be used this way in most use cases.}
 
 % 300chars
 
