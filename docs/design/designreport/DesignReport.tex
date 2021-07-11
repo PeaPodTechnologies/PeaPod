@@ -217,6 +217,39 @@ Through the optimization of volume, the mass of PeaPod was indirectly minimized.
 
 % How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection?
 
+All of PeaPod's operation is automated, save for a select few maintenance tasks. This is controlled by a central computer, which uses a "program" to enact the desired environment at each point in time throughout the plant life cycle. This program comprises of a set of time-series instructions concerning the various environment parameters (i.e. set leaf zone air temperature to 23 degrees C at 16:30 each day), including:
+\begin{itemize}
+    \item Leaf zone air temperature
+    \item Leaf zone humidity
+    \item Aeroponics nozzle activation (on/off)
+    \item Root zone/aeroponics spray temperature
+    \item Light activation (\% per LED series)
+    \item etc.
+\end{itemize}
+
+Alongside and fuelling this automation is an array of environment parameter (aka feedback) and plant metric sensors. These include:
+\begin{itemize}
+    \item Leaf zone air temperature
+    \item Leaf zone air humidity
+    \item Water temperature (pre-aerosolization)
+    \item Root zone air temperature
+    \item Leaf zone CO${}_2$ ppm
+    \item Leaf zone top-down and side camera capture/live feed, with computer vision analysis for:
+    \begin{itemize}
+        \item Leaf health indicators (i.e. leaf tip burn, leaf curl, chlorosis)
+        \item Leaf count, size distribution
+        \item Leaf density
+        \item Canopy dimensions/surface area
+        \item Plant height
+        \item Fruit/harvest body size, ripeness
+        \item etc.
+    \end{itemize}
+\end{itemize}
+
+The feedback sensors provide the computer with information that will influence the control it exerts. For example, if the program indicates the leaf zone temperature should be set to 22 degrees C, the computer would apply greater power to the heater if the current temperature was 18 degrees C as opposed to 21 degrees C. This forms a control loop for each parameter, relying on one of many control functions (bang-bang, PID, etc.).
+
+This data collection, accompanied by a number of "known" quanities (i.e. aeroponics flow rate) allows for a full quantitative description of the internal growth environment to be displayed on-board and remotely, instantaneously, with live updates.
+
 % ===== WRITE =====
 % 300chars
 
