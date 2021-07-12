@@ -9,6 +9,7 @@
 \usepackage{fancyhdr}
 \usepackage{enumitem}
 \usepackage[toc,page]{appendix}
+\setlist{noitemsep}
 
 % Page layout (margins, size, line spacing)
 \geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
@@ -79,11 +80,13 @@ It accomplishes this via the following process:
 
 \section{Design}
 
-The purpose of the design is derived from the opportunity statement:
+\textbf{Purpose}: The purpose of the design is derived from the opportunity statement:
 
 PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop growth system, able to generate any \uline{growth environment} from a combination of independent \uline{environment parameters}, with both environment and crop growth \uline{data collection} for \uline{optimization}".
 
 The primary function of the overall design are derived from both the overall purpose as well as the system inputs and outputs as defined by the DSFC Applicant Guide \cite{applicantguide}.
+
+\textbf{Function}:
 
 \begin{figure}[h]
     \centering
@@ -91,6 +94,8 @@ The primary function of the overall design are derived from both the overall pur
     \hfill
     \caption{"Black box" function diagram of PeaPod.}
 \end{figure}
+
+\textbf{Method \& Features}: 
 
 \begin{figure}[h]
     \centering
@@ -119,7 +124,7 @@ The primary function of the overall design are derived from both the overall pur
         \item Action-at-timestamp, e.g. lights on at 08:00;
         \item Control target with start/end, e.g. hold air temperature at 22°C from 11:00 to 18:00;
     \end{itemize}
-    \item Notification on maintenance requirement (i.e. non-automated input/output management);
+    \item Notification on maintenance requirement (i.e. non-automated input/output management, refills, repairs, etc.);
     \item "Sense, Plan, Act" robotics/control model:
     \begin{enumerate}
         \item \textit{Senses} current conditions;
@@ -132,7 +137,7 @@ The primary function of the overall design are derived from both the overall pur
 \begin{itemize}
     \item Central \textbf{computer system} with internal clock and network connection;
     \item Environment sensors (\textit{Sense}) for each \textbf{environmental control} (\ref{sec:environment});
-    \item \textbf{Program} (\ref{sec:program}) of time-series and/or control target instructions (\textit{Plan});
+    \item \textbf{Program} of time-series and/or control target instructions (\textit{Plan});
     \item Actuators (\textit{Act}) for each \textbf{environmental control} (\ref{sec:environment});
 \end{itemize}
 
@@ -266,14 +271,14 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4$\to$0.6mm orifice produces 5$\to$50 micron water droplets. %TODO: Source??
 \end{itemize}
 
+\newpage
+
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Purpose}: A high pressure aeroponics system eliminates water parameter feedback, and is 98\% more water efficient than traditional farming.
     \item \textbf{Function}: RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.
     \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. 5-50 micron mean droplet size is optimal for plant growth. %TODO: Source?? also more detail here
 \end{itemize}
-
-\newpage
 
 \subsubsection{Solution Injection Manifold}
 \label{sec:manifold}
@@ -305,6 +310,8 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 \end{itemize}
 
 % TODO: Justification?
+
+\newpage
 
 \subsection{Environment Control}
 \label{sec:environment}
