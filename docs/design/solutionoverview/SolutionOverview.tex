@@ -316,7 +316,41 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 \subsection{Environment Control}
 \label{sec:environment}
 
-The environment control feature can be broken up into \textbf{control systems} (\ref{sec:airtemp}-\ref{sec:dehum}; sometimes in two parts) and \textbf{set systems} (\ref{sec:watertemp}-\ref{sec:lighting}).
+\textbf{Purpose}: Generating the internal plant growth environment, with control over all relevant environment parameters:
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, water, environment control parameters (as signals)
+    \item \textbf{Outputs}: Controlled environment (optimal for plant growth)
+\end{itemize}
+
+\textbf{Method} (informed by \ref{sec:automation}):
+\begin{itemize}
+    \item Control System Parameters:
+    \begin{itemize}
+        \item Leaf zone air temperature;
+        \item Leaf zone humidity;
+        \item Root zone/aeroponics spray temperature;
+    \end{itemize}
+    \item Set Parameters:
+    \begin{itemize}
+        \item Lighting spectrum and intensity;
+        \item Aeroponics delivery/"flow" rate;
+        \item Aeroponics solution per-nutrient concentrations;
+        \item Aeroponics solution pH;
+    \end{itemize}
+\end{itemize}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Air Heater, Cooler} (\ref{sec:airtemp})
+    \item \textit{Air Humidifier} (\ref{sec:airhum}), \textit{Dehumidifier} (\ref{sec:dehum})
+    \item \textit{Aeroponics System} (\ref{sec:aeroponics}), with:
+    \begin{itemize}
+        \item \textit{Solution Heater, Cooler} (\ref{sec:watertemp})
+        \item \textit{Solution Dosing} (\ref{sec:nutrients}, \ref{sec:ph})
+    \end{itemize}
+    \item \textit{Lighting} (\ref{sec:lighting})
+\end{itemize}
 
 \subsubsection{Air Temperature}
 \label{sec:airtemp}
