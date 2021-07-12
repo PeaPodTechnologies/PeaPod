@@ -50,9 +50,9 @@
 
         \vspace{2.5cm}
 
-        Revision 0.2\\
+        Revision 0.3\\
         University of Toronto Agritech\\
-        July 1st, 2021
+        July 11th, 2021
 
     \end{center}
 \end{titlepage}
@@ -70,8 +70,10 @@ The ability to precisely control environmental parameters allows our system to g
 \section{Design Report}
 
 \subsection{Description}
+\label{sec:description}
 
 \textbf{Part A}
+\label{sec:description-a}
 
 % ===== PROMPT =====
 
@@ -114,6 +116,7 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 \end{figure}
 
 \textbf{Part B:}
+\label{sec:description-b}
 
 % ===== PROMPT =====
 
@@ -135,6 +138,7 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 % Priming for next cycle is dependent on required maintenance as informed by PeaPod
 
 \subsection{Innovation}
+\label{sec:innovation}
 
 % ===== PROMPT =====
 
@@ -147,6 +151,7 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 % Environment optimization for output metrics
 
 \subsection{Adherence to Constraints}
+\label{sec:constraints}
 % ===== PROMPT =====
 
 % Whether in space or in a remote community on Earth, there are several constraints that your food production technology should adhere to. This question outlines key constraints below that your technology will need to address.
@@ -154,6 +159,7 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 % NOTE: In Phase 1, Adherence to Constraints is not meant to determine whether the Design Report itself is complete in including all the required information. This question is meant to ensure that Teams have considered the constraints, and that the food production technology design, at a minimum, falls within those constraints. In future Phases, Teams’ food production technologies will be evaluated and scored on whether or not the design stays within the constraints so that it ultimately can meet CSA’s needs and deliver value.
 
 \subsubsection{Outer Dimensions, Volume} 
+\label{sec:constraints-volume}
 
 %Fits through 1.07m x 1.90m doorway; W < 1.820m, D < 2.438m, H < 2.591m; V<= 2m^3
 
@@ -161,15 +167,30 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 
 % 300chars
 
+PeaPod is a modular system of "unit cells," each consisting of a .5 x .5 x .5 meter cube frame with insertable insulation walls. This cell is expandable to physically link with neighbouring cells, creating a single frame. An "expanded system" may share a single control module and have no separating wall (thus producing the same environment), or may have multiple control modules operating in either a master-slave topology (again, producing a homogenous system with no separation) or may be linked only physically (having no sharing of environment or control). The adaptibility of PeaPod ensures it meets the constraints of its environment while yielding as much produce as possible.
+
+% TODO: Figures showing frame dimensions (export CAD picture?)
+
 \subsubsection{Power Consumption} 
+\label{sec:constraints-power}
 
 %Avg <1500 W, Peak < 3000 W
 
-% How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+% How did we consider this constra≈int in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+
+Electrical power is consumed by most subsystems. Most are negligible (<100W, i.e. the computer), so only the greatest consuming systems are listed.
+
+\textit{Lighting} - Highly efficient drivers (up to 96\%) were selected to minimize energy waste. 5 LED series x 3 LEDs per series x 9 LED boards = 135 LEDs\footnote{Per unit (see \ref{sec:constraints-volume})}. The maximum consumption per LED is 3V @1.2A = 3.6W. Max Consumption: \textbf{486W}\footnotemark[1]
+
+\textit{Air \& Water Thermoregulation} - Although less energy efficient than compressor- or resistance-based heating/cooling mechanisms, this is offset by both their reduced footprint and complexity, as well as the ability to be directly controlled electrically. This allows us to further tune the efficiency via PID control. The maximum consumption per thermoelectric tile is 8.5A @15.4V = 131W\footnote{Per-unit, although neighbouring units may be configured to run in a "follow" configuration, where they mimic the environment of the "host" unit, and may omit this system.}. Max Consumption (2+2 Tiles\footnotemark[1]): \textbf{524W}
+
+\textbf{Overall Max Consumption: 1000-1200W}\footnote{\textit{NOTE}: This is running ALL LEDs and both air and water thermoregulation at max power. The system's power output is over-engineered, and will likely never be used this way in most use cases.}
+\newpage
 
 % 300chars
 
 \subsubsection{Water Consumption}
+\label{sec:constraints-water}
 
 % ===== PROMPT =====
 
@@ -180,29 +201,76 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 % ===== WRITE =====
 % 300chars
 
+Water is consumed by two systems:
+
+\textit{Humidification}: By using a mesh nebulizer to produce smaller and more consistent droplets (vapour), a less non-vapour mist was produced, thus resulting in a greater overall water consumption efficiency.
+
+\textit{Aeroponics}: Aeroponics by design uses far less water than traditional farming (up to 98\%). In addition, higher quality nozzles with adjustable directionality allow for more of the water to be sprayed directly at the root zone and with better and more consistent droplet sizes for better uptake (5-50 micron mean droplet diameter). Finally, by enclosing the root zone in a waterproof bag, no water escapes, and excess/runoff water collected at the bottom of the bag can be removed via an outlet and recycled (RO reclaimer).
+
 \subsubsection{Mass} 
+\label{sec:constraints-mass}
 % ===== PROMPT =====
 
 %Unconstrained
-
+Through the optimization of volume, the mass of PeaPod was indirectly minimized. By using smaller parts, power consumption and complexity was reduced along with volume and mass. PeaPod's mass was also optimized through minimizing density across components. Aluminum was chosen for the framing due to it's high strength to density ratio. For insulation, a less dense foam coated in mylar was used to maintain PeaPod's insulating capabilities while reducing mass.
 % How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection?
-
+%aluminum cause good
+%mylar coated
 % ===== WRITE =====
 % 300chars
 
 \subsubsection{Data Connection} 
+\label{sec:constraints-data}
 % ===== PROMPT =====
 
 %Unconstrained
 
 % How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection?
 
+\textit{Automation}: All of PeaPod's operation is automated, save for a select few maintenance tasks. This is controlled by a central computer, which uses a "program" to enact the desired environment at each point in time throughout the plant life cycle. 
+
+This program comprises of a set of \textbf{time-series instructions} concerning the various environment parameters (i.e. set leaf zone air temperature to 23 degrees C at 16:30 each day). These parameters include:
+\begin{itemize}
+    \item Leaf zone air temperature;
+    \item Leaf zone humidity;
+    \item Aeroponics nozzle activation (on/off);
+    \item Root zone/aeroponics spray temperature;
+    \item Light activation (\% per LED series);
+    \item etc.
+\end{itemize}
+
+\textit{Remote Control}: The program may be changed at any time \uline{instantaneously}, \uline{remotely or on-board}. These changes are reflected as an \textbf{appended instruction set} to the program, and take effect immediately. 
+
+Alongside and fuelling this automation is an array of environment parameter (aka feedback) and plant metric sensors. These include:
+\begin{itemize}
+    \item Leaf zone air temperature;
+    \item Leaf zone air humidity;
+    \item Water temperature (pre-aerosolization);
+    \item Root zone air temperature;
+    \item Leaf zone CO${}_2$ ppm;
+    \item Leaf zone top-down and side camera capture/live feed, with computer vision analysis for:
+    \begin{itemize}
+        \item Leaf health indicators (i.e. leaf tip burn, leaf curl, chlorosis);
+        \item Leaf count, size distribution;
+        \item Leaf density;
+        \item Canopy dimensions/surface area;
+        \item Plant height;
+        \item Fruit/harvest body size, ripeness;
+        \item etc.
+    \end{itemize}
+\end{itemize}
+
+\textit{Feedback}: The feedback sensors provide the computer with information that will influence the control it exerts. For example, if the program indicates the leaf zone temperature should be set to 22 degrees C, the computer would apply greater power to the heater if the current temperature was 18 degrees C as opposed to 21 degrees C. This forms a control loop for each parameter, relying on one of many control functions (bang-bang, PID, etc.).
+
+\textit{Data Presentation}: This data collection, accompanied by a number of "known" quanities (i.e. aeroponics flow rate, per-LED spectral data) allows for a full quantitative description of each plant's growth environment to be displayed \uline{on-board and remotely}, \uline{instantaneously}, with \uline{live updates} (i.e. real-time data, live video feed).
+
 % ===== WRITE =====
 % 300chars
 
-\subsubsection{Crew Time Requirement - Setup \& Maintenance} 
+\subsubsection{Crew Time Requirement - Setup \& Maintenance}
+\label{sec:constraints-crewtime} 
 % ===== PROMPT =====
-
+Since PeaPod automates data collection and nutrient transfer, the only operational costs for the crew are to harvest plants and fill resources. Harvesting is simple, since the plant just needs to be removed from its cup. And, since nutrient mixing is an automated, inline process, crews need only fill nutrient solution resevoirs as they empty. This lack of manual solution mixing results in mere minutes of work per week.
 %4 hrs/week
 
 % How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
@@ -211,6 +279,7 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 % 300chars
 
 \subsubsection{Palatability of Crop Output} 
+\label{sec:constraints-palatability}
 % ===== PROMPT =====
 
 %>= 6.0 Hedonic
@@ -223,6 +292,7 @@ Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blac
 Hydroponic crops have seen commercial success, suggesting that their output is of sufficient hedonic quality to be desired. Additionally, PeaPod is designed to optimize for edible plant mass, nutrient denisty, and other health indicators---pushing hedonic quality up over time.
 
 \subsubsection{Operational Constraints} 
+\label{sec:constraints-operational}
 % ===== PROMPT =====
 % Terrestrial (see requirements)
 
@@ -230,14 +300,28 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
 
 % ===== WRITE =====
 % 300chars
- 
+Gravity informed the use of an aeroponic system, as this allows plants to be placed in a hanging cup secured only on one side. Ambient pressure is critical for component selection regarding the tank, bladder, and nozzle, all of which are designed to produce the outputs we desire at this air pressure. Ambient temperature and humidity allow the use of mylar as an insulator, as it is of sufficient quality to work in these conditions.
+
+\subsubsection{Processing Time for Outputs} 
+\label{sec:constraints-processing}
+% ===== PROMPT =====
+% Processing Time of food outputs (none)
+
+% How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+
+% ===== WRITE =====
+% 300chars
+By creating a solution to "grow plants," PeaPod has been designed from the ground up to produce food that requires no additional processing time. Harvesting is an instantaneous process, and raw produce is immediately consumable, as the user can decide precisely what they wish to grow.
+
 \subsection{Performance Criteria}
 
 % NOTE: This section seeks to understand how the proposed food production technology addresses the performance criteria of the Challenge. Describe how the food production technology addresses the following performance criteria.
 
 \subsubsection{Acceptability}
+\label{sec:acceptability}
 
 \textbf{Acceptability of Process}
+\label{sec:acceptability-process}
 % ===== PROMPT ===== 
 % Describe in detail the processes and procedures of using your technology.
 % Please also provide an assessment (using industry standards and/or existing research) that your technology processes are likely to be user friendly and acceptable to the crew.
@@ -257,6 +341,7 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
     % Time needed for the crew to operate the solution
 
 \textbf{Acceptability of Food Products}
+\label{sec:acceptability-products}
 
 % ===== PROMPT =====
 % Please provide an assessment (using industry standards and existing research) that the food outputs of your technology are likely to meet the acceptability target. 
@@ -280,11 +365,13 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
 % This additional text box with a 1,000 character limit allows you to provide any other information on acceptability and palatability you would like to submit to the Judging Panel.
 
 \subsubsection{Safety}
+\label{sec:safety}
 
 % The overall safety of the food production process and the food products are a top priority for this Challenge.
 % NOTE: No pathogens are permitted to exist within the food technology or its outputs.  Teams must take this into account in their Phase 1 designs. Designs that fail to account for pathogens will receive a "fail" score on the Safety category.
 
 \textbf{Safety of Process}
+\label{sec:safety-process}
 
 % ===== PROMPT =====
 
@@ -303,6 +390,7 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
 % Include risk assessment/understanding, as well as mitigation, for both production and output handling processes.
 
 \textbf{Safety of Food Products}
+\label{sec:safety-products}
 
 % ===== PROMPT =====
 % Your answer will need to describe the safety of the resulting food products (outputs), including safety for repeated human consumption.
@@ -316,10 +404,12 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
 % This additional text box with a 1,000 character limit allows you to provide any other information on the safety associated with the food production process using your technology.
 
 \subsubsection{Resource Inputs and Outputs}
+\label{sec:resource}
 
 % NOTE: In your response, you will need to describe the resource requirements of the food production process (inputs) and all outputs. You will need to also include the estimated quantities of each input and output, as well as the nutritional quality of the food product.
 
 \textbf{Resource Inputs}
+\label{sec:resource-inputs}
 
 % ===== PROMPT =====
 
@@ -332,6 +422,7 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
 % Describe resources, and their quantities
 
 \textbf{System Outputs}
+\label{sec:resource-outputs}
 
 % ===== PROMPT =====
 
@@ -347,6 +438,7 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
     % All other usable or unusable products exiting the system, including liquid and gaseous process flows (e.g., water vapor, low-molecular weight organic and inorganic compounds, water, oils, etc.).
 
 \textbf{Optimization}
+\label{sec:resource-optimization}
 
 % Provide a description on how the food production technology achieves the greatest amount of food output in relation to the quantity of inputs and quantity of waste output. 
 
@@ -361,6 +453,7 @@ By collecting data in an isolated environment like this, optimization can be don
 In addition, the array of sensors used to collect data double as input for PID control, letting PeaPod react to unpredictable events such as poor seed health and salvage otherwise poor outputs.
 
 \textbf{Food Output Quality}
+\label{sec:resource-outputquality}
 
 % ===== PROMPT =====
 
@@ -380,6 +473,7 @@ In addition, the array of sensors used to collect data double as input for PID c
 \subsubsection{Reliability and/or Stability}
 
 \textbf{Process Reliability}
+\label{sec:reliability-process}
 
 % ===== PROMPT =====
 
@@ -409,6 +503,7 @@ The spray nozzle, by way of its fine mesh, will build fine amounts of sediment o
 Finally, plant harvesting is a quick task that simply constitues opening the unit and removing the plant. Replacing it only requires the user to open the unit, place the seed in the grow cup, and digitally set the grow conditions for PeaPod to follow.
 
 \textbf{Input and Output Stability}
+\label{sec:reliability-inputoutput}
 
 % ===== PROMPT =====
 
@@ -429,6 +524,7 @@ Finally, plant harvesting is a quick task that simply constitues opening the uni
 % This additional text box with a 1,000 character limit allows you to provide any other information on reliability and stability you would like to submit to the Judging Panel.
 
 \subsection{Terrestrial Potential}
+\label{sec:terrestrial}
 
 % ===== PROMPT =====
 
