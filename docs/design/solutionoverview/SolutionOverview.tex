@@ -252,7 +252,7 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item Water is sourced from an external RO system with positive pressure;
     \item Water is pressurized to constant 80psi;
     \item Water is heated or cooled to a given temp (\ref{sec:automation}); % TODO: Add water temp to environment control?
-    \item Nutrient and pH-adjustment solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
+    \item Nutrient (\ref{sec:nutrients}) and pH-adjustment (\ref{sec:ph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
     \item Flow to nozzle is controlled (on/off) (\ref{sec:automation}
     );
     \item Nozzle turns pressurized water into mist;
@@ -305,7 +305,7 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Siphon Injectors}
-    \item \textit{Needle Valves}: Completely adjustable flow control
+    \item \textit{Needle Valves}: Completely adjustable flow control, driven by servos
     \item \textit{One-way Valves}: Prevents backflow through siphon inlet
 \end{itemize}
 
@@ -352,6 +352,8 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item \textit{Lighting} (\ref{sec:lighting})
 \end{itemize}
 
+\newpage
+
 \subsubsection{Air Temperature}
 \label{sec:airtemp}
 
@@ -389,7 +391,7 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 \subsubsection{Air Humidification}
 \label{sec:airhum}
 
-\textbf{Purpose}: Increasing air humidity on command.
+\textbf{Purpose}: Actively increasing growth environment air humidity on command.
 
 \textbf{Function}:
 \begin{itemize}
@@ -415,50 +417,48 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item \textbf{Method \& Features}: The nebulizer approach is easily electrically controllable and produces a consistent fine vapour. 
 \end{itemize}
 
+\newpage
+
 \subsubsection{Air Dehumidification}
 \label{sec:dehum}
 
-\textbf{Purpose}: \textit{Removes moisture} from the growth environment on demand. Used in conjunction with humidity sensor and humidification system to maintain a desired humidity.
+\textbf{Purpose}: Actively decreasing growth environment humidity on command.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Humid air (high water vapour content)
+    \item \textbf{Outputs}: Dry air (low water vapour content)
+\end{itemize}
 
 \textbf{Method}:
-\begin{itemize}
-    \item Circulation (\textit{moving air through system}):
-    \begin{itemize}
-        \item Chamber - Where air is dehumidified. Only one in, and one out.
-        \item Fan - Blows air into the growth environment from chamber, subsequently draws air through humidification system.
-        \item Filter - HEPA filter is located at inlet of chamber. Eliminates risk of any airborn pathogens being transferred onto silica beads.
-        \item Shutters - Isolates dehumidification chamber when not in use. One located at chamber inlet, and one located at chamber outlet. 
-    \end{itemize}
-    \item Dehumidification (\textit{remove moisture from air}):
-    \begin{itemize}
-        \item Cartridge - Holds silica beads. Allows beads to be removed quickly and easily.
-        \item Silica Beads - Absorbs moisture from air passed around it.
-    \end{itemize}
-    \item Rejuvenation (\textit{remove moisture from silica}):
-    \begin{itemize}
-        \item Evaporator - Warms cartridge to evaporate moisture collected by silica beads.
-    \end{itemize}
-\end{itemize}
+\begin{enumerate}
+    \item Air is circulated through the dehumidifer on command;
+    \item The dehumidifier removes water vapour from the air;
+    \item Dry air exits the dehumidifier;
+    \item Water is removed from the dehumidifier on an 'as-needed' basis;
+\end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
-    \item Silica gel beads provide very efficient dehumidification.
-    \item Silica beads are non-toxic.
-    \item Silica beads are completely passive and require no active electricity (aside from shutters and fans).
-    \item Silica beads change color to indicate saturation.
-    \item Silica beads can be easily reused by drying them out. Moisture can be captured during the drying process and be recycled.
+    \item \textit{Dehumidification Chamber} - Where air is dehumidified. Only one in, and one out.
+    \begin{itemize}
+        \item \textit{Fan} - Draws moist air through dehumidification system and out into the growth environment.
+        \item \textit{Filter} - HEPA filter is located at inlet of dehumidification chamber.
+        \item \textit{Shutters} - Isolates dehumidification chamber when not in use. One located at chamber inlet, and one located at chamber outlet. Controlled by a servo.
+    \end{itemize}
+    \item \textit{Cartridge} - Holds silica beads. Allows all beads to be removed quickly and easily for swapping and "recharging".
+    \begin{itemize}
+        \item \textit{Silica Beads} - Absorbs moisture from air passed around it. Changes color when saturated. Can be reused indefinitely after water is extracted.
+    \end{itemize}
+    \item \textit{Evaporator Oven} - Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them.
 \end{itemize}
 
 \textbf{Justification}: 
 \begin{itemize}
-    \item \textbf{Function}: Silica beads are completely passive and provide very efficient dehumidification.
-    \item \textbf{Method}: Cartridges make replacing the silica beads very quick and easy. 
-    \item \textbf{Features}: Silica gel is non-toxic and non-organic. Silica beads can be sourced easily and are not too expensive. Silica beads change color to indicate saturation, making it easy to tell when they need to be rejuvenated.
+    \item \textbf{Features}: Silica gel is non-toxic and non-organic. Silica beads can be sourced easily and cheaply, and are efficient dessicants. Silica beads change color to indicate saturation, making it easy to tell when they need to be "recharged". Shutters prevent unintended dehumidification. HEPA filter eliminates risk of any airborn pathogens being transferred onto silica beads.
 \end{itemize}
 
 \newpage
-
-
 
 \subsubsection{Solution Temperature}
 \label{sec:watertemp}
@@ -514,7 +514,6 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 
 \newpage
 
-
 \subsubsection{Solution pH}
 \label{sec:ph}
 
@@ -557,9 +556,6 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
     \item \textbf{Features}: All parts are common and can be bought off the shelf. Venturi syphon is a proven reliable way to mix solution into a main stream. Is used in many applications from paint sprayers to fertilizer injectors.
 \end{itemize}
-
-\newpage
-
 
 \subsubsection{Lighting}
 \label{sec:lighting}
