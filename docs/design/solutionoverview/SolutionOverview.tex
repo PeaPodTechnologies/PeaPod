@@ -147,48 +147,6 @@ The primary function of the overall design are derived from both the overall pur
     \item \textbf{Method}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is common is well suited for controlled-environment agriculture.
 \end{itemize}
 
-% \subsubsection{Computer System}
-% \label{sec:computer}
-
-% \textbf{Purpose}: Primary operating infrastructure. Automation, data transmission, remote control.
-
-% \textbf{Function}:
-% \begin{itemize}
-%     \item \textbf{Inputs}: Power, network connection, input signals
-%     \item \textbf{Outputs}: Output signals
-% \end{itemize}
-
-% \textbf{Method}:
-
-% \textbf{Features}:
-
-% \textbf{Justification}:
-% \begin{itemize}
-%     \item \textbf{Purpose}:
-%     \item \textbf{Method}:
-% \end{itemize}
-
-% \subsubsection{Program}
-% \label{sec:program}
-
-% \textbf{Purpose}: Set of environment parameter instructions for the automation system.
-
-% \textbf{Function}:
-% \begin{itemize}
-%     \item \textbf{Inputs}:
-%     \item \textbf{Outputs}:
-% \end{itemize}
-
-% \textbf{Method}:
-
-% \textbf{Features}:
-
-% \textbf{Justification}:
-% \begin{itemize}
-%     \item \textbf{Purpose}:
-%     \item \textbf{Method}:
-% \end{itemize}
-
 \newpage
 
 \subsection{Housing}
@@ -237,26 +195,23 @@ The primary function of the overall design are derived from both the overall pur
 \subsection{Aeroponics}
 \label{sec:aeroponics}
 
-\textbf{Purpose}: Delivers \textit{nutrients} and \textit{pH}-balanced, \textit{temperature}-controlled \textit{water} to the plants via a \textit{fine mist} (~50 micron mean droplet diameter).
+\textbf{Purpose}: Delivers \textit{nutrients} and \textit{pH}-balanced, \textit{temperature}-controlled \textit{water} to the plant roots via a \textit{fine mist}.
 
 \textbf{Function}:
 \begin{itemize}
     \item \textbf{Inputs}: Filtered/RO water under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off relay to pump power), nozzle control (on/off relay to solenoid)
-    \item \textbf{Outputs}: Mist
+    \item \textbf{Outputs}: Mist (50 micron mean droplet diameter)
 \end{itemize}
 
-Utilizing a diaphram pump and pressure accumulator tank, filtered water with correct ph and nutrient concentration is pressurized to 80 psi before being atomized by the nozzle and subsequently abosorbed by the roots.
-
 \textbf{Method}:
-\begin{itemize} 
+\begin{enumerate} 
     \item Water is sourced from an external RO system with positive pressure;
     \item Water is pressurized to constant 80psi;
     \item Water is heated or cooled to a given temp (\ref{sec:automation}); % TODO: Add water temp to environment control?
-    \item Nutrient (\ref{sec:nutrients}) and pH-adjustment (\ref{sec:ph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
-    \item Flow to nozzle is controlled (on/off) (\ref{sec:automation}
-    );
+    \item Nutrient and pH (\ref{sec:nutrientsph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
+    \item Flow to nozzle is controlled (on/off) (\ref{sec:automation});
     \item Nozzle turns pressurized water into mist;
-\end{itemize}
+\end{enumerate}
 
 \textbf{Features} (in order of plumbing; source $\to$ nozzle):
 \begin{itemize}
@@ -265,10 +220,11 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item \textit{Inline Water Heater/Cooler}: Thermoelectric heater/cooler
     \item \textit{Accumulator Tank}: Uses an air bladder to create and stabilize pressure.
     \item \textit{Pressure Sensor} reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
+    \item \textit{Nutrient and pH Adjusment Solutions} - Section \ref{sec:nutrientsph}
     \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per solution). See \ref{sec:manifold}.
     \item \textit{Solenoid Valve} - Enables on-demand (\ref{sec:automation}) misting.
     \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
-    \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4$\to$0.6mm orifice produces 5$\to$50 micron water droplets. %TODO: Source??
+    \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets. %TODO: Source??
 \end{itemize}
 
 \newpage
@@ -278,6 +234,48 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
     \item \textbf{Purpose}: A high pressure aeroponics system eliminates water parameter feedback, and is 98\% more water efficient than traditional farming.
     \item \textbf{Function}: RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.
     \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. 5-50 micron mean droplet size is optimal for plant growth. %TODO: Source?? also more detail here
+\end{itemize}
+
+\subsubsection{Solution Nutrients and pH}
+\label{sec:nutrientsph}
+
+\textbf{Purpose}: Providing all necessary plant nutrients at the correct pH.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Plant nutrients, pH up solution, pH down solution (all stored)
+    \item \textbf{Outputs}: Plant nutrients, pH up solution, pH down solution (on-demand)
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item Solutions are held in containers;
+    \item Solutions are siphoned from containers on-demand;
+    \item \textit{OPTIONAL}: Post-mix solution may be pH- and composition-tested occasionally for quality control.
+    % \item Flow Sensor - Located at intlet of venturi syphon. Measures flow into venturi siphon
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Nutrient Solutions}: Aqueous. Highly concentrated. Selectable as part of the program (\ref{sec:automation})\footnote{Many different solutions can be combined (according to solubility laws, pH requirements, etc.).}, and may include any of:
+    \begin{itemize}
+        \item Bioavailable nonmetals (ammonia, ammonium, nitrates, nitrites, phosphates, sulfates, etc.)
+        \item Bioavailable metals (potassium, etc.)
+        \item Minerals (magnesium, calcium)
+        \item Other trace elements
+        \item Custom solutions (i.e. fungicides/algicides)
+    \end{itemize} 
+    \item \textit{pH Adjustment Solutions}\footnote{\textit{NOTE:} Ionic composition of pH solutions should be considered in the understanding of the spray (i.e. phosphic acid results in phosphate ions in spray)}: Aqueous. Highly concentrated. One for pH up (>8), one for pH down (<6).
+    \item \textit{Solution Storage Cartridges}: Opaque, insulated, chemical-safe, refillable cartridges.
+    \begin{itemize}
+        \item \textit{Level Sensors}: Depth sensors measure remaining contents.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a pre-mixed reservoir.
+    \item \textbf{Features}: Opaque and insulated cartridges prevent degradation of compounds over time. Level sensors built-in allows for notification to refill.
 \end{itemize}
 
 \subsubsection{Solution Injection Manifold}
@@ -342,13 +340,13 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Air Heater, Cooler} (\ref{sec:airtemp})
-    \item \textit{Air Humidifier} (\ref{sec:airhum}), \textit{Dehumidifier} (\ref{sec:dehum})
     \item \textit{Aeroponics System} (\ref{sec:aeroponics}), with:
     \begin{itemize}
+        \item \textit{Solution Dosing} (\ref{sec:nutrientsph})
         \item \textit{Solution Heater, Cooler} (\ref{sec:watertemp})
-        \item \textit{Solution Dosing} (\ref{sec:nutrients}, \ref{sec:ph})
     \end{itemize}
+    \item \textit{Air Heater, Cooler} (\ref{sec:airtemp})
+    \item \textit{Air Humidifier} (\ref{sec:airhum}), \textit{Dehumidifier} (\ref{sec:dehum})
     \item \textit{Lighting} (\ref{sec:lighting})
 \end{itemize}
 
@@ -491,94 +489,6 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 \begin{itemize}
     \item \textbf{Method}: Classic feedback model.
     \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically. Aluminum water block enables fast heat transfer for flowing water.
-\end{itemize}
-
-\subsubsection{Solution Nutrients}
-\label{sec:nutrients}
-
-\textbf{Function}: Formulates the correct concentration of nutrient solution by \textit{precisely injecting} the correct amounts of nutrient solution into the water stream.
-
-\textbf{Method}:
-\begin{itemize}
-    \item Water Supply (\textit{water into system}):
-    \begin{itemize}
-        \item RO System - External filtration system. 
-        \item Unidirectional Valve - Located between RO system and venturi syphons to prevent backflow into RO system.
-        \item Pump - Same pump as \ref{sec:aeroponics}. Draws water from RO system.
-    \end{itemize}
-    \item Injection (\textit{mixing solution into water stream}):
-    \begin{itemize}
-        \item Venturi Syphon - Located between unidirectional valve and pump. Creates a vacuum that draws nutrient solution into main water stream.
-        \item Proportional Control Solenoid - Located at side inlet of venturi syphon. Enables controlling flow of nutrient solution into water stream.
-        \item Unidirectional Valve - Located between proportional control solenoid and nutrient solution container. Prevents dilution of nutrient solution container.
-        \item Nutrient Solution Container - Holds nutrient solutions.
-    \end{itemize}
-    \item Control (\textit{maintaining solution ratio}):
-    \begin{itemize}
-        \item Flow Sensor - Located at intlet of venturi syphon. Measures flow into venturi syphon.
-        \item Solution Sensor - Located at outlet of venturi syphon. Measures solution concentration. Data is combined with flow sensor to control the porportional solenoid valve through automation.
-    \end{itemize}
-    \item $\therefore$ All appropriate fittings and tubing.
-\end{itemize}
-
-\textbf{Features}:
-\begin{itemize}
-    \item Venturi syphon is passive and relies on the main pump to draw solution into main stream.
-    \item Proportional control solenoid is very precise and allows for precision control over solution ratio.
-    \item System has minimal moving parts which increases reliability.
-    \item Both venturi syphon and proportional control solenoid can be bought as off the shelf components.
-\end{itemize}
-
-\textbf{Justification}: 
-\begin{itemize}
-    \item \textbf{Function}: Water supply moves water into system. Injection formulates correct solution ratio. Control enables injection management through automation.
-    \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
-    \item \textbf{Features}: All parts are common and can be bought off the shelf. Venturi syphon is a proven reliable way to mix solution into a main stream. Is used in many applications from paint sprayers to fertilizer injectors.
-\end{itemize}
-
-\newpage
-
-\subsubsection{Solution pH}
-\label{sec:ph}
-
-\textbf{Function}: Formulates the correct pH of the solution by \textit{precisely injecting} the correct amounts of pH up/down solutions into the water stream.
-
-\textbf{Method}:
-\begin{itemize}
-    \item Water Supply (\textit{water into system}):
-    \begin{itemize}
-        \item RO System - External filtration system. 
-        \item Unidirectional Valve - Located between RO system and venturi syphons to prevent backflow into RO system.
-        \item Pump - Same pump as \ref{sec:aeroponics}. Draws water from RO system.
-    \end{itemize}
-    \item Injection (\textit{mixing solution into water stream}):
-    \begin{itemize}
-        \item Venturi Syphon - Located between unidirectional valve and pump. Creates a vacuum that draws nutrient solution into main water stream.
-        \item Proportional Control Solenoids - Located at side inlet of venturi syphon. Enables controlling flow of pH up/down solutions into water stream. One for each solution.
-        \item Unidirectional Valve - Located between proportional control solenoid and nutrient solution container. Prevents dilution of pH up/down solution containers.
-        \item pH Solution Containers - Holds pH up/down solutions. One for each solution.
-    \end{itemize}
-    \item Control (\textit{maintaining solution ratio}):
-    \begin{itemize}
-        \item Flow Sensor - Located at intlet of venturi syphon. Measures flow into venturi syphon.
-        \item Solution Sensor - Located at outlet of venturi syphon. Measures solution pH. Data is combined with flow sensor to control the porportional solenoid valves through automation.
-    \end{itemize}
-    \item $\therefore$ All appropriate fittings and tubing.
-\end{itemize}
-
-\textbf{Features}:
-\begin{itemize}
-    \item Venturi syphon is passive and relies on the main pump to draw solution into main stream.
-    \item Proportional control solenoid is very precise and allows for precision control over solution ratio.
-    \item System has minimal moving parts which increases reliability.
-    \item Both venturi syphon and proportional control solenoid can be bought as off the shelf components.
-\end{itemize}
-
-\textbf{Justification}: 
-\begin{itemize}
-    \item \textbf{Function}: Water supply moves water into system. Injection formulates correct solution pH. Control enables injection management through automation.
-    \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a resevoir. Proportional control solenoid allows for very precise control of solution ratio. Venturi syphon is completely passive, completely eliminating the need for a solution pump. 
-    \item \textbf{Features}: All parts are common and can be bought off the shelf. Venturi syphon is a proven reliable way to mix solution into a main stream. Is used in many applications from paint sprayers to fertilizer injectors.
 \end{itemize}
 
 \subsubsection{Lighting}
