@@ -494,15 +494,37 @@ The primary function of the overall design are derived from both the overall pur
 \subsubsection{Lighting}
 \label{sec:lighting}
 
-\textbf{What}: Wide spectrum precision LED lighting targeting PAR.
+\textbf{Purpose}:
 
-\textbf{How}: N LED series/colors, N controlled-current PWM drivers, M LEDs per series = NxM LEDs. Custom LED boards wired in series, one power board per tray, w/ diffusion.
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, lighting spectrum/intensity control parameter as signals
+    \item \textbf{Outputs}: Light
+\end{itemize}
 
-\textbf{Why}: LED > every other type in every way, PWM easy protocol, CC because they’re LEDs.
+\textbf{Method}:
+\begin{enumerate}
+    \item Power + signal controls driver units;
+    \item Drivers power lights;
+\end{enumerate}
 
-% \textbf{What}: 
-% \textbf{How}: 
-% \textbf{Why}:
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{LED Lights} - High-output. Many "series" (wavelengths)\footnote{\textit{NOTE}: This system is modifiable to use other lights (i.e. Near-UV)}:
+    \begin{itemize}
+        \item Royal Blue
+        \item Cool White
+        \item Warm White
+        \item Photo Red
+        \item Far Red (Near-IR)
+    \end{itemize}
+    \item \textit{LED Power Drivers} - Constant-current PWM-dimmable DC-DC buck converters. One per series, driving multiple LEDs.
+\end{itemize}
+
+\textbf{Justification}:
+\begin{itemize}
+    \item \textbf{Features}: LED lights offer higih output and precise wavelengths without risk of damaging plant tissues, as opposed to other methods. Also less heat than other types. Constant-current LED drivers are specialized for semiconductor (i.e. non-linear voltage-current relationship) components. PMW offers easy control signal protocol.
+\end{itemize}
 
 \subsection{Optimization}
 \label{sec:optimization}
