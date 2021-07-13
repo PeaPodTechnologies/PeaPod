@@ -491,6 +491,8 @@ The primary function of the overall design are derived from both the overall pur
     \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically. Aluminum water block enables fast heat transfer for flowing water.
 \end{itemize}
 
+\newpage
+
 \subsubsection{Lighting}
 \label{sec:lighting}
 
@@ -526,6 +528,8 @@ The primary function of the overall design are derived from both the overall pur
     \item \textbf{Features}: LED lights offer higih output and precise wavelengths without risk of damaging plant tissues, as opposed to other methods. Also less heat than other types. Constant-current LED drivers are specialized for semiconductor (i.e. non-linear voltage-current relationship) components. PMW offers easy control signal protocol.
 \end{itemize}
 
+\newpage
+
 \subsection{Optimization}
 \label{sec:optimization}
 
@@ -545,7 +549,12 @@ $$Q(\vec P(t), \vec E(t), t)=\vec P'(t)$$
 
 Aka given the current internal and external states, determine the plant's state change.
 
-By setting $\vec E_{set}(t)~\forall~ t$, recording $\vec P(t)~\forall~ t$ and $\vec E(t)\approx \vec E_{set}(t)~\forall~ t$ (See \ref{sec:environment}), and calculating $\vec P'(t)~\forall~ t$, we can fit $\vec Q$ to our data.
+\begin{enumerate}
+    \item Set $\vec E_{set}(t)~\forall~ t$, aka the program (\ref{sec:automation});
+    \item Record $\vec P(t)~\forall~ t$ and $\vec E(t)\approx \vec E_{set}(t)~\forall~ t$ (\ref{sec:environment});
+    \item Calculate $\vec P'(t)~\forall~ t$;
+    \item Fit $\vec Q$ to our data;
+\end{enumerate}
 
 By fitting $\vec Q$, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
 
@@ -553,9 +562,9 @@ $$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
 
 \textbf{Features}:
 \begin{itemize}
-    \item Machine learning model to represent $Q$
-    \item Environment sensors to collect $\vec E$
-    \item Plant metrics to collect $\vec P$
+    \item \textit{Machine Learning Model}: Represents $Q$
+    \item \textit{Environment Sensors}: Collects $\vec E$
+    \item \textit{Plant Metrics}: Collects $\vec P$
 \end{itemize}
 
 \newpage
