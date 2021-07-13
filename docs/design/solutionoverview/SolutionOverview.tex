@@ -463,11 +463,35 @@ Utilizing a diaphram pump and pressure accumulator tank, filtered water with cor
 \subsubsection{Solution Temperature}
 \label{sec:watertemp}
 
-\textbf{What}: Maintaining desired water temperature within the water store.
+\textbf{Purpose}: Maintaining desired water temperature.
 
-\textbf{How}: Same as \ref{sec:airtemp}; on a water block.
+\textbf{Function}: 
+\begin{itemize}
+    \item \textbf{Inputs}: Power, water (uncontrolled temperature), temperature target parameter (as signal)
+    \item \textbf{Outputs}: Temperature-controlled water
+\end{itemize}
 
-\textbf{Why}: Same as \ref{sec:airtemp}.
+\textbf{Method}:
+\begin{enumerate}
+    \item Water enters the system;
+    \item The system reads the temperature of the water (\textit{post-heating/cooling apparatus});
+    \item The system heats or cools the water in accordance with the program (\ref{sec:automation});
+    \item Feedback occurs between temperature reading and heating/cooling power;
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Water Temperature Sensor}: Attaches directly to aeroponics system. Located after the tank (details in \ref{sec:aeroponics}).
+    \item \textit{Water Block}: Aluminum block. Water passes through this to gain or lose heat.
+    \item \textit{Peltier Devices}: Heat or cool the water block.
+    \item \textit{Heat Sinks, Fans}: For dissipating heat to/away from the block.
+\end{itemize}
+
+\textbf{Justification}:
+\begin{itemize}
+    \item \textbf{Method}: Classic feedback model.
+    \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically. Aluminum water block enables fast heat transfer for flowing water.
+\end{itemize}
 
 \subsubsection{Solution Nutrients}
 \label{sec:nutrients}
