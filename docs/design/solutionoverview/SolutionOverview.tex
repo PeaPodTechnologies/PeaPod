@@ -1,0 +1,602 @@
+\documentclass{report}
+\usepackage{setspace} % Setting line spacing
+\usepackage{ulem} % Underline
+\usepackage{caption} % Captioning figures
+\usepackage{subcaption} % Subfigures
+\usepackage{geometry} % Page layout
+\usepackage{multicol} % Columned pages
+\usepackage{array,etoolbox}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[toc,page]{appendix}
+\setlist{noitemsep}
+
+% Page layout (margins, size, line spacing)
+\geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
+\setstretch{1.15}
+
+% Headers
+\pagestyle{fancy}
+\lhead{PeaPod - Solution Overview}
+\rhead{UTAG}
+
+% Metric counter, referencing commands
+\newcounter{metricnumber}
+\setcounter{metricnumber}{1}
+\newcommand{\metricrow}{M\arabic{metricnumber}}
+\newcommand{\mlabel}[1]{\addtocounter{metricnumber}{-1}\refstepcounter{metricnumber}\label{#1}\addtocounter{metricnumber}{1}}
+\newcommand{\mref}[1]{M\ref{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.2cm}
+
+        \textbf{\large{PeaPod - Solution Overview}}
+
+        \vspace{0.5cm}
+
+        Outlining a Proposal to the PeaPod Requirements
+
+        \vfill
+
+        Jayden Lefebvre - Lead Engineer\\\small{jayden.lefebvre@mail.utoronto.ca}\\
+        \vspace{1cm}
+        Nathan Chareunsouk, Navin Vanderwert, Jonas Marshall - Design Engineers
+
+        \vspace{2.5cm}
+
+        Revision 0.5\\
+        University of Toronto Agritech\\
+        July 13th, 2021
+
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{plain}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{Purpose \& Design Process}
+\label{sec:purpose}
+
+The purpose of this document is to outline a design proposed to meet the PeaPod Requirements.
+
+It accomplishes this via the following process:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=17cm]{images/designprocess.png}
+    \hfill
+    \caption{Engineering design process.}
+\end{figure}
+
+\newpage
+
+\section{Design}
+
+\textbf{Purpose}: The purpose of the design is derived from the opportunity statement:
+
+PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop growth system, able to generate any \uline{growth environment} from a combination of independent \uline{environment parameters}, with both environment and crop growth \uline{data collection} for \uline{optimization}".
+
+The primary function of the overall design is derived from both the overall purpose as well as the system inputs and outputs as defined by the DSFC Applicant Guide \cite{applicantguide}.
+
+\textbf{Function}:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=15cm]{images/blackbox.png}
+    \hfill
+    \caption{"Black box" function diagram of PeaPod.}
+\end{figure}
+
+\textbf{Method \& Features}: 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=12cm]{images/features.png}
+    \hfill
+    \caption{Features and feature types of PeaPod.}
+\end{figure}
+
+\newpage
+
+\subsection{Automation}
+\label{sec:automation}
+
+\textbf{Purpose}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time. Maintains the homogeneity of the internal environment.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Environment sensor reading signals, program
+    \item \textbf{Outputs}: Actuator control signals, crew messaging
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item User inputs program:
+    \begin{itemize}
+        \item Action-at-timestamp, e.g. lights on at 08:00;
+        \item Control target with start/end, e.g. hold air temperature at 22°C from 11:00 to 18:00;
+    \end{itemize}
+    \item Notification on maintenance requirement (i.e. non-automated input/output management, refills, repairs, etc.);
+    \item "Sense, Plan, Act" robotics/control model:
+    \begin{enumerate}
+        \item \textit{Senses} current conditions;
+        \item \textit{Plans} a path to desired condition;
+        \item \textit{Acts} to change current condition to desired condition;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item Central \textbf{computer system} with internal clock and network connection;
+    \item Environment sensors (\textit{Sense}) for each \textbf{environmental control} (\ref{sec:environment});
+    \item \textbf{Program} of time-series and/or control target instructions (\textit{Plan});
+    \item Actuators (\textit{Act}) for each \textbf{environmental control} (\ref{sec:environment});
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
+    \item \textbf{Method}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is well suited for controlled-environment agriculture.
+\end{itemize}
+
+\newpage
+
+\subsection{Housing}
+\label{sec:housing}
+
+\textbf{Purpose \& Function}: \textit{Isolates} and \textit{Insulates} growth environment from exterior environment (heat, light, humidity). Provides structural integrity and mounting points for other subsystems (\textit{Frame}).
+
+\textbf{Method}:
+\begin{itemize}
+    \item Insulation (\textit{keep in}):
+    \begin{itemize}
+        \item Heat - Insulative/reflective internal shell
+        \item Light - Reflective internal shell
+        \item Moisture - "Sealed" shell
+    \end{itemize}
+    \item Isolation (\textit{keep out}):
+    \begin{itemize}
+        \item Heat - Insulative shell
+        \item Light - Opaque shell
+        \item Moisture - "Sealed" shell
+    \end{itemize}
+    \item $\therefore$ Frame skeleton w/ solid, internally-reflective, "sealed" panels;
+    \item Standard subframes for mounting entire subsystems modularly;
+\end{itemize}
+
+\textbf{Features}:
+\begin{itemize}
+    \item Aluminum extrusion skeleton w/ standard mounting channels;
+    \item Foam insulation panels w/ mylar internal coating slide into exoskeleton channels;
+    \item Trays - base subframe unit, adaptable; mounted to vertical internal channels for vertical repositioning; all connections are \textit{quick-disconnect} (i.e. quick-connect tubing for grow tray, push connectors for lighting):
+    \begin{itemize}
+        \item Grow trays - Support plants (via grow cups), aeroponic nozzles, and aeroponics container (See \ref{sec:aeroponics}).
+        \item Lighting trays - Support LED boards, driver board (See \ref{sec:lighting}).
+    \end{itemize}
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Function}: Insulation increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances.
+    \item \textbf{Method}: Solid frame-and-panel construction is efficient for packing away, and is honestly just simple. Adaptable tray subframes make future feature development easier, and allows to modularly swap subsystems.
+    \item \textbf{Features}: Aluminum extrusion is commonly used for frames, and has a high strength-weight ratio. Allows strong, repositionable mounting via channels. Foam insulation is highly insulative and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
+\end{itemize}
+
+\newpage
+
+\subsection{Aeroponics}
+\label{sec:aeroponics}
+
+\textbf{Purpose}: Delivers \textit{nutrients} and \textit{pH}-balanced, \textit{temperature}-controlled \textit{water} to the plant roots via a \textit{fine mist}.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Filtered/RO water under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off relay to pump power), nozzle control (on/off relay to solenoid)
+    \item \textbf{Outputs}: Mist (50 micron mean droplet diameter)
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate} 
+    \item Water is sourced from an external RO system with positive pressure;
+    \item Water is pressurized to constant 80psi;
+    \item Water is heated or cooled to a given temp (\ref{sec:automation}); % TODO: Add water temp to environment control?
+    \item Nutrient and pH (\ref{sec:nutrientsph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
+    \item Flow to nozzle is controlled (on/off) (\ref{sec:automation});
+    \item Nozzle turns pressurized water into mist;
+\end{enumerate}
+
+\textbf{Features} (in order of plumbing; source $\to$ nozzle):
+\begin{itemize}
+    \item \textit{Water Source}: Input for filtered, reverse-osmosis water.
+    \item \textit{Diaphragm Pump}: Self-priming, auto-shutoff at 80psi. Power is controlled by external relay signal (\ref{sec:automation}).
+    \item \textit{Inline Water Heater/Cooler}: Thermoelectric heater/cooler
+    \item \textit{Accumulator Tank}: Uses an air bladder to create and stabilize pressure.
+    \item \textit{Pressure Sensor} reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
+    \item \textit{Nutrient and pH Adjusment Solutions} - Section \ref{sec:nutrientsph}
+    \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per solution). Section \ref{sec:manifold}.
+    \item \textit{Solenoid Valve} - Enables on-demand (\ref{sec:automation}) misting.
+    \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
+    \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets. %TODO: Source??
+\end{itemize}
+
+\newpage
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Purpose}: A high pressure aeroponics system eliminates water parameter feedback, and is 98\% more water efficient than traditional farming.
+    \item \textbf{Function}: RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.
+    \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. Mean droplet size of 5-50 microns is optimal for plant growth. %TODO: Source?? also more detail here
+\end{itemize}
+
+\subsubsection{Solution Nutrients and pH}
+\label{sec:nutrientsph}
+
+\textbf{Purpose}: Providing all necessary plant nutrients at the correct pH.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Plant nutrients, pH up solution, pH down solution (all stored)
+    \item \textbf{Outputs}: Plant nutrients, pH up solution, pH down solution (on-demand)
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item Solutions are held in containers;
+    \item Solutions are siphoned from containers on-demand;
+    \item \textit{OPTIONAL}: Post-mix solution may be pH- and composition-tested occasionally for quality control.
+    % \item Flow Sensor - Located at intlet of venturi syphon. Measures flow into venturi siphon
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Nutrient Solutions}: Aqueous. Highly concentrated. Selectable as part of the program (\ref{sec:automation})\footnote{Many different solutions can be combined (according to solubility laws, pH requirements, etc.).}, and may include any of:
+    \begin{itemize}
+        \item Bioavailable nonmetals (ammonia, ammonium, nitrates, nitrites, phosphates, sulfates, etc.)
+        \item Bioavailable metals (potassium, etc.)
+        \item Minerals (magnesium, calcium)
+        \item Other trace elements
+        \item Custom solutions (i.e. fungicides/algicides)
+    \end{itemize} 
+    \item \textit{pH Adjustment Solutions}\footnote{\textit{NOTE:} Ionic composition of pH solutions should be considered in the understanding of the spray (i.e. phosphic acid results in phosphate ions in spray)}: Aqueous. Highly concentrated. One for pH up (>8), one for pH down (<6).
+    \item \textit{Solution Storage Cartridges}: Opaque, insulated, chemical-safe, refillable cartridges.
+    \begin{itemize}
+        \item \textit{Level Sensors}: Depth sensors measure remaining contents.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a pre-mixed reservoir.
+    \item \textbf{Features}: Opaque and insulated cartridges prevent degradation of compounds over time. Built-in level sensors allow for notification to refill.
+\end{itemize}
+
+\subsubsection{Solution Injection Manifold}
+\label{sec:manifold}
+
+\textbf{Purpose}: A manifold of venturi-based \textit{siphons} for in-line, \textit{adjustable flow-ratio} injection and mixing of nutrient and pH-adjustment solutions.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Pressurized RO water, per-solution flow-ratio control signal (calculated from desired per-nutrient concentrations; \ref{sec:automation}), pH flow-ratio control signal (calculated from desired pH; \ref{sec:automation})
+    \item \textbf{Outputs}: Pressurized mixed solution with set pH and nutrient concentrations
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item Manifold splits off into branches (one per solution)
+    \item Each solution branch:
+    \begin{itemize}
+        \item A venturi siphon for fixed flow-ratio injection;
+        \item An adjustable-flow valve controlling solution flow rate;
+    \end{itemize}
+    \item Manifold recombines
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Siphon Injectors}
+    \item \textit{Needle Valves}: Completely adjustable flow control, driven by servos
+    \item \textit{One-way Valves}: Prevents backflow through siphon inlet
+\end{itemize}
+
+% TODO: Justification?
+
+\newpage
+
+\subsection{Environment Control}
+\label{sec:environment}
+
+\textbf{Purpose}: Generating the internal plant growth environment, with control over all relevant environment parameters:
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, water, environment control parameters (as signals)
+    \item \textbf{Outputs}: Controlled environment (optimal for plant growth)
+\end{itemize}
+
+\textbf{Method} (informed by \ref{sec:automation}):
+\begin{itemize}
+    \item Control System Parameters:
+    \begin{itemize}
+        \item Leaf zone air temperature;
+        \item Leaf zone humidity;
+        \item Root zone/aeroponics spray temperature;
+    \end{itemize}
+    \item Set Parameters:
+    \begin{itemize}
+        \item Lighting spectrum and intensity;
+        \item Aeroponics delivery/"flow" rate;
+        \item Aeroponics solution per-nutrient concentrations;
+        \item Aeroponics solution pH;
+    \end{itemize}
+\end{itemize}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Aeroponics System} (\ref{sec:aeroponics}), with:
+    \begin{itemize}
+        \item \textit{Solution Dosing} (\ref{sec:nutrientsph})
+        \item \textit{Solution Heater, Cooler} (\ref{sec:watertemp})
+    \end{itemize}
+    \item \textit{Air Heater, Cooler} (\ref{sec:airtemp})
+    \item \textit{Air Humidifier} (\ref{sec:airhum}), \textit{Dehumidifier} (\ref{sec:dehum})
+    \item \textit{Lighting} (\ref{sec:lighting})
+\end{itemize}
+
+\newpage
+
+\subsubsection{Air Temperature}
+\label{sec:airtemp}
+
+\textbf{Purpose}: Maintaining desired air temperature within the enclosure.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation})
+    \item \textbf{Outputs}: Heating/cooling, air circulation, air temperature signal (\ref{sec:automation})
+\end{itemize}
+
+\textbf{Method}:
+\begin{itemize}
+    \item Air is circulated and temperature is measured;
+    \item Temperature is used to inform control signal;
+    \item Heat is pumped into or out of the box (direction and magnitude depending on the control signal) and radiated;
+\end{itemize}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a PID control loop (\ref{sec:automation});
+    \item \textit{Peltier Devices}: Pumps heat from one side of a tile to the other via the thermoelectric effect. Direction and magnitude of heat transferred depends on control signal polarity (\textit{H-bridge}) and voltage (respectively).
+    \item \textit{Heat Sinks}: Connected to peltier devices. Exchanges heat between air and peltier devices.
+    \item \textit{Fans}: Located on heat sinks and in growth environment to circulate air for better heat dispersal and even temperature distribution.
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Function}: Air management ensures an even temperature throughout the entire growth environment. Thermal exchange effectively pumps heat into or out of the growth envrionment.
+    \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Air Humidification}
+\label{sec:airhum}
+
+\textbf{Purpose}: Actively increasing growth environment air humidity on command.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water;
+    \item \textbf{Outputs}: Water vapour;
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item Power and control signal activate a nebulizer driver;
+    \item Water is delivered to the nebulizer and nebulized;
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Driver Circuit}: Fixed-frequency (113kHz) 555 timer circuit driving an amplifier/LC circuit generates a 25V AC signal. %TODO: why 113kHz?
+    \item \textit{Mesh Piezo Disc}: Driven by the circuit, generates a vapour when water is passed over it.
+\end{itemize}
+
+\textbf{Justification}:
+\begin{itemize}
+    \item \textbf{Function}: RO water contains no minerals/particulate, and as such prevents the common problem of piezo/mesh calcification.
+    \item \textbf{Method \& Features}: The nebulizer approach is easily electrically controllable and produces a consistent fine vapour. 
+\end{itemize}
+
+\newpage
+
+\subsubsection{Air Dehumidification}
+\label{sec:dehum}
+
+\textbf{Purpose}: Actively decreasing growth environment humidity on command.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Humid air (high water vapour content)
+    \item \textbf{Outputs}: Dry air (low water vapour content)
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item Air is circulated through the dehumidifer on command;
+    \item The dehumidifier removes water vapour from the air;
+    \item Dry air exits the dehumidifier;
+    \item Water is removed from the dehumidifier on an 'as-needed' basis;
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Dehumidification Chamber} - Where air is dehumidified. Only one in, and one out.
+    \begin{itemize}
+        \item \textit{Fan} - Draws moist air through dehumidification system and dried air out into the growth environment.
+        \item \textit{Filter} - HEPA filter is located at inlet of dehumidification chamber.
+        \item \textit{Shutters} - Isolates dehumidification chamber when not in use. One located at chamber inlet, and one located at chamber outlet. Controlled by a servo.
+    \end{itemize}
+    \item \textit{Cartridge} - Holds silica beads. Allows all beads to be removed quickly and easily for swapping and "recharging".
+    \begin{itemize}
+        \item \textit{Silica Beads} - Absorbs moisture from air passed around it. Changes color when saturated. Can be reused indefinitely after water is extracted.
+    \end{itemize}
+    \item \textit{Evaporator Oven}\footnote{Not included in system.} - Any standard oven that can maintain 200°C for 60 minutes. Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them.
+\end{itemize}
+
+\textbf{Justification}: 
+\begin{itemize}
+    \item \textbf{Features}: Silica gel is non-toxic and non-organic. Silica beads can be sourced easily and cheaply, and are efficient dessicants. Silica beads change color to indicate saturation, making it easy to tell when they need to be "recharged". Shutters prevent unintended dehumidification. HEPA filter eliminates risk of any airborn pathogens being transferred onto silica beads.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Solution Temperature}
+\label{sec:watertemp}
+
+\textbf{Purpose}: Maintaining desired water temperature.
+
+\textbf{Function}: 
+\begin{itemize}
+    \item \textbf{Inputs}: Power, water (uncontrolled temperature), temperature target parameter (as signal)
+    \item \textbf{Outputs}: Temperature-controlled water
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item Water enters the system;
+    \item The system reads the temperature of the water (\textit{post-heating/cooling apparatus});
+    \item The system heats or cools the water in accordance with the program (\ref{sec:automation});
+    \item Feedback occurs between temperature reading and heating/cooling power;
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Water Temperature Sensor}: Attaches directly to aeroponics system. Located after the tank (details in \ref{sec:aeroponics}).
+    \item \textit{Water Block}: Aluminum block. Water passes through this to gain or lose heat.
+    \item \textit{Peltier Devices}: Heat or cool the water block.
+    \item \textit{Heat Sinks, Fans}: For dissipating heat to/away from the block.
+\end{itemize}
+
+\textbf{Justification}:
+\begin{itemize}
+    \item \textbf{Method}: Classic feedback model.
+    \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically. Aluminum water block enables fast heat transfer for flowing water.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Lighting}
+\label{sec:lighting}
+
+\textbf{Purpose}:
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, lighting spectrum/intensity control parameter as signals
+    \item \textbf{Outputs}: Light
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item Power + signal controls driver units;
+    \item Drivers power lights;
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{LED Lights} - High-output. Many "series" (wavelengths)\footnote{\textit{NOTE}: This system is modifiable to use other lights (i.e. Near-UV)}:
+    \begin{itemize}
+        \item Royal Blue
+        \item Cool White
+        \item Warm White
+        \item Photo Red
+        \item Far Red (Near-IR)
+    \end{itemize}
+    \item \textit{LED Power Drivers} - Constant-current PWM-dimmable DC-DC buck converters. One per series, driving multiple LEDs.
+\end{itemize}
+
+\textbf{Justification}:
+\begin{itemize}
+    \item \textbf{Features}: LED lights offer higih output and precise wavelengths without risk of damaging plant tissues, as opposed to other methods. Also less heat than other types. Constant-current LED drivers are specialized for semiconductor (i.e. non-linear voltage-current relationship) components. PMW offers easy control signal protocol.
+\end{itemize}
+
+\newpage
+
+\subsection{Optimization}
+\label{sec:optimization}
+
+\textbf{Function}: Continuously improve yield/etc. of crops as more environment parameter and crop metric data is gathered.
+
+\textbf{Method}: 
+
+Assume a plant's growth rate (or state change) is related to its current internal state $\vec P \in \R^n$ (for $n$ plant metrics) and the environment conditions $\vec E \in \R^m$ (for $m$ environment parameters). Let these both be functions $\vec P (t),\vec E(t)$ defined at each $t$, where $t=0$ indicates the time of planting. Assume that this relationship is constant for all members of a given species.
+
+Define plant state change $\vec P'$: 
+
+$$\vec P'(t) = \frac{d}{dt}\vec P(t)$$
+
+Define the plant-environment behaviour function $Q$: 
+
+$$Q(\vec P(t), \vec E(t), t)=\vec P'(t)$$ 
+
+Given the current internal and external states, determine the plant's state change.
+
+\begin{enumerate}
+    \item Set $\vec E_{set}(t)~\forall~ t$, aka the program (\ref{sec:automation});
+    \item Record $\vec P(t)~\forall~ t$ and $\vec E(t)\approx \vec E_{set}(t)~\forall~ t$ (\ref{sec:environment});
+    \item Calculate $\vec P'(t)~\forall~ t$;
+    \item Fit $\vec Q$ to our data;
+\end{enumerate}
+
+By fitting $\vec Q$, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
+
+$$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Machine Learning Model}: Represents $Q$
+    \item \textit{Environment Sensors}: Collects $\vec E$
+    \item \textit{Plant Metrics}: Collects $\vec P$
+\end{itemize}
+
+\newpage
+
+% \subsection{Title}
+% \label{sec:label}
+
+% \textbf{Purpose}:
+
+% \textbf{Function}:
+% \begin{itemize}
+%     \item \textbf{Inputs}:
+%     \item \textbf{Outputs}:
+% \end{itemize}
+
+% \textbf{Method}:
+% \begin{enumerate}
+%     \item 
+% \end{enumerate}
+
+% \textbf{Features}:
+% \begin{itemize}
+%     \item 
+% \end{itemize}
+
+% \textbf{Justification}:
+% \begin{itemize}
+%     \item \textbf{Purpose}:
+%     \item \textbf{Method}:
+% \end{itemize}
+
+% References
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
