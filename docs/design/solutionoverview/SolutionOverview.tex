@@ -47,9 +47,9 @@
 
         \vspace{2.5cm}
 
-        Revision 0.4\\
+        Revision 0.5\\
         University of Toronto Agritech\\
-        July 7th, 2021
+        July 13th, 2021
 
     \end{center}
 \end{titlepage}
@@ -84,7 +84,7 @@ It accomplishes this via the following process:
 
 PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop growth system, able to generate any \uline{growth environment} from a combination of independent \uline{environment parameters}, with both environment and crop growth \uline{data collection} for \uline{optimization}".
 
-The primary function of the overall design are derived from both the overall purpose as well as the system inputs and outputs as defined by the DSFC Applicant Guide \cite{applicantguide}.
+The primary function of the overall design is derived from both the overall purpose as well as the system inputs and outputs as defined by the DSFC Applicant Guide \cite{applicantguide}.
 
 \textbf{Function}:
 
@@ -144,7 +144,7 @@ The primary function of the overall design are derived from both the overall pur
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
-    \item \textbf{Method}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is common is well suited for controlled-environment agriculture.
+    \item \textbf{Method}: Data structure matches $\vec E$ from the optimization routine (see Section \ref{sec:optimization}). Control loop-style topology is well suited for controlled-environment agriculture.
 \end{itemize}
 
 \newpage
@@ -178,7 +178,7 @@ The primary function of the overall design are derived from both the overall pur
     \item Foam insulation panels w/ mylar internal coating slide into exoskeleton channels;
     \item Trays - base subframe unit, adaptable; mounted to vertical internal channels for vertical repositioning; all connections are \textit{quick-disconnect} (i.e. quick-connect tubing for grow tray, push connectors for lighting):
     \begin{itemize}
-        \item Grow trays - Support plants (via grow cups), aeroponic nozzles (See \ref{sec:aeroponics}, and misting container.
+        \item Grow trays - Support plants (via grow cups), aeroponic nozzles, and aeroponics container (See \ref{sec:aeroponics}).
         \item Lighting trays - Support LED boards, driver board (See \ref{sec:lighting}).
     \end{itemize}
 \end{itemize}
@@ -187,7 +187,7 @@ The primary function of the overall design are derived from both the overall pur
 \begin{itemize}
     \item \textbf{Function}: Insulation increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances.
     \item \textbf{Method}: Solid frame-and-panel construction is efficient for packing away, and is honestly just simple. Adaptable tray subframes make future feature development easier, and allows to modularly swap subsystems.
-    \item \textbf{Features}: Aluminum extrusion is commonly used for frames. Allows strong, repositionable mounting via channels. Foam insulation is highly insulative and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
+    \item \textbf{Features}: Aluminum extrusion is commonly used for frames, and has a high strength-weight ratio. Allows strong, repositionable mounting via channels. Foam insulation is highly insulative and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
 \end{itemize}
 
 \newpage
@@ -221,7 +221,7 @@ The primary function of the overall design are derived from both the overall pur
     \item \textit{Accumulator Tank}: Uses an air bladder to create and stabilize pressure.
     \item \textit{Pressure Sensor} reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
     \item \textit{Nutrient and pH Adjusment Solutions} - Section \ref{sec:nutrientsph}
-    \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per solution). See \ref{sec:manifold}.
+    \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per solution). Section \ref{sec:manifold}.
     \item \textit{Solenoid Valve} - Enables on-demand (\ref{sec:automation}) misting.
     \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
     \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets. %TODO: Source??
@@ -233,7 +233,7 @@ The primary function of the overall design are derived from both the overall pur
 \begin{itemize}
     \item \textbf{Purpose}: A high pressure aeroponics system eliminates water parameter feedback, and is 98\% more water efficient than traditional farming.
     \item \textbf{Function}: RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.
-    \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. 5-50 micron mean droplet size is optimal for plant growth. %TODO: Source?? also more detail here
+    \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. Mean droplet size of 5-50 microns is optimal for plant growth. %TODO: Source?? also more detail here
 \end{itemize}
 
 \subsubsection{Solution Nutrients and pH}
@@ -275,7 +275,7 @@ The primary function of the overall design are derived from both the overall pur
 \textbf{Justification}: 
 \begin{itemize}
     \item \textbf{Method}: This system enables precise inline solution injection which eliminates need for a pre-mixed reservoir.
-    \item \textbf{Features}: Opaque and insulated cartridges prevent degradation of compounds over time. Level sensors built-in allows for notification to refill.
+    \item \textbf{Features}: Opaque and insulated cartridges prevent degradation of compounds over time. Built-in level sensors allow for notification to refill.
 \end{itemize}
 
 \subsubsection{Solution Injection Manifold}
@@ -440,7 +440,7 @@ The primary function of the overall design are derived from both the overall pur
 \begin{itemize}
     \item \textit{Dehumidification Chamber} - Where air is dehumidified. Only one in, and one out.
     \begin{itemize}
-        \item \textit{Fan} - Draws moist air through dehumidification system and out into the growth environment.
+        \item \textit{Fan} - Draws moist air through dehumidification system and dried air out into the growth environment.
         \item \textit{Filter} - HEPA filter is located at inlet of dehumidification chamber.
         \item \textit{Shutters} - Isolates dehumidification chamber when not in use. One located at chamber inlet, and one located at chamber outlet. Controlled by a servo.
     \end{itemize}
@@ -448,7 +448,7 @@ The primary function of the overall design are derived from both the overall pur
     \begin{itemize}
         \item \textit{Silica Beads} - Absorbs moisture from air passed around it. Changes color when saturated. Can be reused indefinitely after water is extracted.
     \end{itemize}
-    \item \textit{Evaporator Oven} - Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them.
+    \item \textit{Evaporator Oven}\footnote{Not included in system.} - Any standard oven that can maintain 200°C for 60 minutes. Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them.
 \end{itemize}
 
 \textbf{Justification}: 
@@ -547,7 +547,7 @@ Define the plant-environment behaviour function $Q$:
 
 $$Q(\vec P(t), \vec E(t), t)=\vec P'(t)$$ 
 
-Aka given the current internal and external states, determine the plant's state change.
+Given the current internal and external states, determine the plant's state change.
 
 \begin{enumerate}
     \item Set $\vec E_{set}(t)~\forall~ t$, aka the program (\ref{sec:automation});
