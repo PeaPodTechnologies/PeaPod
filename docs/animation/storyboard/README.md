@@ -26,6 +26,6 @@ _"You are required to submit a **5-minute** (maximum length) design animation de
   2. Harvest Storage (w/ some examples)
   3. Food Prep
   4. Seed Reclamation
-- `E`) **Setup**
-  1. Shut-Down
+- `E`) **Shut Down**
+  1. Stopping
   2. Stowage
