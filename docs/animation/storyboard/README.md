@@ -4,33 +4,41 @@ _"You are required to submit a **5-minute** (maximum length) design animation de
 
 ## Outline
 
-> **Total**: 290s - leaves 5s for intro, 5s for outro
+> **Total**: 285s - 5 extra, leaves 5s for intro, 5s for outro
 
 - `A`) **Setup**
   1. Assembly
-    1. Frame (15s)
-    2. Modular Expansion (5s)
-    3. Control Module (15s)
-  2. Hook Up Inputs (5s), Outputs (5s)
+     1. Frame (15s)
+     2. Control Module (15s)
+     3. Modular Expansion (5s)
+  2. Hook Up Inputs (10s), Outputs (10s)
   3. Startup Procedure (10s)
 - `B`) **Operations**
-  1. Per-Subsystem Purpose Showcase (15s ea. for 8 subsystems)
+  1. Per-Subsystem Purpose & Feature Showcase
+     1. Automation (15s)
+     2. Housing (15s)
+     3. Aeroponics (15s)
+     4. Solution Nutrients & pH (5s)
+     5. Solution Injection Manifold (10s)
+     6. Air Temperature (15s)
+     7. Humidification (15s)
+     8. Dehumidification (15s)
   2. Maintenance Procedures
-    1. Parts Replacement (5s)
-    2. Aeroponics Nozzle Cleaning (5s)
-    3. Humidification Disk Cleaning (5s)
-    4. Dehumidification Recharging (5s)
-    5. Solution Refill (5s)
+     1. Parts Replacement (5s)
+     2. Aeroponics Nozzle Cleaning (5s)
+     11. Humidification Disk Cleaning (5s)
+     12. Dehumidification Recharging (5s)
+     13. Solution Refill (5s)
     <!-- TODO: More maintenance -->
   3. Manual Pollination
-- `C`) **Inputs**
-  1. Planting (w/ Germination Setup; 15s)
+- `C`) **Germination & Planting** (15s)
   <!-- TODO: Restructure setup to move inputs here? -->
-- `D`) **Outputs**
+- `D`) **Products**
   1. Harvest (w/ some crop examples; 15s)
   2. Yield Storage (w/ some crop examples; 10s)
   3. Food Prep (10s)
   4. Seed Reclamation (10s)
+  <!-- TODO: Waste plant matter? -->
 - `E`) **Shut Down**
   1. Stopping (10s)
   2. Stowage (20s)
