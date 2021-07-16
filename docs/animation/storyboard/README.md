@@ -4,28 +4,33 @@ _"You are required to submit a **5-minute** (maximum length) design animation de
 
 ## Outline
 
+> **Total**: 290s - leaves 5s for intro, 5s for outro
+
 - `A`) **Setup**
   1. Assembly
-  2. Hook Up Inputs, Outputs
-  3. Startup Procedure
+    1. Frame (15s)
+    2. Modular Expansion (5s)
+    3. Control Module (15s)
+  2. Hook Up Inputs (5s), Outputs (5s)
+  3. Startup Procedure (10s)
 - `B`) **Operations**
-  1. Per-Subsystem Purpose Showcase (as per Solution Overview)
+  1. Per-Subsystem Purpose Showcase (15s ea. for 8 subsystems)
   2. Maintenance Procedures
-    1. Parts Replacement
-    2. Aeroponics Nozzle Cleaning
-    3. Humidification Disk Cleaning
-    4. Dehumidification Recharging
-    5. Solution Refill
+    1. Parts Replacement (5s)
+    2. Aeroponics Nozzle Cleaning (5s)
+    3. Humidification Disk Cleaning (5s)
+    4. Dehumidification Recharging (5s)
+    5. Solution Refill (5s)
     <!-- TODO: More maintenance -->
   3. Manual Pollination
 - `C`) **Inputs**
-  1. Planting (w/ Germination Setup)
+  1. Planting (w/ Germination Setup; 15s)
   <!-- TODO: Restructure setup to move inputs here? -->
 - `D`) **Outputs**
-  1. Harvest (w/ some examples)
-  2. Harvest Storage (w/ some examples)
-  3. Food Prep
-  4. Seed Reclamation
+  1. Harvest (w/ some crop examples; 15s)
+  2. Yield Storage (w/ some crop examples; 10s)
+  3. Food Prep (10s)
+  4. Seed Reclamation (10s)
 - `E`) **Shut Down**
-  1. Stopping
-  2. Stowage
+  1. Stopping (10s)
+  2. Stowage (20s)
