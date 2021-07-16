@@ -350,7 +350,8 @@ In the event of a malfunction, PeaPod also allows the user to override the progr
     \item \textit{Plant Seeds}: Housed in seed bank, 16 plants per grow tray
     \item \textit{Nutrient Solutions} - one cartridge each, with refill tank
     \item \textit{pH Adjustment Solutions} - one cartridge up, one cartridge down, with refill tanks
-    \item \textit{Network connection} (optional)
+    \item \textit{Network connection} (optional) - For remote control, live video/data transmission
+    \item \textit{Environment Parameter Program} - Set of time-series instructions defining the growth environment across the full growth cycle (one per plant species).
 \end{itemize}
 
 % Describe resources, and their quantities
@@ -364,9 +365,16 @@ In the event of a malfunction, PeaPod also allows the user to override the progr
 % ===== WRITE =====
 % 3000chars
 
+\textbf{Product}:
+
 \begin{itemize}
     \item \textit{Edible plant mass}: fruits/vegetables/seeds/etc.
     \item \textit{Plant seeds}: for seed bank replenishing
+\end{itemize}
+
+\textbf{Waste, Functional}:
+
+\begin{itemize}
     \item \textit{Aeroponics runoff water}: minimized by optimizing aeroponics spray duration, can be fed back to RO system
     \item \textit{Inedible plant mass}: stems/roots/leaves/etc.\footnote{NOTE: Plant crops may be chosen such that this is minimized (i.e. microgreens)}
     \item \textit{Water vapour}: As a result of higher air humidity. Minimized by housing seal
@@ -380,6 +388,8 @@ In the event of a malfunction, PeaPod also allows the user to override the progr
     % Heat (latent and sensible)
     % All other usable or unusable products exiting the system, including liquid and gaseous process flows (e.g., water vapor, low-molecular weight organic and inorganic compounds, water, oils, etc.).
 
+\newpage
+
 \textbf{Optimization}
 
 % Provide a description on how the food production technology achieves the greatest amount of food output in relation to the quantity of inputs and quantity of waste output. 
@@ -390,9 +400,38 @@ In the event of a malfunction, PeaPod also allows the user to override the progr
 % ===== WRITE =====
 % 1500chars
 
-Maximizing output is perhaps the greatest strength of PeaPod. Since it is fully automated, growth cycles have a high degree of certainty that let researches hone in on the perfect conditions---and then repeat them ad infinitum.
-By collecting data in an isolated environment like this, optimization can be done on any number of parameters, including quantity of inputs. As trials are conducted and PeaPod gathers data, it measures the quantity of inputs taken and a plethora of plant data related to usable quantity, bringing PeaPod to the most efficient conditions over time.
-In addition, the array of sensors used to collect data double as input for PID control, letting PeaPod react to unpredictable events such as poor seed health and salvage otherwise poor outputs.
+\begin{itemize}
+    \item \textit{High Success Rates}: Complete automation and environmental control ensures high crop success rates and yield predictability.
+    \item \textit{Repeatability}: Once optimal conditions are found for a given crop species, they can be repeated ad infinitum.
+    \item \textit{Immediate Sensor Feedback and Response}: Immediate feedback from both environment sensors and plant metric analysis empowers the system to respond to unpredictable or otherwise uncontrolled factors (i.e. poor seed health, outside interference). Plant metric analysis, alongside being used for optimization via data collection, can be used to diagnose program inneffectualities and accelerate the optimization routine. For example, if the computer vision process notes declining plant health over time, the system can take preventative measures to recover yields.
+    \item \textit{Data Collection and Yield Optimization}: By collecting data via computer vision and post-harvest evaluation (dependent on available technology) on the plant's response to the induced environment ("plant metrics"), the relationship between the species behaviour and the surrounding environment can be analyzed. Plant metrics include plant health indicators (chlorophyll concentrations/chlorosis, leaf count/size distribution/density, plant height/canopy dimensions leaf tip burn, leaf curl, wilting, etc.) and crop yield (edible matter net mass/percent mass of plant, total plant mass, chemical/nutritional composition, caloric measurement, etc.) This analysis is performed by the following method extracted from the Solution Overview (see attached PDF documents):
+    
+\end{itemize}
+
+Assume a plant's growth rate (or state change) is related to its current internal state $\vec P \in \R^n$ (for $n$ plant metrics) and the environment conditions $\vec E \in \R^m$ (for $m$ environment parameters). Let these both be functions $\vec P (t),\vec E(t)$ defined at each $t$, where $t=0$ indicates the time of planting. Assume that this relationship is constant for all members of a given species.
+
+\newpage
+
+Define plant state change $\vec P'$: 
+
+$$\vec P'(t) = \frac{d}{dt}\vec P(t)$$
+
+Define the plant-environment behaviour function $Q$: 
+
+$$Q(\vec P(t), \vec E(t), t)=\vec P'(t)$$ 
+
+Given the current internal and external states, determine the plant's state change.
+
+\begin{enumerate}
+    \item Set $\vec E_{set}(t)~\forall~ t$, aka the program;
+    \item Record $\vec P(t)~\forall~ t$ (plant metrics) and $\vec E(t)\approx \vec E_{set}(t)~\forall~ t$ (environment sensors);
+    \item Calculate $\vec P'(t)~\forall~ t$;
+    \item Fit $\vec Q$ to our data (machine learning model);
+\end{enumerate}
+
+By fitting $\vec Q$, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
+
+$$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
 
 \textbf{Food Output Quality}
 
@@ -410,6 +449,8 @@ In addition, the array of sensors used to collect data double as input for PID c
 
 % Optional - Additional comments
 % This additional text box with a 1,000 character limit allows you to provide any additional information on the resource inputs and outputs related to the use of the food production technology.
+
+\newpage
 
 \subsubsection{Reliability and/or Stability}
 
