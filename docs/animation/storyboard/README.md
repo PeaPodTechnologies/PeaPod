@@ -4,14 +4,21 @@ _"You are required to submit a **5-minute** (maximum length) design animation de
 
 ## Outline
 
-> **Total**: 285s - 5 extra, leaves 5s for intro, 5s for outro
+<!-- > **Total**: 285s - leaves 5s for intro, 5s for outro -->
 
 - `A`) **Setup**
   1. Assembly
-     1. Frame (15s)
-     2. Control Module (15s)
+     1. Frame, Install Control Module (15s)
      3. Modular Expansion (5s)
-  2. Hook Up Inputs (10s), Outputs (10s)
+  2. Hook Up Inputs, Subsystems <!-- (20s) -->
+     1. Water, Power, Network Input (5s) 
+     2. Lighting Boards, Power -> Lighting Tray (5s)
+     3. Grow Tray Build (5s)
+     4. Aeroponics Input + Signal/Power Hookup + Nozzle Mounting (5s)
+     5. Solutions Fill, Hookup (5s)
+     6. Computer, Sensors, Camera (5s)
+     7. Humidification Water+Power (5s)
+     8. Dehumidification Cartridge+Power (5s)
   3. Startup Procedure (10s)
 - `B`) **Operations**
   1. Per-Subsystem Purpose & Feature Showcase
@@ -29,8 +36,7 @@ _"You are required to submit a **5-minute** (maximum length) design animation de
      11. Humidification Disk Cleaning (5s)
      12. Dehumidification Recharging (5s)
      13. Solution Refill (5s)
-    <!-- TODO: More maintenance -->
-  3. Manual Pollination
+  3. Manual Pollination (5s)
 - `C`) **Germination & Planting** (15s)
   <!-- TODO: Restructure setup to move inputs here? -->
 - `D`) **Products**
