@@ -161,10 +161,10 @@ The primary function of the overall design is derived from both the overall purp
         \item Fruit/harvest body size, ripeness;
         \item etc.
     \end{itemize}
-    \item \textit{Environment Sensors}: Record the environment's current state. One for each environment control loop (\ref{sec:environment}), as well as CO${}_2$ ppm.
+    \item \textit{Environment Sensors}: Record the environment's current state. Covers each environment control loop (see \ref{sec:environment} \textbf{outputs}), as well as CO${}_2$ ppm.
     \item \textit{Diagnostic Systems}: Include informative sensors tracking system input availability, etc. as well as notification triggers.
     \item \textit{Program}: Set of action (e.g. lights on) and control target (e.g. hold air temperature at 22°C) \textbf{time-series} instructions;
-    \item \textit{Actuators}: Induce a change. Covers each environment control (\ref{sec:environment}, \ref{sec:lighting});
+    \item \textit{Actuators}: Induce a change. Covers each environment control (see \ref{sec:environment}, \ref{sec:lighting} \textbf{inputs});
 \end{itemize}
 
 \textbf{Justification}: 
@@ -178,34 +178,57 @@ The primary function of the overall design is derived from both the overall purp
 \subsection{Housing}
 \label{sec:housing}
 
-\textbf{Purpose \& Function}: \textit{Isolates} and \textit{Insulates} growth environment from exterior environment (heat, light, humidity). Provides structural integrity and mounting points for other subsystems (\textit{Frame}).
+\textbf{Purpose}: \textit{Isolates} and \textit{insulates} growth environment from exterior environment (heat, light, humidity). Provides structural integrity and mounting points for other subsystems.
 
 \textbf{Method}:
-\begin{itemize}
-    \item Insulation (\textit{keep in}):
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Construct frame and install panels;
+        \item Mount control module (w/ subsystems), connect inputs and internal subsystem connections;
+        \item Install tray mounts, insert trays (w/ subsystems);
+    \end{enumerate}
+    \item \textit{Testing}:
     \begin{itemize}
-        \item Heat - Insulative/reflective internal shell
-        \item Light - Reflective internal shell
-        \item Moisture - "Sealed" shell
+        \item Frame construction is rigid, level, and sturdy;
+        \item Panels are insulating against temperature changes;
     \end{itemize}
-    \item Isolation (\textit{keep out}):
-    \begin{itemize}
-        \item Heat - Insulative shell
-        \item Light - Opaque shell
-        \item Moisture - "Sealed" shell
-    \end{itemize}
-    \item $\therefore$ Frame skeleton w/ solid, internally-reflective, "sealed" panels;
-    \item Standard subframes for mounting entire subsystems modularly;
-\end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Panels insulate against heat gain/loss, are opaque, and contain light and heat via reflection;
+        \item Shell construction is tight, thus sealing against moisture;
+        \item Internal vertical mounting channels for systems, horizontal plane "trays";
+        \item \textbf{Extension} (can be repeated):
+        \begin{enumerate}
+            \item Add a second housing;
+            \item Remove dividing panel from both housings;
+            \item Remove "shared" skeleton extrusions from second housing;
+            \item Join the two housings to form one larger 2x1 housing;
+            \item \textbf{Extension Modes} (may be combined in any way to suit application):
+            \begin{itemize}
+                \item \textit{Option 1} (Smaller Housings): Operate the combined housing off \textbf{one} control module.
+                \item \textit{Option 2} (Larger Housings): Add a control module to account for additional air volume, plant count, power requirement, etc.. Operate in a \textbf{controller-follower topology}.
+                \item \textit{Option 3} (Frame Connection Only): Leave the dividing panel, add a control module, and operate the two PeaPods \textbf{separately}.
+            \end{itemize}
+        \end{enumerate}
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Dismount all systems, remove trays;
+        \item Disassemble housing;
+    \end{enumerate}
+\end{enumerate}
+
+\newpage
 
 \textbf{Features}:
 \begin{itemize}
-    \item Aluminum extrusion skeleton w/ standard mounting channels;
-    \item Foam insulation panels w/ mylar internal coating slide into exoskeleton channels;
-    \item Trays - base subframe unit, adaptable; mounted to vertical internal channels for vertical repositioning; all connections are \textit{quick-disconnect} (i.e. quick-connect tubing for grow tray, push connectors for lighting):
+    \item \textit{Frame}: Cubic skeleton made of aluminum extrusion with standard mounting channels. "Edges" of cube.
+    \item \textit{Panels}: Foam insulation panels with mylar internal coating. Panels slide into extrusion channels. "Faces" of cube.
+    \item \textit{Trays}: Horizontal plane subframes mounted to internal vertical extrusion channels for ease of repositioning. Trays slide in/out on permanent mounts. All connections are \textit{quick-disconnect} (i.e. quick-connect tubing for grow tray, push connectors for lighting) for ease of removal. Trays include:
     \begin{itemize}
-        \item Grow trays - Support plants (via grow cups), aeroponic nozzles, and aeroponics container (See \ref{sec:aeroponics}).
-        \item Lighting trays - Support LED boards, driver board (See \ref{sec:lighting}).
+        \item \textit{Grow Trays}: Support plants (via grow cups), aeroponic nozzles, and aeroponics container (See \ref{sec:aeroponics}).
+        \item \textit{Lighting Trays}: Support LED boards, driver board (See \ref{sec:lighting}).
     \end{itemize}
 \end{itemize}
 
@@ -213,7 +236,7 @@ The primary function of the overall design is derived from both the overall purp
 \begin{itemize}
     \item \textbf{Function}: Insulation increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances.
     \item \textbf{Method}: Solid frame-and-panel construction is efficient for packing away, and is honestly just simple. Adaptable tray subframes make future feature development easier, and allows to modularly swap subsystems.
-    \item \textbf{Features}: Aluminum extrusion is commonly used for frames, and has a high strength-weight ratio. Allows strong, repositionable mounting via channels. Foam insulation is highly insulative and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
+    \item \textbf{Features}: Aluminum extrusion is commonly used for frames, and has a high strength-weight ratio. Allows strong, repositionable mounting via channels. Foam insulation is highly insulating and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
 \end{itemize}
 
 \newpage
