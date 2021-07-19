@@ -41,7 +41,7 @@
 
         \vfill \small{
 
-            Jayden Lefebvre - Lead Engineer, UTAG Founder\\ECE 2T4 - University of Toronto - Toronto, ON, Canada\\Primary Contact: \uline{jayden.lefebvre@mail.utoronto.ca}\\
+            Jayden Lefebvre - Lead Engineer, UTAG Founder\\ECE 2T4 - University of Toronto - Toronto, ON, Canada\\Primary Contact: jayden.lefebvre@mail.utoronto.ca\\
             \vspace{.5cm}
             Nathan Chareunsouk - Industrial Designer\\Toronto, ON, Canada\\\vspace{.5cm}
             Navin Vanderwert - Design Engineer\\EngSci 2T4, University of Toronto - Toronto, ON, Canada\\\vspace{.5cm}
@@ -248,11 +248,11 @@ The primary function of the overall design is derived from both the overall purp
 \subsection{Aeroponics}
 \label{sec:aeroponics}
 
-\textbf{Purpose}: Delivers \textit{nutrients} and \textit{pH}-balanced, \textit{temperature}-controlled \textit{water} to the plant roots via a \textit{fine mist}.
+\textbf{Purpose}: Delivers nutrients and pH-balanced, temperature-controlled water to the plant roots via a fine mist.
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Filtered/RO water under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off relay to pump power), nozzle control (on/off relay to solenoid)
+    \item \textbf{Inputs}: Reverse osmosis water under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off to relay for pump power), nozzle control (on/off to relay for solenoid power), pH and nutrient solution ratios as signals (stepper positions/valve open percent), thermoregulation power as signal (PWM to H-bridge polarity switch to MOSFET to Peltier), thermoregulation fan power
     \item \textbf{Outputs}: Mist (50 micron mean droplet diameter)
 \end{itemize}
 
@@ -260,47 +260,60 @@ The primary function of the overall design is derived from both the overall purp
 \begin{enumerate}
     \item \textit{Setup}:
     \begin{enumerate}
-        \item 
+        \item Hook up all inputs;
+        \item Connect the quick-disconnect fitting;
+        \item Fill nutrient, pH solution containers;
+        \item Calibrate pressure, temperature sensors to atmospheric;
+        \item Enable water input to prime system (if known pressure/temperature, calibrate sensors);
     \end{enumerate}
     \item \textit{Testing}:
     \begin{itemize}
-        \item 
+        \item Temperature, pressure sensors communicate as expected;
+        \item No leaks at any connections under a) source pressure, b) fully pressurized;
+        \item Pump auto-shuts off near 80PSI;
+        \item Tubing and all components withstand full pressurization;
+        \item Solenoid is normally closed, withstands full pressurization, and opens when power is applied;
+        \item Quick-disconnect operates as intended at full pressurization without leaks;
+        \item Nozzles produce full-cone mist;
+        \item Manual and servo-actuated valves operate as intended;
     \end{itemize}
     \item \textit{Process}:
     \begin{enumerate}
-        \item 
+        \item Water is pressurized to constant 80PSI;
+        \item Heat is added to or removed from the water (\ref{sec:automation}); % TODO: Add water temp to environment control?
+        \item Temperature and pressure of the water is read (feeds back);
+        \item Nutrient and pH (\ref{sec:nutrientsph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
+        \item Flow to nozzle is controlled (on/off) (\ref{sec:automation});
+        \item Nozzle turns pressurized water into mist;
     \end{enumerate}
+\newpage
     \item \textit{Shutdown}:
     \begin{enumerate}
-        \item 
+        \item Power down the pump and thermoregulation unit;
+        \item Close the nutrient and pH solution valves;
+        \item Close the source shutoff valve;
+        \item Open the drain valve, and allow the system to depressurize and  drain completely;
+        \item Power down the solenoid;
+        \item Disconnect the quick-disconnect fitting;
+        \item Disconnect the inputs;
     \end{enumerate}
-\end{enumerate}
-
-\textbf{Method}:
-\begin{enumerate} 
-    \item Water is sourced from an external RO system with positive pressure;
-    \item Water is pressurized to constant 80psi;
-    \item Water is heated or cooled to a given temp (\ref{sec:automation}); % TODO: Add water temp to environment control?
-    \item Nutrient and pH (\ref{sec:nutrientsph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
-    \item Flow to nozzle is controlled (on/off) (\ref{sec:automation});
-    \item Nozzle turns pressurized water into mist;
 \end{enumerate}
 
 \textbf{Features} (in order of plumbing; source $\to$ nozzle):
 \begin{itemize}
-    \item \textit{Water Source}: Input for filtered, reverse-osmosis water.
+    \item \textit{Water Source}: Input for reverse-osmosis water.
+    \item \textit{Manual Source Shutoff Valve}
     \item \textit{Diaphragm Pump}: Self-priming, auto-shutoff at 80psi. Power is controlled by external relay signal (\ref{sec:automation}).
-    \item \textit{Inline Water Heater/Cooler}: Thermoelectric heater/cooler
+    \item \textit{Inline Water Heater/Cooler}: Thermoelectric heater/cooler. Peltier tiles (H-bridge polarity control, PWM dimming), aluminum water block/heat sink combo, and fans.
     \item \textit{Accumulator Tank}: Uses an air bladder to create and stabilize pressure.
-    \item \textit{Pressure Sensor} reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
-    \item \textit{Nutrient and pH Adjusment Solutions} - Section \ref{sec:nutrientsph}
+    \item \textit{Pressure Sensor}: Reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
+    \item \textit{Manual Drain Valve}: Ball valve. Allows the system to be depressurized and drained.
+    \item \textit{Nutrient and pH Adjustment Solutions}: Section \ref{sec:nutrientsph}
     \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per solution). Section \ref{sec:manifold}.
-    \item \textit{Solenoid Valve} - Enables on-demand (\ref{sec:automation}) misting.
+    \item \textit{Solenoid Valve}: Enables on-demand (\ref{sec:automation}) misting.
     \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
     \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets. %TODO: Source??
 \end{itemize}
-
-\newpage
 
 \textbf{Justification}: 
 \begin{itemize}
@@ -308,6 +321,8 @@ The primary function of the overall design is derived from both the overall purp
     \item \textbf{Function}: RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.
     \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. Mean droplet size of 5-50 microns is optimal for plant growth. %TODO: Source?? also more detail here
 \end{itemize}
+
+\newpage
 
 \subsubsection{Solution Nutrients and pH}
 \label{sec:nutrientsph}
