@@ -760,23 +760,44 @@ The primary function of the overall design is derived from both the overall purp
 \subsubsection{Lighting}
 \label{sec:lighting}
 
-\textbf{Purpose}:
+\textbf{Purpose}: Provide all necessary light for plant growth.
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Power, lighting spectrum/intensity control parameter as signals
+    \item \textbf{Inputs}: Power, lighting spectrum-intensity distribution control signal (aka per-LED modulation signals)
     \item \textbf{Outputs}: Light
 \end{itemize}
 
 \textbf{Method}:
 \begin{enumerate}
-    \item Power + signal controls driver units;
-    \item Drivers power lights;
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect power and spectrum-intensity distribution control signal to driver board;
+        \item Mount driver board and many LED boards to lighting tray;
+        \item Daisy-chain LED boards, connect first and last to driver board;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Spectrum-intensity distribution control signal modulates LED power as expected;
+        \item Passive heat sinks dissipate enough heat;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Power is delivered to drivers;
+        \item Control signals "dim" drivers to modulate intensity distribution across spectrum;
+        \item Power drivers power lights;
+        \item Lights emit light;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect power and signals;
+        \item Disconnect and dismount boards;
+    \end{enumerate}
 \end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{LED Lights} - High-output. Many "series" (wavelengths)\footnote{\textit{NOTE}: This system is modifiable to use other lights (i.e. Near-UV)}:
+    \item \textit{LED Lights}: LEDs offer high power output, less heat, and precise wavelengths while minimizing risk of damaging plant tissues. Many "series" (wavelengths) enable wide and fine control of intensity-spectrum distribution, with a focus on Photosynthetically-Active Radiation (PAR)\footnote{\textit{NOTE}: This system is modifiable to use other lights (i.e. Near-UV)}. Located across multiple smaller daisy-chained PCBs to minimize cost. LED series include:
     \begin{itemize}
         \item Royal Blue
         \item Cool White
@@ -784,12 +805,8 @@ The primary function of the overall design is derived from both the overall purp
         \item Photo Red
         \item Far Red (Near-IR)
     \end{itemize}
-    \item \textit{LED Power Drivers} - Constant-current PWM-dimmable DC-DC buck converters. One per series, driving multiple LEDs.
-\end{itemize}
-
-\textbf{Justification}:
-\begin{itemize}
-    \item \textbf{Features}: LED lights offer higih output and precise wavelengths without risk of damaging plant tissues, as opposed to other methods. Also less heat than other types. Constant-current LED drivers are specialized for semiconductor (i.e. non-linear voltage-current relationship) components. PMW offers easy control signal protocol.
+    \item \textit{LED Power Drivers}: Constant-current PWM-dimmable DC-DC buck converters, specialized for LEDs. One per series, driving a set of LEDs. Located on a separate PCB (one per lighting tray).
+    \item \textit{Heat Sink}: Passive (fanless) cooling solution for LEDs. Mounted to opposing face of PCB.
 \end{itemize}
 
 \newpage
