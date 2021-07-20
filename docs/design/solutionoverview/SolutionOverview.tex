@@ -13,7 +13,7 @@
 
 % Page layout (margins, size, line spacing)
 \geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
-\setstretch{1.15}
+\setstretch{1}
 
 % Headers
 \pagestyle{fancy}
@@ -154,7 +154,6 @@ The primary function of the overall design is derived from both the overall purp
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Computer System}: Manages \textbf{all} data collection, storage, analysis, and transmission/receiving, as well as planning and actuator control. Includes internal clock (for program, notification), network connection (for data transmission, notification), and storage (for data). 
-\newpage
     \item \textit{Camera}: Multiple angles. For live feed transmission to users (local and remote), as well as plant health and yield metric collection via \textbf{computer vision analysis}. Metrics include:
     \begin{itemize}
         \item Leaf health indicators (i.e. leaf tip burn, leaf curl, chlorosis);
@@ -166,6 +165,7 @@ The primary function of the overall design is derived from both the overall purp
         \item etc.
     \end{itemize}
     \item \textit{Environment Sensors}: Record the environment's current state. Covers each environment control loop (see \ref{sec:environment} \textbf{outputs}), as well as CO${}_2$ ppm.
+\newpage
     \item \textit{Diagnostic Systems}: Include informative sensors tracking system input availability, etc. as well as notification triggers.
     \item \textit{Program}: Set of action (e.g. lights on) and control target (e.g. hold air temperature at 22°C) \textbf{time-series} instructions;
     \item \textit{Actuators}: Induce a change. Covers each environment control (see \ref{sec:environment}, \ref{sec:lighting} \textbf{inputs});
@@ -506,26 +506,40 @@ The primary function of the overall design is derived from both the overall purp
 \end{itemize}
 
 \textbf{Method}:
-\begin{itemize}
-    \item Air is circulated and temperature is measured;
-    \item Temperature is used to inform control signal;
-    \item Heat is pumped into or out of the box (direction and magnitude depending on the control signal) and radiated;
-\end{itemize}
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect inputs;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Heat pump direction and magnitude respond to control signal as expected;
+        \item Fans operate as expected;
+        \item Heat pump transfer capacity exceeds maximum heat loss at extremes of temperature difference\footnote{i.e. if X Watts leave the system at MAX°C internal, MIN°C external, the heat pump can transfer >X Watts};
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Air is circulated throughout the environment;
+        \item Temperature is measured, sent to control module;
+        \item Control module controls heat pump speed and direction (heating vs. cooling environment);
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect inputs;
+    \end{enumerate}
+\end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a PID control loop (\ref{sec:automation});
-    \item \textit{Peltier Devices}: Solid state heat pump (thermoelectric effect). Tile form factor (pump from one face to the other).
-    \item \textit{Peltier Driver Circuit}: Controls direction and magnitude of heat pump via a \textbf{MOSFET H-bridge} and \textbf{dimmable current source} respectively.
-    \item \textit{Heat Sinks}: Exchanges heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound.
-    \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
     \item \textit{Circulation Fans}: Located in growth environment to circulate air even temperature distribution.
-\end{itemize}
-
-\textbf{Justification}: 
-\begin{itemize}
-    \item \textbf{Function}: Air management ensures an even temperature throughout the entire growth environment. Thermal exchange effectively pumps heat into or out of the growth environment.
-    \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically.
+    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation});
+    \item \textit{Heat Pump}: Pumps heat in or out of the growth environment. Is comprised of:
+    \begin{itemize}
+        \item \textit{Peltier Devices}: Bidirectional solid state \textbf{thermoelectric tile} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
+        \item \textit{Peltier Driver Circuit}: Controls direction and magnitude of Peltier device heat pump via a \textbf{MOSFET H-bridge} and \textbf{dimmable current source} respectively.
+        \item \textit{Heat Sinks}: Aluminum blocks with fins hold and exchange heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound for better transfer.
+        \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
+    \end{itemize}
 \end{itemize}
 
 \newpage
@@ -533,7 +547,7 @@ The primary function of the overall design is derived from both the overall purp
 \subsubsection{Air Humidification}
 \label{sec:airhum}
 
-\textbf{Purpose}: Actively increasing growth environment air humidity on command.
+\textbf{Purpose}: Actively increases growth environment air humidity on command.
 
 \textbf{Function}:
 \begin{itemize}
@@ -593,7 +607,7 @@ The primary function of the overall design is derived from both the overall purp
     \begin{itemize}
         \item \textit{Silica Beads} - Absorbs moisture from air passed around it. Changes color when saturated. Can be reused indefinitely after water is extracted.
     \end{itemize}
-    \item \textit{Evaporator Oven}\footnote{Not included in system.} - Any standard oven that can maintain 200°C for 60 minutes. Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them.
+    \item \textit{Evaporator Oven}: \textbf{Onboard systems} provide an oven that can maintain 200°C for 60 minutes. Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them.
 \end{itemize}
 
 \textbf{Justification}: 
