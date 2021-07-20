@@ -436,29 +436,47 @@ The primary function of the overall design is derived from both the overall purp
 \subsection{Environment Control}
 \label{sec:environment}
 
-\textbf{Purpose}: Generating the internal plant growth environment, with control over all relevant environment parameters:
+\textbf{Purpose}: Subsystems responsible for generating the internal plant growth environment, providing control over all relevant environment parameters. Provides sensing and acting peripherals to the control module's automation system (\ref{sec:automation}).
+
 \textbf{Function}:
 \begin{itemize}
     \item \textbf{Inputs}: Power, water, environment control parameters (as signals)
-    \item \textbf{Outputs}: Controlled environment (optimal for plant growth)
+    \item \textbf{Outputs}: Environment sensor values, controlled environment
 \end{itemize}
 
 \textbf{Method} (informed by \ref{sec:automation}):
-\begin{itemize}
-    \item Control System Parameters:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect power, water inputs;
+        \item Connect all actuator input signals and sensor output signals to control module;
+    \end{enumerate}
+    \item \textit{Testing}:
     \begin{itemize}
-        \item Leaf zone air temperature;
-        \item Leaf zone humidity;
-        \item Root zone/aeroponics spray temperature;
+        \item Each subsystem responds properly to automation (\ref{sec:automation}) control;
+        \item Each control loop system sensor reports accurately;
     \end{itemize}
-    \item Set Parameters:
-    \begin{itemize}
-        \item Lighting spectrum and intensity;
-        \item Aeroponics delivery/"flow" rate;
-        \item Aeroponics solution per-nutrient concentrations;
-        \item Aeroponics solution pH;
-    \end{itemize}
-\end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Sensor signals sent to automation (\ref{sec:automation});
+        \item Actuator control signals recieved from automation (\ref{sec:automation});
+        \item Actuators respond to control signals to control:
+        \begin{itemize}
+            \item Leaf zone air temperature\footnotemark[4];
+            \item Leaf zone humidity\footnotemark[4];
+            \item Root zone/aeroponics temperature\footnote{Control Loop (aka Feedback) System - includes sensor(s)};
+            \item Lighting spectrum and intensity\footnote{Set System - no feedback sensors};
+            \item Aeroponics delivery/"flow" rate\footnotemark[5];
+            \item Aeroponics solution per-nutrient concentrations\footnotemark[5];
+            \item Aeroponics solution pH\footnotemark[5];
+        \end{itemize}
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect inputs;
+        \item Disconnect control module connections;
+    \end{enumerate}
+\end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
