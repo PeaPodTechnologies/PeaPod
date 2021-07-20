@@ -258,7 +258,7 @@ The primary function of the overall design is derived from both the overall purp
 
 \textbf{Method}:
 \begin{enumerate}
-    \item \textit{Setup}:
+    \item \textit{Setup} (comes pre-assembled):
     \begin{enumerate}
         \item Hook up all inputs;
         \item Connect the quick-disconnect fitting;
@@ -309,7 +309,7 @@ The primary function of the overall design is derived from both the overall purp
     \item \textit{Pressure Sensor}: Reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
     \item \textit{Manual Drain Valve}: Ball valve. Allows the system to be depressurized and drained.
     \item \textit{Nutrient and pH Adjustment Solutions}: Section \ref{sec:nutrientsph}
-    \item \textit{Adjustable-rate Siphon Injection Manifold}: A set of venturi-based siphon injectors for flow-ratio siphoning of solutions (onen siphon per solution). Section \ref{sec:manifold}.
+    \item \textit{Adjustable-rate Siphon Injection Manifold}: Section \ref{sec:manifold}.
     \item \textit{Solenoid Valve}: Enables on-demand (\ref{sec:automation}) misting.
     \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
     \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets. %TODO: Source??
@@ -386,7 +386,7 @@ The primary function of the overall design is derived from both the overall purp
 \subsubsection{Solution Injection Manifold}
 \label{sec:manifold}
 
-\textbf{Purpose}: A manifold of venturi-based \textit{siphons} for in-line, \textit{adjustable flow-ratio} injection and mixing of nutrient and pH-adjustment solutions.
+\textbf{Purpose}: A manifold of parallel in-line injectors, allowing for adjustable mixing ratios for nutrient and pH solutions.
 
 \textbf{Function}:
 \begin{itemize}
@@ -396,20 +396,37 @@ The primary function of the overall design is derived from both the overall purp
 
 \textbf{Method}:
 \begin{enumerate}
-    \item Manifold splits off into branches (one per solution)
-    \item Each solution branch:
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect inlet lines to siphon inlets;
+        \item Connect solution containers to inlet lines;
+        \item Connect flow control servos to control module;
+    \end{enumerate}
+    \item \textit{Testing}:
     \begin{itemize}
-        \item A venturi siphon for fixed flow-ratio injection;
-        \item An adjustable-flow valve controlling solution flow rate;
+        \item Flow control servos and valves operate as intended;
+        \item Injection ratios are accurate;
+        \item Check valves prevent backflow when solenoid is closed;
     \end{itemize}
-    \item Manifold recombines
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Water splits into parallel injection "branches";
+        \item Each branch injects solution at an adjustable (\ref{sec:automation}) ratio (flow:flow);
+        \item Branches recombine;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect inlet lines from siphons, containers;
+        \item Disconnect flow control servos from control module;
+    \end{enumerate}
 \end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Siphon Injectors}
-    \item \textit{Needle Valves}: Completely adjustable flow control, driven by servos
-    \item \textit{One-way Valves}: Prevents backflow through siphon inlet
+    \item \textit{Venturi Siphons}: Venturi-based siphons for flow-ratio injection of solutions (one siphon per solution).
+    \item \textit{Input, Output Manifold}: Manifolds for distribution of water to branches, and recombination of solution post-injection.
+    \item \textit{Flow Control Valves}: Completely adjustable flow control, driven by servos.
+    \item \textit{Check Valves}: Prevents backflow through siphon inlet when output solenoid is closed.
 \end{itemize}
 
 % TODO: Justification?
