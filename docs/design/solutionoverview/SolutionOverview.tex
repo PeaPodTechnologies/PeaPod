@@ -51,7 +51,7 @@
 
         \vspace{2cm}
 
-        Revision 0.6\\
+        Revision 0.7\\
         University of Toronto Agritech\\
         July 19th, 2021
 
@@ -113,7 +113,7 @@ The primary function of the overall design is derived from both the overall purp
 \subsection{Automation}
 \label{sec:automation}
 
-\textbf{Purpose}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time. Maintains the homogeneity of the internal environment.
+\textbf{Purpose}: Performing growth-, maintenance-, and data-related tasks autonomously on the basis of both schedule and necessity to reduce crew maintenance time. Maintains the homogeneity of the internal environment. Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
 
 \textbf{Function}:
 \begin{itemize}
@@ -136,25 +136,24 @@ The primary function of the overall design is derived from both the overall purp
     \item \textit{Process}:
     \begin{enumerate}
         \item Checks operating preconditions (self POST and per-subsystem);
-        \item \textbf{Environment Control Loop}:
+        \item \textbf{Environment Control Loop} (matches \textit{Sense-Plan-Act} model of robotics):
         \begin{enumerate}
             \item Receives and stores data about current environment state;
             \item Compares current state to desired state, develops a "plan" to reach desired state;
             \item Controls subsystem operations in order to enact the plan;
         \end{enumerate}
-        \item Notifies user on maintenance requirement (i.e. non-automated input/output management, refills, repairs, etc.);
+        \item Notifies user on maintenance requirement (i.e. non-automated input/output management, refills, repairs, etc.) and end-of-program (EOP);
     \end{enumerate}
-    \item \textit{Shutdown} (either manual or end-of-program/EOP):
+    \item \textit{Shutdown} (either manual or EOP):
     \begin{enumerate}
         \item Stop subsystem operations;
-        \item \textit{If EOP}: Notify user;
     \end{enumerate}
 \end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Computer System}: Manages \textbf{all} data collection, storage, analysis, and transmission/receiving, as well as planning and actuator control. Includes internal clock (for program, notification), network connection (for data transmission, notification), and storage (for data). 
-    \item \textit{Camera}: Multiple angles. For live feed transmission to users (local and remote), as well as plant health and yield metric collection via \textbf{computer vision analysis}. Metrics include:
+    \item \textit{Camera \& Plant Metrics}: Multiple angles. For live feed transmission to users (local and remote), as well as plant health and yield metric collection via \textbf{computer vision analysis}. Matches $\vec P$ from the optimization routine (\ref{sec:optimization}). Metrics include:
     \begin{itemize}
         \item Leaf health indicators (i.e. leaf tip burn, leaf curl, chlorosis);
         \item Leaf count, size distribution;
@@ -164,20 +163,14 @@ The primary function of the overall design is derived from both the overall purp
         \item Fruit/harvest body size, ripeness;
         \item etc.
     \end{itemize}
-    \item \textit{Environment Sensors}: Record the environment's current state. Covers each environment control loop (see \ref{sec:environment} \textbf{outputs}), as well as CO${}_2$ ppm.
+    \item \textit{Environment Sensors}: Record the environment's current state. Covers each environment control loop (see \ref{sec:environment} \textbf{outputs}). Matches $\vec E$ from the optimization routine (\ref{sec:optimization}).
 \newpage
     \item \textit{Diagnostic Systems}: Include informative sensors tracking system input availability, etc. as well as notification triggers.
     \item \textit{Program}: Set of action (e.g. lights on) and control target (e.g. hold air temperature at 22°C) \textbf{time-series} instructions;
-    \item \textit{Actuators}: Induce a change. Covers each environment control (see \ref{sec:environment}, \ref{sec:lighting} \textbf{inputs});
+    \item \textit{Actuator Control}: Induce a change. Covers each environment control (see \ref{sec:environment}, \ref{sec:lighting} \textbf{inputs});
 \end{itemize}
 
-\textbf{Justification}: 
-\begin{itemize}
-    \item \textbf{Purpose}: Increased accuracy/precision over human interference, minimize human hours spent. Enables control over all parameters simultaneously.
-    \item \textbf{Method}: Environment data and plant metrics match $\vec E,\vec P$ respectively from the optimization routine (see Section \ref{sec:optimization}). Control loop model matches \textit{Sense-Plan-Act} model of robotics, and is well suited for controlled-environment agriculture.
-\end{itemize}
-
-\newpage
+\vspace{1cm}
 
 \subsection{Housing}
 \label{sec:housing}
@@ -227,8 +220,8 @@ The primary function of the overall design is derived from both the overall purp
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Frame}: Cubic skeleton made of aluminum extrusion with standard mounting channels. "Edges" of cube.
-    \item \textit{Panels}: Foam insulation panels with mylar internal coating. Panels slide into extrusion channels. "Faces" of cube.
+    \item \textit{Frame}: Cubic skeleton made of high strength-to-weight aluminum extrusion with standard mounting channels. "Edges" of cube.
+    \item \textit{Panels}: Foam insulation panels with mylar internal coating increase thermal and light efficiency, as well as safety against cross-contamination and pathogens. Panels slide into extrusion channels and form a "seal". "Faces" of cube.
     \item \textit{Trays}: Horizontal plane subframes mounted to internal vertical extrusion channels for ease of repositioning. Trays slide in/out on permanent mounts. All connections are \textit{quick-disconnect} (i.e. quick-connect tubing for grow tray, push connectors for lighting) for ease of removal. Trays include:
     \begin{itemize}
         \item \textit{Grow Trays}: Support plants (via grow cups), aeroponic nozzles, and aeroponics container (See \ref{sec:aeroponics}).
@@ -236,14 +229,7 @@ The primary function of the overall design is derived from both the overall purp
     \end{itemize}
 \end{itemize}
 
-\textbf{Justification}: 
-\begin{itemize}
-    \item \textbf{Function}: Insulation increases thermal and light efficiency. Isolation increases safety against cross-contamination, pathogens, harmful substances.
-    \item \textbf{Method}: Solid frame-and-panel construction is efficient for packing away, and is honestly just simple. Adaptable tray subframes make future feature development easier, and allows to modularly swap subsystems.
-    \item \textbf{Features}: Aluminum extrusion is commonly used for frames, and has a high strength-weight ratio. Allows strong, repositionable mounting via channels. Foam insulation is highly insulating and opaque, and mylar ensures internal light reflection. Sliding directly into extrusion channels boosts "seal".
-\end{itemize}
-
-\newpage
+\vspace{1cm}
 
 \subsection{Aeroponics}
 \label{sec:aeroponics}
@@ -252,20 +238,22 @@ The primary function of the overall design is derived from both the overall purp
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Reverse osmosis water under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off to relay for pump power), nozzle control (on/off to relay for solenoid power), pH and nutrient solution ratios as signals (stepper positions/valve open percent), thermoregulation power as signal (PWM to H-bridge polarity switch to MOSFET to Peltier), thermoregulation fan power
-    \item \textbf{Outputs}: Mist (50 micron mean droplet diameter)
+    \item \textbf{Inputs}: Reverse osmosis water\footnote{RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.} under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off to relay for pump power), nozzle control (on/off to relay for solenoid power), pH and nutrient solution ratios as signals (stepper positions/valve open percent), thermoregulation power as signal (PWM to H-bridge polarity switch to MOSFET to Peltier), thermoregulation fan power
+    \item \textbf{Outputs}: Mist (50 micron mean droplet diameter), runoff water
 \end{itemize}
 
 \textbf{Method}:
 \begin{enumerate}
-    \item \textit{Setup} (comes pre-assembled):
+    \item \textit{Setup}:
     \begin{enumerate}
         \item Hook up all inputs;
         \item Connect the quick-disconnect fitting;
         \item Fill nutrient, pH solution containers;
         \item Calibrate pressure, temperature sensors to atmospheric;
         \item Enable water input to prime system (if known pressure/temperature, calibrate sensors);
+        \item Mount container, connect runoff output line to extraction port;
     \end{enumerate}
+\newpage
     \item \textit{Testing}:
     \begin{itemize}
         \item Temperature, pressure sensors communicate as expected;
@@ -276,6 +264,7 @@ The primary function of the overall design is derived from both the overall purp
         \item Quick-disconnect operates as intended at full pressurization without leaks;
         \item Nozzles produce full-cone mist;
         \item Manual and servo-actuated valves operate as intended;
+        \item Runoff container is sealed, and extraction port works;
     \end{itemize}
     \item \textit{Process}:
     \begin{enumerate}
@@ -284,11 +273,12 @@ The primary function of the overall design is derived from both the overall purp
         \item Temperature and pressure of the water is read (feeds back);
         \item Nutrient and pH (\ref{sec:nutrientsph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
         \item Flow to nozzle is controlled (on/off) (\ref{sec:automation});
-        \item Nozzle turns pressurized water into mist;
+        \item Nozzle turns pressurized water into mist, which is 98\% more water efficient than traditional farming;
+        \item Mist runoff is contained by a container, and extracted for processing as waste water;
     \end{enumerate}
-\newpage
     \item \textit{Shutdown}:
     \begin{enumerate}
+        \item Extract all remaining runoff;
         \item Power down the pump and thermoregulation unit;
         \item Close the nutrient and pH solution valves;
         \item Close the source shutoff valve;
@@ -312,17 +302,11 @@ The primary function of the overall design is derived from both the overall purp
     \item \textit{Adjustable-rate Siphon Injection Manifold}: Section \ref{sec:manifold}.
     \item \textit{Solenoid Valve}: Enables on-demand (\ref{sec:automation}) misting.
     \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
-    \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets. %TODO: Source??
+    \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets, optimal for plant growth. %TODO: Source??
+    \item \textit{Runoff Collection Container}: Mounted and \textbf{sealed} to the grow tray. Encapsulates the nozzles and root zone \textbf{entirely}, and provides a runoff water extraction port.
 \end{itemize}
 
-\textbf{Justification}: 
-\begin{itemize}
-    \item \textbf{Purpose}: A high pressure aeroponics system eliminates water parameter feedback, and is 98\% more water efficient than traditional farming.
-    \item \textbf{Function}: RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.
-    \item \textbf{Method}: System is medium-free, eliminating risk of pathogens developing within root zone. Using a nozzle ensures the nutrient solution is evenly distributed. Mean droplet size of 5-50 microns is optimal for plant growth. %TODO: Source?? also more detail here
-\end{itemize}
-
-\newpage
+\vspace{.5cm}
 
 \subsubsection{Solution Nutrients and pH}
 \label{sec:nutrientsph}
@@ -372,16 +356,13 @@ The primary function of the overall design is derived from both the overall purp
         \item Custom solutions (i.e. fungicides/algicides)
     \end{itemize} 
     \item \textit{pH Adjustment Solutions}\footnote{\textit{NOTE:} Ionic composition of pH solutions should be considered in the understanding of the spray (i.e. phosphic acid results in phosphate ions in spray)}: Aqueous. Highly concentrated. One for pH up (>8), one for pH down (<6).
-    \item \textit{Solution Storage Containers}: Opaque, insulated, chemical-safe, refillable cartridges.
+    \item \textit{Solution Storage Containers}: Opaque, insulated, chemical-safe, refillable cartridges. Prevent degradation of solution compounds over time via light or heat.
     \begin{itemize}
-        \item \textit{Fill Level Sensors}: Depth sensors measure fill level of container.
+        \item \textit{Fill Level Sensors}: Depth sensors measure fill level of container. Notifies user to refill.
     \end{itemize}
 \end{itemize}
 
-\textbf{Justification}: 
-\begin{itemize}
-    \item \textbf{Features}: Opaque and insulated cartridges prevent degradation of compounds over time via light or heat (respectively). Built-in level sensors allow for notification to refill.
-\end{itemize}
+\vspace{.5cm}
 
 \subsubsection{Solution Injection Manifold}
 \label{sec:manifold}
@@ -428,8 +409,6 @@ The primary function of the overall design is derived from both the overall purp
     \item \textit{Flow Control Valves}: Completely adjustable flow control, driven by servos.
     \item \textit{Check Valves}: Prevents backflow through siphon inlet when output solenoid is closed.
 \end{itemize}
-
-% TODO: Justification?
 
 \newpage
 
@@ -551,7 +530,7 @@ The primary function of the overall design is derived from both the overall purp
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water\footnote{RO water contains no minerals/particulate, and as such prevents the common problem of piezo/mesh calcification.};
+    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water\footnote{RO water contains no minerals/particulate, and as such prevents the common problem of mesh clog/calcification.};
     \item \textbf{Outputs}: Water vapour, humidity sensor signal;
 \end{itemize}
 
@@ -644,10 +623,10 @@ The primary function of the overall design is derived from both the overall purp
     \item \textit{Humidity Sensor}: See Section \ref{sec:airhum}.
     \item \textit{Dehumidification Unit}: One input port and one output port. Comprised of:
     \begin{itemize}
-        \item \textit{Fans}: Draws moist air through input port and dried air through output port into the growth environment.
-        \item \textit{Filter}: HEPA filter is located at inlet of dehumidification chamber. Eliminates risk of any airborn pathogens being transferred onto silica beads.
+        \item \textit{Fans}: Draws moist air through input port and dried air through output port.
+        \item \textit{Filter}: HEPA filter is located at inlet of dehumidification chamber. Eliminates risk of any airborne pathogens being transferred onto silica beads.
         \item \textit{Airtight Shutters} - Isolates dehumidification chamber when not in use. Prevents unintended dehumidification. Located at input and output ports. Controlled by a servo.
-        \item \textit{Desiccant Cartridge}: Oven-safe. Holds silica beads. Easily removable for swapping and "recharging".
+        \item \textit{Desiccant Cartridge}: Oven-safe. Easily removable for swapping and "recharging".
         \item \textit{Silica Beads}: Cheap, efficient, non-toxic desiccant. Changes color when saturated. Can be reused indefinitely when water is evaporated.
     \end{itemize}
     \item \textit{Evaporator Oven}: \textbf{Onboard systems} provide an oven that can maintain 200°C for 60 minutes. Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them. Vapour is collected by onboard dehumidifier.
@@ -706,7 +685,7 @@ The primary function of the overall design is derived from both the overall purp
 
 \newpage
 
-\subsection{Gas Composition and Exchange}
+\subsubsection{Gas Composition and Exchange}
 \label{sec:gas}
 
 \textbf{Purpose}: Controls gas composition of the growth environment by mediating exchange with surroundings.
@@ -752,12 +731,12 @@ The primary function of the overall design is derived from both the overall purp
         \item \textit{Exchange Shutters}: Servo-controlled shutters allow for gas exhaust or intake for CO${}_2$/O${}_2$ regulation. Air-tight when closed.
     \end{itemize}
     \item \textit{Gas Concentration Sensors}: Collects data on concentrations (ppm) of various gasses (CO${}_2$, O${}_2$, etc.). Reports to automation (\ref{sec:automation}).
-    \item \textit{Output Filter/Dehumidifier}: \textbf{Onboard CELSS} provides a dehumidifier and HEPA filter for removing microbes and reducing humidity.
+    \item \textit{Output Filter/Dehumidifier}: \textbf{Onboard life support systems} provides a dehumidifier and HEPA filter for removing microbes and reducing humidity.
 \end{itemize}
 
 \newpage
 
-\subsubsection{Lighting}
+\subsection{Lighting}
 \label{sec:lighting}
 
 \textbf{Purpose}: Provide all necessary light for plant growth.
@@ -806,7 +785,7 @@ The primary function of the overall design is derived from both the overall purp
         \item Far Red (Near-IR)
     \end{itemize}
     \item \textit{LED Power Drivers}: Constant-current PWM-dimmable DC-DC buck converters, specialized for LEDs. One per series, driving a set of LEDs. Located on a separate PCB (one per lighting tray).
-    \item \textit{Heat Sink}: Passive (fanless) cooling solution for LEDs. Mounted to opposing face of PCB.
+    \item \textit{Heat Sink}: Passive (fan-less) cooling solution for LEDs. Mounted to opposing face of PCB.
 \end{itemize}
 
 \newpage
@@ -814,7 +793,7 @@ The primary function of the overall design is derived from both the overall purp
 \subsection{Optimization}
 \label{sec:optimization}
 
-\textbf{Function}: Continuously improve yield/etc. of crops as more environment parameter and crop metric data is gathered.
+\textbf{Purpose}: Continuously improve yield/etc. of crops as more environment parameter and crop metric data is gathered across iterations.
 
 \textbf{Method}: 
 
@@ -837,60 +816,18 @@ Given the current internal and external states, determine the plant's state chan
     \item Fit $\vec Q$ to our data;
 \end{enumerate}
 
-By fitting $\vec Q$, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
+By fitting $\vec Q$ across iterations, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
 
 $$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Machine Learning Model}: Represents $Q$
-    \item \textit{Environment Sensors}: Collects $\vec E$
-    \item \textit{Plant Metrics}: Collects $\vec P$
+    \item \textit{Machine Learning Model}: Represents $Q$. Operates on the main automation hardware, or in the cloud.
+    \item \textit{Environment Sensors}: See Section \ref{sec:automation}. Collects $\vec E$ over time.
+    \item \textit{Plant Metrics}: See Section \ref{sec:automation}. Collects $\vec P$ over time.
 \end{itemize}
 
 \newpage
-
-% \subsection{Title}
-% \label{sec:label}
-
-% \textbf{Purpose}:
-
-% \textbf{Function}:
-% \begin{itemize}
-%     \item \textbf{Inputs}:
-%     \item \textbf{Outputs}:
-% \end{itemize}
-
-% \textbf{Method}:
-% \begin{enumerate}
-%     \item \textit{Setup}:
-%     \begin{enumerate}
-%         \item 
-%     \end{enumerate}
-%     \item \textit{Testing}:
-%     \begin{itemize}
-%         \item 
-%     \end{itemize}
-%     \item \textit{Process}:
-%     \begin{enumerate}
-%         \item 
-%     \end{enumerate}
-%     \item \textit{Shutdown}:
-%     \begin{enumerate}
-%         \item 
-%     \end{enumerate}
-% \end{enumerate}
-
-% \textbf{Features}:
-% \begin{itemize}
-%     \item 
-% \end{itemize}
-
-% \textbf{Justification}:
-% \begin{itemize}
-%     \item \textbf{Purpose}:
-%     \item \textbf{Method}:
-% \end{itemize}
 
 % References
 \bibliographystyle{IEEEtran}
