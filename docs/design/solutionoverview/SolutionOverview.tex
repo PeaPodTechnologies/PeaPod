@@ -459,12 +459,13 @@ The primary function of the overall design is derived from both the overall purp
     \item \textit{Process}:
     \begin{enumerate}
         \item Sensor signals sent to automation (\ref{sec:automation});
-        \item Actuator control signals recieved from automation (\ref{sec:automation});
+        \item Actuator control signals received from automation (\ref{sec:automation});
         \item Actuators respond to control signals to control:
         \begin{itemize}
             \item Leaf zone air temperature\footnotemark[4];
             \item Leaf zone humidity\footnotemark[4];
             \item Root zone/aeroponics temperature\footnote{Control Loop (aka Feedback) System - includes sensor(s)};
+            \item Air Composition (CO${}_2$/O${}_2$)\footnotemark[4];
             \item Lighting spectrum and intensity\footnote{Set System - no feedback sensors};
             \item Aeroponics delivery/"flow" rate\footnotemark[5];
             \item Aeroponics solution per-nutrient concentrations\footnotemark[5];
@@ -487,6 +488,7 @@ The primary function of the overall design is derived from both the overall purp
     \end{itemize}
     \item \textit{Air Heater, Cooler} (\ref{sec:airtemp})
     \item \textit{Air Humidifier} (\ref{sec:airhum}), \textit{Dehumidifier} (\ref{sec:dehum})
+    \item \textit{Gas Exchanger} (\ref{sec:gas})
     \item \textit{Lighting} (\ref{sec:lighting})
 \end{itemize}
 
@@ -513,14 +515,16 @@ The primary function of the overall design is derived from both the overall purp
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a PID control loop (\ref{sec:automation});
-    \item \textit{Peltier Devices}: Pumps heat from one side of a tile to the other via the thermoelectric effect. Direction and magnitude of heat transferred depends on control signal polarity (\textit{H-bridge}) and voltage (respectively).
-    \item \textit{Heat Sinks}: Connected to peltier devices. Exchanges heat between air and peltier devices.
-    \item \textit{Fans}: Located on heat sinks and in growth environment to circulate air for better heat dispersal and even temperature distribution.
+    \item \textit{Peltier Devices}: Solid state heat pump (thermoelectric effect). Tile form factor (pump from one face to the other).
+    \item \textit{Peltier Driver Circuit}: Controls direction and magnitude of heat pump via a \textbf{MOSFET H-bridge} and \textbf{dimmable current source} respectively.
+    \item \textit{Heat Sinks}: Exchanges heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound.
+    \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
+    \item \textit{Circulation Fans}: Located in growth environment to circulate air even temperature distribution.
 \end{itemize}
 
 \textbf{Justification}: 
 \begin{itemize}
-    \item \textbf{Function}: Air management ensures an even temperature throughout the entire growth environment. Thermal exchange effectively pumps heat into or out of the growth envrionment.
+    \item \textbf{Function}: Air management ensures an even temperature throughout the entire growth environment. Thermal exchange effectively pumps heat into or out of the growth environment.
     \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically.
 \end{itemize}
 
@@ -545,8 +549,9 @@ The primary function of the overall design is derived from both the overall purp
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Driver Circuit}: Fixed-frequency (113kHz) 555 timer circuit driving an amplifier/LC circuit generates a 25V AC signal. %TODO: why 113kHz?
-    \item \textit{Mesh Piezo Disc}: Driven by the circuit, generates a vapour when water is passed over it.
+    \item \textit{Piezoelectric Mesh Disc}: Oscillates in such a way that vapour is generated when water is passed over it.
+    \item \textit{Driver Circuit}: Fixed-frequency (113kHz for 20mm disc) 555 timer circuit driving an amplifier/LC circuit generates an AC signal. Powers the piezoelectric disc.
+    \item \textit{Water Tank}: Holds a small amount of water behind the piezoelectric mesh.
 \end{itemize}
 
 \textbf{Justification}:
@@ -629,6 +634,57 @@ The primary function of the overall design is derived from both the overall purp
 \begin{itemize}
     \item \textbf{Method}: Classic feedback model.
     \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically. Aluminum water block enables fast heat transfer for flowing water.
+\end{itemize}
+
+\newpage
+
+\subsection{Gas Composition and Exchange}
+\label{sec:gas}
+
+\textbf{Purpose}: Controls gas composition of the growth environment by mediating exchange with surroundings.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, exchange control signal (fan rate and shutter open/close)
+    \item \textbf{Outputs}: Gas intake (from surroundings), gas exhaust (to surroundings)
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect exhaust port to filtration/dehumidification system;
+        \item Connect shutter servos, fans to control module;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Shutter servos, fans operate as intended;
+        \item Shutters are sealed (air-tight) when closed;
+        \item Exhaust filter removes all aerosols (i.e. pollen, seeds) and pathogens;
+        \item Exhaust dehumidification brings humidity down to ambient (60\% on ISS); % TODO: Source?
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item On-demand, both input and output ports activate. Shutters open, and fans are enabled;
+        \item Input port draws in air from surroundings;
+        \item Output port expels air through filtration and dehumidification system to be recycled;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect exhaust port from filtration/dehumidification system;
+        \item Disconnect shutter servos, fans from control module;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Exchange Port}: Normally-sealed. Input and output. Each comprises:
+    \begin{itemize}
+        \item \textit{Exchange Fan}: Controls exchange rate. 
+        \item \textit{Exchange Shutters}: Servo-controlled shutters allow for gas exhaust or intake for CO${}_2$/O${}_2$ regulation. Air-tight when closed.
+    \end{itemize}
+    \item \textit{Gas Concentration Sensors}: Collects data on concentrations (ppm) of various gasses (CO${}_2$, O${}_2$, etc.). Reports to automation (\ref{sec:automation}).
+    \item \textit{Output Filter/Dehumidifier}: \textbf{Onboard CELSS} provides a dehumidifier and HEPA filter for removing microbes and reducing humidity.
 \end{itemize}
 
 \newpage
