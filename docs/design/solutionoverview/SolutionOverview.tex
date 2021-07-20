@@ -532,7 +532,7 @@ The primary function of the overall design is derived from both the overall purp
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Circulation Fans}: Located in growth environment to circulate air even temperature distribution.
-    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation});
+    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation}).
     \item \textit{Heat Pump}: Pumps heat in or out of the growth environment. Is comprised of:
     \begin{itemize}
         \item \textit{Peltier Devices}: Bidirectional solid state \textbf{thermoelectric tile} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
@@ -655,37 +655,53 @@ The primary function of the overall design is derived from both the overall purp
 
 \newpage
 
-\subsubsection{Solution Temperature}
+\subsubsection{Water Temperature}
 \label{sec:watertemp}
 
-\textbf{Purpose}: Maintaining desired water temperature.
+\textbf{Purpose}: Maintaining desired aeroponics water temperature.
 
 \textbf{Function}: 
 \begin{itemize}
-    \item \textbf{Inputs}: Power, water (uncontrolled temperature), temperature target parameter (as signal)
+    \item \textbf{Inputs}: Power, water (uncontrolled temperature), temperature control signal
     \item \textbf{Outputs}: Temperature-controlled water
 \end{itemize}
 
 \textbf{Method}:
 \begin{enumerate}
-    \item Water enters the system;
-    \item The system reads the temperature of the water (\textit{post-heating/cooling apparatus});
-    \item The system heats or cools the water in accordance with the program (\ref{sec:automation});
-    \item Feedback occurs between temperature reading and heating/cooling power;
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect power, control signal;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Heat pump direction and magnitude respond to control signal as expected;
+        \item Fans operate as expected;
+        \item No leaks;
+        \item Heat pump transfer capacity able to heat/cool fast enough given flow rate of water;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Water temperature is measured \textbf{after} the heat pump (for feedback given flow direction), sent to control module;
+        \item Control module controls heat pump speed and direction (heating or cooling the water block);
+        \item Water is circulated through the water block;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect power, control signal;
+    \end{enumerate}
 \end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Water Temperature Sensor}: Attaches directly to aeroponics system. Located after the tank (details in \ref{sec:aeroponics}).
-    \item \textit{Water Block}: Aluminum block. Water passes through this to gain or lose heat.
-    \item \textit{Peltier Devices}: Heat or cool the water block.
-    \item \textit{Heat Sinks, Fans}: For dissipating heat to/away from the block.
-\end{itemize}
-
-\textbf{Justification}:
-\begin{itemize}
-    \item \textbf{Method}: Classic feedback model.
-    \item \textbf{Features}: Peltier devices have better space and energy efficiency, less complexity (no liquids, pressurized fluids, etc.), and can provide precise temperature control at low voltages through automation via methods such as PID. They can also operate as both heaters and coolers, and can be easily controlled electrically. Aluminum water block enables fast heat transfer for flowing water.
+    \item \textit{Water Temperature Sensor}: Located after the heat pump in the plumbing chain. Informs a \textbf{PID control loop} (\ref{sec:automation}).
+    \item \textit{Heat Pump}: Pumps heat in or out of the water. Is comprised of:
+    \begin{itemize}
+        \item \textit{Peltier Devices}: Bidirectional solid state \textbf{thermoelectric tile} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods. Attached to water block and heat sink.
+        \item \textit{Peltier Driver Circuit}: Controls direction and magnitude of Peltier device heat pump via a \textbf{MOSFET H-bridge} and \textbf{dimmable current source} respectively.
+        \item \textit{Water Block}: Aluminum block. Water passes through this to gain or lose heat. One side of Peltier tile. Mating face coated with thermal compound for better transfer. Aluminum enables fast heat transfer for flowing water.
+        \item \textit{Heat Sink}: Aluminum blocks with fins hold and exchange heat between air and Peltier device. Opposite side of Peltier tile. Mating face coated with thermal compound for better transfer.
+        \item \textit{Heat Sink Fans}: Located on heat sink for better heat dissipation.
+    \end{itemize}
 \end{itemize}
 
 \newpage
