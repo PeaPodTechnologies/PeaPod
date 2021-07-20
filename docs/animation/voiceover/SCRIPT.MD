@@ -4,6 +4,10 @@
 >
 > Leverage auditory medium to EXPLAIN PURPOSE, METHOD
 
+> Slowest Time: 3:58
+> Average Time: 4:20
+<!-- Lol -->
+
 - [Animation Voiceover Script](#animation-voiceover-script)
   - [Intro](#intro)
   - [Overview](#overview)
@@ -57,13 +61,13 @@ Powerful LED boards provide light, featuring power modulation for precise spectr
 
 <!-- Setup -->
 
-The boards are mounted to a removable subframe, daisy-chained and connected connected to the control module for power and control.
+The boards are mounted to a removable subframe, daisy-chained and connected to the control module for power and control.
 
 ### Grow Platforms
 
 <!-- Description and Setup (mostly visual) -->
 
-Plants are grown in grow cups supported by a removable subframe, with aeroponic nozzles and root zone container and underneath.
+Plants are grown in grow cups supported by a removable subframe, with aeroponic nozzles and root zone container underneath.
 
 ### Tray Modularity
 
@@ -75,15 +79,15 @@ PeaPod uses aeroponics for increased water efficiency, supported crop variety, a
 
 Reverse osmosis water is supplied to the control module where it is pressurized by a diaphragm pump and pressure tank. A pressure sensor sends data to the control module.
 
-Water is heated and cooled by a thermoelectric water block. A temperature sensor informs the control module's PID process.
+Water is heated and cooled by a thermoelectric water block. A temperature sensor informs the control module's PID control process.
 
 Water then flows through an injection manifold where nutrient and pH solutions are added.
 
-The injection manifold comprises a set of parallel Venturi siphons, whose inlets connect to solution containers. Servo-actuated valves formulate precise nutrient dosage ratios and pH levels, and check valves prevent backflow.
+The injection manifold comprises a set of parallel Venturi siphons, whose inlets connect to solution containers. Servo-actuated valves formulate precise nutrient dosages and pH levels, and check valves prevent backflow.
 
 A solenoid valve allows the control module to enable the flow of water to the nozzles on demand.
 
-Each grow platform's nozzles are chained, and are mounted under the grow platforms in the root zone. Each grow platform's supply line is quick-disconnect, enabling the platforms to be removed or repositioned on demand.
+Each grow platform's nozzles are chained, and are mounted in the root zone. Each supply line is quick-disconnect, enabling the platforms to be removed or repositioned on demand.
 
 ### Humidification
 
@@ -95,8 +99,7 @@ Mesh nebulizers require no cleaning when using pure water.
 
 Humidity is decreased in the system via silica gel beads. Fans pass air through a removable cartridge, housing the beads. Shutters on the opening allow for precisely timed automated control.
 
-Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, which then notifies the user to removed and "recharged" the cartridge via evaporation, which can be accelerated by an oven.
-
+Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, which then notifies the user to remove and "recharge" the cartridge via evaporation, which can be accelerated by an oven and recaptured.
 
 ## Maintenance
 
