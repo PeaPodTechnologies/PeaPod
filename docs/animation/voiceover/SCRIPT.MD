@@ -1,118 +1,127 @@
 # Animation Voiceover Script
 
+> Leverage visual medium to SHOW SETUP
+>
+> Leverage auditory medium to EXPLAIN PURPOSE, METHOD
+
 - [Animation Voiceover Script](#animation-voiceover-script)
   - [Intro](#intro)
   - [Overview](#overview)
-    - [Housing](#housing)
-    - [Control Module](#control-module)
+    - [Housing & Control Module](#housing--control-module)
     - [Extendability](#extendability)
-  - [Subsystems and Features](#subsystems-and-features)
+  - [Subsystems: Setup and Description](#subsystems-setup-and-description)
     - [Lighting](#lighting)
     - [Grow Platforms](#grow-platforms)
     - [Tray Modularity](#tray-modularity)
     - [Aeroponics](#aeroponics)
-    - [Humidification and Dehumidification](#humidification-and-dehumidification)
+    - [Humidification](#humidification)
+    - [Dehumidification](#dehumidification)
   - [Maintenance](#maintenance)
-  - [Harvesting, Preparation, and Seed Harvesting](#harvesting-preparation-and-seed-harvesting)
+  - [Outputs: Harvesting, Preparation, and Seed Harvesting](#outputs-harvesting-preparation-and-seed-harvesting)
   - [Optimization](#optimization)
   - [Conclusion](#conclusion)
 
 ## Intro
 
-PeaPod is a cloud-connected automated plant growth environment, designed as both a low-maintenance automated food production system and a distributed citizen-science research tool. 
+PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. 
 
-PeaPod is able to generate any environment from a combination of independent environment parameters, enacted by a diverse set of precision actuators and reinforced by a complementary set of sensors.
+PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
 
 ## Overview
 
-### Housing
+### Housing & Control Module
 
-Housing for the growth environment is provided by a frame-and-panel construction.
+The growth environment features a frame-and-panel construction. 
 
-Aluminum extrusion and engineering plastic brackets provide a lightweight and sturdy frame with channels for easy mounting and repositioning of components.
+Aluminum extrusion with engineering plastic brackets provide a lightweight and sturdy frame and include channels for easy component mounting and repositioning. 
 
-Mylar-laminated foam panels provides a high degree of thermal insulation and light isolation, while remaining lightweight and increasing energy efficiency by reflecting light internally.
+Mylar-laminated foam panels provide a high degree of thermal insulation and reflect light internally, making PeaPod more efficient.
 
 This approach to construction makes assembly quick and easy while also maximizing space efficiency during stowage.
 
-### Control Module
-
-Each PeaPod also includes a control module in which all mechanical and electronic control systems are located. These subsystems together are what allow PeaPod to induce precise environmental control.
-
-Control modules are mounted externally on top of PeaPod frame units and are connected to water, electricity, and network inputs.
+Automation and control is made possible by PeaPod's control module, installed on top of the frame and connected to water, power, and network inputs.
 
 ### Extendability
 
-PeaPods can be extended by merging frames, allowing systems to adapt to different plant sizes or other dimensional constraints. 
+PeaPod can accommodate different plant sizes and dimensional constraints by connecting frame units together and removing dividing panels. Larger configurations require additional control modules to extend the power of the primary unit. 
 
-Dividing panels may be removed, and the extended multi-frame PeaPod may either be operated from a single control module, or by many (depending on the size) in a controller-follower topology with one primary module controlling all other modules.
+This extendable topology can be modified on the fly to suit the plant selection or mission requirements.
 
-This multi-frame topology can be modified at any time to suit the plant selection.
-
-## Subsystems and Features
+## Subsystems: Setup and Description
 
 ### Lighting
 
-Lighting is provided by custom high-power LED boards. 
+<!-- Description -->
 
-These boards allow for precise spectrum control via power modulation (or 'dimming') on LEDs of a multitude of different wavelengths, ranging from near-ultraviolet to near-infrared.
+Powerful LED boards provide light, featuring power modulation for precise spectrum control ranging from near-ultraviolet to near-infrared.
 
-The boards are daisy-chained together, and one is connected to the control module for power and modulation control of the entire set.
+<!-- Setup -->
+
+The boards are mounted to a removable subframe, daisy-chained and connected connected to the control module for power and control.
 
 ### Grow Platforms
 
-Growth platforms are flat plane constructions with support for grow cups. These platforms support the plants, the root zone container, as well as the aeroponic nozzles.
+<!-- Description and Setup (mostly visual) -->
+
+Plants are grown in grow cups supported by a removable subframe, with aeroponic nozzles and root zone container and underneath.
 
 ### Tray Modularity
 
-Grow platforms and lighting systems are both mounted to horizontal plane frames, or trays, that are position-adjustable and able to 'slide' into and out of the PeaPod housing at will. This makes both planting and harvesting processes far easier, as well as enabling the user to add, remove, or reposition trays at will, creating new environments with different root and leaf zone heights.
+Both lighting and grow subframes are modular, enabling the user to add, remove, or reposition trays at will, creating new configurations with different root and leaf zone heights. 
 
 ### Aeroponics
 
-PeaPods use aeroponics for increased water efficiency and supported crop variety. This method also provides the greatest degree of control over parameters such as pH and nutrient availability.
+PeaPod uses aeroponics for increased water efficiency, supported crop variety, and control over parameters such as pH and plant nutrient concentrations.
 
-Reverse osmosis filtered water is supplied to the control module under positive pressure, priming the diaphragm pump, where it is pressurized to 80 pounds-per-square-inch by the diaphragm pump and accumulator tank.
+Reverse osmosis water is supplied to the control module where it is pressurized by a diaphragm pump and pressure tank. A pressure sensor sends data to the control module.
 
-Water then flows through an injection manifold where it is mixed with nutrient and pH solutions in-line at an adjustable ratio before reaching the nozzles.
+Water is heated and cooled by a thermoelectric water block. A temperature sensor informs the control module's PID process.
 
-The injection manifold comprises a set of parallel Venturi siphons, with the inlets of each connecting to one of the solution containers. Servo-actuated needle valves on each inlet line formulate a precise dosage ratio, and check valves prevent backflow when the solenoid is closed. Float sensors in each solution container allow the computer to notify the user when to refill.
+Water then flows through an injection manifold where nutrient and pH solutions are added.
 
-A normally-closed solenoid valve then allows the computer to control the flow of water to the nozzles.
+The injection manifold comprises a set of parallel Venturi siphons, whose inlets connect to solution containers. Servo-actuated valves formulate precise nutrient dosage ratios and pH levels, and check valves prevent backflow.
 
-The nozzles are chained via inline tees, and are mounted under the grow platforms in the root zone. Each grow platform's nozzle line is connected to the aeroponics supply by a quick-disconnect connector and a tee, enabling many grow trays to be connected and disconnected on demand. The nozzles require only occasional cleaning to prevent buildup from any mineral nutrients in solution.
+A solenoid valve allows the control module to enable the flow of water to the nozzles on demand.
 
-### Humidification and Dehumidification
+Each grow platform's nozzles are chained, and are mounted under the grow platforms in the root zone. Each grow platform's supply line is quick-disconnect, enabling the platforms to be removed or repositioned on demand.
 
-The head also contains the humidifier and dehumidifier.
+### Humidification
 
-Humidity is increased in the system by an ultrasonic mesh nebulizer. Reverse osmosis water is distributed to a small container, housing the mesh disc. When power is applied to the nebulizer driver circuit, the mesh oscillates, producing a fine vapour at a fixed rate. Vapour is distributed throughout the environment by circulation fans.
-Mesh nebulizers are quick, and require no cleaning when using pure water.
+Humidity is increased in the system by an ultrasonic mesh nebulizer. Reverse osmosis water is distributed to a small container, housing the mesh disc. When power is applied to the driver circuit, the mesh oscillates, producing a fine vapour at a fixed rate. Vapour is distributed throughout the environment by circulation fans.
+
+Mesh nebulizers require no cleaning when using pure water.
+
+### Dehumidification
 
 Humidity is decreased in the system via silica gel beads. Fans pass air through a removable cartridge, housing the beads. Shutters on the opening allow for precisely timed automated control.
-Silica gel is efficient, non-toxic, and change colors to indicate saturation. This is detected by the computer, which then notifies the user. The cartridge can then be removed and "recharged" via evaporation, which can be accelerated by an oven.
+
+Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, which then notifies the user to removed and "recharged" the cartridge via evaporation, which can be accelerated by an oven.
+
 
 ## Maintenance
 
-Other simple maintenance requirements include: 
+Maintenance requirements include: 
 
-1. Daily manual pollination for flowering crops. 
+1. Daily manual pollination for flowering crops;
+2. Occasional nozzle cleaning to prevent calcification;
+3. Dehumidification cartridge recharging;
 
 PeaPods will notify users when any maintenance is required.
 
-## Harvesting, Preparation, and Seed Harvesting
+## Outputs: Harvesting, Preparation, and Seed Harvesting
 
-Harvesting is straightforward. Method varies based on crop type. When crops are harvested, the yield can be stored in sealable containers and refrigerated. 
+Harvesting varies by crop type. When crops are harvested, the yield can be stored in sealable containers and refrigerated for future consumption. 
 
-Preparation method and time also varies between plants.
+Preparation method also varies by food type.
 
-Like wise, seeds can be collected and stored to be planted later, creating a sustainable crop cycle. Alternatively, offshoots of certain plants can be harvested to "clone" the plant, skipping the germination step and accelerating growth.
+Seeds can be collected and stored to be planted later, creating a sustainable crop cycle. Alternatively, offshoots of certain plants can be harvested to "clone" the plant, skipping the germination step and accelerating growth.
 
 ## Optimization
 
-Over the course of the growth cycle, PeaPod collects data on all environment parameters, as well as metrics of plant growth and health. This data are treated as inputs and outputs, respectively, to a "surrogate model" - a functional representation of the plant across time. This function is implemented as a machine learning model, which aims to fit a function to match the the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric or compound metric.
+Over the course of the growth cycle, PeaPod collects data on all environment parameters, as well as metrics of plant growth and health. This data is used to train a machine learning "surrogate model" - a functional representation of the plant's phenology across time. This model aims to fit a function to match the the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric.
 
-Because of this, plants grown in PeaPod will be more nutritious, taste better, and yield more over time as more crops are grown.
+Plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
 
 ## Conclusion
 
-PeaPod provides unrivalled variety, versatility and reliability to food production systems for long duration space missions.
+PeaPod provides unrivalled versatility and reliability to food production systems for long duration space missions.
