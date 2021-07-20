@@ -547,31 +547,51 @@ The primary function of the overall design is derived from both the overall purp
 \subsubsection{Air Humidification}
 \label{sec:airhum}
 
-\textbf{Purpose}: Actively increases growth environment air humidity on command.
+\textbf{Purpose}: Actively increases growth environment air humidity.
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water;
-    \item \textbf{Outputs}: Water vapour;
+    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water\footnote{RO water contains no minerals/particulate, and as such prevents the common problem of piezo/mesh calcification.};
+    \item \textbf{Outputs}: Water vapour, humidity sensor signal;
 \end{itemize}
 
 \textbf{Method}:
 \begin{enumerate}
-    \item Power and control signal activate a nebulizer driver;
-    \item Water is delivered to the nebulizer and nebulized;
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect humidification control signal to control module;
+        \item Connect humidity sensor signal to control module;
+        \item Connect RO water line to water tank;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Humidification unit responds to control signal as expected;
+        \item Humidity sensor reads as expected;
+        \item Tank does not leak;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Water is delivered to a small tank (nebulizer is mounted);
+        \item Power and control signal activate a nebulizer driver;
+        \item Nebulizer vapourizes water;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect RO water line and drain tank;
+        \item Disconnect humidification control signal and humidity sensor signal from control module;
+    \end{enumerate}
 \end{enumerate}
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Piezoelectric Mesh Disc}: Oscillates in such a way that vapour is generated when water is passed over it.
-    \item \textit{Driver Circuit}: Fixed-frequency (113kHz for 20mm disc) 555 timer circuit driving an amplifier/LC circuit generates an AC signal. Powers the piezoelectric disc.
-    \item \textit{Water Tank}: Holds a small amount of water behind the piezoelectric mesh.
-\end{itemize}
-
-\textbf{Justification}:
-\begin{itemize}
-    \item \textbf{Function}: RO water contains no minerals/particulate, and as such prevents the common problem of piezo/mesh calcification.
-    \item \textbf{Method \& Features}: The nebulizer approach is easily electrically controllable and produces a consistent fine vapour. 
+    \item \textit{Circulation Fans}: See Section \ref{sec:airtemp}.
+    \item \textit{Humidity Sensor}: Located throughout the growth environment to measure air humidity. Informs a \textbf{bang-bang} control loop (\ref{sec:automation});
+    \item \textit{Humidification Unit}: Easily controllable and produces a consistent vapour. Comprised of:
+    \begin{itemize}
+        \item \textit{Water Tank}: Holds a small amount of water behind the piezoelectric mesh.
+        \item \textit{Piezoelectric Mesh Disc}: Oscillates in such a way that vapour is generated when water is passed over it. Mounted to the water tank.
+        \item \textit{Driver Circuit}: Fixed-frequency\footnote{113kHz for 20mm disc} 555 timer circuit driving an amplifier/LC circuit generates an AC signal. Powers the piezoelectric disc.
+    \end{itemize}
 \end{itemize}
 
 \newpage
