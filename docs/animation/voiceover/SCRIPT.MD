@@ -105,7 +105,9 @@ Fans blow air through a heatsink adjoined to the heat pump to maintain a desired
 
 ### Humidification
 
-Humidity is increased by an ultrasonic mesh nebulizer housed in a small container with reverse osmosis water supplied to it. When the control module activates a driver circuit, the mesh oscillates, producing a fine vapour that is distributed throughout the environment by circulation fans.
+Humidity is increased by an ultrasonic mesh nebulizer housed in a small container with reverse osmosis water supplied to it. 
+
+When the control module activates a driver circuit, the mesh oscillates, producing a fine vapour that is distributed throughout the environment by circulation fans.
 
 ### Dehumidification
 
