@@ -109,7 +109,7 @@ Fans pass air through the cartridge and shutters on the openings allow for preci
 Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, to notify the user to remove and "recharge" the cartridge via evaporation in a standard oven.
 
 
-_## Maintenance - REDACTED_
+## Maintenance - REDACTED
 
 _Maintenance requirements include:_ 
 
