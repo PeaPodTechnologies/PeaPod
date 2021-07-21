@@ -6,8 +6,9 @@
 
 > **ADD ON SCREEN ICONS FOR PROCEDURES ETC...**
 
-> Slowest Time: 3:58
-> Average Time: 4:20
+> Last rough cut was ~5:40 - needs to be a tiny bit faster.
+> Script was condensed quite a bit so no need for the pace to be a lot faster.
+> 
 <!-- Lol -->
 
 - [Animation Voiceover Script](#animation-voiceover-script)
