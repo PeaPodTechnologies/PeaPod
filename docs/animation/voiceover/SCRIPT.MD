@@ -4,7 +4,7 @@
 >
 > Leverage auditory medium to EXPLAIN PURPOSE, METHOD
 
-> **ADD ON SCREEN ICONS FOR PROCEDURES ETC...**
+> **ADD ON-SCREEN ICONS FOR PROCEDURES ETC...**
 
 > Last rough cut was ~5:40 - needs to be a tiny bit faster.
 > Script was condensed quite a bit so no need for the pace to be a lot faster.
