@@ -4,6 +4,8 @@
 >
 > Leverage auditory medium to EXPLAIN PURPOSE, METHOD
 
+> **ADD ON SCREEN ICONS FOR PROCEDURES ETC...**
+
 > Slowest Time: 3:58
 > Average Time: 4:20
 <!-- Lol -->
@@ -75,55 +77,67 @@ Both lighting and grow subframes are modular, enabling the user to add, remove, 
 
 ### Aeroponics
 
-PeaPod uses aeroponics for increased water efficiency, supported crop variety, and control over parameters such as pH and plant nutrient concentrations.
+PeaPod uses aeroponics for increased water efficiency, supported crop variety, and control over parameters such as pH and plant nutrients.
 
-Reverse osmosis water is supplied to the control module where it is pressurized by a diaphragm pump and pressure tank. A pressure sensor sends data to the control module.
+Reverse osmosis water is supplied to the control module where it is pressurized by a diaphragm pump and pressure tank; its temperature is regulated by a thermoelectric water block. 
 
-Water is heated and cooled by a thermoelectric water block. A temperature sensor informs the control module's PID control process.
+The water then flows through an injection manifold where nutrient and pH solutions are added.
 
-Water then flows through an injection manifold where nutrient and pH solutions are added.
+The injection manifold comprises a set of parallel Venturi siphons whose inlets connect to solution containers via servo actuated valves.
 
-The injection manifold comprises a set of parallel Venturi siphons, whose inlets connect to solution containers. Servo-actuated valves formulate precise nutrient dosages and pH levels, and check valves prevent backflow.
+These valves then formulate precise nutrient dosaged and pH levels.
 
-A solenoid valve allows the control module to enable the flow of water to the nozzles on demand.
+A final solenoid valve allows the control module to activate the nozzles on demand.
 
-Each grow platform's nozzles are chained, and are mounted in the root zone. Each supply line is quick-disconnect, enabling the platforms to be removed or repositioned on demand.
+The nozzles are mounted in the root zone and are connected to the supply line which features quick-disconnect; "CLICK" for easy removal or repositioning.
+
+The nozzles are robust and only require occasional cleaning to prevent calcification.
 
 ### Humidification
 
-Humidity is increased in the system by an ultrasonic mesh nebulizer. Reverse osmosis water is distributed to a small container, housing the mesh disc. When power is applied to the driver circuit, the mesh oscillates, producing a fine vapour at a fixed rate. Vapour is distributed throughout the environment by circulation fans.
-
-Mesh nebulizers require no cleaning when using pure water.
+Humidity is increased by an ultrasonic mesh nebulizer housed in a small container with reverse osmosis water supplied to it. When the control module activates a driver circuit, the mesh oscillates, producing a fine vapour that is distributed throughout the environment by circulation fans.
 
 ### Dehumidification
 
-Humidity is decreased in the system via silica gel beads. Fans pass air through a removable cartridge, housing the beads. Shutters on the opening allow for precisely timed automated control.
+Humidity is decreased via silica gel beads held within a removable cartridge.
 
-Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, which then notifies the user to remove and "recharge" the cartridge via evaporation, which can be accelerated by an oven and recaptured.
+Fans pass air through the cartridge and shutters on the openings allow for precise automated control. 
 
-## Maintenance
+Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, to notify the user to remove and "recharge" the cartridge via evaporation in a standard oven.
 
-Maintenance requirements include: 
 
-1. Daily manual pollination for flowering crops;
-2. Occasional nozzle cleaning to prevent calcification;
-3. Dehumidification cartridge recharging;
+_## Maintenance??? is section even needed???
 
-PeaPods will notify users when any maintenance is required.
+_Maintenance requirements include: 
 
-## Outputs: Harvesting, Preparation, and Seed Harvesting
+_1. Daily manual pollination for flowering crops;
+_2. Occasional nozzle cleaning to prevent calcification; (covered)
+_3. Dehumidification cartridge recharging; (covered)
 
-Harvesting varies by crop type. When crops are harvested, the yield can be stored in sealable containers and refrigerated for future consumption. 
+_PeaPods will notify users when any maintenance is required. (mentioned)
 
-Preparation method also varies by food type.
 
-Seeds can be collected and stored to be planted later, creating a sustainable crop cycle. Alternatively, offshoots of certain plants can be harvested to "clone" the plant, skipping the germination step and accelerating growth.
+## Planting, Harvesting, Preparation, and Seed Harvesting
+
+Harvesting varies by crop type but the yield can be stored in sealable containers and refrigerated for future consumption. 
+
+The preparation method also varies by food type and preference but are all common processes.
+
+Seeds can be collected by hand and stored to be planted later, creating a sustainable crop cycle. 
+
+Alternatively, offshoots of certain plants can be harvested to "clone" the plant, skipping the germination step and accelerating growth.
+
+Planting seeds and offshoots both involve a neoprene puck which is then inserted into the grow cups, PeaPod takes care of the rest. 
 
 ## Optimization
 
-Over the course of the growth cycle, PeaPod collects data on all environment parameters, as well as metrics of plant growth and health. This data is used to train a machine learning "surrogate model" - a functional representation of the plant's phenology across time. This model aims to fit a function to match the the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric.
+Throughout each growth cycle, PeaPod collects data on all environment parameters and plant metrics.
 
-Plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
+This data is then used to train a machine learning surrogate-model to represent the plant's phenology across time.
+
+This model aims to fit a function to the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric.
+
+Therefor plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
 
 ## Conclusion
 
