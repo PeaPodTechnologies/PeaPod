@@ -23,8 +23,8 @@
     - [Aeroponics](#aeroponics)
     - [Humidification](#humidification)
     - [Dehumidification](#dehumidification)
-  - [Maintenance](#maintenance)
-  - [Outputs: Harvesting, Preparation, and Seed Harvesting](#outputs-harvesting-preparation-and-seed-harvesting)
+  - [Maintenance](#maintenance) REDACTED
+  - [Planting, Harvesting, Preparation, and Seed Harvesting](#planting-harvesting-preparation-and-seed-harvesting)
   - [Optimization](#optimization)
   - [Conclusion](#conclusion)
 
@@ -107,15 +107,15 @@ Fans pass air through the cartridge and shutters on the openings allow for preci
 Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, to notify the user to remove and "recharge" the cartridge via evaporation in a standard oven.
 
 
-_## Maintenance??? is section even needed???
+_## Maintenance - REDACTED_
 
-_Maintenance requirements include: 
+_Maintenance requirements include:_ 
 
-_1. Daily manual pollination for flowering crops;
-_2. Occasional nozzle cleaning to prevent calcification; (covered)
-_3. Dehumidification cartridge recharging; (covered)
+_1. Daily manual pollination for flowering crops;_
+_2. Occasional nozzle cleaning to prevent calcification; (covered)_
+_3. Dehumidification cartridge recharging; (covered)_
 
-_PeaPods will notify users when any maintenance is required. (mentioned)
+_PeaPods will notify users when any maintenance is required. (mentioned)_
 
 
 ## Planting, Harvesting, Preparation, and Seed Harvesting
