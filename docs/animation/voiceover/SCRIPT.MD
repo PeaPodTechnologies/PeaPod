@@ -21,6 +21,7 @@
     - [Grow Platforms](#grow-platforms)
     - [Tray Modularity](#tray-modularity)
     - [Aeroponics](#aeroponics)
+    - [Thermoregulation](#thermoregulation)
     - [Humidification](#humidification)
     - [Dehumidification](#dehumidification)
   - [Maintenance](#maintenance) REDACTED
@@ -95,6 +96,12 @@ A final solenoid valve allows the control module to activate the nozzles on dema
 The nozzles are mounted in the root zone and are connected to the supply line which features quick-disconnect; "CLICK" for easy removal or repositioning.
 
 The nozzles are robust and only require occasional cleaning to prevent calcification.
+
+### Thermoregulation
+
+Temperature is regulated by the control module through a thermoelectric heat pump, which can both heat and cool depending on the supplied polarity.
+
+Fans blow air through a heatsink adjoined to the heat pump to maintain a desired temperature inside.
 
 ### Humidification
 
