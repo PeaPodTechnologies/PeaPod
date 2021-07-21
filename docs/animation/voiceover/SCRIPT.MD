@@ -40,7 +40,7 @@ PeaPod is able to generate any desired environment, while collecting data on pla
 
 The growth environment features a frame-and-panel construction. 
 
-Aluminum extrusion with engineering plastic brackets provide a lightweight and sturdy frame and include channels for easy component mounting and repositioning. 
+Aluminum extrusion with engineering plastic brackets provide a lightweight and sturdy frame that includes channels for easy component mounting and repositioning. 
 
 Mylar-laminated foam panels provide a high degree of thermal insulation and reflect light internally, making PeaPod more efficient.
 
@@ -50,9 +50,9 @@ This approach to construction makes assembly quick and easy while also maximizin
 
 ### Extendability
 
-PeaPod can accommodate different plant sizes and dimensional constraints by connecting frame units together and removing dividing panels. Larger configurations require additional control modules to extend the power of the primary unit. 
+PeaPod can accommodate different plant sizes and dimensional constraints by removing panels and connecting frame units together. Larger configurations require additional control modules to extend the power of the primary unit. 
 
-This extendable topology can be modified on the fly to suit the plant selection or mission requirements.
+This extendable topology can be easily adapted to suit the plant selection or mission requirements.
 
 ## Subsystems: Setup and Description
 
@@ -64,17 +64,19 @@ Powerful LED boards provide light, featuring power modulation for precise spectr
 
 <!-- Setup -->
 
-The boards are mounted to a removable subframe, daisy-chained and connected to the control module for power and control.
+The boards are mounted to a subframe and are connected to the control module for power and control.
 
 ### Grow Platforms
 
 <!-- Description and Setup (mostly visual) -->
 
-Plants are grown in grow cups supported by a removable subframe, with aeroponic nozzles and root zone container underneath.
+Plants are grown in grow cups supported by a subframe, with aeroponic nozzles and a root zone container underneath.
 
 ### Tray Modularity
 
-Both lighting and grow subframes are modular, enabling the user to add, remove, or reposition trays at will, creating new configurations with different root and leaf zone heights. 
+Both subframes are modular, enabling the user to add, remove, or reposition trays at will. 
+
+This allows for different configurations to accomodate any plant. 
 
 ### Aeroponics
 
