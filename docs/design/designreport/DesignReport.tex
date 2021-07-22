@@ -9,26 +9,19 @@
 \usepackage{fancyhdr}
 \usepackage{enumitem}
 \usepackage[toc,page]{appendix}
-
+\setlist{noitemsep}
 
 %READ THIS:
 %mark comments with OpenComment or ClosedComment as you write, so we can ctrl+f as needed.
 
 % Page layout (margins, size, line spacing)
 \geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
-\setstretch{1.5}
+\setstretch{1}
 
 % Headers
 \pagestyle{fancy}
 \lhead{PeaPod - Design Report}
 \rhead{UTAG}
-
-% Metric counter, referencing commands
-% \newcounter{metricnumber}
-% \setcounter{metricnumber}{1}
-% \newcommand{\metricrow}{M\arabic{metricnumber}}
-% \newcommand{\mlabel}[1]{\addtocounter{metricnumber}{-1}\refstepcounter{metricnumber}\label{#1}\addtocounter{metricnumber}{1}}
-% \newcommand{\mref}[1]{M\ref{#1}}
 
 \begin{document}
 
@@ -42,17 +35,33 @@
 
         Primary Written Deliverable for the Deep Space Food Challenge Phase 1
 
-        \vfill
+        \vfill \small{
 
-        Jayden Lefebvre - Lead Engineer\\\small{jayden.lefebvre@mail.utoronto.ca}\\
+            \textbf{Jayden Lefebvre - Lead Engineer, UTAG Founder}\\
+            BASc Computer Engineering (Anticipated 2024), University of Toronto\\
+            Toronto, ON, Canada\\
+            \vspace{.5cm}
+            \textbf{Nathan Chareunsouk - Design Lead}\\Toronto, ON, Canada\\
+            \vspace{.5cm}
+            \textbf{Navin Vanderwert - Design Engineer}\\
+            BASc Engineering Science (Anticipated 2024), University of Toronto\\
+            Toronto, ON, Canada\\
+            \vspace{.5cm}
+            \textbf{Jonas Marshall - Electronics Engineer}\\
+            Computer Engineering (Anticipated 2024), Queen's University\\
+            Kingston, ON, Canada
+
+        }
+
         \vspace{1cm}
-        Nathan Chareunsouk, Navin Vanderwert, Jonas Marshall - Design Engineers
 
-        \vspace{2.5cm}
+        Primary Contact Email: jayden.lefebvre@mail.utoronto.ca
 
-        Revision 0.2\\
+        \vspace{.75cm}
+
+        Revision 0.4\\
         University of Toronto Agritech\\
-        July 1st, 2021
+        July 21st, 2021
 
     \end{center}
 \end{titlepage}
