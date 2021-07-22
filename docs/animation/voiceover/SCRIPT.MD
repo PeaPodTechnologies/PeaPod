@@ -93,7 +93,9 @@ These valves then formulate precise nutrient dosaged and pH levels.
 
 A final solenoid valve allows the control module to activate the nozzles on demand.
 
-The nozzles are mounted in the root zone and are connected to the supply line which features quick-disconnect; "CLICK" for easy removal or repositioning.
+The nozzles are mounted in the root zone and are connected to the supply line which features quick-disconnect for easy removal and repositioning.
+
+Similarly, the root zone also features quick-disconnect for drainage.
 
 The nozzles are robust and only require occasional cleaning to prevent calcification.
 
