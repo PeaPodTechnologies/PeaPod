@@ -34,7 +34,7 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 ## Background
 
-> See our [design brief](/docs/design/designbrief/DesignBrief.pdf) for details.
+> See our [requirements document](https://github.com/UTAgritech/PeaPod/blob/staging/docs/design/requirements/Requirements.pdf) for details.
 
 <br>
 
@@ -44,7 +44,7 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 ### Features
 
-> See our [solution overview](/docs/design/designproposal/DesignProposal.pdf) (WIP) for details.
+> See our [solution overview](https://github.com/UTAgritech/PeaPod/blob/staging/docs/design/solutionoverview/SolutionOverview.pdf) for details.
 
 <br>
 
