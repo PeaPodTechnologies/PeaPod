@@ -1,4 +1,4 @@
-# PeaPod
+# PeaPod <!-- omit in toc -->
 
 [![issuesopen](https://img.shields.io/github/issues/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/UTAgritech/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
 
@@ -17,18 +17,16 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 ### Table of Contents
 
-- [PeaPod](#peapod)
-    - [Table of Contents](#table-of-contents)
-  - [Background](#background)
-    - [Features](#features)
-    - [Innovations](#innovations)
-  - [Production](#production)
-    - [Assembly](#assembly)
-    - [Installation](#installation)
-  - [Development](#development)
-  - [Contribution](#contribution)
-    - [Roadmap](#roadmap)
-  - [Acknowledgements](#acknowledgements)
+- [Background](#background)
+  - [Features](#features)
+  - [Innovations](#innovations)
+- [Production](#production)
+  - [Assembly](#assembly)
+  - [Installation](#installation)
+- [Development](#development)
+- [Contribution](#contribution)
+  - [Roadmap](#roadmap)
+- [Acknowledgements](#acknowledgements)
 
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
 
