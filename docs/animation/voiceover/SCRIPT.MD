@@ -95,7 +95,7 @@ A final solenoid valve allows the control module to activate the nozzles on dema
 
 The nozzles are mounted in the root zone and are connected to the supply line which features quick-disconnect for easy removal and repositioning.
 
-Similarly, the root zone also features quick-disconnect for drainage.
+A second connector allows water to be pumped back for recycling.
 
 The nozzles are robust and only require occasional cleaning to prevent calcification.
 
