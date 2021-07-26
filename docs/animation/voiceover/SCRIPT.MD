@@ -119,7 +119,7 @@ Fans pass air through the cartridge and shutters on the openings allow for preci
 
 Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, to notify the user to remove and "recharge" the cartridge via evaporation in a standard oven.
 
-
+<!-- 
 ## Maintenance - REDACTED
 
 _Maintenance requirements include:_ 
@@ -128,7 +128,7 @@ _1. Daily manual pollination for flowering crops;_
 _2. Occasional nozzle cleaning to prevent calcification; (covered)_
 _3. Dehumidification cartridge recharging; (covered)_
 
-_PeaPods will notify users when any maintenance is required. (mentioned)_
+_PeaPods will notify users when any maintenance is required. (mentioned)_ -->
 
 
 ## Planting, Harvesting, Preparation, and Seed Harvesting
