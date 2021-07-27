@@ -1,44 +1,56 @@
-# PeaPod
+# PeaPod <!-- omit in toc -->
+
+[![issuesopen](https://img.shields.io/github/issues/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/UTAgritech/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
+
 
 A cloud-connected isolated and automated plant growth environment, able to generate any environment from a combination of independent environment parameters. 
 
 Designed as both a hassle-free food production system and a research tool for precise and distributed mapping of the plant-environment relationship.
 
-[![issuesopen](https://img.shields.io/github/issues/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/UTAgritech/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
+<!-- TODO: Build statuses? etc. -->
 
 Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
 
+<img src="docs/animation/renders/backdrop.png" width=90% style="border: 5px solid #333"/>
+
+***
+
 ### Table of Contents
 
-- [PeaPod](#peapod)
-    - [Table of Contents](#table-of-contents)
-  - [Background](#background)
-    - [Features](#features)
-    - [Innovations](#innovations)
-  - [Production](#production)
-    - [Assembly](#assembly)
-    - [Installation](#installation)
-  - [Development](#development)
-  - [Contribution](#contribution)
-    - [Roadmap](#roadmap)
-  - [Acknowledgements](#acknowledgements)
+- [Background](#background)
+  - [Features](#features)
+  - [Innovations](#innovations)
+- [Production](#production)
+  - [Assembly](#assembly)
+  - [Installation](#installation)
+- [Development](#development)
+- [Contribution](#contribution)
+  - [Roadmap](#roadmap)
+- [Acknowledgements](#acknowledgements)
 
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
 
-<!-- TODO: Build statuses? etc. -->
+***
 
 ## Background
 
-> See our [design brief](/docs/design/designbrief/DesignBrief.pdf) for details.
+> See our [requirements document](https://github.com/UTAgritech/PeaPod/blob/staging/docs/design/requirements/Requirements.pdf) for details.
+
+<br>
 
 <img src="docs/design/solutionoverview/images/blackbox.png" width=90%/>
 
+<br>
+
 ### Features
 
-> See our [proposal](/docs/design/designproposal/DesignProposal.pdf) (WIP) for details.
+> See our [solution overview](https://github.com/UTAgritech/PeaPod/blob/staging/docs/design/solutionoverview/SolutionOverview.pdf) for details.
+
+<br>
 
 <img src="docs/design/solutionoverview/images/features.png" width=70%/>
 
+<br>
 
 ### Innovations
 PeaPod is *not* a fancy container with a light stand. 
@@ -52,6 +64,9 @@ A lot of PeaPods can be collapsed into a tiny space.
 This also means PeaPods can be configured to be any size to grow any type of plant.
 
 PeaPod is self-optimizing, versatile, easy to assemble, and it makes food.
+
+***
+
 ## Production
 
 ### Assembly
@@ -69,10 +84,14 @@ WIP. -->
 
 <!-- w/ examples, i.e. GIF of expected output, inline code -->
 
+***
+
 ## Development
 <!-- dependencies, environment, language -->
 
 > See [`software/README`](software/README.md#Development) and [`hardware/README`](hardware/README.md#Development) for their respective dependencies.
+
+<br>
 
 ## Contribution
 
@@ -90,6 +109,8 @@ WIP. -->
 <!-- adapted from milestones/project boards -->
 
 > See our [projects](https://github.com/UTAgritech/PeaPod/projects).
+
+<br>
 
 ## Acknowledgements
 
