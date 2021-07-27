@@ -48,7 +48,7 @@
             Toronto, ON, Canada\\
             \vspace{.5cm}
             \textbf{Jonas Marshall - Electronics Engineer}\\
-            Computer Engineering (Anticipated 2024), Queen's University\\
+            BASc Computer Engineering (Anticipated 2024), Queen's University\\
             Kingston, ON, Canada
 
         }
@@ -73,8 +73,6 @@
 
 \section{Design Abstract}
 % Please provide a brief summary description of your proposed food production technology within a 1,500 character limit. The abstract may answer some of the following questions: What is your proposed solution? What is novel, sustainable, and innovative about your proposed solution? What types of food does your solution create? How are you minimizing inputs and maximizing food outputs?
-Our solution is a modular aeroponic plant growth environment based upon controlled-environment agriculture principles.
-The ability to precisely control environmental parameters allows our system to grow any plant imaginable.
 
 \section{Design Report}
 
@@ -112,17 +110,33 @@ The ability to precisely control environmental parameters allows our system to g
     % Setup (Assembly, hookup to peripheral systems)
     % Harvest?
 
-An automated and isolated aeroponic crop growth system, able to generate any environment from a combination of independent environment parameters, with both environment and crop growth data collection.
-The system takes the form of an enclosed cube, with most crew interaction limited to water and nutrient refill. Hardware components can be broken down into 4 primary categories: Feedback Systems, Resource Supply, Support Structures, and Electronic Control. 
-Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blackbox}.
+PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=15cm]{../solutionoverview/images/blackbox.png}
-    \hfill
-    \caption{"Black box" function diagram for our solution.}
-    \label{fig:blackbox}
-\end{figure}
+The growth environment is extendable and modular, featuring a frame-and-panel housing. This extendable topology can be easily adapted to suit the plant selection or mission requirements. The housing is insulated and highly reflective internally for greater efficiency.
+
+Control systems (air thermoregulation, humidification, dehumidification, aeroponics system minus nozzles) and automation systems are all housed in a self-contained control module. 
+
+Both plant support trays and lighting systems are mounted to identical subframes. Subframes are modular, enabling the user to add, remove, or reposition trays at will. This allows for different configurations to accommodate any plant.
+
+Subsystem summary:
+\begin{itemize}
+    \item\textit{Lighting}: A wide spectral range (UV$\to$IR) of powerful LEDs, with dimmable drivers for precision spectrum and intensity control. LEDs chosen for high energy efficiency, precise emission spectrum, low heat production, and low risk of plant tissue damage.
+    \item \textit{Aeroponics}: Reverse osmosis water is pressurized by a pump and tank. Pressurized water flows through a thermoelectric water block to be heated or cooled, with temperature and pressure sensors providing PID feedback and safety cutoffs respectively. This is followed by an injection manifold, where parallel Venturis siphon different nutrient and pH adjustment solutions from containers for inline mixing. Servo-actuated flow-control valves control injection rates. The mixed solution now flows through a solenoid to nozzles mounted beneath the plant support trays, enclosed in a water-tight chamber. Runoff water is pumped from the chamber basin and recycled to the injection manifold. Both runoff and supply lines are quick-disconnect for easy tray removal. This method is chosen for increased water efficiency (98\% less than farming), no pH/nutrient "feedback" loop (common in hydroponics), supported crop variety (vs hydroponics).
+\end{itemize}
+
+Throughout each growth cycle, PeaPod collects data on all environment parameters and plant metrics. This data is then used to train a machine learning surrogate-model to represent the plant's phenology across time. This model aims to fit a function to the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric. Therefore plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
+
+PeaPod provides unrivalled versatility and reliability to food production systems for long duration space missions.
+
+% Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blackbox}.
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=15cm]{../solutionoverview/images/blackbox.png}
+%     \hfill
+%     \caption{"Black box" function diagram for our solution.}
+%     \label{fig:blackbox}
+% \end{figure}
 
 \textbf{Part B:}
 \label{sec:description-b}
@@ -185,7 +199,7 @@ PeaPod is a modular system of "unit cells," each consisting of a .5 x .5 x .5 me
 
 %Avg <1500 W, Peak < 3000 W
 
-% How did we consider this constra≈int in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
+% How did we consider this constraint in the formulation of our design? Our feature/component/subsystem selection? Does it fall wihtin the proposed constraint?
 
 Electrical power is consumed by most subsystems. Most are negligible (<100W, i.e. the computer), so only the greatest consuming systems are listed.
 
