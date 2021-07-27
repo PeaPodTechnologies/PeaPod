@@ -8,8 +8,6 @@
 
 > Last rough cut was ~5:40 - needs to be a tiny bit faster.
 > Script was condensed quite a bit so no need for the pace to be a lot faster.
-> 
-<!-- Lol -->
 
 - [Animation Voiceover Script](#animation-voiceover-script)
   - [Intro](#intro)
@@ -59,17 +57,11 @@ This extendable topology can be easily adapted to suit the plant selection or mi
 
 ### Lighting
 
-<!-- Description -->
-
 Powerful LED boards provide light, featuring power modulation for precise spectrum control ranging from near-ultraviolet to near-infrared.
-
-<!-- Setup -->
 
 The boards are mounted to a subframe and are connected to the control module for power and control.
 
 ### Grow Platforms
-
-<!-- Description and Setup (mostly visual) -->
 
 Plants are grown in grow cups supported by a subframe, with aeroponic nozzles and a root zone container underneath.
 
@@ -77,7 +69,7 @@ Plants are grown in grow cups supported by a subframe, with aeroponic nozzles an
 
 Both subframes are modular, enabling the user to add, remove, or reposition trays at will. 
 
-This allows for different configurations to accomodate any plant. 
+This allows for different configurations to accommodate any plant. 
 
 ### Aeroponics
 
@@ -89,7 +81,7 @@ The water then flows through an injection manifold where nutrient and pH solutio
 
 The injection manifold comprises a set of parallel Venturi siphons whose inlets connect to solution containers via servo actuated valves.
 
-These valves then formulate precise nutrient dosaged and pH levels.
+These valves then formulate precise nutrient dosages and pH levels.
 
 A final solenoid valve allows the control module to activate the nozzles on demand.
 
@@ -115,25 +107,13 @@ When the control module activates a driver circuit, the mesh oscillates, produci
 
 Humidity is decreased via silica gel beads held within a removable cartridge.
 
-Fans pass air through the cartridge and shutters on the openings allow for precise automated control. 
+Fans pass air through the cartridge, and shutters on the openings allow for precise automated control. 
 
 Silica gel is efficient, non-toxic, and changes color to indicate saturation. This is detected by the control module, to notify the user to remove and "recharge" the cartridge via evaporation in a standard oven.
 
-<!-- 
-## Maintenance - REDACTED
-
-_Maintenance requirements include:_ 
-
-_1. Daily manual pollination for flowering crops;_
-_2. Occasional nozzle cleaning to prevent calcification; (covered)_
-_3. Dehumidification cartridge recharging; (covered)_
-
-_PeaPods will notify users when any maintenance is required. (mentioned)_ -->
-
-
 ## Planting, Harvesting, Preparation, and Seed Harvesting
 
-Harvesting varies by crop type but the yield can be stored in sealable containers and refrigerated for future consumption. 
+Harvesting varies by crop type, but the yield can be stored in sealable containers and refrigerated for future consumption. 
 
 The preparation method also varies by food type and preference but are all common processes.
 
@@ -151,8 +131,8 @@ This data is then used to train a machine learning surrogate-model to represent 
 
 This model aims to fit a function to the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric.
 
-Therefor plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
+Therefore, plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
 
 ## Conclusion
 
-PeaPod provides unrivalled versatility and reliability to food production systems for long duration space missions.
+PeaPod provides unrivalled versatility and reliability for food production systems on long-duration space missions.
