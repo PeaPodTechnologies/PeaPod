@@ -44,6 +44,7 @@ Aluminum extrusion with engineering plastic brackets provide a lightweight and s
 Mylar-laminated foam panels provide a high degree of thermal insulation and reflect light internally, making PeaPod more efficient.
 
 Automation and control is made possible by PeaPod's control module, installed on top of the frame and connected to water, power, and network inputs.
+Automation is made possible by PeaPod's control module, installed on top of the frame and connected to water, power, network, and ventilation.
 
 This approach to construction makes assembly quick and easy while also maximizing space efficiency during stowage.
 
