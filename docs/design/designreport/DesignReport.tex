@@ -74,6 +74,18 @@
 \section{Design Abstract}
 % Please provide a brief summary description of your proposed food production technology within a 1,500 character limit. The abstract may answer some of the following questions: What is your proposed solution? What is novel, sustainable, and innovative about your proposed solution? What types of food does your solution create? How are you minimizing inputs and maximizing food outputs?
 
+PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
+
+The growth environment is extendable and modular, featuring a frame-and-panel housing. This extendable topology can be easily adapted to suit the plant selection or mission requirements. The housing is insulated and highly reflective internally for greater efficiency.
+
+Control systems (air thermoregulation, humidification, dehumidification, aeroponics system minus nozzles) and automation systems (central computer) are all housed in a self-contained control module. This allows control power to be multiplied in larger extended PeaPods by adding more control modules in a controller-follower topology.
+
+Both plant support trays and lighting systems are mounted to identical subframes. Subframes are modular, enabling the user to add, remove, or reposition trays at will. This allows for different configurations to accommodate any plant.
+
+Throughout each growth cycle, PeaPod collects data on all environment parameters and plant metrics. This data is then used to train a machine learning surrogate-model to represent the plant's phenology across time. This model aims to fit a function to the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric. Therefore plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
+
+PeaPod provides unrivalled versatility and reliability to food production systems for long duration space missions.
+
 \section{Design Report}
 
 \subsection{Description}
@@ -110,23 +122,18 @@
     % Setup (Assembly, hookup to peripheral systems)
     % Harvest?
 
-PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
-
-The growth environment is extendable and modular, featuring a frame-and-panel housing. This extendable topology can be easily adapted to suit the plant selection or mission requirements. The housing is insulated and highly reflective internally for greater efficiency.
-
-Control systems (air thermoregulation, humidification, dehumidification, aeroponics system minus nozzles) and automation systems are all housed in a self-contained control module. 
-
-Both plant support trays and lighting systems are mounted to identical subframes. Subframes are modular, enabling the user to add, remove, or reposition trays at will. This allows for different configurations to accommodate any plant.
-
-Subsystem summary:
 \begin{itemize}
     \item\textit{Lighting}: A wide spectral range (UV$\to$IR) of powerful LEDs, with dimmable drivers for precision spectrum and intensity control. LEDs chosen for high energy efficiency, precise emission spectrum, low heat production, and low risk of plant tissue damage.
-    \item \textit{Aeroponics}: Reverse osmosis water is pressurized by a pump and tank. Pressurized water flows through a thermoelectric water block to be heated or cooled, with temperature and pressure sensors providing PID feedback and safety cutoffs respectively. This is followed by an injection manifold, where parallel Venturis siphon different nutrient and pH adjustment solutions from containers for inline mixing. Servo-actuated flow-control valves control injection rates. The mixed solution now flows through a solenoid to nozzles mounted beneath the plant support trays, enclosed in a water-tight chamber. Runoff water is pumped from the chamber basin and recycled to the injection manifold. Both runoff and supply lines are quick-disconnect for easy tray removal. This method is chosen for increased water efficiency (98\% less than farming), no pH/nutrient "feedback" loop (common in hydroponics), supported crop variety (vs hydroponics).
+    \item \textit{Aeroponics}: Reverse osmosis water is pressurized by a pump and tank. Pressurized water flows through a thermoelectric water block to be heated or cooled, with temperature and pressure sensors providing PID feedback and safety cutoffs respectively. This is followed by an injection manifold, where parallel Venturis siphon different nutrient and pH adjustment solutions from containers for inline mixing. Servo-actuated flow-control valves control injection rates. The mixed solution now flows through a solenoid to nozzles mounted beneath the plant support trays, enclosed in a water-tight chamber. Runoff water is pumped from the chamber basin and recycled to the injection manifold. Both runoff and supply lines are quick-disconnect for easy tray removal. This method is chosen for increased water efficiency (98\% less than farming), no pH/nutrient "feedback" loop (common in hydroponics), greater supported crop variety (vs hydroponics).
+    \item \textit{Air Thermoregulation}: Leaf zone air temperature is regulated by a thermoelectric heat pump. Thermoelectric/Peltier tiles heat or cool an internal heat sink (w/ thermal compound). Circulation fans blow air over the heat sinks to distribute heat to homogenously heat or cool the environment. A matching heat sink and fan set on the opposite face of the Peltier tiles conduct heat to/from surroundings, completing the heat pump. A PID control system is informed by temperature sensors distributed throughout the growth environment, and - with the use of a MOSFET H-bridge and dimmable current source - controls the direction and magnitude of the heat transfer. This method is chosen for its low complexity (no liquids, pressurization, etc.) and ease of automation (bidirectional heat pump, precisely dimmable, PID tuning for high accuracy).
+    \item \textit{Humidity Regulation}: Leaf zone humidity is regulated by two complementary systems. A dead-zone bang-bang control system is informed by humidity sensors distributed throughout the growth environment.
+    \begin{itemize}
+        \item \textit{Humidification}: Humidity is \textbf{increased} by an ultrasonic mesh nebulizer. Reverse osmosis water is supplied to a small container, to which a piezoelectric mesh disc is mounted. A control signal activates a driver circuit which causes the disc to oscillate, producing water vapour. This method is chosen for its ease of automation and consistency of vapour production.
+        \item \textit{Dehumidification}: Humidity is \textbf{decreased} by a rechargeable indicating desiccant cartridge. The cartridge, containing dry silica gel beads, is inserted into a housing. Servo-actuated "shutters" prevent unintended air movement through the cartridge. Fans draw humid air through a HEPA filter into the cartridge, causing dry air to be expelled back into the growth environment. The cartridge changes color to indicate saturation, which is observed by the automation controller. The crew is then notified to swap the saturated cartridge for a dry one, and to "recharge" the cartridge via evaporation in a standard oven.
+    \end{itemize}
+    \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include the use of an aluminum water block (as opposed to an internal heat sink and fan) and a single temperature sensor mounted \textbf{after} to account for flow direction.
+    \item \textit{Gas Composition}: Oxygen and carbon dioxide concentration imbalances due to photosynthesis are managed by gas exchange with the surroundings. Two ports are covered by servo-actuated "shutters", preventing unintended exchange. Fans draw outside air in via an input port, bringing CO${}_2$ up and O${}_2$ down. Fans also draw inside air out to an onboard filtration and dehumidification system, filtering out aerosols (pollen, seeds, allergens, etc.) and bringing humidity down to acceptable levels. Gas concentration sensors collect data on the concentrations of relevant gasses (CO${}_2$, O${}_2$, etc.), informing a bang-bang control system for the input and output port shutters and fans. This approach allows natural photosynthesis to counteract human carbon dioxide production while remaining safe and minimizing cross-contamination.
 \end{itemize}
-
-Throughout each growth cycle, PeaPod collects data on all environment parameters and plant metrics. This data is then used to train a machine learning surrogate-model to represent the plant's phenology across time. This model aims to fit a function to the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric. Therefore plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
-
-PeaPod provides unrivalled versatility and reliability to food production systems for long duration space missions.
 
 % Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blackbox}.
 
