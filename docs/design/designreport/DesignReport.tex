@@ -101,21 +101,9 @@ PeaPod provides unrivalled versatility and reliability to food production system
 % ===== WRITE =====
 % 3000chars
 
-% Your response should include the following:
+PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
 
-% Environmental Control Parameters
-    % Nutrient Solution (pH, Watering Cycle, Plant Nutrient Dosages)
-    % Leaf- and root-zone temperatures
-    % Leaf-zone humidity
-    % Lighting intensity, spectrum, cycle
-% Outputs
-    % Plant Mass, O2, Waste
-% Data Collection
-    % Environment Parameter Collection
-    % Plant Metrics
-        % Post-harvest analysis (harvest weight/wt.\%, chemical composition i.e. nutrients, flavour)
-        % Live Mass/Growth Rate
-        % Visual analysis via computer vision (canopy surface area, leaf health indicators, number of leaves, plant height, etc.)
+PeaPod accomplishes this via a number of control systems, some feedback-based (sensor + actuator):
 
 \begin{itemize}
     \item\textit{Lighting}: A wide spectral range (UV$\to$IR) of powerful LEDs, with dimmable drivers for precision spectrum and intensity control. LEDs chosen for high energy efficiency, precise emission spectrum, low heat production, and low risk of plant tissue damage.
@@ -128,8 +116,9 @@ PeaPod provides unrivalled versatility and reliability to food production system
     \end{itemize}
     \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include the use of an aluminum water block (as opposed to an internal heat sink and fan) and a single temperature sensor mounted \textbf{after} to account for flow direction.
     \item \textit{Gas Composition}: Oxygen and carbon dioxide concentration imbalances due to photosynthesis are managed by gas exchange with the surroundings. Two ports are covered by servo-actuated "shutters", preventing unintended exchange. Fans draw outside air in via an input port, bringing CO${}_2$ up and O${}_2$ down. Fans also draw inside air out to an onboard filtration and dehumidification system, filtering out aerosols (pollen, seeds, allergens, etc.) and bringing humidity down to acceptable levels. Gas concentration sensors collect data on the concentrations of relevant gasses (CO${}_2$, O${}_2$, etc.), informing a bang-bang control system for the input and output port shutters and fans. This approach allows natural photosynthesis to counteract human carbon dioxide production while remaining safe and minimizing cross-contamination.
-    \item \textit{Optimization and Plant Analysis}: Food products are optimized over time via plant metric analysis and "surrogate model" machine learning. Cameras (birds-eye and horizontal) capture live video for observation as well as time lapse photography for computer vision analysis. Metrics of both plant health and yield quality (plant "output"), along with data collected on the environment (plant "input"), are used to train a machine learning model to act as a digital representation of the plant. As more iterations of the plant are grown, the dataset becomes generalized across different environmental inputs/programs, and new programs can be selected to intelligently target certain optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).
 \end{itemize}
+
+Food products are optimized over time via plant metric analysis and "surrogate model" machine learning. Cameras (birds-eye and horizontal) capture live video for observation as well as time lapse photography for computer vision analysis. Metrics of both plant health and yield quality (plant "output"), along with data collected on the environment (plant "input"), are used to train a machine learning model to act as a digital representation of the plant. As more iterations of the plant are grown, the dataset becomes generalized across different environmental inputs/programs, and new programs can be selected to intelligently target certain optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).
 
 % Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blackbox}.
 
@@ -150,6 +139,41 @@ PeaPod provides unrivalled versatility and reliability to food production system
 
 % ===== WRITE =====
 % 1500chars
+
+PeaPod's primary function of plant growth is accomplished by achieving total environmental control. 
+
+Once PeaPod has been assembled, the first step is sterilization. Since growth environments may experience high humidities, sterilization of the internal environment is necessary to prevent microbial growth. Any plant- and food-safe means may be employed (i.e. UV).
+
+After sterilization, input hookup/filling, and initialization, PeaPod's operation begins at planting. Seeds (or offshoots/clones) are removed from sealed storage bags and placed in neoprene foam "pucks" known as clone collars, which are moistened for germination and placed in the grow cups. The front panel is then closed, sealing the internal environment.
+
+The state of the growth environment is encoded via a standardized set of "environment parameters". The specific values of each parameter for each iteration are stored in a "program". The program is set prior to the start of plant growth, and consists of a set of \textbf{actions} (e.g. set red LEDs to 63\% power) and \textbf{control targets} (e.g. hold air temperature at 22°C) as time-series instructions from the start of planting to the point of harvest (or plant death, in the case of multiple-harvest plants). 
+
+Environment parameters:
+\begin{itemize}
+    \item Leaf zone temperature;
+    \item Root zone temperature;
+    \item Leaf zone humidity;
+    \item Air gas composition;
+    \item Light intensity and spectrum;
+    \item Aeroponic delivery schedule (timings and durations);
+    \item Aeroponic nutrient concentrations;
+    \item Aeroponic pH;
+\end{itemize}
+
+The environment can be adjusted live at any point; this is recorded as new instruction entries in the program.
+
+When activated, PeaPod's control systems begin to enact the program. PeaPod will periodically notify crew of required action, including refilling inputs, cleaning components, and harvesting, as well as notifying upon "End-of-Program", when all inedible plant matter is disposed of. The process can now be repeated (starting at sterilization).
+
+PeaPod leverages existing life support systems for providing inputs and handling outputs.
+
+\textit{Infrastructural Inputs}: Reverse osmosis water (onboard RODI system), nutrient solutions (stored), pH solutions (stored), power (onboard power), network connection (onboard network), plant seeds/clones (stored), input air
+
+\textit{Process Inputs}: Plant species identifiers, environment program, nutrient and pH-adjustment solution identifiers (compounds and molarities, i.e. solution A is 0.6M NaNO${}_3$)
+
+\textit{Products}: Edible plant matter, recorded environment data, plant metric data, live video feed, time-lapse capture
+
+\textit{Byproducts}: Inedible plant matter (waste), heat from thermoregulation cooling (managed by onboard heating/cooling), exhaust air (filtered and dehumidified by onboard life support)
+
 
 % Setup
     % Prime plant inputs (connect power/water supply, prime aeroponic pump/tank/etc.)
