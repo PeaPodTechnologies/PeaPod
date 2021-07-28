@@ -116,11 +116,6 @@ PeaPod provides unrivalled versatility and reliability to food production system
         % Post-harvest analysis (harvest weight/wt.\%, chemical composition i.e. nutrients, flavour)
         % Live Mass/Growth Rate
         % Visual analysis via computer vision (canopy surface area, leaf health indicators, number of leaves, plant height, etc.)
-% Crew Interaction
-    % Planting
-    % Manual inputs (nutrient and water reservoir refill)
-    % Setup (Assembly, hookup to peripheral systems)
-    % Harvest?
 
 \begin{itemize}
     \item\textit{Lighting}: A wide spectral range (UV$\to$IR) of powerful LEDs, with dimmable drivers for precision spectrum and intensity control. LEDs chosen for high energy efficiency, precise emission spectrum, low heat production, and low risk of plant tissue damage.
@@ -133,6 +128,7 @@ PeaPod provides unrivalled versatility and reliability to food production system
     \end{itemize}
     \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include the use of an aluminum water block (as opposed to an internal heat sink and fan) and a single temperature sensor mounted \textbf{after} to account for flow direction.
     \item \textit{Gas Composition}: Oxygen and carbon dioxide concentration imbalances due to photosynthesis are managed by gas exchange with the surroundings. Two ports are covered by servo-actuated "shutters", preventing unintended exchange. Fans draw outside air in via an input port, bringing CO${}_2$ up and O${}_2$ down. Fans also draw inside air out to an onboard filtration and dehumidification system, filtering out aerosols (pollen, seeds, allergens, etc.) and bringing humidity down to acceptable levels. Gas concentration sensors collect data on the concentrations of relevant gasses (CO${}_2$, O${}_2$, etc.), informing a bang-bang control system for the input and output port shutters and fans. This approach allows natural photosynthesis to counteract human carbon dioxide production while remaining safe and minimizing cross-contamination.
+    \item \textit{Optimization and Plant Analysis}: Food products are optimized over time via plant metric analysis and "surrogate model" machine learning. Cameras (birds-eye and horizontal) capture live video for observation as well as time lapse photography for computer vision analysis. Metrics of both plant health and yield quality (plant "output"), along with data collected on the environment (plant "input"), are used to train a machine learning model to act as a digital representation of the plant. As more iterations of the plant are grown, the dataset becomes generalized across different environmental inputs/programs, and new programs can be selected to intelligently target certain optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).
 \end{itemize}
 
 % Together, these 4 components create the "Black Box" seen in Figure \ref{fig:blackbox}.
@@ -166,6 +162,11 @@ PeaPod provides unrivalled versatility and reliability to food production system
     % Cleaning the aeroponic nozzle
 % Collection is removing the plant from the enclosure
 % Priming for next cycle is dependent on required maintenance as informed by PeaPod
+% Crew Interaction
+    % Planting
+    % Manual inputs (nutrient and water reservoir refill)
+    % Setup (Assembly, hookup to peripheral systems)
+    % Harvest?
 
 \subsection{Innovation}
 \label{sec:innovation}
