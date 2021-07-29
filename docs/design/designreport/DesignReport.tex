@@ -59,9 +59,9 @@
 
         \vspace{.75cm}
 
-        Revision 0.5\\
+        Revision 0.6\\
         University of Toronto Agritech\\
-        July 26th, 2021
+        July 28th, 2021
 
     \end{center}
 \end{titlepage}
@@ -74,15 +74,15 @@
 \section{Design Abstract}
 % Please provide a brief summary description of your proposed food production technology within a 1,500 character limit. The abstract may answer some of the following questions: What is your proposed solution? What is novel, sustainable, and innovative about your proposed solution? What types of food does your solution create? How are you minimizing inputs and maximizing food outputs?
 
-PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
+PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance modular food production system and a distributed research tool. PeaPod is able to generate any desired environment to grow any crop, while collecting data on plant growth to optimize food products over time.
 
-The growth environment is extendable and modular, featuring a frame-and-panel housing. This extendable topology can be easily adapted to suit the plant selection or mission requirements. The housing is insulated and highly reflective internally for greater efficiency.
+The growth environment is extendable and modular, and is easily adapted to suit plant selection and mission requirements. The housing consists of a "unit cell" cube skeleton, repeated upwards and sideways to expand the environment. The housing is then insulated with internally-reflective panels for greater efficiency.
 
-Control systems (air thermoregulation, humidification, dehumidification, aeroponics system minus nozzles) and automation systems (central computer) are all housed in a self-contained control module. This allows control power to be multiplied in larger extended PeaPods by adding more control modules in a controller-follower topology.
+PeaPod uses a set of control systems to generate the desired environment. Systems include air thermoregulation, humidification, dehumidification LED lighting and an aeroponics system. These systems are fully automated by an onboard computer and housed in a self-contained control module mounted to the top of the housing. This allows control power to be multiplied in larger extended PeaPods by adding more control modules in a controller-follower topology.
 
-Both plant support trays and lighting systems are mounted to identical subframes. Subframes are modular, enabling the user to add, remove, or reposition trays at will. This allows for different configurations to accommodate any plant.
+Both plant growth platforms and lighting systems are built on modular "tray" subframes mounted to the inside of the housing, enabling the user to add, remove, or reposition plants and lights at will to accommodate any plant size.
 
-Throughout each growth cycle, PeaPod collects data on all environment parameters and plant metrics. This data is then used to train a machine learning surrogate-model to represent the plant's phenology across time. This model aims to fit a function to the plant-environment relationship, which can then be optimized for yield, nutrient concentration, flavour, energy efficiency, water use, or any other metric. Therefore plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
+Throughout each growth cycle iteration, PeaPod collects data on all environment parameters and plant metrics. This data is then used to train a machine learning model to represent the plant's phenology across time in the given environment. This model produces a function, which can then be optimized for yield Mass, nutrient concentration, flavour, energy efficiency, water use, or any other metric. Therefore plants grown in PeaPod will be more nutritious, taste better, and yield more as more iterations are performed.
 
 PeaPod provides unrivalled versatility and reliability to food production systems for long duration space missions.
 
