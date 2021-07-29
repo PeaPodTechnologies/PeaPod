@@ -22,7 +22,6 @@
     - [Thermoregulation](#thermoregulation)
     - [Humidification](#humidification)
     - [Dehumidification](#dehumidification)
-  - [Maintenance](#maintenance) REDACTED
   - [Planting, Harvesting, Preparation, and Seed Harvesting](#planting-harvesting-preparation-and-seed-harvesting)
   - [Optimization](#optimization)
   - [Conclusion](#conclusion)
@@ -31,7 +30,7 @@
 
 PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. 
 
-PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
+PeaPod is able to generate any desired environment to grow any plant, while collecting data and improving yields over time.
 
 ## Overview
 
@@ -39,7 +38,7 @@ PeaPod is able to generate any desired environment, while collecting data on pla
 
 The growth environment features a frame-and-panel construction. 
 
-Aluminum extrusion with engineering plastic brackets provide a lightweight and sturdy frame that includes channels for easy component mounting and repositioning. 
+Aluminum extrusion with engineering-plastic brackets provide a lightweight and sturdy frame that includes channels for easy component mounting and repositioning. 
 
 Mylar-laminated foam panels provide a high degree of thermal insulation and reflect light internally, making PeaPod more efficient.
 
