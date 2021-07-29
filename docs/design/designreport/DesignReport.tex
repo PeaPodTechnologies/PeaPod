@@ -103,12 +103,12 @@ Combining all these features into an accessible open-source design, PeaPod provi
 
 PeaPod is a precision-automated plant growth environment, designed as both a low-maintenance food production system and a distributed research tool. PeaPod is able to generate any desired environment, while collecting data on plant growth and improving yields over time.
 
-PeaPod accomplishes this via a number of control systems, some feedback-based (sensor + actuator):
+PeaPod accomplishes this via a number of control systems, some of which are feedback-based (sensor + actuator control loop):
 
 \begin{itemize}
-    \item\textit{Lighting}: A wide spectral range (UV$\to$IR) of powerful LEDs, with dimmable drivers for precision spectrum and intensity control. LEDs chosen for high energy efficiency, precise emission spectrum, low heat production, and low risk of plant tissue damage.
-    \item \textit{Aeroponics}: Reverse osmosis water is pressurized by a pump and tank. Pressurized water flows through a thermoelectric water block to be heated or cooled, with temperature and pressure sensors providing PID feedback and safety cutoffs respectively. This is followed by an injection manifold, where parallel Venturis siphon different nutrient and pH adjustment solutions from containers for inline mixing. Servo-actuated flow-control valves control injection rates. The mixed solution now flows through a solenoid to nozzles mounted beneath the plant support trays, enclosed in a water-tight chamber. Runoff water is pumped from the chamber basin and recycled to the injection manifold. Both runoff and supply lines are quick-disconnect for easy tray removal. This method is chosen for increased water efficiency (98\% less than farming), no pH/nutrient "feedback" loop (common in hydroponics), greater supported crop variety (vs hydroponics).
-    \item \textit{Air Thermoregulation}: Leaf zone air temperature is regulated by a thermoelectric heat pump. Thermoelectric/Peltier tiles heat or cool an internal heat sink (w/ thermal compound). Circulation fans blow air over the heat sinks to distribute heat to homogenously heat or cool the environment. A matching heat sink and fan set on the opposite face of the Peltier tiles conduct heat to/from surroundings, completing the heat pump. A PID control system is informed by temperature sensors distributed throughout the growth environment, and - with the use of a MOSFET H-bridge and dimmable current source - controls the direction and magnitude of the heat transfer. This method is chosen for its low complexity (no liquids, pressurization, etc.) and ease of automation (bidirectional heat pump, precisely dimmable, PID tuning for high accuracy).
+    \item\textit{Lighting}: A wide spectral range (near-ultraviolet$\to$near-infrared) of powerful LEDs, with dimmable drivers for precision spectrum and intensity control. LEDs chosen for high energy efficiency, precise emission spectrum, low heat production, and low risk of plant tissue damage.
+    \item \textit{Aeroponics}: Reverse osmosis water is pressurized by a pump and tank. Pressurized water flows through a thermoelectric water block to be heated or cooled, with temperature and pressure sensors providing Proportionate-Integral-Derivative (PID) feedback and safety cutoffs respectively. This is followed by an injection manifold, where parallel Venturis siphon different nutrient and pH adjustment solutions from containers for inline mixing. Servo-actuated flow-control valves control injection rates. The mixed solution now flows through a solenoid to nozzles mounted beneath the plant support trays, enclosed in a water-tight chamber. Runoff water is pumped from the chamber basin and recycled to the injection manifold. Both runoff and supply lines are quick-disconnect for easy tray removal. This method is chosen for increased water efficiency (98\% less than farming), no pH/nutrient "feedback" loop (common in hydroponics), greater supported crop variety (vs hydroponics).
+    \item \textit{Air Thermoregulation}: Leaf zone air temperature is regulated by a thermoelectric heat pump. Thermoelectric/Peltier tiles heat or cool an internal heat sink (via thermal compound). Circulation fans blow air over the heat sinks to distribute heat to homogenously heat or cool the environment. A matching heat sink and fan set on the opposite face of the Peltier tiles conduct heat to/from surroundings, completing the heat pump. A PID control system is informed by temperature sensors distributed throughout the growth environment, and - with the use of a MOSFET H-bridge and dimmable current source - controls the direction and magnitude of the heat transfer. This method is chosen for its low complexity (no liquids, pressurization, etc.) and ease of automation (bidirectional heat pump, precisely dimmable, PID tuning for high accuracy).
     \item \textit{Humidity Regulation}: Leaf zone humidity is regulated by two complementary systems. A dead-zone bang-bang control system is informed by humidity sensors distributed throughout the growth environment.
     \begin{itemize}
         \item \textit{Humidification}: Humidity is \textbf{increased} by an ultrasonic mesh nebulizer. Reverse osmosis water is supplied to a small container, to which a piezoelectric mesh disc is mounted. A control signal activates a driver circuit which causes the disc to oscillate, producing water vapour. This method is chosen for its ease of automation and consistency of vapour production.
@@ -142,11 +142,11 @@ Food products are optimized over time via plant metric analysis and "surrogate m
 
 PeaPod's primary function of plant growth is accomplished by achieving total environmental control. 
 
-Once PeaPod has been assembled, the first step is sterilization. Since growth environments may experience high humidities, sterilization of the internal environment is necessary to prevent microbial growth. Any plant- and food-safe means may be employed (i.e. UV).
+Once PeaPod has been assembled, the first step is sterilization. Since growth environments may experience high humidities, manual sterilization of the internal environment is necessary to prevent microbial growth. Any plant- and food-safe means may be employed (i.e. UV).
 
 After sterilization, input hookup/filling, and initialization, PeaPod's operation begins at planting. Seeds (or offshoots/clones) are removed from sealed storage bags and placed in neoprene foam "pucks" known as clone collars, which are moistened for germination and placed in the grow cups. The front panel is then closed, sealing the internal environment.
 
-The state of the growth environment is encoded via a standardized set of "environment parameters". The specific values of each parameter for each iteration are stored in a "program". The program is set prior to the start of plant growth, and consists of a set of \textbf{actions} (e.g. set red LEDs to 63\% power) and \textbf{control targets} (e.g. hold air temperature at 22°C) as time-series instructions from the start of planting to the point of harvest (or plant death, in the case of multiple-harvest plants). 
+The state of the growth environment is encoded via a standardized set of "environment parameters". The specific values of each parameter for each iteration are stored in a "program". The program is set prior to the start of plant growth, and consists of a set of \textbf{actions} (e.g. set red LEDs to 63\% power) and \textbf{control targets} (e.g. hold air temperature at 22°C) as time-series instructions from the start of planting to the point of harvest (or plant death, in the case of multiple-harvest plants).
 
 Environment parameters:
 \begin{itemize}
@@ -173,24 +173,6 @@ PeaPod leverages existing life support systems for providing inputs and handling
 \textit{Products}: Edible plant matter, recorded environment data, plant metric data, live video feed, time-lapse capture
 
 \textit{Byproducts}: Inedible plant matter (waste), heat from thermoregulation cooling (managed by onboard heating/cooling), exhaust air (filtered and dehumidified by onboard life support)
-
-
-% Setup
-    % Prime plant inputs (connect power/water supply, prime aeroponic pump/tank/etc.)
-    % Set parameters (set manually or to a preset e.g. “Spinach”)
-% Operation is then automatic, with PeaPod regulating conditions and notifying the user if maintenance is required
-% Maintenance can include:
-    % Replenishing water and nutrient stores
-    % Replacing/repairing failed components
-    % Observation
-    % Cleaning the aeroponic nozzle
-% Collection is removing the plant from the enclosure
-% Priming for next cycle is dependent on required maintenance as informed by PeaPod
-% Crew Interaction
-    % Planting
-    % Manual inputs (nutrient and water reservoir refill)
-    % Setup (Assembly, hookup to peripheral systems)
-    % Harvest?
 
 \subsection{Innovation}
 \label{sec:innovation}
