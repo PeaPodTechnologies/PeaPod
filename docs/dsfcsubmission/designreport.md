@@ -14,7 +14,6 @@ Table of Contents
   - [Mass](#mass)
   - [Data Connection](#data-connection)
   - [Crew Time Requirement](#crew-time-requirement)
-  - [Palatability of Crop Output](#palatability-of-crop-output)
   - [Operational Constraints](#operational-constraints)
 - [Performance Criteria](#performance-criteria)
   - [Acceptability](#acceptability)
@@ -164,17 +163,6 @@ Total setup process time (Standard 2 trays per unit, 12 units, 1 CM): 17.5 hours
 
 Total maintenance time per week: 1-2 hours (depending on program)
 
-## Palatability of Crop Output
-
-Hydroponic crops have seen commercial success [3], suggesting that their output is of sufficient hedonic quality to be desired.
-
-Case Study in Fresh Produce: Acceptability of Fresh Cantaloupe Melon [4]:
-Appearance: 7.93/9.00
-Aroma: 7.77/9.00
-Flavor: 6.83/9.00
-Texture: 7.43/9.00
-Overall: 7.17/9.00 (>6.00)
-
 ## Operational Constraints
 
 Design operates in terrestrial conditions.
@@ -263,6 +251,15 @@ The products formed by the system (and their properly prepared derivatives) are 
 
 Plant-environment optimization can be targeted not only at nutritional value or efficiency, but also at acceptability. The feedback can be gathered either through crew Hedonic rating (i.e. tomatoes grown in environment ABC rate X in appearance, Y in aroma, etc.) or more sophisticated analysis (i.e. computer vision analysis of color/size/shape for appearance, tissue concentrations of various aroma/flavor compounds).
 
+Hydroponic crops have seen commercial success [3], suggesting that their output is of sufficient hedonic quality to be desired.
+
+Case Study in Fresh Produce: Acceptability of Fresh Cantaloupe Melon [4]:
+Appearance: 7.93/9.00
+Aroma: 7.77/9.00
+Flavor: 6.83/9.00
+Texture: 7.43/9.00
+Overall: 7.17/9.00 (>6.00)
+
 ## Safety
 
 ### Safety of Process
@@ -291,7 +288,7 @@ PeaPod provides astronauts the ability to select and grow produce of their choos
 
 By maintaining optimal growth cycles, PeaPod ensures that the food produced is clean, varied, and fresh. However, program selection (especially those with chemical components, i.e. nutrient and pH solutions) also play a role, as these directly influence the composition of the food products.
 
-The selection of proper crops and solutions, along with proper harvesting and processing techniques (i.e. only harvesting edible bodies, cooking for long enough) and harvesting timing (mitigated by notification), are the only concerns when it comes to product safety.
+The selection of proper crops and solutions, along with proper harvesting and processing techniques (i.e. only harvesting edible bodies, cooking for long enough) and harvesting/shelf-life timing (mitigated by notification), are the only concerns when it comes to product safety.
 
 ## Resource Inputs and Outputs
 
@@ -387,7 +384,7 @@ This is an effective tool in climate change famine aid. By predicting conditions
 
 De-centralized Production
 
-Many crops are endemic to certain climates, making global transport necessary to for foreign markets. This reduces freshness, necessitates preservatives, and increases the carbon footprint of agriculture. By upscaling PeaPod technology to a farm scale, climate-bound crops can be produced anywhere. This creates regional farms of global variety, making it easier to have a local food diet.
+Many crops are endemic to certain climates, making global transport necessary to for foreign markets. This reduces freshness, necessitates preservatives, and increases the carbon footprint of agriculture. By upscaling PeaPod technology to a farm scale, climate-bound crops can be produced anywhere.
 
 PeaPod's form factor makes it a viable tool for at-home production, either in cities or off-grid. With only a solar power source, water, and a compact supply of nutrient solutions, users can sustain crops even through winter without travelling for nutrients and supplies.
 

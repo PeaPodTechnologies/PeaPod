@@ -680,6 +680,9 @@ This creates permanent, self-sustaining agricultural infrastructure that pays fo
 
 \appendix
 
+\begin{spacing}{0.5}
+\small
+
 \section{Preliminary Calculations}
 
 \subsection{Power Usage Estimate}
@@ -695,7 +698,7 @@ Estimate:
 \begin{itemize}
     \item Automation Computer (Raspberry Pi) - \textbf{5W Average}
     \item Diaphragm Pump - \textbf{24W} 
-    \item Lighting - 5 LED series x 3 LEDs per series x 9 LED boards per unit x 12 units x 3W per LED x 20\% power (typ.) = \textbf{972W}
+    \item Lighting - 5 series x 3 LEDs/series x 9 boards/unit x 12 units x 3W/LED x 20\% power (typ.) = \textbf{972W}
     \item All Thermoregulation Peltier Tiles - 4 tiles per unit x 2 units (1 water + 1 air) x 8.5A x 15V x 25\% power (typ.) = \textbf{255W}
     \item Runoff Recycling Peristaltic Pump - \textbf{3W}
     \item All Sensors - \textbf{10W}
@@ -707,11 +710,9 @@ Estimate:
 \subsection{Water Usage Estimate}
 \label{app:water}
 
-Water is consumed by two systems:
+\textit{Humidification}: By using a mesh nebulizer to produce smaller and more consistent vapour, greater overall water consumption efficiency was achieved.
 
-\textit{Humidification}: By using a mesh nebulizer to produce smaller and more consistent vapour, greater overall water consumption efficiency was achieved. Net Consumption = \textbf{500mL initial to fill tank + 50mL per hour consumed}
-
-\textit{Aeroponics}: Aeroponics by design uses far less water than traditional farming. In addition, higher quality nozzles with adjustable directionality allow for more of the water to be sprayed directly at the root zone and with better and more consistent droplet sizes for better uptake. Finally, by enclosing the root zone in a watertight container, no water escapes, and runoff water collected at the bottom of the container can be recycled. Net Consumption = \textbf{1.25L primed pump, tank, and lines + 1.2L per hour spray} (5mL/sec/nozzle @80PSI x 2 nozzles per unit x 12 units x 10 seconds misting per hour)
+\textit{Aeroponics}: Aeroponics by design uses far less water than traditional farming. In addition, higher quality nozzles with adjustable directionality allow for more of the water to be sprayed directly at the root zone and with better and more consistent droplet sizes for better uptake. Finally, by enclosing the root zone in a watertight container, no water escapes, and runoff water collected at the bottom of the container can be recycled. 5mL/sec/nozzle @80PSI x 2 nozzles per unit x 12 units x 10 seconds misting per hour
 
 In calculation, it is assumed that all aeroponic water is consumed, as all runoff water is recycled.
 
@@ -729,11 +730,11 @@ Control Module: \textbf{10kg}
 \subsection{Crew Time Estimate}
 \label{app:crewtime}
 
-Setup: Before plants are grown, crews must make sure solution containers are full. Since PeaPod mixes nutrients via an automated, inline process, they do not need to perform any measuring or mixing, only filling containers to capacity. 
+Setup: Before plants are grown, crews must make sure solution containers are full, and UV sterilize the housing.
 
-Harvesting: These take little time, as crew members simply need to remove the trays from the unit to access the grow trays. This largely depends on the plant type, ranging from 5 minutes (picking fruit) to 15 minutes (harvesting root vegetables or removing entire plants).
+Harvesting: Crew members simply need to remove the trays from the unit to access the grow trays. This largely depends on the plant type, ranging from 5 minutes (picking fruit) to 15 minutes (harvesting root vegetables).
 
-Output processing and storage: Processing will depend on the produce grown and desired end product, varying from boiling to frying to baking etc.. These operations have a sum active time of at most 30 minutes per meal, although this can be minimized to as low as 5 minutes when eating fresh produce.
+Output processing and storage: Processing will depend on the produce grown and desired end product, varying from boiling to frying to baking etc. average 30 minutes per meal.
 
 \subsection{Optimization Method}
 \label{app:optimization}
@@ -766,6 +767,8 @@ The optimal form of $Q_{model}$ is an ongoing topic of investigation.
 By fitting $Q$ as $Q_{model}$, we can predict $\vec P$ at any point in time for any program $\vec E$. For example:
 
 $$\vec P(t_f)=\int_0^{t_f}Q_{model}(\vec P(t),\vec E(t))~dt~~~~\text{or a numerical method}$$
+
+\end{spacing}
 
 \newpage
 
