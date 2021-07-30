@@ -87,7 +87,7 @@ Throughout a growth cycle, all environment parameters and growth metrics are col
 
 Combining these into an accessible open-source design, PeaPod provides unrivalled versatility and reliability to food production systems both terrestrially and on long-duration space missions.
 
-\uline{\textbf{1498 Characters} (-2 over)}
+\uline{\textbf{1498 Characters} (2 under)}
 
 \newpage
 
@@ -128,29 +128,17 @@ Food products are optimized over time via plant metric analysis and machine lear
 
 \textbf{Prompt}: \textit{Please describe the basic operations concept of the food production technology. In your response, describe assumptions required of operation. You can also include, for example, details about whether a sterile/aseptic environment is needed, if special steps are required between production cycles, or if fluids or materials must be removed or added to prime/inoculate a system.}
 
-PeaPod's primary function of plant growth is accomplished by achieving total environmental control. 
+Once PeaPod has been assembled, the first step is manual sterilization to prevent microbial growth at high growth environment humidities. Any plant- and food-safe means may be employed (i.e. UV).
 
-Once PeaPod has been assembled, the first step is sterilization. Since growth environments may experience high humidities, manual sterilization of the internal environment is necessary to prevent microbial growth. Any plant- and food-safe means may be employed (i.e. UV).
+Next is the hookup of power, network, and reverse osmosis water inputs, as well as the filling of nutrient and pH adjustment solution containers.
 
-After sterilization, input hookup/filling, and initialization, PeaPod's operation begins at planting. Seeds (or offshoots/clones) are removed from vacuum-sealed storage bags and placed in neoprene foam "pucks" known as clone collars, which are moistened for germination and placed in the grow cups. The front panel is then closed, sealing the internal environment.
+PeaPod's operation begins at planting. Seeds are removed from vacuum-sealed storage bags and placed in neoprene foam "pucks", which are moistened for germination and placed in grow cups. The front panel is then closed, sealing the internal environment.
 
-The state of the growth environment is encoded via a standardized set of "environment parameters". The specific values of each parameter for each iteration are stored in a "program". The program is set prior to the start of plant growth, and consists of a set of \textbf{actions} (e.g. set red LEDs to 63\% power) and \textbf{control targets} (e.g. hold air temperature at 22°C) as time-series instructions from the start of planting to the point of harvest (or plant death, in the case of multiple-harvest plants) corresponding to the control systems.
+The desired state of the growth environment is encoded via a standardized set of "environment parameters". The specific values of each parameter for each iteration are stored in a "program". The program is set prior to the start of plant growth, and consists of a set of \textbf{actions} (e.g. set red LEDs to 63\% power) and \textbf{control targets} (e.g. hold air temperature at 22°C) as time-series instructions from the start of planting to the point of harvest (or plant death, in the case of multiple-harvest plants) corresponding to the control systems.
 
-The environment can be adjusted live by crew or remotely at any point; this is recorded as new instruction entries in the program. In addition, cameras in the environment allow crew to monitor plant growth live.
+When activated, PeaPod's control systems begin to enact the program. PeaPod will notify crew of any required action, including refilling inputs, cleaning components, and harvesting, as well as "End-of-Program", when all inedible plant matter is disposed of. The process can then be repeated (starting at sterilization).
 
-When activated, PeaPod's control systems begin to enact the program. PeaPod will periodically notify crew of required action, including refilling inputs, cleaning components, and harvesting, as well as notifying upon "End-of-Program", when all inedible plant matter is disposed of. The process can then be repeated (starting at sterilization).
-
-PeaPod leverages existing life support systems for providing inputs and handling outputs.
-
-\textit{Infrastructural Inputs}: Reverse osmosis water (onboard RODI system), nutrient solutions (stored), pH solutions (stored), power (onboard power), network connection (onboard network), plant seeds (stored), input air
-
-\textit{Process Inputs}: Plant species identifiers, environment program, nutrient and pH-adjustment solution identifiers (compounds and molarities, i.e. solution A is 0.6M NaNO${}_3$)
-
-\textit{Products}: Edible plant matter, recorded environment data, plant metric data, live video feed, time-lapse capture
-
-\textit{Byproducts}: Inedible plant matter (waste), heat from thermoregulation cooling (managed by onboard heating/cooling), exhaust air (filtered and dehumidified by onboard life support)
-
-\uline{\textbf{2664 Characters} (1164 over)}
+\uline{\textbf{1479 Characters} (21 under)}
 
 \subsection{Innovation}
 \label{sec:innovation}
@@ -518,17 +506,11 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 
 % 3000chars
 
-\begin{itemize}
-    \item \textit{Reverse Osmosis Water}: constant supply, positive pressure (i.e. supply line)
-    \item \textit{120VAC Power}: Standard
-    \item \textit{Plant Seeds}: Housed in vacuum-sealed seed bank, selected for variety and acceptability
-    \item \textit{Nutrient Solutions} - one cartridge each, with refill tanks
-    \item \textit{pH Adjustment Solutions} - one cartridge up, one cartridge down, with refill tanks
-    \item \textit{Network connection} - For remote control, live video/data transmission
-    \item \textit{Environment Parameter Program} - Set of time-series instructions defining the growth environment across the full growth cycle (one per plant species)
-\end{itemize}
+\textit{Infrastructural Inputs}: Reverse osmosis water (constant supply at positive pressure from onboard RODI system), nutrient solutions (stored, one container each plus refill tanks), pH solutions (one container pH up, one container pH down, plus refill tanks, stored), power (onboard power, standard 120V AC 60Hz), network connection (onboard network, for remote control, live video/data transmission), plant seeds (stored in vacuum-sealed seed bank, selected for variety and acceptability), input air (HEPA filtered)
 
-\uline{\textbf{709 Characters} (2291 under)}
+\textit{Process Inputs}: Plant species identifiers, environment program (for entire growth cycle, one per plant species), nutrient and pH-adjustment solution identifiers (compounds and molarities, i.e. solution A is 0.6M NaNO${}_3$)
+
+\uline{\textbf{755 Characters} (2245 under)}
 
 % Describe resources, and their quantities
 
@@ -541,9 +523,9 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 
 \textit{Products}: Edible plant matter, recorded environment data, plant metric data, live video feed, time-lapse capture
 
-\textit{Byproducts}: Inedible plant matter (stems/roots/leaves/etc.), sensible heat (thermoregulation pump), exhaust air, water vapour (as a result of higher air humidity, minimized by housing seal), latent heat (as a result of higher leaf zone temperature, minimized by insulation)
+\textit{Byproducts}: Inedible plant matter (stems/roots/leaves/etc., waste), sensible heat (from thermoregulation pumping, managed by onboard heating/cooling), exhaust air (via HEPA filter, sterilized and dehumidified by onboard life support), minimal water vapour (as a result of higher air humidity, minimized by housing seal), latent heat (as a result of higher leaf zone temperature, minimized by insulation)
 
-\uline{\textbf{405 Characters} (2595 under)}
+\uline{\textbf{535 Characters} (2465 under)}
 
 \textbf{Optimization}
 \label{sec:resource-optimization}
