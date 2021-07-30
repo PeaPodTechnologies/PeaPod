@@ -76,7 +76,7 @@
 
 PeaPod is a modular, automated plant growth environment and distributed research tool. It can generate any environment for any crop, while collecting plant growth data for optimization.
 
-The growth environment is adaptable to many plants and mission requirements. It consists of "unit cell" cubes that can be joined upwards and sideways to increase space. It is insulated with internally-reflective panels for efficiency.
+The growth environment is adaptable to many plants and mission requirements. It consists of "unit cell" cubes that can be joined upwards and sideways to increase space. It is insulated with internally-reflective panels for efficiency \cite{insulation}.
 
 PeaPod uses automated control systems to generate desired environments. These are air thermoregulation, humidity control, LED lighting, and an aeroponics system. They are automated by an onboard computer and housed in a "control module" at the top of the unit. This lets power be "multiplied" for extended PeaPods by adding more control modules in a controller-follower topology.
 
@@ -107,21 +107,21 @@ NOTE: For this submission, only the 4x3 unit \textbf{Standard Extended PeaPod} i
 
 PeaPod's control systems are made of environmental controls (feedback loops with sensors) and plant inputs (set-states):
 \begin{itemize}
-    \item\textit{Lighting}: LEDs that span near-ultraviolet to near-infrared with dimmable drivers for precision spectrum and intensity control. LEDs chosen for efficiency, precise emission spectrum, and low heat.
-    \item \textit{Aeroponics}: Reverse osmosis (RO) water is pressurized by a pump, brought to temperature by a thermoelectric water block, fed nutrient and pH solutions by Venturis with servo-actuated flow control, and forced through a solenoid to nozzles mounted beneath the plant support trays. Temperature and pressure sensors providing Proportionate-Integral-Derivative (PID) feedback maintain safety cutoffs. Runoff is reused in the injection process. Aeroponics is chosen for water efficiency (98\% less than farming), nutrient efficiency (60\% less), no pH/nutrient leakback (common in reservoir-based hydroponics), increased root oxygenation, and greater supported crop variety. % https://www.nasa.gov/vision/earth/technologies/aeroponic_plants.html
-    \item \textit{Air Thermoregulation}: Leaf zone air temperature is regulated by a thermoelectric heat pump. Fans blow air over heat sinks to distribute heat to homogenously heat or cool the environment, while a second set of fans completes the pump. A PID control system is informed by temperature sensors throughout the growth environment, and controls the direction and magnitude of the heat transfer. This is chosen for low complexity (no liquids, pressurization) and ease of automation (bidirectional heat pump, precisely dimmable, PID tuning).
-    \item \textit{Humidity Regulation}: Leaf zone humidity is regulated by a dead-zone bang-bang control system informed by humidity sensors throughout the growth environment.
+    \item\textit{Lighting}: LEDs, from near-ultraviolet to near-infrared. Dimmable drivers for precision spectrum and intensity control. Efficient, precise emission spectrum, low heat.
+    \item \textit{Aeroponics}: Reverse osmosis (RO) water is pressurized by a pump (with sensor for safety cutoff), brought to temperature, nutrient-dosed and pH-balanced by Venturi siphons with servo-actuated flow control, and forced through nozzles to generate mist. Runoff water is recycled. Water-efficient (98\% less than farming), nutrient-efficient (60\% less), no pH/nutrient "feedback" (common in reservoir-based hydroponics), increased root oxygenation \cite{aeroponics}.
+    \item \textit{Air Thermoregulation}: Leaf zone air temperature is regulated by a thermoelectric heat pump. Fans blow air over heat sinks connected to either face of a Peltier tile to circulate air and dissipate heat. A Proportionate-Integral-Derivative (PID) control system is informed by temperature sensors, and controls the direction and magnitude of the heat transfer. Low complexity, high safety/reliability, easy to automate (bidirectional, precisely dimmable, PID tuning).
+    \item \textit{Humidity Regulation}: Leaf zone humidity is regulated by a dead-zone bang-bang control system informed by humidity sensors.
     \begin{itemize}
-        \item \textit{Humidification}: RO water is supplied to a container with a fine mesh piezoelectric disc. A control signal activates a driver circuit which oscillates the disk, producing water vapour. This is chosen for ease of automation and consistency of vapour production.
-        \item \textit{Dehumidification}: A cartridge of dry silica gel beads is covered by servo-actuated "shutters" that prevent unintended air movement through the cartridge. Fans draw humid air through a HEPA filter into the cartridge when needed, expelling dry air back into the growth environment. The beads change color to indicate water saturation, which is sensed by the automation controller. The crew is then notified to swap the saturated cartridge for a dry one, and to "recharge" the saturated cartridge via evaporation in a standard oven.
+        \item \textit{Humidification}: RO water is supplied to a tank with a fine mesh piezoelectric disc. A controllable driver circuit oscillates the disk, producing water vapour. Easy to automate.
+        \item \textit{Dehumidification}: A dry silica gel bead cartridge is covered by servo-actuated "shutters" to control dehumidification. Fans draw humid air through a HEPA filter into the desiccant and back into the growth environment. The beads change color to indicate water saturation. The crew is then notified to swap and "recharge" in a standard oven.
     \end{itemize}
-    \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include an aluminum water block (as opposed to an internal heat sink and fan) and a single temperature sensor \textbf{after} the block for feedback in a unidirectionally-flowing system.
-    \item \textit{Gas Composition}: Photosythesis' effect on oxygen and carbon dioxide concentrations are managed by external gas exchange. An input port and output port each have HEPA filters for microbes and aerosols, as well as servo-actuated "shutters" for unintended exchange. Fans draw air in via the input port, bringing CO${}_2$ up and O${}_2$ down. Gas concentration sensors collect data on the concentrations of relevant gasses, informing a bang-bang control system for the shutters and fans.
+    \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include an aluminum water block (vs internal heat sink and fan) and a single temperature sensor after the block for PID feedback in a flowing system.
+    \item \textit{Gas Composition}: Oxygen and carbon dioxide levels are managed by gas exchange. Input and output ports allow fans to draw air into and out of the system. HEPA filters remove microbes and aerosols, and servo-actuated "shutters" prevent unintended exchange. Gas concentration sensors inform a bang-bang control system for port activation.
 \end{itemize}
 
-Food products are optimized via plant metric analysis and machine learning. Two cameras (birds-eye and horizontal) provide data from which metrics of both plant health and yield quality are extracted. These, along with data collected on the environment, train a machine learning model to be a "digital representation" of the plant, treating environment and metrics as in/outputs to a "surrogate model". As more iterations of the plant species are grown, the dataset becomes generalized across environmental inputs/programs, and new ones can be selected via "gradient ascent" to target optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).
+% Food products are optimized via plant metric analysis and machine learning. Two cameras (birds-eye and horizontal) provide data from which metrics of both plant health and yield quality are extracted. These, along with data collected on the environment, train a machine learning model to be a "digital representation" of the plant, treating environment and metrics as in/outputs to a "surrogate model". As more iterations of the plant species are grown, the dataset becomes generalized across environmental inputs/programs, and new ones can be selected via "gradient ascent" to target optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).
 
-\uline{\textbf{4270 Characters} (1270 over)}
+\uline{\textbf{2881 Characters} (119 under)}
 
 \subsubsection{Part B}
 \label{sec:description-b}
@@ -207,61 +207,35 @@ With width treated as depth for the purposes of the considerations of the "room 
 
 \textbf{Constraint}: \textit{Avg < 1500 W, Peak < 3000 W}
 
-The following estimate assumes "typical maximum" operating conditions, as this system is capable of producing far greater control than is necessary for the DSFC:
-\begin{itemize}
-    \item Thermoregulation at 25\% power for holding temperature;
-    \item LEDs set to 20\% power (comparable to sunlight);
-\end{itemize}
-
-\begin{itemize}
-    \item Automation Computer (Raspberry Pi) - \textbf{5W Average}
-    \item Diaphragm Pump - \textbf{24W} 
-    \item Lighting - 5 LED series x 3 LEDs per series x 9 LED boards per unit x 12 units x 3W per LED x 20\% power (typ.) = \textbf{972W}
-    \item All Thermoregulation Peltier Tiles - 4 tiles per unit x 2 units (1 water + 1 air) x 8.5A x 15V x 25\% power (typ.) = \textbf{255W}
-    \item Runoff Recycling Peristaltic Pump - \textbf{3W}
-    \item All Sensors - \textbf{10W}
-    \item All Fans - 10 fans (2+2 air thermo, 2 water thermo, 1+1 gas exchange, 2 humidification/dehumidification) x 2W per fan = \textbf{20W}
-    \item Humidification Driver - \textbf{10W}
-    \item Primary Aeroponic Solenoid - \textbf{5W}
-\end{itemize}
+For calculations and justification, see supplementary material Appendix.
 
 \textbf{Total Power Consumption}: 1,284W
 
-\uline{\textbf{1112 Characters} (812 over)}
-
-% 300chars
+\uline{\textbf{98 Characters} (202 under)}
 
 \subsubsection{Water Consumption}
 \label{sec:constraints-water}
 
 \textbf{Unconstrained}
 
-% 300chars
+For calculations and justification, see supplementary material Appendix.
 
-Water is consumed by two systems:
+\textit{Humidification}: CNet = \textbf{500mL initial + 50mL per hour}
 
-\textit{Humidification}: By using a mesh nebulizer to produce smaller and more consistent vapour, greater overall water consumption efficiency was achieved. Net Consumption = \textbf{500mL initial + 50mL per hour}
+\textit{Aeroponics}: CNet = \textbf{1.25L primed + 1.2L per hour}.
 
-\textit{Aeroponics}: Aeroponics by design uses far less water than traditional farming (up to 98\%). In addition, higher quality nozzles with adjustable directionality allow for more of the water to be sprayed directly at the root zone and with better and more consistent droplet sizes for better uptake. Finally, by enclosing the root zone in a watertight container, no water escapes, and runoff water collected at the bottom of the container can be recycled. Net Consumption = \textbf{1.25L primed + 1.2L per hour} (5mL/sec/nozzle @80PSI x 2 nozzles per unit x 12 units x 10 seconds misting per hour)
-
-In calculation, it is assumed that all aeroponic water is consumed, as all runoff water is recycled.
-
-\uline{\textbf{954 Characters} (654 over)}
+\uline{\textbf{171 Characters} (129 under)}
 
 \subsubsection{Mass} 
 \label{sec:constraints-mass}
 
 \textbf{Unconstrained}
 
-By using smaller parts, power consumption and complexity was reduced along with volume and mass. PeaPod's mass was also optimized through minimizing density across components. Aluminum was chosen for the framing due to it's high strength to density ratio. For insulation, a less dense foam coated in mylar was used to maintain PeaPod's insulating capabilities while reducing mass.
-
-Frame and Trays: \textbf{54kg} (4.5kg per unit)
-Insulation: \textbf{5kg}
-Control Module: \textbf{10kg}
+For calculations and justification, see supplementary material Appendix.
 
 Total: \textbf{70kg}
 
-\uline{\textbf{506 Characters} (206 over)}
+\uline{\textbf{83 Characters} (217 under)}
 
 % 300chars
 
@@ -270,47 +244,35 @@ Total: \textbf{70kg}
 
 \textbf{Unconstrained}
 
-\textit{Automation}: All of PeaPod's operation is automated, save for a select few setup, maintenance, and harvest tasks. This is controlled by a central computer, which uses a "program" to enact the desired environment at each point in time throughout the plant life cycle. 
+% \textit{Automation}: All of PeaPod's operation is automated, save for a select few setup, maintenance, and harvest tasks. This is controlled by a central computer, which uses a "program" to enact the desired environment at each point in time throughout the plant life cycle. 
+\textit{Remote Control}: The program may be changed \uline{instantaneously} as an \textbf{appended instruction set} with immediate effect.
+% \textit{Feedback}: The feedback sensors provide the computer with information that will influence the control it exerts. For example, if the program indicates the leaf zone temperature should be set to 22 degrees C, the computer would apply greater power to the heater if the current temperature was 18 degrees C as opposed to 21 degrees C. This forms a control loop for each parameter, relying on one of many control functions (bang-bang, PID, etc.).
 
-\textit{Remote Control}: The program may be changed at any time \uline{instantaneously}, \uline{remotely or on-board}. These changes are reflected as an \textbf{appended instruction set} to the program, and take effect immediately. 
+\textit{Data Presentation}: Plant and environment data can be viewed with \uline{live updates and video feed}.
 
-\textit{Feedback}: The feedback sensors provide the computer with information that will influence the control it exerts. For example, if the program indicates the leaf zone temperature should be set to 22 degrees C, the computer would apply greater power to the heater if the current temperature was 18 degrees C as opposed to 21 degrees C. This forms a control loop for each parameter, relying on one of many control functions (bang-bang, PID, etc.).
-
-\textit{Data Presentation}: This data collection, accompanied by a number of "known" quanities (i.e. aeroponics flow rate, per-LED spectral data) allows for a full quantitative description of each plant's growth environment to be displayed \uline{on-board and remotely}, \uline{instantaneously}, with \uline{live updates} (i.e. real-time data, live video feed).
-
-\uline{\textbf{1325 Characters} (1025 over)}
-
-% 300chars
+\uline{\textbf{206 Characters} (94 under)}
 
 \subsubsection{Crew Time Requirement - Setup \& Maintenance}
 \label{sec:constraints-crewtime} 
 
 \textbf{Constraint}: \textit{4 hrs/week}
 
-Setup: Before plants are grown, crews must make sure solution containers are full. Since PeaPod mixes nutrients via an automated, inline process, they do not need to perform any measuring or mixing, only filling containers to capacity. 
-
-Harvesting: These take little time, as crew members simply need to remove the trays from the unit to access the grow trays. This largely depends on the plant type, ranging from 5 minutes (picking fruit) to 15 minutes (harvesting root vegetables or removing entire plants).
-
-Output processing and storage: Processing will depend on the produce grown and desired end product, varying from boiling to frying to baking etc.. These operations have a sum active time of at most 30 minutes per meal, although this can be minimized to as low as 5 minutes when eating fresh produce.
+For calculations and justification, see supplementary material Appendix.
 
 Total setup process time (2 trays per unit, 12 units, 1 CM): \textbf{17.5 hours} (\textit{one person}) or \textbf{4.5 hours} (\textit{crew of 4})
 
 Total maintenance time per week: \textbf{1-2 hours} (depending on program)
 
-\uline{\textbf{1034 Characters} (734 over)}
-
-% 300chars
+\uline{\textbf{246 Characters} (54 under)}
 
 \subsubsection{Palatability of Crop Output} 
 \label{sec:constraints-palatability}
 
 \textbf{Constraint}: \textit{>= 6.0 Hedonic}
 
-% 300chars
+Hydroponic crops have seen commercial success \cite{commercialhydro}, suggesting that their output is of sufficient hedonic quality to be desired.
 
-Hydroponic crops have seen commercial success, suggesting that their output is of sufficient hedonic quality to be desired. Additionally, PeaPod is designed to optimize for edible plant mass, nutrient density, and other health indicators, pushing Hedonic ratings up over time.
-
-\textit{Case Study in Fresh Produce}: Acceptability of Fresh Cantaloupe Melon %https://doi.org/10.1590/S0100-29452001000300020
+\textit{Case Study in Fresh Produce}: Acceptability of Fresh Cantaloupe Melon \cite{melon}
 
 \begin{itemize}
     \item Appearance: 7.93/9.00
@@ -320,24 +282,19 @@ Hydroponic crops have seen commercial success, suggesting that their output is o
     \item \textbf{Overall}: 7.17/9.00 (>6.00)
 \end{itemize}
 
-\uline{\textbf{597 Characters} (297 over)}
+\uline{\textbf{292 Characters} (8 under)}
 
 \subsubsection{Operational Constraints} 
 \label{sec:constraints-operational}
 
 \textbf{Constraint}: \textit{Terrestrial: gravity (9.81 m/s${}^2$), ambient atmospheric pressure (101,325 Pa), ambient atmospheric temperature (22 °C), ambient atmospheric humidity (50 \%RH)}
 
-% 300chars
+Design operates in terrestrial conditions.
 
-Gravity informed the design of the aeroponic system, where plants are placed in a hanging cup seated in a tray. Ambient pressure is critical for component selection regarding the tank, bladder, and nozzle, all of which are designed to produce the outputs desired at standard air pressure. Ambient temperature and humidity are of less concern, given the sealed nature of the housing and the use of insulating panels and mylar.
+Ambient pressure: tank, bladder, and nozzle are designed to produce indicated outputs at standard air pressure
+Ambient temperature and humidity: less concern, housing is sealed and insulated
 
-% \subsubsection{Processing Time for Outputs} 
-% \label{sec:constraints-processing}
-
-% % 300chars
-% By creating a solution to "grow plants," PeaPod has been designed from the ground up to produce food that requires no additional processing time. Harvesting is an instantaneous process, and raw produce is immediately consumable, as the user can decide precisely what they wish to grow.
-
-\uline{\textbf{425 Characters} (125 over)}
+\uline{\textbf{231 Characters} (69 under)}
 
 \subsection{Performance Criteria}
 
@@ -457,12 +414,12 @@ There are several considerations when examining the acceptability of the product
 Being a sustainable isolated unit, PeaPod requires little cleaning, limited to UV sterilization each time it is opened.
 
 PeaPod uses safe materials in its chassis, insulation and circuitry. 
-The main frame is constructed using aluminum. Although large quantities of aluminum in food are deemed dangerous, the lack of direct contact exposure of aluminum to the plants passes well below the toxicity limit. %https://www.healthline.com/nutrition/aluminum-foil-cooking\#TOC_TITLE_HDR_4)
-The bracketing and mounts of PeaPod are constructed using PETG plastic which has been deemed “food-safe plastic”. %(https://www.acmeplastics.com/what-is-petg)
+The main frame is constructed using aluminum. Although large quantities of aluminum in food are deemed dangerous, the lack of direct contact exposure of aluminum to the plants passes well below the toxicity limit \cite{aluminum}.
+The bracketing and mounts of PeaPod are constructed using PETG plastic which has been deemed “food-safe plastic” \cite{petg}.
 
 The foam insulation used in PeaPod is commonly used for housing and other common safe applications. 
 
-To avoid toxins in circuitry, lead-free soldering was used for all electronics. The dehumidification system uses silica gel, which is commonly found in food packets and is deemed “biodegradable and non-toxic”. %(https://www.millenniumwasteinc.com/news/article/silica-gel-repurposing-silica-gel-packets/)
+To avoid toxins in circuitry, lead-free soldering was used for all electronics. The dehumidification system uses silica gel, which is commonly found in food packets and is deemed “biodegradable and non-toxic” \cite{silica}.
 
 All voltages are sub 48V DC, avoiding any high-voltage risks. The voltage risk is also mitigated by short-circuit/overcurrent protection. 
 All pressures experienced by the aeroponics system stay below 100 PSI, avoiding dangers with high pressures. The dangers with pressures are also mitigated through the use of PTFE tape, fail-safe solenoids (which primarily stay closed) and a pressure sensor shutoff. 
@@ -585,19 +542,15 @@ $$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t),t)$$
 
 % 3000chars
 
-Given the system can induce a wide and continuous range of environments, it can produce environments suitable for any aeroponically-growable crop. Within the 2 square meters allotted to the solution, 12 PeaPods can be placed in a Standard configuration, resulting in a hypothetical maximum of 4 different environments (4 vertical columns with 4 control modules). The sum of the plants grown can be any combination of any number of suitable plant species (grouped into the same environment if suitable, i.e. different microgreens together), and as such, can be selected to meet all macro and micro nutrient requirements (with fortification or supplementation of those nutrients not found in plants). 
-% (https://www.healthline.com/nutrition/7-nutrients-you-cant-get-from-plants)
+Given the system can induce a wide and continuous range of environments, it can produce environments suitable for any aeroponically-growable crop. Within the 2 square meters allotted to the solution, 12 PeaPods can be placed in a Standard configuration, resulting in a hypothetical maximum of 4 different environments (4 vertical columns with 4 control modules). The sum of the plants grown can be any combination of any number of suitable plant species (grouped into the same environment if suitable, i.e. different microgreens together), and as such, can be selected to meet all macro and micro nutrient requirements (with fortification or supplementation of those nutrients not found in plants \cite{plantbased}). 
 
-For example, quinoa - a crop already highly dense in nutrients (protein values up to 12-18\% of mass, unique amino acid composition high in lysine) - has shown excellent potential for hydroponic/aeroponic growth in controlled environments with increases in nutrient density and yield (up to 37\% harvest index, aka edible yield as a percentage of total mass). "Initial results indicate that quinoa could be an excellent crop for [controlled-environment agriculture] because of high contentration of protein ... and potential for greatly increased yields in controlled environments." \textit{NOTE}: Despite promising results, the experiment cited was performed with "no attempt to maximize productivity". When combined with the optimization routine, yields could be maximized even further. %(https://ntrs.nasa.gov/citations/19940015664)
+For example, quinoa - a crop already highly dense in nutrients (protein values up to 12-18\% of mass, unique amino acid composition high in lysine) - has shown excellent potential for hydroponic/aeroponic growth in controlled environments with increases in nutrient density and yield (up to 37\% harvest index, aka edible yield as a percentage of total mass). "Initial results indicate that quinoa could be an excellent crop for [controlled-environment agriculture] because of high contentration of protein ... and potential for greatly increased yields in controlled environments." \textit{NOTE}: Despite promising results, the experiment cited was performed with "no attempt to maximize productivity". When combined with the optimization routine, yields could be maximized even further \cite{quinoa}.
 
 Other crops suitable to aeroponics are listed here alongside their benefits and some examples of nutrient analysis:
 \begin{itemize}
-    \item \textit{Microgreens} (sunflower sprouts, beansprouts, etc.) - Fast growth, edibility raw (minimal processing), more concentrated nutrients (9-40x higher than mature greens). High in a variety of vitamins and minerals. 
-    % (https://www.healthline.com/nutrition/microgreens, https://www.webmd.com/diet/news/20120831/tiny-microgreens-packed-nutrients)
-    \item \textit{Legumes} (soybeans, chickpeas, etc.) - High caloric density. \textit{For 100g boiled soybeans}: 173 Calories. High in protein (16.6g), carbohydrates (9.9g) which are mostly fiber (6.0g), polyunsaturated fats (5.1g) and Omega-6 fatty acids (4.5g). 
-    % (https://www.healthline.com/nutrition/foods/soybeans)
-    \item \textit{Leafy Greens} (lettuce, spinach, cabbage, kale, etc.) - Fast growth (more bulk output, more filling), edibility raw (minimal processing), versatility. \textit{For 100g raw spinach}: 23 Calories. Contains protein (2.9g) and carbs (3.6g) which are mostly fiber (2.2g), as well as a variety of vitamins (A, C, K1, Bfolic acid) and minerals (iron, calcium). 
-    % (https://www.healthline.com/nutrition/foods/spinach)
+    \item \textit{Microgreens} (sunflower sprouts, beansprouts, etc.) - Fast growth, edibility raw (minimal processing), more concentrated nutrients (9-40x higher than mature greens \cite{microgreens2}). High in a variety of vitamins and minerals \cite{microgreens1}.
+    \item \textit{Legumes} (soybeans, chickpeas, etc.) - High caloric density. \textit{For 100g boiled soybeans}: 173 Calories. High in protein (16.6g), carbohydrates (9.9g) which are mostly fiber (6.0g), polyunsaturated fats (5.1g) and Omega-6 fatty acids (4.5g) \cite{soybeans}.
+    \item \textit{Leafy Greens} (lettuce, spinach, cabbage, kale, etc.) - Fast growth (more bulk output, more filling), edibility raw (minimal processing), versatility. \textit{For 100g raw spinach}: 23 Calories. Contains protein (2.9g) and carbs (3.6g) which are mostly fiber (2.2g), as well as a variety of vitamins (A, C, K1, Bfolic acid) and minerals (iron, calcium) \cite{spinach}. 
     \item \textit{Herbs} (basil, mint, etc.) - Fast growth, utility in cuisine.
     \item \textit{Berries} (strawberries, etc.) - Edibility raw (minimal processing), high palatability (sweet and delicious)
     \item \textit{Garden Produce} (tomatoes, cucumbers, peppers, etc.) - Edibility raw (minimal processing)
@@ -609,7 +562,7 @@ Other crops suitable to aeroponics are listed here alongside their benefits and 
 
 \textbf{Additional Comments}:
 
-Let it be noted that the primary goal of this design is not to satisfy the nutrient constraints. It is of the opinion of the submission team after extensive study that there is no way to produce 10,000 Calories in a 2 cubic meter environment via crop growth. The closest we got was a method for the production of microtuber potatoes as described in (https://doi.org/10.1007/BF02869609), which produces an estimated 2,000 Calories per day in a 2 cubic meter space.
+Let it be noted that the primary goal of this design is not to satisfy the nutrient constraints. It is of the opinion of the submission team after extensive study that there is no way to produce 10,000 Calories in a 2 cubic meter environment via crop growth. The closest we got was a method for the production of microtuber potatoes as described in \cite{minituber}, which produces an estimated 2,000 Calories per day in a 2 cubic meter space.
 
 Instead, this system caters to the more "human" aspects of food - palatability and enjoyability, versatility of products for different cuisine, diversity of outputs, and the positive effects of growing plants on human emotional health, to name a few.
 
@@ -702,7 +655,7 @@ This also incentivizes the network to find critical points in the n-dimensional 
 
 \textbf{Food Infrastructure Micro-Loans}
 
-For many people in developing countries, access to fresh produce is a struggle whilst growing your own is prohibitively expensive. In recent times, micro-loan platforms have attempted to solve this issue by providing a network for donors to fund an interest-free loan to these individuals, who invest in technology or infrastructure, which then pays back the loan over time as a percentage of its surplus. 
+For many people in developing countries, access to fresh produce is a struggle whilst growing your own is prohibitively expensive \cite{foodsecurity}. In recent times, micro-loan platforms have attempted to solve this issue by providing a network for donors to fund an interest-free loan to these individuals, who invest in technology or infrastructure, which then pays back the loan over time as a percentage of its surplus. 
 
 Unfortunately, with current technology, agricultural micro-loans are only feasible for individuals in rural areas with arable land and appropriate climates. PeaPod is revolutionary, in that its small, adaptable scale and minimal input and skill requirements make it easy for urban non-farmers to produce food in small spaces with minimal effort.
 
@@ -712,15 +665,64 @@ This creates a permanent, self-sustaining and growing automated agricultural inf
 
 \uline{\textbf{7761 Characters} (4761 over)}
 
-% Q2.6. Supporting Material 
-% Q2.6.1. Include any visual representations of the food production technology, which may include models, schematics, or drawings.
-% You are required to submit (a) visual representation(s) of your proposed technology. You should submit these visuals in a document in PDF format, of maximum five (5) Letter Size pages (8.5” x 11”).
-% Q.2.6.2. Optional: Include any preliminary data or calculations that support the design and operation of the food production technology.
-% You may submit a document in PDF format, of maximum two (2) Letter Size pages (8.5” x 11”), including preliminary data or calculations. 
+\newpage
 
-% \newpage
+\appendix
+
+\section{Supporting Material}
+
+\textbf{Power Usage Estimate}:
+
+The following estimate assumes "typical maximum" operating conditions, as this system is capable of producing far greater control than is necessary for the DSFC:
+\begin{itemize}
+    \item Thermoregulation at 25\% power for holding temperature;
+    \item LEDs set to 20\% power (comparable to sunlight);
+\end{itemize}
+
+Estimate:
+\begin{itemize}
+    \item Automation Computer (Raspberry Pi) - \textbf{5W Average}
+    \item Diaphragm Pump - \textbf{24W} 
+    \item Lighting - 5 LED series x 3 LEDs per series x 9 LED boards per unit x 12 units x 3W per LED x 20\% power (typ.) = \textbf{972W}
+    \item All Thermoregulation Peltier Tiles - 4 tiles per unit x 2 units (1 water + 1 air) x 8.5A x 15V x 25\% power (typ.) = \textbf{255W}
+    \item Runoff Recycling Peristaltic Pump - \textbf{3W}
+    \item All Sensors - \textbf{10W}
+    \item All Fans - 10 fans (2+2 air thermo, 2 water thermo, 1+1 gas exchange, 2 humidification/dehumidification) x 2W per fan = \textbf{20W}
+    \item Humidification Driver - \textbf{10W}
+    \item Primary Aeroponic Solenoid - \textbf{5W}
+\end{itemize}
+
+\textbf{Water Usage Estimate}:
+
+Water is consumed by two systems:
+
+\textit{Humidification}: By using a mesh nebulizer to produce smaller and more consistent vapour, greater overall water consumption efficiency was achieved. Net Consumption = \textbf{500mL initial to fill tank + 50mL per hour consumed}
+
+\textit{Aeroponics}: Aeroponics by design uses far less water than traditional farming. In addition, higher quality nozzles with adjustable directionality allow for more of the water to be sprayed directly at the root zone and with better and more consistent droplet sizes for better uptake. Finally, by enclosing the root zone in a watertight container, no water escapes, and runoff water collected at the bottom of the container can be recycled. Net Consumption = \textbf{1.25L primed pump, tank, and lines + 1.2L per hour spray} (5mL/sec/nozzle @80PSI x 2 nozzles per unit x 12 units x 10 seconds misting per hour)
+
+In calculation, it is assumed that all aeroponic water is consumed, as all runoff water is recycled.
+
+\textbf{Mass Estimate}:
+
+By using smaller parts, power consumption and complexity was reduced along with volume and mass. PeaPod's mass was also optimized through minimizing density across components. Aluminum was chosen for the framing due to it's high strength to density ratio. For insulation, a less dense foam coated in mylar was used to maintain PeaPod's insulating capabilities while reducing mass.
+
+The following are over-estimates:
+
+Frame and Trays: \textbf{54kg} (4.5kg per frame unit)
+Insulation: \textbf{5kg}
+Control Module: \textbf{10kg}
+
+\textbf{Crew Time Estimate}
+
+Setup: Before plants are grown, crews must make sure solution containers are full. Since PeaPod mixes nutrients via an automated, inline process, they do not need to perform any measuring or mixing, only filling containers to capacity. 
+
+Harvesting: These take little time, as crew members simply need to remove the trays from the unit to access the grow trays. This largely depends on the plant type, ranging from 5 minutes (picking fruit) to 15 minutes (harvesting root vegetables or removing entire plants).
+
+Output processing and storage: Processing will depend on the produce grown and desired end product, varying from boiling to frying to baking etc.. These operations have a sum active time of at most 30 minutes per meal, although this can be minimized to as low as 5 minutes when eating fresh produce.
+
+\newpage
 
 % References
-% \bibliographystyle{IEEEtran}
-% \bibliography{references}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 \end{document}
