@@ -89,6 +89,8 @@ Combining these into an accessible open-source design, PeaPod provides unrivalle
 
 \uline{\textbf{1498 Characters} (2 under)}
 
+\newpage
+
 \section{Design Report}
 
 \subsection{Description}
@@ -114,12 +116,15 @@ PeaPod's control systems are made of environmental controls (feedback loops with
         \item \textit{Dehumidification}: A dry silica gel bead cartridge is covered by servo-actuated "shutters" to control dehumidification. Fans draw humid air through a HEPA filter into the desiccant and back into the growth environment. The beads change color to indicate water saturation. The crew is then notified to swap and "recharge" in a standard oven.
     \end{itemize}
     \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include an aluminum water block (vs internal heat sink and fan) and a single temperature sensor after the block for PID feedback in a flowing system.
+    \newpage
     \item \textit{Gas Composition}: Oxygen and carbon dioxide levels are managed by gas exchange. Input and output ports allow fans to draw air into and out of the system. HEPA filters remove microbes and aerosols, and servo-actuated "shutters" prevent unintended exchange. Gas concentration sensors inform a bang-bang control system for port activation.
 \end{itemize}
 
 % Food products are optimized via plant metric analysis and machine learning. Two cameras (birds-eye and horizontal) provide data from which metrics of both plant health and yield quality are extracted. These, along with data collected on the environment, train a machine learning model to be a "digital representation" of the plant, treating environment and metrics as in/outputs to a "surrogate model". As more iterations of the plant species are grown, the dataset becomes generalized across environmental inputs/programs, and new ones can be selected via "gradient ascent" to target optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).
 
 \uline{\textbf{2881 Characters} (119 under)}
+
+\vspace{0.5cm}
 
 \subsubsection{Part B}
 \label{sec:description-b}
@@ -137,6 +142,8 @@ The desired state of the growth environment is encoded via a standardized set of
 When activated, PeaPod's control systems begin to enact the program. PeaPod will notify crew of any required action, including refilling inputs, cleaning components, and harvesting, as well as "End-of-Program", when all inedible plant matter is disposed of. The process can then be repeated (starting at sterilization).
 
 \uline{\textbf{1479 Characters} (21 under)}
+
+\newpage
 
 \subsection{Innovation}
 \label{sec:innovation}
@@ -174,6 +181,8 @@ Since PeaPod is standard and open-source, units can be had in bulk and assembled
 
 \uline{\textbf{2958 Characters} (42 under)}
 
+\vspace{0.5cm}
+
 \subsection{Adherence to Constraints}
 \label{sec:constraints}
 
@@ -194,6 +203,8 @@ With width treated as depth for the purposes of the considerations of the "room 
 
 \uline{\textbf{270 Characters} (30 under)}
 
+\vspace{0.5cm}
+
 \subsubsection{Power Consumption}
 \label{sec:constraints-power}
 
@@ -204,6 +215,8 @@ For calculations and justification, see supplementary material Appendix.
 \textbf{Total Power Consumption}: 1,284W
 
 \uline{\textbf{98 Characters} (202 under)}
+
+\newpage
 
 \subsubsection{Water Consumption}
 \label{sec:constraints-water}
@@ -218,6 +231,8 @@ For calculations and justification, see supplementary material Appendix.
 
 \uline{\textbf{171 Characters} (129 under)}
 
+\vspace{0.5cm}
+
 \subsubsection{Mass} 
 \label{sec:constraints-mass}
 
@@ -229,7 +244,7 @@ Total: \textbf{70kg}
 
 \uline{\textbf{83 Characters} (217 under)}
 
-% 300chars
+\vspace{0.5cm}
 
 \subsubsection{Data Connection} 
 \label{sec:constraints-data}
@@ -244,6 +259,8 @@ Total: \textbf{70kg}
 
 \uline{\textbf{206 Characters} (94 under)}
 
+\vspace{0.5cm}
+
 \subsubsection{Crew Time Requirement - Setup \& Maintenance}
 \label{sec:constraints-crewtime} 
 
@@ -256,6 +273,8 @@ Total setup process time (2 trays per unit, 12 units, 1 CM): \textbf{17.5 hours}
 Total maintenance time per week: \textbf{1-2 hours} (depending on program)
 
 \uline{\textbf{246 Characters} (54 under)}
+
+\newpage
 
 \subsubsection{Palatability of Crop Output} 
 \label{sec:constraints-palatability}
@@ -276,6 +295,8 @@ Hydroponic crops have seen commercial success \cite{commercialhydro}, suggesting
 
 \uline{\textbf{292 Characters} (8 under)}
 
+\vspace{0.5cm}
+
 \subsubsection{Operational Constraints} 
 \label{sec:constraints-operational}
 
@@ -287,6 +308,8 @@ Ambient pressure: tank, bladder, and nozzle are designed to produce indicated ou
 Ambient temperature and humidity: less concern, housing is sealed and insulated
 
 \uline{\textbf{231 Characters} (69 under)}
+
+\newpage
 
 \subsection{Performance Criteria}
 
@@ -306,9 +329,7 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 
 \textit{Footprint}:
 
-Due to PeaPod's modular construction, the footprint can vary. For a Standard Extended PeaPod, the footprint would be 2m x 0.5m, or about three standing refrigerators.
-
-When stowed, volume is reduced to 37\% of when assembled. Control module is packed pre-assembled.
+Due to PeaPod's modular construction, the footprint can vary. For a Standard Extended PeaPod, the footprint would be 2m x 0.5m, or about three standing refrigerators. When stowed, volume is reduced to 37\% of when assembled. Control module is packed pre-assembled.
 
 The following estimates are for a Standard Extended PeaPod.
 
@@ -337,6 +358,8 @@ The following estimates are for a Standard Extended PeaPod.
 
 Total setup process time (Standard: 2 trays per unit, 12 units, 1 CM): \textbf{8.5 hours} (\textit{one person}) or \textbf{2.5 hours} (\textit{crew of 4})
 
+\newpage
+
 \textit{Food Production Cycle}:
 
 \begin{enumerate}
@@ -362,6 +385,8 @@ All interactions with the automation system (i.e. program upload, environment/ca
 
 \uline{\textbf{2765 Characters} (235 under)}
 
+\newpage
+
 \textbf{Acceptability of Food Products}
 \label{sec:acceptability-products}
 
@@ -384,6 +409,8 @@ There are several considerations when examining the acceptability of the product
 
 % Optional - Additional comments
 % This additional text box with a 1,000 character limit allows you to provide any other information on acceptability and palatability you would like to submit to the Judging Panel.
+
+\newpage
 
 \subsubsection{Safety}
 \label{sec:safety}
@@ -426,6 +453,8 @@ In the event of a malfunction, PeaPod also allows the user to override the progr
 
 \uline{\textbf{2213 Characters} (787 under)}
 
+\vspace{0.5cm}
+
 \textbf{Safety of Food Products}
 \label{sec:safety-products}
 
@@ -446,6 +475,8 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 % Optional - Additional comments
 % This additional text box with a 1,000 character limit allows you to provide any other information on the safety associated with the food production process using your technology.
 
+\newpage
+
 \subsubsection{Resource Inputs and Outputs}
 \label{sec:resource}
 
@@ -464,7 +495,7 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 
 \uline{\textbf{755 Characters} (2245 under)}
 
-% Describe resources, and their quantities
+\vspace{0.5cm}
 
 \textbf{System Outputs}
 \label{sec:resource-outputs}
@@ -478,6 +509,8 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 \textit{Byproducts}: Inedible plant matter (stems/roots/leaves/etc., waste), sensible heat (from thermoregulation pumping, managed by onboard heating/cooling), exhaust air (via HEPA filter, sterilized and dehumidified by onboard life support), minimal water vapour (as a result of higher air humidity, minimized by housing seal), latent heat (as a result of higher leaf zone temperature, minimized by insulation)
 
 \uline{\textbf{535 Characters} (2465 under)}
+
+\newpage
 
 \textbf{Optimization}
 \label{sec:resource-optimization}
@@ -495,6 +528,8 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 \end{itemize}
 
 \uline{\textbf{1479 Characters} (21 under)}
+
+\vspace{0.5cm}
 
 \textbf{Food Output Quality}
 \label{sec:resource-outputquality}
@@ -525,6 +560,8 @@ These, in addition to herbs, berries, grains, garden produce, and root vegetable
 
 \uline{\textbf{2429 Characters} (571 under)}
 
+\vspace{0.5cm}
+
 \textbf{Additional Comments}:
 
 Let it be noted that the primary goal of this design is not to satisfy the nutrient constraints. It is of the opinion of the submission team after extensive study that there is no way to produce 10,000 Calories in a 2 cubic meter environment via crop growth. The closest we got was a method for the production of microtuber potatoes as described in \cite{minituber}, which produces an estimated 2,000 Calories per day in a 2 cubic meter space.
@@ -532,6 +569,8 @@ Let it be noted that the primary goal of this design is not to satisfy the nutri
 Instead, this system caters to the more "human" aspects of food - palatability and enjoyability, versatility of products for different cuisine, diversity of outputs, and the positive effects of growing plants on human emotional health, to name a few.
 
 \uline{\textbf{715 Characters} (285 under)}
+
+\newpage
 
 \subsubsection{Reliability and/or Stability}
 
@@ -558,6 +597,8 @@ This said, every component in PeaPod has an expected lifespan over three years. 
 % Since PeaPod mixes the nutrient solution automatically, the only required maintenance is replenshing stores of water and individual nutrients. By tracking consumption rates and using past trends, PeaPod can schedule the most efficient refill time in advance and notify the user.
 % The spray nozzle, by way of its fine mesh, will build fine amounts of sediment over time. This can be easily cleaned by the user at either pre-determined times or, as mentioned above, when the unit detects an issue.
 % Finally, plant harvesting is a quick task that simply constitues opening the unit and removing the plant. Replacing it only requires the user to open the unit, place the seed in the grow cup, and digitally set the grow conditions for PeaPod to follow.
+
+\vspace{0.5cm}
 
 \textbf{Input and Output Stability}
 \label{sec:reliability-inputoutput}
@@ -710,11 +751,7 @@ Given the current internal and external states, determine the plant's state chan
 
 By fitting $\vec Q$, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
 
-$$\vec P(t)=\int_0^{t_f}\vec P'(x)~dx=\int_0^{t_f}Q(\vec P(x),\vec E(x),x)~dx$$
-
-Or, numerically:
-
-$$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t),t)$$
+$$\vec P(t)=\int_0^{t_f}Q(\vec P(x),\vec E(x),x)~dx~~~~\text{OR}~~~~\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t),t)$$
 
 \newpage
 
