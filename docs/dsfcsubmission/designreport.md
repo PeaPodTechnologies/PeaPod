@@ -297,15 +297,17 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 
 ### Resource Inputs
 
-Infrastructural Inputs: Reverse osmosis water (constant supply at positive pressure from onboard RODI system), nutrient solutions (stored, one container each plus refill tanks), pH solutions (one container pH up, one container pH down, plus refill tanks, stored), power (onboard power, standard 120V AC 60Hz), network connection (onboard network, for remote control, live video/data transmission), plant seeds (stored in vacuum-sealed seed bank, selected for variety and acceptability), input air (HEPA filtered)
+Infrastructural Inputs: Reverse osmosis water (constant supply at positive pressure from onboard RODI system), nutrient solutions (stored, one container each plus refill tanks), pH solutions (one container pH up, one container pH down, plus refill tanks, stored), power (onboard power, standard 120V AC 60Hz), network connection (onboard network, for remote control, live video/data transmission), plant seeds (stored in vacuum-sealed seed bank, selected for variety and acceptability), input air (HEPA filtered, carbon dioxide-rich)
 
-Process Inputs: Plant species identifiers, environment program (for entire growth cycle, one per plant species), nutrient and pH-adjustment solution identifiers (compounds and molarities, i.e. solution A is 0.6M NaNO_3$)
+Process Inputs: Plant species identifiers, environment program (for entire growth cycle, one per plant species), nutrient and pH-adjustment solution identifiers (compounds and molarities, i.e. solution A is 0.6M NaNO_3)
+
+Common nutrient solutions target specific ions, including bioavailable nonmetals (nitrates/nitrites, ammonia/ammonium, phosphates, sulphates), metals (potassium, calcium, magnesium, iron) and other trace elements.
 
 ### System Outputs
 
 Products: Edible plant matter, recorded environment data, plant metric data, live video feed, time-lapse capture
 
-Byproducts: Inedible plant matter (stems/roots/leaves/etc., waste), sensible heat (from thermoregulation pumping, managed by onboard heating/cooling), exhaust air (via HEPA filter, sterilized and dehumidified by onboard life support), minimal water vapour (as a result of higher air humidity, minimized by housing seal), latent heat (as a result of higher leaf zone temperature, minimized by insulation)
+Byproducts: Inedible plant matter (stems/roots/leaves/etc., waste), sensible heat (from thermoregulation pumping, managed by onboard heating/cooling), exhaust air (via HEPA filter, sterilized and dehumidified by onboard life support, oxygen-rich), minimal water vapour (as a result of higher air humidity, minimized by housing seal), latent heat (as a result of higher leaf zone temperature, minimized by insulation)
 
 ### Optimization
 
@@ -359,6 +361,8 @@ For another, the sensors used to monitor plant health and environment conditions
 
 This said, every component in PeaPod has an expected lifespan over three years. From the LEDs (rated for 5 years) to the nozzles and fittings (high-quality brass), replacement monitoring is only needed as a backup. A replacement for each "active" part used in the entire assembly (i.e. non-housing, all moving/electrical/water parts) should be kept on board.
 
+There are few moving parts, and no wear or lubrication required. The diaphragm pump is the most reliable and long-lasting pump variety [15]. Fans are self-lubricating nylon. Solenoids and servos are rated for upwards of 5 years.
+
 ### Input and Output Stability
 
 <!-- 1171 chars -->
@@ -390,7 +394,7 @@ PeaPod's form factor makes it a viable tool for at-home production, either in ci
 
 Food Infrastructure Micro-Loans
 
-For many, finding fresh produce is a struggle whilst growing your own is prohibitively expensive [15]. Micro-loan platforms have attempted to solve this by letting donors fund an interest-free loan for technology/infrastructure which then pays the loan as a percentage of its surplus. 
+For many, finding fresh produce is a struggle whilst growing your own is prohibitively expensive [16]. Micro-loan platforms have attempted to solve this by letting donors fund an interest-free loan for technology/infrastructure which then pays the loan as a percentage of its surplus. 
 
 Unfortunately, these are only feasible for individuals in rural areas with arable land and climate.
 
