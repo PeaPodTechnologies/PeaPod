@@ -59,7 +59,7 @@
 
         \vspace{.75cm}
 
-        Revision 0.9\\
+        Revision 1.0\\
         PeaPod Technologies Inc.\\
         July 30th, 2021
 
@@ -83,7 +83,6 @@ PeaPod uses automated control systems to generate desired environments. These ar
 Plant growth cups and lighting platforms are built on modular "trays" mounted to the inside of the housing so the user can position plants and lights to accommodate any plant size.
 
 Throughout a growth cycle, all environment parameters and growth metrics are collected. This data trains a statistical ML model to represent the plant's phenology over time in the environment. The output function can then be optimized for yield mass, nutrient concentration, flavour, resource efficiency, or any other metric.
-% If crunch for words, cut this^
 
 Combining these into an accessible open-source design, PeaPod provides unrivalled versatility and reliability to food production systems both terrestrially and on long-duration space missions.
 
@@ -101,7 +100,7 @@ Combining these into an accessible open-source design, PeaPod provides unrivalle
 
 \textbf{Prompt}: \textit{Please provide a more fulsome description of your food production technology. Your description needs to include information about what the technology is, what it does, how it functions, and how the crew will interact with it. Be sure to also provide any descriptions of major hardware components and processes in relation to your technology.}
 
-PeaPod is an automated plant growth environment, made of control systems and an automation/monitoring system within modular, cubic housing. It can generate any desired environment while collecting data on plant growth and improving yields.
+PeaPod is an automated plant growth environment, made of control systems and an automation/monitoring system within a modular, cubic housing. It can generate any desired environment while collecting data on plant growth and improving yields.
 
 NOTE: For this submission, only the 4x3 unit \textbf{Standard Extended PeaPod} is in consideration. It has one control module and one of each tray (grow and lighting) per unit.
 
@@ -155,25 +154,25 @@ When activated, PeaPod's control systems begin to enact the program. PeaPod will
 
 \textbf{Control Range and Parameter Independence}
 
-Unlike large-scale vertical farming, PeaPod’s isolation and parameter independence lets it simulate many climates. Wide LED spectrum can emit both near-infrared and near-ultraviolet light, important for creating hormonal responses and compounds in plants. Combined with insulation, humidification and dehumidification, and thermoelectric heating/cooling, PeaPod can generate extreme environments and even conditions on other planets (minus gravity and atmospheric changes). 
+Unlike large-scale vertical farming, PeaPod’s isolation and parameter independence lets it simulate any climate. Wide LED spectrum can emit both near-infrared and near-ultraviolet light, important for creating hormonal responses and compounds in plants. Combined with insulation, humidification and dehumidification, and thermoelectric heating/cooling, PeaPod can generate extreme environments and even conditions on other planets (minus gravity and atmospheric changes). 
 
-These parameters are independent: e.g., lighting heat is countered by thermoregulation cooling. Also, inline nutrient and pH solution injection eliminates drawbacks of reservoir use by taking less space, less solution mixing time, and avoiding a control loop of nutrients/pH (while also being more accurate).
+These parameters are independent: e.g., lighting heat is countered by thermoregulation cooling. Also, inline nutrient and pH solution injection eliminates drawbacks of reservoir use by taking less space, less solution mixing time, and avoiding a control loop of nutrients/pH (while also being more accurate). 
 
 %These innovations allow PeaPod to grow virtually any plant. 
 
 \textbf{Form Factor and Extendability}
 
-The range of output environments is also possible because of the form factor of a single PeaPod unit. Warehouse-scale vertical farming cannot provide wide-spectrum control due to size---poor insulation and air circulation disallows extreme temperatures. PeaPod solves this with a small, modular design that enables robust lighting, heating, and cooling systems at home and at scale.
+The range of output environments is also possible because of the form factor of a single PeaPod unit. Warehouse-scale vertical farming cannot provide wide-spectrum control due to size---poor insulation and air circulation prohibits extreme temperatures. PeaPod solves this with a small, modular design that enables robust lighting, heating, and cooling systems at home and at scale.
 
-Space savings are a benefit of this feature, as the output of an entire farming or hydroponics setup (requiring a flat field or warehouse) can be spread through unused space (corners, under shelves/desks, etc.) via small PeaPod setups. This means a large yield can be had without construction, zoning, labour, or any of the other issues accompanying large farming or hydroponic setups.
-
-Internal modularity lets users grow any crop with only a quick snap of a connector; this contrasts large operations purpose-built for a single crop. Where existing systems yield one crop given a large area and permanent construction, PeaPod can grow any plant given a spot half a meter on each side, comparable to a larger 3D printer.
+Space savings are a benefit of this feature, as the output of an entire farming or hydroponics setup (requiring a flat field or warehouse) can be spread through unused space (corners, under shelves/desks, etc.) via many small PeaPod setups. This means a large yield can be had without construction, zoning, labour, or any of the other issues accompanying large farming or hydroponic setups.
 
 \textbf{Optimization}
 
-Existing solutions lack optimization and research capabilities. PeaPod solves this by monitoring all environment and plant indicators. This enables repeatable and controlled trials with scientific validity.
+Existing approaches to plant optimization are simple and ineffective, relying on a \textbf{fixed/unchanging} environment parameter set and only examining \textbf{final} plant metrics. This approach is severely limited, in that it does not account for changes over time.
 
-Once a plant's phenology is digitized, PeaPod counters declining health/quality indicators in real time. As it repeats trials, it generates tailored growth plans that can maximize any aspect. This makes it a valuable tool for growing crops, as it has a large pool of data to derive growth plans, conditions, and health indicators from.
+Instead, statistical model is used which takes into account the cumulative property of growth. By monitoring all environment and plant indicators, repeatable and controlled trials with scientific validity are able to be performed. PeaPod counters declining health/quality indicators in real time, and generates tailored programs that to maximize any metric and target further improvement.
+
+See the preliminary calculations Appendix \ref{app:optimization} for details.
 
 \textbf{Open-Source Design and Data}
 
@@ -210,7 +209,7 @@ With width treated as depth for the purposes of the considerations of the "room 
 
 \textbf{Constraint}: \textit{Avg < 1500 W, Peak < 3000 W}
 
-For calculations and justification, see preliminary calculations Appendix.
+For calculations and justification, see preliminary calculations Appendix \ref{app:power}.
 
 \textbf{Total Power Consumption}: 1,284W
 
@@ -223,7 +222,7 @@ For calculations and justification, see preliminary calculations Appendix.
 
 \textbf{Unconstrained}
 
-For calculations and justification, see preliminary calculations Appendix.
+For calculations and justification, see preliminary calculations Appendix \ref{app:water}.
 
 \textit{Humidification}: CNet = \textbf{500mL initial + 50mL per hour}
 
@@ -238,7 +237,7 @@ For calculations and justification, see preliminary calculations Appendix.
 
 \textbf{Unconstrained}
 
-For calculations and justification, see preliminary calculations Appendix.
+For part breakdown, calculations, and justification, see preliminary calculations Appendix \ref{app:mass}.
 
 Total: \textbf{70kg}
 
@@ -371,7 +370,6 @@ Total setup process time (Standard: 2 trays per unit, 12 units, 1 CM): \textbf{8
         \item Swapping and recharging dehumidification cartridges when instructed - \textbf{5 min} (active time)
         \item Refilling solution containers when instructed - \textbf{5 min}
     \end{itemize}
-    % TODO: review here on out
     \item Upon End-Of-Program (EOP) notification, the gas exchange system will conduct a "full equalization flush", bringing the internal environment in equilibrium with the surroundings. Users will harvest and store food products (or prepare and consume them immediately, varying time) - \textbf{15 min}
     \item Upon End-Of-Life notification (may occur at the same time as EOP), the plant is scrapped (\textbf{15 min}), and new plants may be planted
 \end{enumerate}
@@ -524,7 +522,7 @@ The selection of proper crops and solutions, along with proper harvesting and pr
     \item \textit{High Success Rates}: Complete automation and environmental control ensures high crop success rates and yield predictability.
     \item \textit{Repeatability}: Once optimal conditions are found for a given crop species, they can be repeated ad infinitum.
     \item \textit{Immediate Sensor Feedback and Response}: Immediate feedback from both environment sensors and plant metric analysis empowers the system to respond to unpredictable or otherwise uncontrolled factors (i.e. poor seed health, outside interference). Plant metric analysis can be used to diagnose program ineffectualities, accelerate optimization, and preventatively mitigate plant health decline.
-    \item \textit{Data Collection, Yield Optimization}: By collecting data via computer vision and post-harvest yield evaluation (GCMS, weighing, etc.) on the plant's response to the induced environment, the relationship between the species behaviour and the surrounding environment can be analyzed. Plant metrics include plant health indicators (chlorophyll concentrations/chlorosis, leaf count/size distribution/density, plant height/canopy dimensions leaf tip burn, leaf curl, wilting, etc.) and crop yield (edible matter net mass/percent mass of plant, total plant mass, chemical/nutritional composition, caloric measurement, etc.). Data is filtered/smoothed across time to account for noise. The relationship is then represented by a statistical/machine learning model via a method known as "surrogate modelling". The method for this analysis can be found in the preliminary calculations Appendix.
+    \item \textit{Data Collection, Yield Optimization}: By collecting data via computer vision and post-harvest yield evaluation (GCMS, weighing, etc.) on the plant's response to the induced environment, the relationship between the species behaviour and the surrounding environment can be analyzed. Plant metrics include plant health indicators (chlorophyll concentrations/chlorosis, leaf count/size distribution/density, plant height/canopy dimensions leaf tip burn, leaf curl, wilting, etc.) and crop yield (edible matter net mass/percent mass of plant, total plant mass, chemical/nutritional composition, caloric measurement, etc.). Data is filtered/smoothed across time to account for noise. The relationship is then represented by a statistical/machine learning model via a method known as "surrogate modelling". The method for this analysis can be found in the preliminary calculations Appendix \ref{app:optimization}.
     
 \end{itemize}
 
@@ -548,7 +546,7 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 
 Given the system can induce a wide and continuous range of environments, it can produce environments suitable for any aeroponically-growable crop. Within the 2 square meters allotted to the solution, 12 PeaPods can be placed in a Standard configuration, resulting in a hypothetical maximum of 4 different environments (4 vertical columns with 4 control modules). The sum of the plants grown can be any combination of any number of suitable plant species (grouped into the same environment if suitable, i.e. different microgreens together), and as such, can be selected to meet all macro and micro nutrient requirements (with fortification or supplementation of those nutrients not found in plants \cite{plantbased}). 
 
-For example, quinoa - a crop already highly dense in nutrients (protein values up to 12-18\% of mass, unique amino acid composition high in lysine) - has shown excellent potential for hydroponic/aeroponic growth in controlled environments with increases in nutrient density and yield (up to 37\% harvest index, aka edible yield as a percentage of total mass). "Initial results indicate that quinoa could be an excellent crop for [controlled-environment agriculture] because of high contentration of protein ... and potential for greatly increased yields in controlled environments." \textit{NOTE}: Despite promising results, the experiment cited was performed with "no attempt to maximize productivity". When combined with the optimization routine, yields could be maximized even further \cite{quinoa}.
+For example, quinoa - a crop already highly dense in nutrients (protein values up to 12-18\% of mass, unique amino acid composition high in lysine) - has shown excellent potential for hydroponic/aeroponic growth in controlled environments with increases in nutrient density and yield (up to 37\% harvest index, aka edible yield as a percentage of total mass). "Initial results indicate that quinoa could be an excellent crop for [controlled-environment agriculture] because of high concentration of protein ... and potential for greatly increased yields in controlled environments." \textit{NOTE}: Despite promising results, the experiment cited was performed with "no attempt to maximize productivity". When combined with the optimization routine, yields could be maximized even further \cite{quinoa}.
 
 Other crops suitable to aeroponics are listed here alongside their benefits and some examples of nutrient analysis:
 \begin{itemize}
@@ -565,7 +563,7 @@ These, in addition to herbs, berries, grains, garden produce, and root vegetable
 
 \textbf{Additional Comments}:
 
-Let it be noted that the primary goal of this design is not to satisfy the nutrient constraints. It is of the opinion of the submission team after extensive study that there is no way to produce 10,000 Calories in a 2 cubic meter environment via crop growth. The closest we got was a method for the production of microtuber potatoes as described in \cite{minituber}, which produces an estimated 2,000 Calories per day in a 2 cubic meter space.
+Let it be noted that the primary goal of this design is not to satisfy the nutrient or caloric constraints. It is of the opinion of the submission team after extensive study that there is no way to produce 10,000 Calories in a 2 cubic meter environment via crop growth. The closest we got was a method for the production of aeroponic minituber potatoes as described in \cite{minituber}, which produces an estimated 2,000 Calories per day in a 2 cubic meter space.
 
 Instead, this system caters to the more "human" aspects of food - palatability and enjoyability, versatility of products for different cuisine, diversity of outputs, and the positive effects of growing plants on human emotional health, to name a few.
 
