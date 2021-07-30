@@ -1,6 +1,6 @@
 # PeaPod <!-- omit in toc -->
 
-[![issuesopen](https://img.shields.io/github/issues/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/utagritech/peapod)](https://github.com/UTAgritech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/UTAgritech/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
+[![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
 
 
 A cloud-connected isolated and automated plant growth environment, able to generate any environment from a combination of independent environment parameters. 
@@ -9,7 +9,7 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 <!-- TODO: Build statuses? etc. -->
 
-Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
+Intended as a submission to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
 
 <img src="docs/animation/renders/backdrop.png" width=90% style="border: 5px solid #333"/>
 
@@ -34,7 +34,7 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 ## Background
 
-> See our [requirements document](https://github.com/UTAgritech/PeaPod/blob/staging/docs/design/requirements/Requirements.pdf) for details.
+> See our [requirements document](https://github.com/PeaPodTechnologies/PeaPod/blob/staging/docs/design/requirements/Requirements.pdf) for details.
 
 <br>
 
@@ -44,7 +44,7 @@ Intended as UTAG's submission to the [NASA/CSA Deep Space Food Challenge](https:
 
 ### Features
 
-> See our [solution overview](https://github.com/UTAgritech/PeaPod/blob/staging/docs/design/solutionoverview/SolutionOverview.pdf) for details.
+> See our [solution overview](https://github.com/PeaPodTechnologies/PeaPod/blob/staging/docs/design/solutionoverview/SolutionOverview.pdf) for details.
 
 <br>
 
@@ -108,14 +108,14 @@ WIP. -->
 ### Roadmap
 <!-- adapted from milestones/project boards -->
 
-> See our [projects](https://github.com/UTAgritech/PeaPod/projects).
+> See our [projects](https://github.com/PeaPodTechnologies/PeaPod/projects).
 
 <br>
 
 ## Acknowledgements
 
 Innumerable thanks to the following individuals and groups:
-- University of Toronto Agritech's active members ([here](https://github.com/orgs/UTAgritech/people))
+- PeaPod Technologies Inc. members ([here](https://github.com/orgs/PeaPodTechnologies/people))
 - The Open Source community
 
 PeaPod is great :) RIP Media Lab
