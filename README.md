@@ -1,6 +1,6 @@
 # PeaPod <!-- omit in toc -->
 
-[![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) ![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
+[![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
 
 
 A cloud-connected isolated and automated plant growth environment, able to generate any environment from a combination of independent environment parameters. 
@@ -9,9 +9,9 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 <!-- TODO: Build statuses? etc. -->
 
-Intended as a submission to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
+Submitted to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
 
-<img src="docs/animation/renders/backdrop.png" width=90% style="border: 5px solid #333"/>
+<a href="https://www.youtube.com/watch?v=2zWv9JC5G3w" target="_blank"><img src="docs/animation/renders/backdrop.png" width=90% style="border: 5px solid #333"/></a>
 
 ***
 
@@ -115,7 +115,7 @@ WIP. -->
 ## Acknowledgements
 
 Innumerable thanks to the following individuals and groups:
-- PeaPod Technologies Inc. members ([here](https://github.com/orgs/PeaPodTechnologies/people))
+- PeaPod Technologies members ([here](https://github.com/orgs/PeaPodTechnologies/people))
 - The Open Source community
 
 PeaPod is great :) RIP Media Lab
