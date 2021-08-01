@@ -20,13 +20,6 @@
 \lhead{PeaPod - Solution Overview}
 \rhead{PeaPod Technologies Inc.}
 
-% Metric counter, referencing commands
-\newcounter{metricnumber}
-\setcounter{metricnumber}{1}
-\newcommand{\metricrow}{M\arabic{metricnumber}}
-\newcommand{\mlabel}[1]{\addtocounter{metricnumber}{-1}\refstepcounter{metricnumber}\label{#1}\addtocounter{metricnumber}{1}}
-\newcommand{\mref}[1]{M\ref{#1}}
-
 \begin{document}
 
 \begin{titlepage}
@@ -37,23 +30,35 @@
 
         \vspace{0.5cm}
 
-        Outlining a Design Proposal to the PeaPod Requirements
+        Outlining a Design Proposal to the Deep Space Food Challenge
 
         \vfill \small{
 
-            Jayden Lefebvre - Lead Engineer, Founder of PeaPod Technologies Inc.\\ECE 2T4 - University of Toronto - Toronto, ON, Canada\\Primary Contact: jayden.lefebvre@mail.utoronto.ca\\
+            \textbf{Jayden Lefebvre - Lead Engineer, UTAG Founder}\\
+            BASc Computer Engineering (Anticipated 2024), University of Toronto\\
+            Toronto, ON, Canada\\
             \vspace{.5cm}
-            Nathan Chareunsouk - Industrial Designer\\Toronto, ON, Canada\\\vspace{.5cm}
-            Navin Vanderwert - Design Engineer\\EngSci 2T4, University of Toronto - Toronto, ON, Canada\\\vspace{.5cm}
-            Jonas Marshall - Electronics Engineer\\Computer Engineering 2024 at Queen's University - Kingston, ON, Canada
+            \textbf{Nathan Chareunsouk - Design Lead}\\Toronto, ON, Canada\\
+            \vspace{.5cm}
+            \textbf{Navin Vanderwert - Design Engineer}\\
+            BASc Engineering Science (Anticipated 2024), University of Toronto\\
+            Toronto, ON, Canada\\
+            \vspace{.5cm}
+            \textbf{Jonas Marshall - Electronics Engineer}\\
+            BASc Computer Engineering (Anticipated 2024), Queen's University\\
+            Kingston, ON, Canada
 
         }
 
-        \vspace{2cm}
+        \vspace{1cm}
 
-        Revision 0.7\\
+        Primary Contact Email: jayden.lefebvre@mail.utoronto.ca
+
+        \vspace{.75cm}
+
+        Revision 0.8\\
         PeaPod Technologies Inc.\\
-        July 19th, 2021
+        July 27th, 2021
 
     \end{center}
 \end{titlepage}
@@ -69,13 +74,11 @@
 \subsection{Purpose \& Design Process}
 \label{sec:purpose}
 
-The purpose of this document is to outline a design proposed to meet the PeaPod Requirements.
-
-It accomplishes this via the following process:
+The purpose of this document is to outline a design proposed to meet the PeaPod Requirements. It accomplishes this via the following process:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=16.5cm]{images/designprocess.png}
+    \includegraphics[height=7.55cm,angle=90,origin=c]{images/designprocess.png}
     \hfill
     \caption{Engineering design process.}
 \end{figure}
@@ -84,29 +87,60 @@ It accomplishes this via the following process:
 
 \section{Design}
 
-\textbf{Purpose}: The purpose of the design is derived from the opportunity statement:
-
-PeaPod is "an \uline{automated} and \uline{isolated} \uline{aeroponic} crop growth system, able to generate any \uline{growth environment} from a combination of independent \uline{environment parameters}, with both environment and crop growth \uline{data collection} for \uline{optimization}".
-
-The primary function of the overall design is derived from both the overall purpose as well as the system inputs and outputs as defined by the DSFC Applicant Guide \cite{applicantguide}.
+\textbf{Purpose}: An automated and isolated aeroponic crop growth system, able to generate any growth environment from a combination of independent environment parameters, with both environment and crop growth data collection for optimization.
 
 \textbf{Function}:
+\begin{itemize}
+    \item \textbf{Infrastructural Inputs}: Water, nutrient solutions, pH solutions, power, network connection, plant seeds/clones
+    \item \textbf{Information Inputs}: Plant identifiers, environment program, input solution identifiers
+    \item \textbf{Products}: Edible plant matter, recorded environment data, plant metric data, timelapse
+    \item \textbf{Byproducts}: Inedible plant matter, heat from thermoregulation cooling
+\end{itemize}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=15cm]{images/blackbox.png}
-    \hfill
-    \caption{"Black box" function diagram of PeaPod.}
-\end{figure}
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Assemble housing, trays;
+        \item Install control module(s) (CM);
+        \item Hook up all inputs, fill solution containers;
+        \item For each tray, either:
+        \begin{enumerate}
+            \item Mount lighting boards and driver, daisy chain boards to driver, hook up power and signal to driver and CM; \textbf{OR}
+            \item Mount aeroponic nozzle mount and arm, hook up water delivery line to nozzles and CM;
+        \end{enumerate}
+        \item Prepare and plant seeds for desired crop output, seal growth environment;
+        \item Setup all other systems;
+    \end{enumerate}
+    \item \textit{Process}:
+    \begin{itemize}
+        \item Aeroponics system supplies plants with necessary water and nutrients at set pH;
+        \item Lighting systems meet all photosynthetic, etc. light requirements;
+        \item Environment control systems record and maintain desired environment conditions:
+        \begin{itemize}
+            \item Air temperature;
+            \item Air humidity;
+            \item Root zone temperature;
+            \item Air composition;
+        \end{itemize}
+    \end{itemize}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item \textbf{End-of-Program}: Harvest, storage, and (eventual) preparation and consumption of edible plant matter (now food products);
+        \item \textbf{End-of-Life}: Inedible plant matter is scrapped. New plants may be planted.
+    \end{enumerate}
+\end{enumerate}
 
-\textbf{Method \& Features}: 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=12cm]{images/features.png}
-    \hfill
-    \caption{Features and feature types of PeaPod.}
-\end{figure}
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Housing}: Section \ref{sec:housing}.
+    \item \textit{Automation}: Sensing and actuating all systems autonomously. Section \ref{sec:automation}. Systems include:
+    \begin{itemize}
+        \item \textit{Aeroponics}: Section \ref{sec:aeroponics}.
+        \item \textit{Environmental Control}: Section \ref{sec:environment}.
+        \item \textit{Lighting}: Section \ref{sec:lighting}.
+    \end{itemize}
+\end{itemize}
 
 \newpage
 
@@ -830,6 +864,6 @@ $$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
 \newpage
 
 % References
-\bibliographystyle{IEEEtran}
-\bibliography{references}
+% \bibliographystyle{IEEEtran}
+% \bibliography{references}
 \end{document}
