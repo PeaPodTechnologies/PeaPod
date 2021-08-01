@@ -1,6 +1,6 @@
 # PeaPod <!-- omit in toc -->
 
-[![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/projects) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
+[![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Open%22) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
 
 
 A cloud-connected isolated and automated plant growth environment, able to generate any environment from a combination of independent environment parameters. 
@@ -95,12 +95,18 @@ WIP. -->
 
 ## Contribution
 
+### New Issue
+
 1. Open an issue with the features you'd like to add/bugs you'd like to see squashed (admins will add labels, assignments, etc.)
 2. Discuss the scope and specifics in the issue, and either:
    1. Make a new branch, make changes, open a **PR Draft** (if you have permissions); or
    2. Fork, make changes, open a **PR Draft**
 3. Request review by changing the **PR Draft** to a full-blown **PR** when you think it's ready
 4. If the reviewer(s) accept the changes, they will merge the **PR** and close the related issue
+
+### Existing Issues
+
+Check out our [open issues](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Open%22)!
 
 <!-- ### Support -->
 <!-- issues page, discussion board/Discord? -->
