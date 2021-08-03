@@ -8,20 +8,20 @@
 #                   ADMIN
 # Repo administration code
 
-/.github/                   @utagritech/admins
-LICENSE                     @utagritech/admins
-.gitignore                  @utagritech/admins
+/.github/                   @peapodtechnologies/admins
+LICENSE                     @peapodtechnologies/admins
+.gitignore                  @peapodtechnologies/admins
 
 #                   DOCUMENTATION
 # TODO: other file types?
 
-/docs/                      @utagritech/documentation-review
-*.tex                       @utagritech/documentation-review
-*.md                        @utagritech/documentation-review
+/docs/                      @peapodtechnologies/documentation-review
+*.tex                       @peapodtechnologies/documentation-review
+*.md                        @peapodtechnologies/documentation-review
 
 #                   ELECTRONICS
 # Electronics software
 
-/software/PeaPod-Arduino/   @utagritech/electronics
+/software/PeaPod-Arduino/   @peapodtechnologies/electronics
 
 # TODO: Per-deliverable code ownership?

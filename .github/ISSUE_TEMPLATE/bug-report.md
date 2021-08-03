@@ -2,7 +2,7 @@
 name: Bug Report
 about: Create a report to help us improve :)
 title: "[BUG] - Bug Name"
-labels: 'Scope: Deliverable, Status: Open, Type: Bug'
+labels: 'Scope: Deliverable, Status: Open, Type: Bug, Priority: High'
 assignees: ''
 
 ---
