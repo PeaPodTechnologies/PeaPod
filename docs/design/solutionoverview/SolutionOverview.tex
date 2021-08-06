@@ -8,6 +8,7 @@
 \usepackage{array,etoolbox}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
+\usepackage{amsmath}
 \usepackage[toc,page]{appendix}
 \setlist{noitemsep}
 
@@ -238,7 +239,7 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
             \item \textbf{Extension Modes} (may be combined in any way to suit application):
             \begin{itemize}
                 \item \textit{Option 1} (Smaller Housings): Operate the combined housing off \textbf{one} control module.
-                \item \textit{Option 2} (Larger Housings): Add a control module to account for additional air volume, plant count, power requirement, etc.. Operate in a \textbf{controller-follower topology}.
+                \item \textit{Option 2} (Larger Housings): Add control modules to account for additional air volume, plant count, power requirement, etc.. Operate in a \textbf{controller-follower topology}.
                 \item \textit{Option 3} (Frame Connection Only): Leave the dividing panel, add a control module, and operate the two PeaPods \textbf{separately}.
             \end{itemize}
         \end{enumerate}
@@ -254,8 +255,8 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Frame}: T-slotted aluminum extrusion framing with aluminum face-mounted brackets forms a cubic skeleton for rigidity/strength (high strength-to-weight aluminum) and easy component mounting and repositioning (standard mounting channels). These extrusions form the "edges" of the cubic housing.
-    \item \textit{Panels}: Graphite-enhanced expanded polystyrene (GPS) rigid foam insulation panels with reflective mylar internal lamination increase energy efficiency (GPS R-rating of 5 at 1in., mylar enables light/heat reflection), as well as safety against cross-contamination and pathogens. Panels slide into extrusion channels and form a "seal" for greater water vapour retention. These panels form the "faces" of cube.
+    \item \textit{Frame}: T-slotted aluminum extrusion framing with aluminum face-mounted brackets forms a cubic skeleton for rigidity/strength (high strength-to-weight aluminum) and easy component mounting and repositioning (standard mounting channels). These extrusions form the "edges" of the cubic housing. %Todo: cite extrusion
+    \item \textit{Panels}: Graphite-enhanced expanded polystyrene (GPS) rigid foam insulation panels \cite{insulation} with reflective mylar internal lamination increase energy efficiency (GPS RSI of 0.0328$\frac{m^2 \cdot \degree C}{W}$ per mm of thickness, mylar enables light/heat reflection), as well as safety against cross-contamination and pathogens. Panels slide into extrusion channels and form a "seal" for greater water vapour retention. These panels form the "faces" of cube. %Todo: cite mylar
     \item \textit{Trays}: Horizontal plane subframes mounted to internal vertical extrusion channels for ease of repositioning. Trays slide in/out on permanent mounts. All connections are quick-connect (i.e. quick-diconnect tubing for grow tray, push connectors for lighting) for ease of removal. Trays include:
     \begin{itemize}
         \item \textit{Grow Trays}: Support plants (via grow cups), aeroponic nozzles, aeroponics container, and supply/recycling lines (See \ref{sec:aeroponics}).
@@ -499,7 +500,7 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
         \item \textit{Solution Dosing} (\ref{sec:nutrientsph})
         \item \textit{Solution Heater, Cooler} (\ref{sec:watertemp})
     \end{itemize}
-    \item \textit{Air Heater, Cooler} (\ref{sec:airtemp})
+    \item \textit{Air Heater, Cooler} (\ref{sec:airthermoregulation})
     \item \textit{Air Humidifier} (\ref{sec:airhum}), \textit{Dehumidifier} (\ref{sec:dehum})
     \item \textit{Gas Exchanger} (\ref{sec:gas})
     \item \textit{Lighting} (\ref{sec:lighting})
@@ -507,15 +508,15 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 
 \newpage
 
-\subsubsection{Air Temperature}
-\label{sec:airtemp}
+\subsubsection{Air Thermoregulation}
+\label{sec:airthermoregulation}
 
-\textbf{Purpose}: Maintaining desired air temperature within the enclosure.
+\textbf{Purpose}: Maintaining desired leaf-zone air temperature and circulating air.
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation})
-    \item \textbf{Outputs}: Heating/cooling, air circulation, air temperature signal (\ref{sec:automation})
+    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation}), air circulation control signal (\ref{sec:automation});
+    \item \textbf{Outputs}: $\pm$Heat to environment, $\mp$heat to surroundings, internal air circulation, internal air temperature sensor signal (\ref{sec:automation});
 \end{itemize}
 
 \textbf{Method}:
@@ -528,13 +529,14 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
     \begin{itemize}
         \item Heat pump direction and magnitude respond to control signal as expected;
         \item Fans operate as expected;
-        \item Heat pump transfer capacity exceeds maximum heat loss at extremes of temperature difference\footnote{i.e. if X Watts leave the system at MAX°C internal, MIN°C external, the heat pump can transfer >X Watts};
+        \item Heat pump transfer capacity exceeds maximum heat loss of the system at extremes of temperature difference\footnote{i.e. if X Watts leave the system at MAX°C internal, MIN°C external, the heat pump can transfer >X Watts};
+        \item Heat pump transfer capacity exceeds that required to reach temperature extremes in under sixty (60) seconds given the system's heat capacity;
     \end{itemize}
     \item \textit{Process}:
     \begin{enumerate}
         \item Air is circulated throughout the environment;
         \item Temperature is measured, sent to control module;
-        \item Control module controls heat pump speed and direction (heating vs. cooling environment);
+        \item Control module controls heat pump speed and direction (heating vs. cooling);
     \end{enumerate}
     \item \textit{Shutdown}:
     \begin{enumerate}
@@ -542,20 +544,33 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
     \end{enumerate}
 \end{enumerate}
 
+\textbf{Calculations}:
+
+Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature range $T_{surr-min}$, $T_{surr-max}$ of 18-24$\degree$C, a system target temperature range $T_{sys-min}$, $T_{sys-max}$ of 13-30$\degree$C, and a single-housing arrangement (6 faces), a molar mass of air\footnote{Water vapour has a maximum concentration of 30g/kg at 30$\degree$C, or 3\%, which is irrelevant for mass and heat capacity calculations.} $M$ of 28.97 $\frac g{mol}$:\\
+\vspace{.05cm}
+\begin{gather*}
+    \label{eqn:heatloss}
+    Q_{loss}=\frac{(T_{surr-min}-T_{sys-max}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-30\degree \text{C}) * (6 \text{ faces} * 0.5m * 0.5m)}{0.0328 m^2 * \degree C*W^{-1} * 20 \text{ mm}}=-18.29 W\\\vspace{.05cm}\\
+    \label{eqn:airmass}
+    m=\frac{P*V*M}{R*T_{avg}}=\frac{101.325\text{kPa}*(0.5m*0.5m*0.5m)*28.97\frac g{mol}}{8.314\frac{J}{\text{mol}*K}*300K}=147.1g\\\vspace{.05cm}\\
+    \label{eqn:heatcapacity}
+    W_{heating}=\frac{m*c_p*(T_{surr-min}-T_{sys-max})}{t}=\frac{m*c_p*(T_{init}-T_{target})}{60\text{ sec}}
+\end{gather*}
+
+\newpage
+
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Circulation Fans}: Located in growth environment to circulate air even temperature distribution.
-    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation}).
+    \item \textit{Temperature Sensors}: SHT31 \cite{sht31} sensors on breakout boards located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation}).
     \item \textit{Heat Pump}: Pumps heat in or out of the growth environment. Is comprised of:
     \begin{itemize}
-        \item \textit{Peltier Devices}: Bidirectional solid state \textbf{thermoelectric tile} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
+        \item \textit{Peltier Devices}: Bidirectional solid state \textbf{thermoelectric tiles} pump heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
         \item \textit{Peltier Driver Circuit}: Controls direction and magnitude of Peltier device heat pump via a \textbf{MOSFET H-bridge} and \textbf{dimmable current source} respectively.
         \item \textit{Heat Sinks}: Aluminum blocks with fins hold and exchange heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound for better transfer.
         \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
     \end{itemize}
 \end{itemize}
-
-\newpage
 
 \subsubsection{Air Humidification}
 \label{sec:airhum}
@@ -597,7 +612,7 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Circulation Fans}: See Section \ref{sec:airtemp}.
+    \item \textit{Circulation Fans}: See Section \ref{sec:airthermoregulation}.
     \item \textit{Humidity Sensor}: Located throughout the growth environment to measure air humidity. Informs a \textbf{bang-bang} control loop (\ref{sec:automation});
     \item \textit{Humidification Unit}: Easily controllable and produces a consistent vapour. Comprised of:
     \begin{itemize}
@@ -864,6 +879,7 @@ $$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
 \newpage
 
 % References
-% \bibliographystyle{IEEEtran}
-% \bibliography{references}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
 \end{document}
