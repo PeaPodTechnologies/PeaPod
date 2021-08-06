@@ -521,16 +521,12 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 
 \textbf{Method}:
 \begin{enumerate}
-    \item \textit{Setup}:
-    \begin{enumerate}
-        \item Connect inputs;
-    \end{enumerate}
     \item \textit{Testing}:
     \begin{itemize}
         \item Heat pump direction and magnitude respond to control signal as expected;
         \item Fans operate as expected;
-        \item Heat pump transfer capacity exceeds maximum heat loss of the system at extremes of temperature difference\footnote{i.e. if X Watts leave the system at MAX°C internal, MIN°C external, the heat pump can transfer >X Watts};
-        \item Heat pump transfer capacity exceeds that required to reach temperature extremes in under sixty (60) seconds given the system's heat capacity;
+        \item Heat pump power exceeds maximum heat loss (temperature extremes)\footnote{i.e. if X Watts leave the system at MAX°C internal, MIN°C external, the heat pump can transfer >X Watts};
+        \item Heat pump power exceeds that required to reach temperature extremes in under sixty (60) seconds given the system's heat capacity;
     \end{itemize}
     \item \textit{Process}:
     \begin{enumerate}
@@ -538,24 +534,22 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
         \item Temperature is measured, sent to control module;
         \item Control module controls heat pump speed and direction (heating vs. cooling);
     \end{enumerate}
-    \item \textit{Shutdown}:
-    \begin{enumerate}
-        \item Disconnect inputs;
-    \end{enumerate}
 \end{enumerate}
 
 \textbf{Calculations}:
 
-Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature range $T_{surr-min}$, $T_{surr-max}$ of 18-24$\degree$C, a system target temperature range $T_{sys-min}$, $T_{sys-max}$ of 13-30$\degree$C, and a single-housing arrangement (6 faces), a molar mass of air\footnote{Water vapour has a maximum concentration of 30g/kg at 30$\degree$C, or 3\%, which is irrelevant for mass and heat capacity calculations.} $M$ of 28.97 $\frac g{mol}$:\\
+Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature range $T_{surr-min}$, $T_{surr-max}$ of 18-24$\degree$C, a system target temperature range $T_{sys-min}$, $T_{sys-max}$ of 13-30$\degree$C, and a single-housing arrangement (6 faces), a molar mass of dry air\footnote{Water vapour has a maximum concentration of 30g/kg at 30$\degree$C, or 3\%, which is irrelevant for mass and heat capacity calculations.} $M$ of 28.97 $\frac g{mol}$, a specific heat capacity of dry air $c_p$ of $1.006 \frac{J}{g*\text{K}}$ and a 4-unit (2x2) expanded configuration:\\
 \vspace{.05cm}
 \begin{gather*}
     \label{eqn:heatloss}
-    Q_{loss}=\frac{(T_{surr-min}-T_{sys-max}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-30\degree \text{C}) * (6 \text{ faces} * 0.5m * 0.5m)}{0.0328 m^2 * \degree C*W^{-1} * 20 \text{ mm}}=-18.29 W\\\vspace{.05cm}\\
+    Q_{loss}=\frac{(T_{surr-min}-T_{sys-max}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-30\degree \text{C}) * (16 \text{ faces} * 0.5\text{m} * 0.5\text{m})}{0.0328 \text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1} * 20 \text{mm}}=-48.78 W\\\vspace{.05cm}\\
     \label{eqn:airmass}
-    m=\frac{P*V*M}{R*T_{avg}}=\frac{101.325\text{kPa}*(0.5m*0.5m*0.5m)*28.97\frac g{mol}}{8.314\frac{J}{\text{mol}*K}*300K}=147.1g\\\vspace{.05cm}\\
+    m_{air}=\frac{P*V*M}{R*T_{avg}}=\frac{101325\text{Pa}*(0.5\text{m}*0.5\text{m}*0.5\text{m}*4\text{ units})*28.97\frac g{mol}}{8.314\frac{J}{\text{mol}*K}*300\text{K}}=588.4g\\\vspace{.05cm}\\
     \label{eqn:heatcapacity}
-    W_{heating}=\frac{m*c_p*(T_{surr-min}-T_{sys-max})}{t}=\frac{m*c_p*(T_{init}-T_{target})}{60\text{ sec}}
+    W_{heating}=\frac{m*c_p*(T_{surr-min}-T_{sys-max})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-30\degree \text{C})}{60\text{ sec}}=-78.92\text{W}
 \end{gather*}
+
+$\therefore$ An 80W thermoelectric system will supply enough power to heat/cool the box in 60 seconds AND more than enough to maintain temperature.
 
 \newpage
 
@@ -565,7 +559,7 @@ Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature r
     \item \textit{Temperature Sensors}: SHT31 \cite{sht31} sensors on breakout boards located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation}).
     \item \textit{Heat Pump}: Pumps heat in or out of the growth environment. Is comprised of:
     \begin{itemize}
-        \item \textit{Peltier Devices}: Bidirectional solid state \textbf{thermoelectric tiles} pump heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
+        \item \textit{Peltier Devices}: 2x50W bidirectional solid-state \textbf{thermoelectric devices} (Peltier tiles) \cite{peltier} pump heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
         \item \textit{Peltier Driver Circuit}: Controls direction and magnitude of Peltier device heat pump via a \textbf{MOSFET H-bridge} and \textbf{dimmable current source} respectively.
         \item \textit{Heat Sinks}: Aluminum blocks with fins hold and exchange heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound for better transfer.
         \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
