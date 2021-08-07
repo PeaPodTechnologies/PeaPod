@@ -652,6 +652,21 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
     \end{enumerate}
 \end{enumerate}
 
+\textbf{Calculations}:
+
+Assuming an air temperature of 30$\degree$ C, water vapour saturation of $30.4g/m^{3}$, RH of 90\%, target RH of 20\%, and 6\% weight dessicant capacity:
+\vspace{.05cm}
+\begin{gather*}
+    90\% RH = 0.90 * 30.4g/m^{3} = 27.36g/m^{3} \\
+    20\% RH = 0.20 * 30.4g/m^{3} = 6.08g/m^{3} \\
+    Vol_{4 Units} = 0.5m * 0.5m * 0.5m * 4 = 0.5m^{3} \\
+    Mass_{water} = (27.36g/m^{3} * 0.5m^{3}) - (6.08g/m^{3} * 0.5m^{3}) = 10.64g \\
+    \frac{10.64}{0.06} = 177.3g \\
+\end{gather*}
+
+$\therefore$ 177.3g of dessicant will change the RH\% of a 4 unit setup from 90\% to 20\%.
+
+
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Humidity Sensor}: See Section \ref{sec:airhum}.
