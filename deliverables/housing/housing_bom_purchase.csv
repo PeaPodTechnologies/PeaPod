@@ -1,7 +1,11 @@
 Part,Description,Quantity,Supplier,Supplier Part Number,Unit Cost (CAD),Reference
-Frame Z Extrusion,20x20 Aluminum Extrusion 500mm,4,Faztek,20QE2020,$4.50,https://www.fazstore.ca/product/20qe2020/
-Frame X Extrusion,20x20 Aluminum Extrusion 460mm,4,Faztek,20QE2020,$4.30,https://www.fazstore.ca/product/20qe2020/
-Frame Y Extrusion,20x40 Aluminum Extrusion 460mm,4,Faztek,20QE2040,$6.58,https://www.fazstore.ca/product/20qe2020/
+Frame Front X Extrusion,20x20 Aluminum Extrusion 500mm,2,Faztek,20QE2020,$4.50,https://www.fazstore.ca/product/20qe2020/
+Frame Door Y Extrusion,20x20 Aluminum Extrusion 500mm,2,Faztek,20QE2020,$4.50,https://www.fazstore.ca/product/20qe2020/
+Frame Rear X Extrusion,20x20 Aluminum Extrusion 460mm,2,Faztek,20QE2020,$4.30,https://www.fazstore.ca/product/20qe2020/
+Frame Door X Extrusion,20x20 Aluminum Extrusion 460mm,2,Faztek,20QE2020,$4.30,https://www.fazstore.ca/product/20qe2020/
+Frame Rear Y Extrusion,20x40 Aluminum Extrusion 460mm,2,Faztek,20QE2040,$6.58,https://www.fazstore.ca/product/20qe2020/
+Frame Front Y,20x20 Aluminum Extrusion 460mm,2,Faztek,20QE2020,$4.30,https://www.fazstore.ca/product/20qe2020/
+Frame Z,20x20 Aluminum Extrusion 460mm,4,Faztek,20QE2020,$4.30,https://www.fazstore.ca/product/20qe2020/
 Tray X Extrusion,20x20 Aluminum Extrusion 440mm,4,Faztek,20QE2020,$4.10,https://www.fazstore.ca/product/20qe2020/
 Tray Z Extrusion,20x20 Aluminum Extrusion 400mm,6,Faztek,20QE2020,$3.70,https://www.fazstore.ca/product/20qe2020/
 Nozzle Arm Extrusion,20x20 Aluminum Extrusion 150mm,2,Faztek,20QE2020,$1.70,https://www.fazstore.ca/product/20qe2020/
@@ -16,3 +20,4 @@ Adhesive,LePage PL300 Foamboard 295mL,1,Home Depot (ca),1000403469,$5.97,https:/
 Grow Cup,"2in. Diameter",16,Amazon,,$0.25,https://www.amazon.ca/100-Pack-Garden-Slotted-Labels-Hydroponics/dp/B07CVFWSJ4/
 Aeroponics Bag,?,?,?,?,?,?
 9/16in. to 1-1/16in. Hose Clamp,Steel,2,Home Depot (CA),1000123472,1.65,https://www.homedepot.ca/product/waterline-sae-10-9-16-inch-to-1-1-16-inch-steel-clamp/1000123472
+Door Hinges,For 20x20 Extrusion,2,McMaster-Carr,5537T85,5.14,https://www.mcmaster.com/5537T85/
