@@ -3,25 +3,35 @@
 # the repo. Unless a later match takes precedence, they will
 # be requested for review when someone opens a pull request.
 
-*                           @jlefebvre55
+*                           @JLefebvre55
 
 #                   ADMIN
 # Repo administration code
 
-/.github/                   @peapodtechnologies/admins
-LICENSE                     @peapodtechnologies/admins
-.gitignore                  @peapodtechnologies/admins
+/.github/                   @UpRouteFoundation/admins
+LICENSE                     @UpRouteFoundation/admins
+.gitignore                  @UpRouteFoundation/admins
 
 #                   DOCUMENTATION
 # TODO: other file types?
 
-/docs/                      @peapodtechnologies/documentation-review
-*.tex                       @peapodtechnologies/documentation-review
-*.md                        @peapodtechnologies/documentation-review
+/docs/                      @UpRouteFoundation/documentation-review
+*.tex                       @UpRouteFoundation/documentation-review
+*.md                        @UpRouteFoundation/documentation-review
 
-#                   ELECTRONICS
-# Electronics software
+#                   SOFTWARE
+# Arduino and RPi
 
-/software/PeaPod-Arduino/   @peapodtechnologies/electronics
+/software/                  @UpRouteFoundation/software
+*.ts                        @UpRouteFoundation/software
+/software/arduino/          @UpRouteFoundation/electronics
+*.cpp                       @UpRouteFoundation/electronics
+*.ino                       @UpRouteFoundation/electronics
+*.h                         @UpRouteFoundation/electronics
+
+#                   HARDWARE
+# Mechanical and PCBs
+/hardware/                  @UpRouteFoundation/mechanical
+/hardware/electronics/      @UpRouteFoundation/electronics
 
 # TODO: Per-deliverable code ownership?
