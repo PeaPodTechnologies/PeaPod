@@ -1,18 +1,21 @@
-Part,Description,Quantity,Supplier,Supplier Part Number,Unit Cost (CAD),Reference
-Frame Z Extrusion,20x20 Aluminum Extrusion 500mm,4,Faztek,20QE2020,$4.50,https://www.fazstore.ca/product/20qe2020/
-Frame X Extrusion,20x20 Aluminum Extrusion 460mm,4,Faztek,20QE2020,$4.30,https://www.fazstore.ca/product/20qe2020/
-Frame Y Extrusion,20x40 Aluminum Extrusion 460mm,4,Faztek,20QE2040,$6.58,https://www.fazstore.ca/product/20qe2020/
-Tray X Extrusion,20x20 Aluminum Extrusion 440mm,4,Faztek,20QE2020,$4.10,https://www.fazstore.ca/product/20qe2020/
-Tray Z Extrusion,20x20 Aluminum Extrusion 400mm,6,Faztek,20QE2020,$3.70,https://www.fazstore.ca/product/20qe2020/
-Nozzle Arm Extrusion,20x20 Aluminum Extrusion 150mm,2,Faztek,20QE2020,$1.70,https://www.fazstore.ca/product/20qe2020/
-M5 Bolts,M5x0.8 10mm,101,Faztek,SHSCS,$0.21,https://www.fazstore.ca/product/metric-socket-head-cap-screw/
-M5 Long Bolts,M5x0.8 12mm,2,Faztek,SHSCS,$0.22,https://www.fazstore.ca/product/metric-socket-head-cap-screw/
-M6 Bolts,M6x1.0 10mm,8,Faztek,SHSCS,$0.15,https://www.fazstore.ca/product/metric-socket-head-cap-screw/
-M5 T-Nuts,Standard T-Nut M5x0.8,101,Faztek,,$0.35,https://www.fazstore.ca/product/20-series-standard-t-nut/
-M5 Hex Nuts,Standard M5x0.8,2,?,?,?,?
-Foam Insulation,"DUROSPAN GPS R5 4ft. x 8ft. x 1in.",1,Home Depot (ca),1001211234,$23.77,https://www.homedepot.ca/product/durospan-gps-r5-4-ft-x-8-ft-x-1-06-inch-graphite-enhanced-expandable-polystyrene-insulation-board/1001211234
-Reflective Mylar,4ft. x 25ft. x 2mm,1,Amazon,,$29.69,https://www.amazon.ca/VIVOSUN-Horticulture-Highly-Reflective-Mylar/dp/B018VI75CS/
-Adhesive,LePage PL300 Foamboard 295mL,1,Home Depot (ca),1000403469,$5.97,https://www.homedepot.ca/product/lepage-lepage-pl-300-foamboard-adhesive-295-ml/1000403469
-Grow Cup,"2in. Diameter",16,Amazon,,$0.25,https://www.amazon.ca/100-Pack-Garden-Slotted-Labels-Hydroponics/dp/B07CVFWSJ4/
-Aeroponics Bag,?,?,?,?,?,?
-9/16in. to 1-1/16in. Hose Clamp,Steel,2,Home Depot (CA),1000123472,1.65,https://www.homedepot.ca/product/waterline-sae-10-9-16-inch-to-1-1-16-inch-steel-clamp/1000123472
+Part                    ,Description                                           ,Quantity             ,Supplier        ,Supplier Part Number ,Unit Cost (CAD)  ,Reference
+Frame Front X Extrusion ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 500mm" ,2                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Frame Door Y Extrusion  ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 500mm" ,2                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Frame Rear X Extrusion  ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm" ,2                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Frame Door X Extrusion  ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm" ,2                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Frame Rear Y Extrusion  ,"Silver Painted, 20x40mm, Ordered 2ft., Cut to 460mm" ,2                    ,McMaster-Carr   ,5537T111             ,12.16            ,https://www.mcmaster.com/5537T111
+Frame Front Y           ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm" ,2                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Frame Z                 ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm" ,4                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Tray X Extrusion        ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 440mm" ,4                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Tray Z Extrusion        ,"Silver Painted, 20x20mm, Ordered 2ft., Cut to 400mm" ,6                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+Nozzle Arm Extrusion    ,"Silver Painted, 20x20mm, Ordered 1ft., Cut to 150mm" ,2                    ,McMaster-Carr   ,5537T101             ,8.44             ,https://www.mcmaster.com/5537T101
+M5x0.8 10mm Bolts       ,"Alloy Steel, Black Oxide Coated, Socket Head Cap"    ,123 (2 packs of 100) ,McMaster-Carr   ,91290A224            ,12.14 (0.12 ea.) ,https://www.mcmaster.com/91290A224
+M5x0.8 16mm Bolts       ,"Alloy Steel, Black Oxide Coated, Socket Head Cap"    ,10 (1 pack of 100)   ,McMaster-Carr   ,91290A232            ,14.72 (0.15 ea.) ,https://www.mcmaster.com/91290A232/
+M5 T-Nuts               ,"Zinc-Plated Steel, Black Painted, for 5mm Slot"      ,123 (13 packs of 10) ,McMaster-Carr   ,5537T651             ,4.25 (0.43 ea.)  ,https://www.mcmaster.com/5537T651
+M5x0.8 Hex Nuts         ,"Alloy Steel, Black Oxide Coated"                     ,10 (1 pack of 50)    ,McMaster-Carr   ,94166A120            ,5.23 (0.10 ea.)  ,https://www.mcmaster.com/94166A120/
+Foam Insulation         ,"DUROSPAN GPS R5 4ft. x 8ft. x 1in."                  ,1                    ,Home Depot (Ca) ,1001211234           ,23.77            ,https://www.homedepot.ca/product/durospan-gps-r5-4-ft-x-8-ft-x-1-06-inch-graphite-enhanced-expandable-polystyrene-insulation-board/1001211234
+Reflective Mylar        ,4ft. x 25ft. x 2mm                                    ,1                    ,Amazon          ,                     ,29.69            ,https://www.amazon.ca/VIVOSUN-Horticulture-Highly-Reflective-Mylar/dp/B018VI75CS/
+Adhesive                ,LePage PL300 Foamboard 295mL                          ,2                    ,Home Depot (Ca) ,1000403469           ,5.97             ,https://www.homedepot.ca/product/lepage-lepage-pl-300-foamboard-adhesive-295-ml/1000403469
+Grow Cup                ,"2in. Diameter"                                       ,16                   ,Amazon          ,                     ,0.25             ,https://www.amazon.ca/100-Pack-Garden-Slotted-Labels-Hydroponics/dp/B07CVFWSJ4/
+Aeroponics Container    ,?                                                     ,?                    ,?               ,?                    ,?                ,?
+Door Hinges             ,"Plastic, Black, for 20x20mm Extrusion"               ,2                    ,McMaster-Carr   ,5537T85              ,5.14             ,https://www.mcmaster.com/5537T85/

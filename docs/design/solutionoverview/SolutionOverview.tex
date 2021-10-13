@@ -8,6 +8,7 @@
 \usepackage{array,etoolbox}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
+\usepackage{amsmath}
 \usepackage[toc,page]{appendix}
 \setlist{noitemsep}
 
@@ -18,7 +19,7 @@
 % Headers
 \pagestyle{fancy}
 \lhead{PeaPod - Solution Overview}
-\rhead{PeaPod Technologies Inc.}
+\rhead{UpRoute Development Foundation}
 
 \begin{document}
 
@@ -34,7 +35,7 @@
 
         \vfill \small{
 
-            \textbf{Jayden Lefebvre - Lead Engineer, UTAG Founder}\\
+            \textbf{Jayden Lefebvre - Lead Engineer, Founder of UpRoute Development Foundation}\\
             BASc Computer Engineering (Anticipated 2024), University of Toronto\\
             Toronto, ON, Canada\\
             \vspace{.5cm}
@@ -56,9 +57,9 @@
 
         \vspace{.75cm}
 
-        Revision 0.8\\
-        PeaPod Technologies Inc.\\
-        July 27th, 2021
+        Revision 0.9\\
+        UpRoute Development Foundation\\
+        Aug 4th, 2021
 
     \end{center}
 \end{titlepage}
@@ -209,7 +210,7 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 \subsection{Housing}
 \label{sec:housing}
 
-\textbf{Purpose}: \textit{Isolates} and \textit{insulates} growth environment from exterior environment (heat, light, humidity). Provides structural integrity and mounting points for other subsystems.
+\textbf{Purpose}: \textit{Isolates} and \textit{insulates} growth environment from surroundings (heat, light, water vapour, air). Provides structural integrity and mounting points for other subsystems. Enables system extendability via repeated "unit cell" topology.
 
 \textbf{Method}:
 \begin{enumerate}
@@ -238,7 +239,7 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
             \item \textbf{Extension Modes} (may be combined in any way to suit application):
             \begin{itemize}
                 \item \textit{Option 1} (Smaller Housings): Operate the combined housing off \textbf{one} control module.
-                \item \textit{Option 2} (Larger Housings): Add a control module to account for additional air volume, plant count, power requirement, etc.. Operate in a \textbf{controller-follower topology}.
+                \item \textit{Option 2} (Larger Housings): Add control modules to account for additional air volume, plant count, power requirement, etc.. Operate in a \textbf{controller-follower topology}.
                 \item \textit{Option 3} (Frame Connection Only): Leave the dividing panel, add a control module, and operate the two PeaPods \textbf{separately}.
             \end{itemize}
         \end{enumerate}
@@ -254,11 +255,11 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Frame}: Cubic skeleton made of high strength-to-weight aluminum extrusion with standard mounting channels. "Edges" of cube.
-    \item \textit{Panels}: Foam insulation panels with mylar internal coating increase thermal and light efficiency, as well as safety against cross-contamination and pathogens. Panels slide into extrusion channels and form a "seal". "Faces" of cube.
-    \item \textit{Trays}: Horizontal plane subframes mounted to internal vertical extrusion channels for ease of repositioning. Trays slide in/out on permanent mounts. All connections are \textit{quick-disconnect} (i.e. quick-connect tubing for grow tray, push connectors for lighting) for ease of removal. Trays include:
+    \item \textit{Frame}: T-slotted aluminum extrusion framing with aluminum face-mounted brackets forms a cubic skeleton for rigidity/strength (high strength-to-weight aluminum) and easy component mounting and repositioning (standard mounting channels). These extrusions form the "edges" of the cubic housing. %Todo: cite extrusion
+    \item \textit{Panels}: Graphite-enhanced expanded polystyrene (GPS) rigid foam insulation panels \cite{insulation} with reflective mylar internal lamination increase energy efficiency (GPS RSI of 0.0328$\frac{m^2 \cdot \degree C}{W}$ per mm of thickness, mylar enables light/heat reflection), as well as safety against cross-contamination and pathogens. Panels slide into extrusion channels and form a "seal" for greater water vapour retention. These panels form the "faces" of cube. %Todo: cite mylar
+    \item \textit{Trays}: Horizontal plane subframes mounted to internal vertical extrusion channels for ease of repositioning. Trays slide in/out on permanent mounts. All connections are quick-connect (i.e. quick-diconnect tubing for grow tray, push connectors for lighting) for ease of removal. Trays include:
     \begin{itemize}
-        \item \textit{Grow Trays}: Support plants (via grow cups), aeroponic nozzles, and aeroponics container (See \ref{sec:aeroponics}).
+        \item \textit{Grow Trays}: Support plants (via grow cups), aeroponic nozzles, aeroponics container, and supply/recycling lines (See \ref{sec:aeroponics}).
         \item \textit{Lighting Trays}: Support LED boards, driver board (See \ref{sec:lighting}).
     \end{itemize}
 \end{itemize}
@@ -499,7 +500,7 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
         \item \textit{Solution Dosing} (\ref{sec:nutrientsph})
         \item \textit{Solution Heater, Cooler} (\ref{sec:watertemp})
     \end{itemize}
-    \item \textit{Air Heater, Cooler} (\ref{sec:airtemp})
+    \item \textit{Air Heater, Cooler} (\ref{sec:airthermoregulation})
     \item \textit{Air Humidifier} (\ref{sec:airhum}), \textit{Dehumidifier} (\ref{sec:dehum})
     \item \textit{Gas Exchanger} (\ref{sec:gas})
     \item \textit{Lighting} (\ref{sec:lighting})
@@ -507,55 +508,63 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 
 \newpage
 
-\subsubsection{Air Temperature}
-\label{sec:airtemp}
+\subsubsection{Air Thermoregulation}
+\label{sec:airthermoregulation}
 
-\textbf{Purpose}: Maintaining desired air temperature within the enclosure.
+\textbf{Purpose}: Maintaining desired leaf-zone air temperature and circulating air.
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation})
-    \item \textbf{Outputs}: Heating/cooling, air circulation, air temperature signal (\ref{sec:automation})
+    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation}), air circulation control signal (\ref{sec:automation});
+    \item \textbf{Outputs}: $\pm$Heat to environment, $\mp$heat to surroundings, internal air circulation, internal air temperature sensor signal (\ref{sec:automation});
 \end{itemize}
 
 \textbf{Method}:
 \begin{enumerate}
-    \item \textit{Setup}:
-    \begin{enumerate}
-        \item Connect inputs;
-    \end{enumerate}
     \item \textit{Testing}:
     \begin{itemize}
         \item Heat pump direction and magnitude respond to control signal as expected;
         \item Fans operate as expected;
-        \item Heat pump transfer capacity exceeds maximum heat loss at extremes of temperature difference\footnote{i.e. if X Watts leave the system at MAX°C internal, MIN°C external, the heat pump can transfer >X Watts};
+        \item Heat pump power exceeds maximum heat loss (temperature extremes)\footnote{i.e. if X Watts leave the system at MAX°C internal, MIN°C external, the heat pump can transfer >X Watts};
+        \item Heat pump power exceeds that required to reach temperature extremes in under sixty (60) seconds given the system's heat capacity;
     \end{itemize}
     \item \textit{Process}:
     \begin{enumerate}
         \item Air is circulated throughout the environment;
         \item Temperature is measured, sent to control module;
-        \item Control module controls heat pump speed and direction (heating vs. cooling environment);
-    \end{enumerate}
-    \item \textit{Shutdown}:
-    \begin{enumerate}
-        \item Disconnect inputs;
+        \item Control module controls heat pump speed and direction (heating vs. cooling);
     \end{enumerate}
 \end{enumerate}
+
+\textbf{Calculations}:
+
+Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature range $T_{surr-min}$, $T_{surr-max}$ of 18-24$\degree$C, a system target temperature range $T_{sys-min}$, $T_{sys-max}$ of 13-30$\degree$C, and a single-housing arrangement (6 faces), a molar mass of dry air\footnote{Water vapour has a maximum concentration of 30g/kg at 30$\degree$C, or 3\%, which is irrelevant for mass and heat capacity calculations.} $M$ of 28.97 $\frac g{mol}$, a specific heat capacity of dry air $c_p$ of $1.006 \frac{J}{g*\text{K}}$ and a 4-unit (2x2) expanded configuration:\\
+\vspace{.05cm}
+\begin{gather*}
+    \label{eqn:heatloss}
+    Q_{loss}=\frac{(T_{surr-min}-T_{sys-max}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-30\degree \text{C}) * (16 \text{ faces} * 0.5\text{m} * 0.5\text{m})}{0.0328 \text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1} * 20 \text{mm}}=-48.78 W\\\vspace{.05cm}\\
+    \label{eqn:airmass}
+    m_{air}=\frac{P*V*M}{R*T_{avg}}=\frac{101325\text{Pa}*(0.5\text{m}*0.5\text{m}*0.5\text{m}*4\text{ units})*28.97\frac g{mol}}{8.314\frac{J}{\text{mol}*K}*300\text{K}}=588.4g\\\vspace{.05cm}\\
+    \label{eqn:heatcapacity}
+    W_{heating}=\frac{m*c_p*(T_{surr-min}-T_{sys-max})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-30\degree \text{C})}{60\text{ sec}}=-78.92\text{W}
+\end{gather*}
+
+$\therefore$ An 80W thermoelectric system will supply enough power to heat/cool the box in 60 seconds AND more than enough to maintain temperature.
+
+\newpage
 
 \textbf{Features}:
 \begin{itemize}
     \item \textit{Circulation Fans}: Located in growth environment to circulate air even temperature distribution.
-    \item \textit{Temperature Sensors}: Located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation}).
+    \item \textit{Temperature Sensors}: SHT31 \cite{sht31} sensors on breakout boards located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation}).
     \item \textit{Heat Pump}: Pumps heat in or out of the growth environment. Is comprised of:
     \begin{itemize}
-        \item \textit{Peltier Devices}: Bidirectional solid state \textbf{thermoelectric tile} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
+        \item \textit{Peltier Devices}: 2x50W bidirectional solid-state \textbf{thermoelectric devices} (Peltier tiles) \cite{peltier} pump heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
         \item \textit{Peltier Driver Circuit}: Controls direction and magnitude of Peltier device heat pump via a \textbf{MOSFET H-bridge} and \textbf{dimmable current source} respectively.
         \item \textit{Heat Sinks}: Aluminum blocks with fins hold and exchange heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound for better transfer.
         \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
     \end{itemize}
 \end{itemize}
-
-\newpage
 
 \subsubsection{Air Humidification}
 \label{sec:airhum}
@@ -597,7 +606,7 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Circulation Fans}: See Section \ref{sec:airtemp}.
+    \item \textit{Circulation Fans}: See Section \ref{sec:airthermoregulation}.
     \item \textit{Humidity Sensor}: Located throughout the growth environment to measure air humidity. Informs a \textbf{bang-bang} control loop (\ref{sec:automation});
     \item \textit{Humidification Unit}: Easily controllable and produces a consistent vapour. Comprised of:
     \begin{itemize}
@@ -651,6 +660,21 @@ The purpose of this document is to outline a design proposed to meet the PeaPod 
         \item Desiccant is removed from cartridge;
     \end{enumerate}
 \end{enumerate}
+
+\textbf{Calculations}:
+
+Assuming an air temperature of 30$\degree$ C, water vapour saturation of $30.4g/m^{3}$, RH of 90\%, target RH of 20\%, and 6\% weight dessicant capacity:
+\vspace{.05cm}
+\begin{gather*}
+    90\% RH = 0.90 * 30.4g/m^{3} = 27.36g/m^{3} \\
+    20\% RH = 0.20 * 30.4g/m^{3} = 6.08g/m^{3} \\
+    Vol_{4 Units} = 0.5m * 0.5m * 0.5m * 4 = 0.5m^{3} \\
+    Mass_{water} = (27.36g/m^{3} * 0.5m^{3}) - (6.08g/m^{3} * 0.5m^{3}) = 10.64g \\
+    \frac{10.64}{0.06} = 177.3g \\
+\end{gather*}
+
+$\therefore$ 177.3g of dessicant will change the RH\% of a 4 unit setup from 90\% to 20\%.
+
 
 \textbf{Features}:
 \begin{itemize}
@@ -864,6 +888,7 @@ $$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
 \newpage
 
 % References
-% \bibliographystyle{IEEEtran}
-% \bibliography{references}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
 \end{document}
