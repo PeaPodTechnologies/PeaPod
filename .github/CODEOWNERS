@@ -3,25 +3,35 @@
 # the repo. Unless a later match takes precedence, they will
 # be requested for review when someone opens a pull request.
 
-*                           @jlefebvre55
+*                           @JLefebvre55
 
 #                   ADMIN
 # Repo administration code
 
-/.github/                   @utagritech/admins
-LICENSE                     @utagritech/admins
-.gitignore                  @utagritech/admins
+/.github/                   @UpRouteFoundation/admins
+LICENSE                     @UpRouteFoundation/admins
+.gitignore                  @UpRouteFoundation/admins
 
 #                   DOCUMENTATION
 # TODO: other file types?
 
-/docs/                      @utagritech/documentation-review
-*.tex                       @utagritech/documentation-review
-*.md                        @utagritech/documentation-review
+/docs/                      @UpRouteFoundation/documentation-review
+*.tex                       @UpRouteFoundation/documentation-review
+*.md                        @UpRouteFoundation/documentation-review
 
-#                   ELECTRONICS
-# Electronics software
+#                   SOFTWARE
+# Arduino and RPi
 
-/software/PeaPod-Arduino/   @utagritech/electronics
+/software/                  @UpRouteFoundation/software
+*.ts                        @UpRouteFoundation/software
+/software/arduino/          @UpRouteFoundation/electronics
+*.cpp                       @UpRouteFoundation/electronics
+*.ino                       @UpRouteFoundation/electronics
+*.h                         @UpRouteFoundation/electronics
+
+#                   HARDWARE
+# Mechanical and PCBs
+/hardware/                  @UpRouteFoundation/mechanical
+/hardware/electronics/      @UpRouteFoundation/electronics
 
 # TODO: Per-deliverable code ownership?
