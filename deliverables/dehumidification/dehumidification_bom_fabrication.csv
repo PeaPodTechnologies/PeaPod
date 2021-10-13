@@ -1,0 +1,4 @@
+Part          ,Quantity ,Materials ,Materials Unit Cost (CAD) ,Process     ,Time (min) ,Reference
+Cartridge     ,1        ,PETG      ,TBA                       ,3D Printing ,TBA        , ./hardware/Cartridge.stl
+Cartridge Lid ,1        ,PETG      ,TBA                       ,3D Printing ,TBA        , ./hardware/CartridgeLid.stl
+Housing       ,1        ,PETG      ,TBA                       ,3D Printing ,TBA        , ./hardware/Housing.stl

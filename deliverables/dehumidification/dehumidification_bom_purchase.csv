@@ -1,0 +1,4 @@
+Part                 ,Description                                   ,Quantity          ,Supplier      ,Supplier Part Number ,Unit Cost (CAD)  ,Reference
+M4x0.7 35mm Bolt     ,"Alloy Steel, Black Oxide Coated, 15mm Shank" ,8 (1 pack of 50)  ,McMaster-Carr ,91290A182            ,10.37 (0.21 ea.) ,https://www.mcmaster.com/91290A182
+M4x0.7 Hex Nut       ,"Alloy Steel, Black Oxide Coated"             ,8 (1 pack of 100) ,McMaster-Carr ,94166A110            ,8.30 (.08 ea.)   ,https://www.mcmaster.com/94166A110/
+Indicating Desiccant ,"Silica Gel, Blue to Pink, 1lb"               ,1                 ,McMaster-Carr ,2181K93              ,19.63            ,https://www.mcmaster.com/2181K93/
