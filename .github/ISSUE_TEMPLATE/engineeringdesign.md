@@ -7,25 +7,41 @@ assignees: ''
 
 ---
 
-### Design Scope
+> @ TEAM (Optional)
+
+**Completion is tracked in the linked issue.**
+
+## Design Scope
 
 Briefly outline the design scope here.
 
-- Purpose ABC
-- Function/Method XYZ
+### Purpose
 
-### Deliverables
+The purpose of system ABC is to ...
 
-Outline the implementation prototype and its components:
-- [ ] I.e. Power Driver
-- [ ] Sensor
+### Function
+
+It is connected to/it interfaces with/it depends on/it assumes ...
+
+### Method
+
+It accomplishes this by ...
+
+## Features
+
+- [ ] Component A
+- [ ] Connector B
+- [ ] Subsystem C
 - [ ] ...
 
-### Requirements
+> NOTE TO ISSUE AUTHOR: If a feature above is complex enough, create a new issue and tag it here. This is a recursive template.
 
-List any applicable metrics with criteria/constraints:
+## Requirements
+
+List any applicable metrics with criteria/constraints, applicable to purpose, function, method, and each feature.
 1. I.e. Height - <2 meters
 2. Weight - Minimize
+3. ...
 
 **Additional context**
 
