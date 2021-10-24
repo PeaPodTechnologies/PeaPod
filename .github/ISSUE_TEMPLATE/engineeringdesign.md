@@ -1,8 +1,8 @@
 ---
 name: Engineering Design Task
-about: Outline the design and implementation scope of a single feature
+about: Outline the design scope, implementation, and testing of a single feature
 title: "[DESIGN] - Design Task"
-labels: 'Scope: Deliverable, Status: Open, Type: New Feature'
+labels: 'Scope: Engineering Design, Status: Open, Type: New Feature'
 assignees: ''
 
 ---
@@ -13,29 +13,45 @@ assignees: ''
 
 ## Design Scope
 
-Briefly outline the design scope here.
+Design a ...
 
 ### Purpose
 
-The purpose of system ABC is to ...
+The purpose of ABC is to ...
 
 ### Function
 
-It is connected to/it interfaces with/it depends on/it assumes ...
+Inputs:
+- ...
+
+Outputs:
+- ...
+
+It interfaces with/depends on the following systems:
+- 
+
+System operation assumes:
+- 
 
 ### Method
 
-It accomplishes this by ...
+Setup:
+1. ...
+
+Process:
+1. ...
+
+Shutdown:
+1. ...
 
 ## Features
+> Each feature should be added to relevant BoMs and CADs where applicable. Design decisions should be well-supported using relevant research and calculations, and should be documented in the Solution Overview. If a feature is complex enough, create a new issue for it using this template, and tag it here.
 
 - [ ] Component A
 - [ ] Connector B
 - [ ] Subsystem C
   - [ ] Component D
 - [ ] ...
-
-> NOTE TO ISSUE AUTHOR: If a feature above is complex enough, create a new issue and tag it here. This is a recursive template.
 
 ## Requirements and Validation
 
@@ -47,12 +63,13 @@ List any applicable metrics with criteria/constraints, applicable to purpose, fu
 3. ...
 
 ## Verification
+> Each test should be performed and documented, and the testing documentation attached to the PR. The testing suite should address the full scope of the function (i.e. ensure inputs are met and outputs work), method (all steps execute correctly), and features (each feature performs as expected) with respect to the requirements.
 
 _How does this design achieve its method effectively, safely, and reliably? How do we test this?_
 
 Specific testing procedure:
-- [ ] ...
+1. ...
 
 **Additional context**
 
-Add any other context or screenshots about the prototyping request here.
+Add any other context about the design scope or additional deliverables here.
