@@ -58,12 +58,10 @@ Shutdown:
 _What does this design need to accomplish? How do we know it has accomplished this?_
 
 List any applicable metrics with criteria/constraints, applicable to purpose, function, method, and each feature, as well as how to test them.
-1. I.e. Height - <2 meters
-2. Weight - Minimize
-3. ...
+1. Metric A - Criteria/Constraint
 
 ## Verification
-> Each test should be performed and documented, and the testing documentation attached to the PR. The testing suite should address the full scope of the function (i.e. ensure inputs are met and outputs work), method (all steps execute correctly), and features (each feature performs as expected) with respect to the requirements.
+> Each test should be performed and documented, and the testing documentation attached to the PR. The testing suite should address the full scope of the **function** (i.e. ensure inputs are met and outputs work), **method** (all steps execute correctly), and **features** (each feature performs as expected) with respect to the purpose and requirements.
 
 _How does this design achieve its method effectively, safely, and reliably? How do we test this?_
 
