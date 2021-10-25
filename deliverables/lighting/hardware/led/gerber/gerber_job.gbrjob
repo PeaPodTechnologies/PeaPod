@@ -1,7 +1,7 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2021-09-13T19:55:22Z",
+        "CreationDate": "2021-10-25T17:55:46Z",
         "GenerationSoftware": {
             "Application": "EAGLE",
             "Vendor": "Autodesk",
@@ -13,12 +13,12 @@
         "BoardThickness": 1.57,
         "LayerNumber": 2,
         "Name": {
-            "ProjectId": "Lighting Daughterboard (PCB) v3"
+            "ProjectId": "LED Board (PCB) v11"
         },
         "Owner": "Jayden Lefebvre <jayden.lefebvre@infinitytechnology.ca>",
         "Size": {
-            "X": 43.18,
-            "Y": 62.281
+            "X": 44.45,
+            "Y": 63.5
         }
     }
 }
