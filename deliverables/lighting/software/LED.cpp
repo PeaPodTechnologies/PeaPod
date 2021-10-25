@@ -31,8 +31,8 @@ bool LED::init(){
 
 void LED::update(){
     // Clamp to 0<x<1
-    this->target = clamp(target, 0, 1);
-    float power = this->target*255*LED_BRIGHTNESS_FACTOR;
+    this->target = constrain(target, 0, 1);
+    float power = this->target*255;
     Serial.print("Power: ");
     Serial.println(power);
     analogWrite(this->pin, power);
