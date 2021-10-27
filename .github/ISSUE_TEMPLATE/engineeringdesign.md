@@ -9,7 +9,7 @@ assignees: ''
 
 > @ TEAM (Optional)
 
-**Completion is tracked in the linked issue.**
+**Completion is tracked in the linked PR.**
 
 ## Design Scope
 
