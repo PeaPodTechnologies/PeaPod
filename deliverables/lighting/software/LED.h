@@ -3,8 +3,6 @@
 
 #include "Actuator.h"
 
-#define LED_BRIGHTNESS_FACTOR 0.1
-
 enum t_color { LED_N, LED_BLUE, LED_COOL, LED_WARM, LED_RED, LED_FAR };
 
 class LED : public Actuator {

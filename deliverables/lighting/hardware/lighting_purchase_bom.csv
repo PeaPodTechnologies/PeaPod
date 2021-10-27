@@ -1,0 +1,3 @@
+Part               ,Description                                                                                   ,Quantity ,Supplier ,Supplier Part Number ,Unit Cost (CAD) ,Reference
+Lighting LED PCB   ,"2 Layers, 1 oz. Copper, 1.6mm Thickness, Suggested: HASL Finish, Blue PCB, White Silkscreen" ,5        ,JLCPCB   ,N/A                  ,0.51            ,./led/gerber/
+Lighting Power PCB ,"2 Layers, 1 oz. Copper, 1.6mm Thickness, Suggested: HASL Finish, Blue PCB, White Silkscreen" ,1        ,JLCPCB   ,N/A                  ,1.62            ,./power/gerber/

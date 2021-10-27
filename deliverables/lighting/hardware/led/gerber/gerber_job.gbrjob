@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2021-10-25T17:55:46Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.7.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "LED Board (PCB) v11"
+        },
+        "Owner": "Jayden Lefebvre <jayden.lefebvre@infinitytechnology.ca>",
+        "Size": {
+            "X": 44.45,
+            "Y": 63.5
+        }
+    }
+}
