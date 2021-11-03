@@ -1,11 +1,11 @@
 import { IPeaPodArduino } from './PeaPodArduino';
+import { IPeaPodPublisher } from './PeaPodPublisher';
 import { PeaPodMessage } from './PeaPod';
+import { stringsToTuple } from './utils';
+import chalk from 'chalk';
 
-function stringTuple<T extends [string] | string[]>(...data: T): T {
-    return data;
-}
-
-const DataLabels = stringTuple('air_temperature', 'water_level');
+// Convert our set of strings to a union type. TypeScript nonsense.
+const DataLabels = stringsToTuple('air_temperature', 'water_level');
 type TDataLabels = typeof DataLabels[number];
 type SimulatorParameters = {
     [key in TDataLabels]: {
@@ -15,8 +15,8 @@ type SimulatorParameters = {
     }
 }
 
-type ArduinoData = PeaPodMessage & {
-    type: 'data', msg: {
+type ArduinoData = {
+    type: 'data', data: {
         [key: string]: number
     }
 };
@@ -24,12 +24,15 @@ type ArduinoData = PeaPodMessage & {
 function generateData(label: TDataLabels, min : number, max : number) : ArduinoData {
     let data : ArduinoData = {
         type: 'data',
-        msg: {}
+        data: {}
     };
-    data.msg[label.replace('_','-')] = Math.random()*(max-min)+min;
+    data.data[label.replace('_','-')] = Math.random()*(max-min)+min;
     return data;
 }
 
+/** 
+ * A simulated Arduino for generating random data.
+*/
 export class ArduinoSimulator implements IPeaPodArduino{
     intervals : NodeJS.Timeout[] = []
     constructor(public parameters : SimulatorParameters){}
@@ -47,5 +50,12 @@ export class ArduinoSimulator implements IPeaPodArduino{
                     this.parameters[label as TDataLabels].max));
             }, this.parameters[label as TDataLabels].interval));
         }
+    }
+}
+
+export class PeaPodLogger implements IPeaPodPublisher{
+    async start(): Promise<void> {}
+    async publish(msg: PeaPodMessage): Promise<void> {
+        console.log(`[${chalk.magenta(msg.type.toUpperCase())}] - ${JSON.stringify(msg.data)}`);
     }
 }

@@ -1,86 +1,86 @@
-import SerialPort from 'serialport';
 import { PeaPodMessage } from './PeaPod';
+import SerialPort from 'serialport';
+import { ArduinoInstructionsError, RevisionError } from './errors';
 
-const BAUDRATE = 9600;
-const REVISION_CHECK = 0;
-const REVISION_STOP = 1;
+const BAUDRATE = 115200;
+const ARDUINO_REVISION = "0";
 
-async function findSerialPath() : Promise<string> {
-    let ports = await SerialPort.list();
-    for(const port of ports){
-        if(port.manufacturer?.toLowerCase().includes("arduino")){
-            return port.path;
-        }
-    }
-    throw new Error('Arduino not found! Check wiring.');
-}
-
-export class RevisionError extends Error {
-    constructor(public serialmessage : string){
-        super("Revision check failed! Message: "+serialmessage);
-    }
-}
-
-export class ArduinoInstructionsError extends Error {
-    constructor(public instructions : ArduinoInstructions | Object){
-        super("Failed to send instructions to Arduino: "+JSON.stringify(instructions));
-    }
-}
-
-export interface IPeaPodArduino {
-    start(onMessage : (msg : PeaPodMessage)=> any): void;
+/**
+ * Abstract base type for any PeaPod message source.
+ */
+export type IPeaPodArduino = {
+    /**
+     * Establish communications with the Arduino.
+     * @param onMessage Pipe recieved messages.
+     */
+    start(onMessage : (msg : PeaPodMessage)=> void): void;
+    /**
+     * Halt communications.
+     */
     stop(): Promise<void>;
+};
+
+/**
+ * Expanded message type to include all types of messages from the Arduino
+ */
+type ArduinoMessage = PeaPodMessage | {
+    type: 'revision',
+    data: any
 }
 
-export type ArduinoInstructions = {
-    [key: string]: number
+type ArduinoInstructions = {
+    [key: string]: number;
 }
 
-export class PeaPodArduinoInterface implements IPeaPodArduino{
-    serial : SerialPort | undefined;
-    parser : SerialPort.parsers.Readline | undefined;
-    private revisionchecked : boolean = false;
-    private initialInstructionsSent : boolean = false;
-    constructor(){}
-    async start(onMessage : (msg : PeaPodMessage)=> any, arduinoRevision : number = 0, initialInstructions : ArduinoInstructions = {"scale":0}): Promise<void> {
-        let serialpath = await findSerialPath();
-        this.serial = new SerialPort(serialpath, {baudRate: BAUDRATE, autoOpen: true});
-        this.parser = new SerialPort.parsers.Readline({ delimiter: '\n', includeDelimiter: false });
+/**
+ * Interface between this computer and the Arduino.
+ */
+export default class PeaPodArduinoInterface implements IPeaPodArduino{
+    serial : SerialPort;
+    parser : SerialPort.parsers.Readline;
+    constructor(readonly serialpath: string, private initialInstructions: ArduinoInstructions = {}){
+        // Open the serial port
+        this.serial = new SerialPort(serialpath, {
+            baudRate: BAUDRATE,
+            autoOpen: true
+        });
+
+        // Create the newline parser
+        this.parser = new SerialPort.parsers.Readline({ 
+            delimiter: '\n',
+            includeDelimiter: false
+        });
+    }
+    async start(onMessage : (msg : PeaPodMessage) => void): Promise<void> {
+        // Pipe all serial messages to the newline parser
         this.serial.pipe(this.parser);
-        this.parser?.on('data', msg =>{
-            if(!this.revisionchecked){
-                if(msg == arduinoRevision){
-                    if(!this.serial?.write(REVISION_CHECK+'\n')){
-                        throw new ArduinoInstructionsError(REVISION_CHECK);
+
+        // Set up the listener
+        this.parser?.on('data', msgtxt =>{
+            // Parse the raw text as a JSON object.
+            const msg = JSON.parse(msgtxt) as ArduinoMessage;
+            // Handle all message types except: 'info', 'data', 'debug', 'error' 
+            switch (msg.type) {
+                case 'revision':
+                    if((msg.data as string) == ARDUINO_REVISION){
+                        this.write({
+                            type: 'instructions',
+                            data: {...this.initialInstructions}
+                        });
+                    } else {
+                        // TODO: Update Arduino if revision does not match
+                        throw new RevisionError(ARDUINO_REVISION, msg.data as string);
                     }
-                    this.revisionchecked = true;
-                } else {
-                    if(!this.serial?.write(REVISION_STOP+'\n')){
-                        throw new ArduinoInstructionsError(REVISION_STOP);
-                    }
-                    // Not sure if these `destroy`s are right
-                    this.parser?.destroy();
-                    this.serial?.destroy();
-                    throw new RevisionError(msg);
-                }
-            } else if (!this.initialInstructionsSent){
-                if(msg == 0){
-                    this.write(initialInstructions);
-                    this.initialInstructionsSent = true;
-                } else {
+                    break;
+                default:
                     onMessage(msg as PeaPodMessage);
-                }
-            } else {
-                onMessage(msg as PeaPodMessage);
+                    break;
             }
         });
-        this.parser?.on('data', (msg : string)=>{
-            return JSON.parse(msg) as PeaPodMessage;
-        });
     }
-    write(msg : ArduinoInstructions){
-        if(!this.serial?.write(JSON.stringify(msg)+"\n")){
-            throw new Error("Failed to send instructions to Arduino: "+JSON.stringify(msg));
+    write(msg : any){
+        if(!this.serial?.write(JSON.stringify(msg)+'\n')){
+            throw new ArduinoInstructionsError(JSON.stringify(msg));
         }
     }
     stop(): Promise<void> {

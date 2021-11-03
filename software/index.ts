@@ -1,78 +1,73 @@
-import * as dns from 'dns';
-import ora from 'ora';
-import chalk from 'chalk';
-import PeaPod from './lib/PeaPod';
+import chalk from 'chalk'; //Colored CLI text
+import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
+import firebase from 'firebase';
 
-const sleep = (millis : number) => {
-    return new Promise(resolve => {
-        setTimeout(resolve, millis);
-    });
-};
+import PeaPod from './lib/PeaPod'; //MAIN LIB
 
-const defaultSpinner : ora.Spinner = {
-    interval: 50,
-    frames: [
-        "▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁",
-        "█▁▁▁▁▁▁▁▁▁▁▁▁▁▁",
-        "██▁▁▁▁▁▁▁▁▁▁▁▁▁",
-        "███▁▁▁▁▁▁▁▁▁▁▁▁",
-        "████▁▁▁▁▁▁▁▁▁▁▁",
-        "█████▁▁▁▁▁▁▁▁▁▁",
-        "▁█████▁▁▁▁▁▁▁▁▁",
-        "▁▁█████▁▁▁▁▁▁▁▁",
-        "▁▁▁█████▁▁▁▁▁▁▁",
-        "▁▁▁▁█████▁▁▁▁▁▁",
-        "▁▁▁▁▁█████▁▁▁▁▁",
-        "▁▁▁▁▁▁█████▁▁▁▁",
-        "▁▁▁▁▁▁▁█████▁▁▁",
-        "▁▁▁▁▁▁▁▁█████▁▁",
-        "▁▁▁▁▁▁▁▁▁█████▁",
-        "▁▁▁▁▁▁▁▁▁▁█████",
-        "▁▁▁▁▁▁▁▁▁▁▁████",
-        "▁▁▁▁▁▁▁▁▁▁▁▁███",
-        "▁▁▁▁▁▁▁▁▁▁▁▁▁██",
-        "▁▁▁▁▁▁▁▁▁▁▁▁▁▁█",
-    ]
-}
-
-var loading : ora.Ora;
-
-/**
- * Checks the internet connectivity.
- * @param {number} timeout Timeout in milliseconds.
- * @param {dns.Resolver} resolver DNS Resolver object.
- */
-function checkInternet (timeout : number = 5000) : Promise<boolean> {
-    const resolver = new dns.Resolver({timeout: timeout});
-    return new Promise<boolean>(ret=>{
-        resolver.resolve('www.google.com',err=> {
-            if (err) {
-                ret(false);
-            } else {
-                ret(true);
-            }
-        });
-    });
-}
+import { checkInternet, sleep, loadDotenv } from './lib/utils'; //Utilities
+import { failSpinner, startSpinner, succeedSpinner } from './lib/ui'; //UI utils
 
 async function main(){
-    loading = ora({
-        text: `Checking for ${chalk.blue('Internet')} connection...'`,
-        spinner: defaultSpinner,
-    }).start();
 
-    if(!(await checkInternet(5))){
-        loading.fail('Could not connect to the Internet.');
-        return;
+    // SETUP
+
+    // Load environment variables
+    loadDotenv();
+
+    // CONSTANTS
+    const firebaseConfig = {
+        apiKey: process.env.FIREBASE_APIKEY,
+        authDomain: process.env.FIREBASE_AUTHDOMAIN,
+        databaseURL: process.env.FIREBASE_DATABASEURL,
+        projectId: process.env.FIREBASE_PROJECTID,
+        storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+        messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
+        appId: process.env.FIREBASE_APPID,
+        measurementId: process.env.FIREBASE_MEASUREMENTID
+    };
+
+    const authConfig : DeviceFlowUIOptions = {
+        Google : {
+            scopes : process.env.GOOGLE_SCOPES?.split(' '),
+            clientid : process.env.GOOGLE_CLIENTID,
+            clientsecret : process.env.GOOGLE_CLIENTSECRET
+        },
+        GitHub : {
+            scopes : process.env.GITHUB_SCOPES?.split(' '),
+            clientid : process.env.GITHUB_CLIENTID,
+            clientsecret : process.env.GITHUB_CLIENTSECRET
+        }
+    };
+
+    // Check Internet connection
+    startSpinner(`Checking for ${chalk.blue('Internet')} connection...'`)
+    if(!(await checkInternet())){
+        // TODO: Offline operation
+        throw new Error(`Could not connect to the {${chalk.blue('Internet')}!`);
     }
-    loading.succeed(`Connected to the ${chalk.blue('Internet')}!`);
+    succeedSpinner(`Connected to the ${chalk.blue('Internet')}!`);
     await sleep(1500);
-    var peapod = new PeaPod();
-    const user = await peapod.authenticate();
-    await peapod.post()
-    peapod.arduino?.start((msg)=>{
-        console.log(`[${chalk.magenta(msg.type.toUpperCase())}] - ${JSON.stringify(msg.msg)}`);
-    })
+
+    // ONLINE OPERATION
+
+    // Connect to Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Authenticate the user with Firebase
+    let auth = new DeviceFlowUI(firebase.app(), authConfig);
+    const user = await auth.signIn();
+
+    // INTERNAL SETUP
+    const peapod = new PeaPod();
+
+    // IN PRODUCTION: fetch serial port with findSerialPath
+
+    // Establish communications
+    peapod.arduino.start((msg)=>{
+        peapod.publisher.publish(msg);
+    });
 }
 
-main();
+main().catch((err: Error)=>{
+    failSpinner(err.message)
+});
