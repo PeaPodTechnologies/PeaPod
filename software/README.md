@@ -1,31 +1,51 @@
-# PeaPod Software
+# PeaPodOS <!-- omit in toc -->
+
+![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Open%22) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
+
+<!-- TODO: Build Statuses? -->
  
-Includes all libraries and code for PeaPod. 
+A cloud-connected isolated and automated plant growth environment, able to generate any environment from a combination of independent environment parameters. 
 
-Raspberry Pi software is located in this folder. Arduino software are located in the `PeaPod-Arduino` folder.
+Designed as both a hassle-free food production system and a research tool for precise and distributed mapping of the plant-environment relationship.
 
-## References
+***
+## Table of Contents
+- [Development](#development)
+  - [Requirements](#requirements)
+    - [Building from Repo](#building-from-repo)
+    - [Running from Package](#running-from-package)
+***
 
-...
+## Background
 
-Check out: https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide
+<!-- TODO: Control flow diagram, describe internal vs cloud software -->
+
+***
 
 # Development
 
-<!-- ## Requirements
-
-Your computer can be used as the host computer (for the time being). Alternatively, a Raspberry Pi is used in the production setting.
-
-1. Install _Node.JS_ and _npm_ (`sudo apt install nodejs npm` on Unix terminal);
-2. Install _Node.JS_ dependencies (`npm i`);
-3. ...
-
-## Run
-
-Execute `node .` to run the host computer software. -->
-
 ## Requirements
 
-...
+> Note: In Development, any computer may be used. In Production, a Raspberry Pi Zero W 2 is used.
 
-<!-- Raspberry Pi requirements? I.e. Node.js, Arduino CLI-->
+<!-- TODO: Automate these features in a bash script for RPi startup -->
+
+### Building from Repo
+
+1. Install Node.JS and `npm` [(Download)](https://nodejs.org/en/download/).
+2. Clone the [PeaPod repository](https://github.com/PeaPodTechnologies/PeaPod).
+3. Open a terminal and navigate to `/software` (this folder).
+4. Run `npm run build` to download all JS dependencies and build the package.
+
+Run `npm start` to launch the project.
+
+### Running from Package
+
+<!-- TODO: Publish package to npm -->
+
+1. Install Node.JS and `npm` [(Download)](https://nodejs.org/en/download/).
+2. Install this package with `npm i @peapodtech/peapodos`.
+
+<!-- Uhhh other steps??? -->
+
+Run `npm start` to launch the project.

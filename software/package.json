@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm i && tsc && node ."
+    "build": "npm i && tsc",
+    "start": "node ."
   },
   "repository": {
     "type": "git",
