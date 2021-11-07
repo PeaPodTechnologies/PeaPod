@@ -2,7 +2,10 @@ import chalk from 'chalk'; //Colored CLI text
 import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
 import firebase from 'firebase';
 
-import PeaPod from './lib/PeaPod'; //MAIN LIB
+import PeaPodArduinoInterface, { IPeaPodArduino } from './lib/PeaPodArduino';
+import PeaPodPubSub, { IPeaPodPublisher } from './lib/PeaPodPublisher';
+import { ArduinoSimulator, PeaPodLogger } from './lib/PeaPodSimulator';
+import { findSerialPath } from './lib/utils';
 
 import { checkInternet, sleep, loadDotenv } from './lib/utils'; //Utilities
 import { failSpinner, startSpinner, succeedSpinner } from './lib/ui'; //UI utils
@@ -53,18 +56,42 @@ async function main(){
     // Connect to Firebase
     firebase.initializeApp(firebaseConfig);
 
+    // firebase.functions().useEmulator('localhost', 5001);
+    // firebase.auth().useEmulator('http://localhost:9099');
+    // firebase.firestore().useEmulator('localhost', 8080);
+
     // Authenticate the user with Firebase
     let auth = new DeviceFlowUI(firebase.app(), authConfig);
     const user = await auth.signIn();
 
-    // INTERNAL SETUP
-    const peapod = new PeaPod();
-
     // IN PRODUCTION: fetch serial port with findSerialPath
+    const simulated = process.argv.includes('simulate');
+
+    let serialpath: string = '';
+
+    if(!simulated){
+      serialpath = await findSerialPath();
+    }
+
+    // INTERNAL SETUP
+    const arduino : IPeaPodArduino = simulated ? new ArduinoSimulator({
+        air_temperature: {
+            min: 10,
+            max: 20,
+            interval: 2000
+        },
+        water_level: {
+            min: 0,
+            max: 1,
+            interval: 1000
+        }
+    }) : new PeaPodArduinoInterface(serialpath);
+
+    const publisher : IPeaPodPublisher = simulated ? new PeaPodLogger() : new PeaPodPubSub();
 
     // Establish communications
-    peapod.arduino.start((msg)=>{
-        peapod.publisher.publish(msg);
+    arduino.start((msg)=>{
+        publisher.publish(msg);
     });
 }
 

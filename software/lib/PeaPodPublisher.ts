@@ -1,6 +1,11 @@
-import { PeaPodMessage } from './PeaPod';
 import {PubSub} from '@google-cloud/pubsub';
 import * as fs from 'fs';
+
+// PeaPod Message to Cloud
+export type PeaPodMessage = {
+  type: 'info' | 'data' | 'debug' | 'error',
+  data: any
+}
 
 /**
  * Abstract base class for any PeaPod message destination.

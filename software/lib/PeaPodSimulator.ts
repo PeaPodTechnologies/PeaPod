@@ -1,6 +1,5 @@
 import { IPeaPodArduino } from './PeaPodArduino';
-import { IPeaPodPublisher } from './PeaPodPublisher';
-import { PeaPodMessage } from './PeaPod';
+import { IPeaPodPublisher, PeaPodMessage } from './PeaPodPublisher';
 import { stringsToTuple } from './utils';
 import chalk from 'chalk';
 

@@ -1,4 +1,4 @@
-import { PeaPodMessage } from './PeaPod';
+import { PeaPodMessage } from './PeaPodPublisher';
 import SerialPort from 'serialport';
 import { ArduinoInstructionsError, RevisionError } from './errors';
 
