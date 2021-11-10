@@ -136,15 +136,11 @@ async function main(){
           },
           data: batch
         });
-        let sum = 0;
-        for(const arr of Object.values(batch)){
-          sum += arr.batch.length;
-        }
+
+        console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce((sum, entry)=>{return sum+entry.batch.length}, 0)} datapoints published.`);
 
         // Reset batch to empty
         batch = {};
-
-        console.log(`[PUBLISH] - Batch of ${sum} datapoints published.`);
       }, batchPublishInterval*1000)
     });
   });
