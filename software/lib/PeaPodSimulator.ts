@@ -1,4 +1,4 @@
-import { IPeaPodArduino } from './PeaPodArduino';
+import { IPeaPodArduino, ArduinoMessage } from './PeaPodArduino';
 import { IPeaPodPublisher, PeaPodMessage } from './PeaPodPublisher';
 import { stringsToTuple } from './utils';
 import chalk from 'chalk';
@@ -14,19 +14,14 @@ type SimulatorParameters = {
     }
 }
 
-type ArduinoData = {
-    type: 'data', data: {
-        [key: string]: number
-    }
-};
-
-function generateData(label: TDataLabels, min : number, max : number) : ArduinoData {
-    let data : ArduinoData = {
-        type: 'data',
-        data: {}
-    };
-    data.data[label.replace('_','-')] = Math.random()*(max-min)+min;
-    return data;
+function generateData(label: TDataLabels, min : number, max : number) : ArduinoMessage {
+    return {
+      type: 'data',
+      data: {
+        label: label.replace('_','-'),
+        value: Math.random()*(max-min)+min
+      }
+  };
 }
 
 /** 
@@ -40,7 +35,7 @@ export class ArduinoSimulator implements IPeaPodArduino{
             clearInterval(interval);
         }
     }
-    start(onMessage: (msg: PeaPodMessage) => any): void {
+    start(onMessage: (msg: ArduinoMessage) => any): void {
         for(const label in this.parameters){
             this.intervals.push(setInterval(()=>{
                 onMessage(generateData(

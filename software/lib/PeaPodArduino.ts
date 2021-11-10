@@ -13,19 +13,25 @@ export type IPeaPodArduino = {
      * Establish communications with the Arduino.
      * @param onMessage Pipe recieved messages.
      */
-    start(onMessage : (msg : PeaPodMessage)=> void): void;
+    start(onMessage : (msg : ArduinoMessage)=> void): void;
     /**
      * Halt communications.
      */
-    stop(): Promise<void>;
+    stop(): void;
 };
 
 /**
  * Expanded message type to include all types of messages from the Arduino
  */
-type ArduinoMessage = PeaPodMessage | {
-    type: 'revision',
+export type ArduinoMessage = {
+    type: 'revision' | 'info' | 'debug' | 'error',
     data: any
+} | {
+  type: 'data',
+  data: {
+    label: string,
+    value: number
+  }
 }
 
 type ArduinoInstructions = {
@@ -51,7 +57,7 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino{
             includeDelimiter: false
         });
     }
-    async start(onMessage : (msg : PeaPodMessage) => void): Promise<void> {
+    async start(onMessage : (msg : ArduinoMessage) => void): Promise<void> {
         // Pipe all serial messages to the newline parser
         this.serial.pipe(this.parser);
 
@@ -73,7 +79,7 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino{
                     }
                     break;
                 default:
-                    onMessage(msg as PeaPodMessage);
+                    onMessage(msg);
                     break;
             }
         });
@@ -83,7 +89,7 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino{
             throw new ArduinoInstructionsError(JSON.stringify(msg));
         }
     }
-    stop(): Promise<void> {
-        throw new Error('Method not implemented.');
+    stop() {
+       this.serial.close();
     }
 }
