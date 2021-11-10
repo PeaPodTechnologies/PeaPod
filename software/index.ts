@@ -43,7 +43,7 @@ async function main(){
   };
 
   // Seconds between data batch publications
-  const batchPublishInterval = 5;
+  const batchPublishInterval = 30;
 
   // IN PRODUCTION: fetch serial port with findSerialPath
   const simulated = process.argv.includes('simulate');
@@ -89,6 +89,8 @@ async function main(){
     // Authenticate the user with Firebase
     let auth = new DeviceFlowUI(app, authConfig);
     user = await auth.signIn();
+
+    // TODO: check that it matches deviceInfo.json
     
     publisher = new PeaPodPubSub({
       cloudregion: 'us-central1',
@@ -110,6 +112,7 @@ async function main(){
         timestamp: Date.now(),
         value: msg.data.value
       })
+      
       // TODO: Plan, act
     }
     // TODO: publish other message types
@@ -133,8 +136,15 @@ async function main(){
           },
           data: batch
         });
+        let sum = 0;
+        for(const arr of Object.values(batch)){
+          sum += arr.batch.length;
+        }
+
         // Reset batch to empty
         batch = {};
+
+        console.log(`[PUBLISH] - Batch of ${sum} datapoints published.`);
       }, batchPublishInterval*1000)
     });
   });
