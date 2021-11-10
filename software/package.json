@@ -7,7 +7,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "node . simulate",
+    "test": "node . simulate offline",
+    "offline": "node . offline",
+    "simulate": "node . simulate",
     "build": "npm i && tsc",
     "start": "node ."
   },
