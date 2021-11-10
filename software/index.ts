@@ -43,13 +43,15 @@ async function main(){
   };
 
   // Seconds between data batch publications
-  const batchPublishInterval = 30;
+  const batchPublishInterval = 5;
 
   // IN PRODUCTION: fetch serial port with findSerialPath
   const simulated = process.argv.includes('simulate');
   const offline = process.argv.includes('offline');
   
   let user: User | undefined, arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
+
+  Spinner.succeed(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
 
   if(simulated){
     arduino = new ArduinoSimulator({
@@ -103,6 +105,8 @@ async function main(){
   let batch: PeaPodDataBatch = {};
   let batchInterval: NodeJS.Timer;
   
+  Spinner.succeed(`${chalk.green('PeaPod')} start!`);
+
   // Initialize Arduino communications interface
   arduino.start((msg)=>{
     if(msg.type == 'data') {

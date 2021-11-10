@@ -11,7 +11,13 @@ export class RevisionError extends Error {
 * Error on instruction send.
 */
 export class ArduinoInstructionsError extends Error {
-    constructor(public instructions: any){
+    constructor(instructions: any){
         super("Failed to send instructions to Arduino: '"+JSON.stringify(instructions)+"'");
     }
+}
+
+export class CloudPonicsError extends Error {
+  constructor(msg: string){
+    super(msg);
+  }
 }

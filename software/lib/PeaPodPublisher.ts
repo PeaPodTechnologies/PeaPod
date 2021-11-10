@@ -3,7 +3,12 @@ import * as fs from 'fs';
 import * as mqtt from 'mqtt';
 import Spinner from './ui'; //UI utils
 import { getFunctions, httpsCallable } from 'firebase/functions';
+import { getFirestore, getDoc, doc, setDoc, collection, getDocs, query, where, DocumentReference } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import { fetchServerCert } from './utils';
+import * as inquirer from 'inquirer';
+import {v4 as uuid} from 'uuid';
+import { CloudPonicsError } from './errors';
 
 export type PeaPodDataBatch = {
   [key: string]: {
@@ -32,7 +37,8 @@ export type PeaPodMessage = {
 * Abstract base class for any PeaPod message destination.
 */
 export type IPeaPodPublisher = {
-  start(onConfig?: (message: string)=>void, onCommand?: (message: string)=>void) : Promise<void>,
+  start(onConfig?: (message: string)=>void, onCommand?: (message: string)=>void) : Promise<{project: string, run: string}>,
+  stop(): void;
   publish(msg : PeaPodMessage) : void
 }
 
@@ -64,7 +70,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
     // Strip type from published object
     this.mqttclient.publish(topic, JSON.stringify({...msg, type: undefined}), {qos: 1});
   }
-  async start(onConfig: (message: string)=>void, onCommand: (message: string)=>void): Promise<void> {
+  async start(onConfig: (message: string)=>void, onCommand: (message: string)=>void): Promise<{project: string, run: string}> {
     let privatekey = '';
     
     try {
@@ -82,7 +88,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       Spinner.succeed('Device '+(result.id) + ' registered!');
       
       fs.writeFileSync('./rsa_private.pem', result.privateKey);
-      fs.writeFileSync('./deviceInfo.json', JSON.stringify({name: result.name, id: result.id}));
+      fs.writeFileSync('./deviceInfo.json', JSON.stringify({name: result.name, id: result.id}, null, 2));
       privatekey = result.privateKey;
       this.deviceId = result.id;
     }
@@ -90,6 +96,9 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
     Spinner.start('Fetching Google root CA certificates...');
     const servercert = await fetchServerCert();
     Spinner.succeed('Certificates fetched!');
+
+    const project = await this.selectProject();
+    const run = await this.createRun(project);
     
     Spinner.start('Connecting to MQTT broker...');
     await this.connect(servercert, this.refreshToken(privatekey));
@@ -114,9 +123,95 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
         onCommand(message.toString());
       }
     });
+
+    return {project: project.id, run: run.id}
   }
   
-  async register(): Promise<RegisterResponse> {
+  /**
+  * Select a project owned by the current user
+  * @returns {Promise<DocumentReference>}
+  */
+  private async selectProject(){
+    if(!getAuth().currentUser){
+      throw new Error('Not authenticated!');
+    }
+    const userdoc = doc(getFirestore(), 'users/'+getAuth().currentUser);
+    const projectids = (await getDoc(userdoc)).get('projects') as string[];
+    let projects : {
+      id: string,
+      name: string,
+      ref: DocumentReference
+    }[] = [];
+    if(!projects){
+      throw new CloudPonicsError("No projects found! Create one first.");
+    }
+    for(const projectid of projectids){
+      const projectname = (await getDoc(doc(getFirestore(), 'projects/'+projectid))).get('name');
+      projects.push({
+        id: projectid,
+        name: projectname,
+        ref: doc(getFirestore(), 'projects/'+projectid)
+      });
+    }
+    const ref = (await inquirer.prompt<{ref: DocumentReference}>([
+      {
+        type: 'list',
+        name: 'ref',
+        message: 'Select a project:',
+        choices: projects.map(project=>{return {name: project.name+' - '+project.id, value: project.ref};})
+      }
+    ])).ref;
+    return ref;
+  }
+  
+  /**
+  * Publish a new project.
+  * @returns {Promise<DocumentReference>} The project.
+  */
+  private async createRun(project : DocumentReference) : Promise<DocumentReference> {
+    if(!getAuth().currentUser){
+      throw new Error('Not authenticated!');
+    }
+    const runid = project.id+'-'+uuid();
+    const rundoc = doc(getFirestore(), project.path+'/runs/'+runid);
+    setDoc(rundoc, {
+      owner: getAuth().currentUser?.uid,
+      deviceId: this.deviceId,
+    });
+    // console.log(`New run ${runid} on project ${project.id} generated successfully.`);
+    return rundoc;
+  }
+  
+  /**
+  * Select a run owned by the current user under a given project.
+  * @returns {Promise<DocumentReference>}
+  */
+  async selectRun(project : DocumentReference){
+    if(!getAuth().currentUser){
+      throw new Error('Not authenticated!');
+    }
+    const myRuns = query(collection(getFirestore(), project.path+'/runs'), where('owner', '==', getAuth().currentUser?.uid));
+    const runs = ((await getDocs(myRuns)).docs.map(doc=>{
+      return {
+        id: doc.id,
+        ref: doc.ref
+      }
+    }));
+    if(runs.length == 0){
+      throw new CloudPonicsError("No runs found! Create one first.");
+    }
+    const ref = (await inquirer.prompt<{ref: DocumentReference}>([
+      {
+        type: 'list',
+        name: 'ref',
+        message: 'Select a run:',
+        choices: runs.map(run=>{return {name: run.id, value: run.ref};})
+      }
+    ])).ref;
+    return ref;
+  }
+  
+  private async register(): Promise<RegisterResponse> {
     const registerDevice = httpsCallable<void, RegisterResponse>(getFunctions(), 'registerDevice');
     return (await registerDevice()).data;
   }
@@ -125,7 +220,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
   * Sign a new JWT.
   * @returns JSON Web Token string payload.
   */
-  refreshToken(privatekey: string) : string {
+  private refreshToken(privatekey: string) : string {
     const now = Date.now() / 1000;
     const token = {
       iat: now,
@@ -141,7 +236,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
   * @param deviceid ID of this device.
   * @returns The MQTT client.
   */
-  async connect(servercert: string, password: string): Promise<void> {
+  private async connect(servercert: string, password: string): Promise<void> {
     // Disconnect existing client
     this.disconnect();
     
@@ -170,7 +265,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
   /**
   * If the MQTT client is connected, disconnect it.
   */
-  async disconnect(): Promise<void>{
+  private async disconnect(): Promise<void>{
     if(this.mqttclient && this.mqttclient.connected){
       await new Promise<void>(res=>{
         this.mqttclient?.end(true, undefined, (err)=>{
