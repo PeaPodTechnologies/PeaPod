@@ -9,7 +9,7 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 <!-- TODO: Build statuses? etc. -->
 
-Submitted to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge).
+Submitted to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge). _Update_: PeaPod has won Phase 1 and moved on to prototyping for Phase 2!
 
 <a href="https://www.youtube.com/watch?v=2zWv9JC5G3w" target="_blank"><img src="docs/renders/backdrop.png" width=90% style="border: 5px solid #333"/></a>
 
