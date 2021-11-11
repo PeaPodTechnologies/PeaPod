@@ -62,7 +62,7 @@ export class PeaPodLogger implements IPeaPodPublisher{
           if (!existsSync(dir)){
             mkdirSync(dir, { recursive: true });
           }
-          writeFileSync(`${dir}${label+'-'+uuid()+'.json'}`, JSON.stringify(msg.data[label].batch))
+          writeFileSync(`${dir}${label+'-'+uuid()+'.json'}`, JSON.stringify(msg.data[label].batch, null, 2))
         }
         break;
       default:

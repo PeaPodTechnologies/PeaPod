@@ -135,7 +135,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
     if(!getAuth().currentUser){
       throw new Error('Not authenticated!');
     }
-    const userdoc = doc(getFirestore(), 'users/'+getAuth().currentUser);
+    const userdoc = doc(getFirestore(), 'users/'+getAuth().currentUser?.uid);
     const projectids = (await getDoc(userdoc)).get('projects') as string[];
     let projects : {
       id: string,
@@ -158,7 +158,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
         type: 'list',
         name: 'ref',
         message: 'Select a project:',
-        choices: projects.map(project=>{return {name: project.name+' - '+project.id, value: project.ref};})
+        choices: projects.map(project=>({name: project.name+' - '+project.id, value: project.ref}))
       }
     ])).ref;
     return ref;
@@ -191,12 +191,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       throw new Error('Not authenticated!');
     }
     const myRuns = query(collection(getFirestore(), project.path+'/runs'), where('owner', '==', getAuth().currentUser?.uid));
-    const runs = ((await getDocs(myRuns)).docs.map(doc=>{
-      return {
-        id: doc.id,
-        ref: doc.ref
-      }
-    }));
+    const runs = ((await getDocs(myRuns)).docs.map(doc=>({id: doc.id,ref: doc.ref})));
     if(runs.length == 0){
       throw new CloudPonicsError("No runs found! Create one first.");
     }
@@ -205,7 +200,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
         type: 'list',
         name: 'ref',
         message: 'Select a run:',
-        choices: runs.map(run=>{return {name: run.id, value: run.ref};})
+        choices: runs.map(run=>({name: run.id, value: run.ref}))
       }
     ])).ref;
     return ref;

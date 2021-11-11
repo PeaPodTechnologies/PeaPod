@@ -41,18 +41,18 @@ async function main(){
       clientsecret : process.env.GITHUB_CLIENTSECRET
     }
   };
-
+  
   // Seconds between data batch publications
-  const batchPublishInterval = 5;
-
+  const batchPublishInterval = 30;
+  
   // IN PRODUCTION: fetch serial port with findSerialPath
   const simulated = process.argv.includes('simulate');
   const offline = process.argv.includes('offline');
   
   let user: User | undefined, arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
-
+  
   Spinner.succeed(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
-
+  
   if(simulated){
     arduino = new ArduinoSimulator({
       air_temperature: {
@@ -70,7 +70,7 @@ async function main(){
     Spinner.start('Finding Arduino serial port...');
     const serialpath = await findSerialPath();
     Spinner.succeed('Arduino serial port found: '+serialpath);
-
+    
     arduino = new PeaPodArduinoInterface(serialpath);
   } 
   if (offline) {
@@ -87,11 +87,11 @@ async function main(){
     }
     Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
     await sleep(1500);
-
+    
     // Authenticate the user with Firebase
     let auth = new DeviceFlowUI(app, authConfig);
     user = await auth.signIn();
-
+    
     // TODO: check that it matches deviceInfo.json
     
     publisher = new PeaPodPubSub({
@@ -101,12 +101,10 @@ async function main(){
       jwtexpiryminutes: 1440,
     });
   }
-
+  
   let batch: PeaPodDataBatch = {};
   let batchInterval: NodeJS.Timer;
   
-  Spinner.succeed(`${chalk.green('PeaPod')} start!`);
-
   // Initialize Arduino communications interface
   arduino.start((msg)=>{
     if(msg.type == 'data') {
@@ -128,21 +126,27 @@ async function main(){
     }, command=>{
       console.log("[COMMAND] - "+command);
       // TODO: Respond to commands (immediate actions)
-    }).then(()=>{
+    }).then(({project, run})=>{
+      Spinner.succeed(`${chalk.green('PeaPod')} start - Project ${project}, Run ${run}`);
       batchInterval = setInterval(()=>{
         // Publish entire batch
-        publisher.publish({
-          type: 'data',
-          metadata: {
-            owner: user?.uid ?? 'user',
-            project: 'testproject',
-            run: 'testrun'
-          },
-          data: batch
-        });
-
+        try{
+          publisher.publish({
+            type: 'data',
+            metadata: {
+              owner: user?.uid ?? 'user',
+              project: project,
+              run: run
+            },
+            data: batch
+          });
+        } catch {
+          // Publish failed, do not clear cache
+          return;
+        }
+        
         console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce((sum, entry)=>{return sum+entry.batch.length}, 0)} datapoints published.`);
-
+        
         // Reset batch to empty
         batch = {};
       }, batchPublishInterval*1000)
