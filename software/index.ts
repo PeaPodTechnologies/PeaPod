@@ -1,14 +1,14 @@
 import chalk from 'chalk'; //Colored CLI text
-import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
+import { DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 import PeaPodArduinoInterface, { IPeaPodArduino } from './lib/PeaPodArduino';
-import PeaPodPubSub, { IPeaPodPublisher, PeaPodDataBatch } from './lib/PeaPodPublisher';
+import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './lib/PeaPodPublisher';
 import { ArduinoSimulator, PeaPodLogger } from './lib/PeaPodSimulator';
 
 import { checkInternet, sleep, loadDotenv, findSerialPath } from './lib/utils'; //Utilities
 import Spinner from './lib/ui'; //UI utils
-import { User } from '@firebase/auth';
 
 function main(): Promise<void> {
   
@@ -27,6 +27,13 @@ function main(): Promise<void> {
     messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
     appId: process.env.FIREBASE_APPID,
     measurementId: process.env.FIREBASE_MEASUREMENTID
+  };
+
+  const iotConfig : IoTConfig = {
+    cloudregion: 'us-central1',
+    projectid: 'cloudponics-bc383',
+    registryid: 'CloudPonics',
+    jwtexpiryminutes: 1440,
   };
   
   const authConfig : DeviceFlowUIOptions = {
@@ -49,7 +56,7 @@ function main(): Promise<void> {
   const simulated = process.argv.includes('simulate');
   const offline = process.argv.includes('offline');
   
-  let user: User | undefined, arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
+  let arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
   
   Spinner.info(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
   
@@ -78,9 +85,6 @@ function main(): Promise<void> {
     if (offline) {
       publisher = new PeaPodLogger();
     } else {
-      // Connect to Firebase
-      const app = initializeApp(firebaseConfig);
-      
       // Check Internet connection
       Spinner.start(`Checking for ${chalk.blue('Internet')} connection...'`);
       if(!(await checkInternet())){
@@ -89,19 +93,11 @@ function main(): Promise<void> {
       }
       Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
       await sleep(1500);
+
+      // Connect to Firebase
+      initializeApp(firebaseConfig);
       
-      // Authenticate the user with Firebase
-      let auth = new DeviceFlowUI(app, authConfig);
-      user = await auth.signIn();
-      
-      // TODO: check that it matches deviceInfo.json
-      
-      publisher = new PeaPodPubSub({
-        cloudregion: 'us-central1',
-        projectid: 'cloudponics-bc383',
-        registryid: 'CloudPonics',
-        jwtexpiryminutes: 1440,
-      });
+      publisher = new PeaPodPubSub(iotConfig, authConfig);
     }
     
     let batch: PeaPodDataBatch = {};
@@ -128,17 +124,17 @@ function main(): Promise<void> {
       }, command=>{
         console.log("[COMMAND] - "+command);
         // TODO: Respond to commands (immediate actions)
-      }).then(({project, run})=>{
-        Spinner.info(`${chalk.green('PeaPod')} start - Project ${project}, Run ${run}`);
+      }).then(({projectid, projectname, run})=>{
+        Spinner.info(`${chalk.green('PeaPod')} start - Project ${chalk.bold(projectname ?? projectid)}, Run ${chalk.bold(run)}`);
         batchInterval = setInterval(()=>{
           // Publish entire batch
           try{
             publisher.publish({
               type: 'data',
               metadata: {
-                owner: user?.uid ?? 'user',
-                project: project,
-                run: run
+                owner: getAuth().currentUser?.uid ?? 'user',
+                project: projectid,
+                run
               },
               data: batch
             });

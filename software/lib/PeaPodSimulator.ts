@@ -47,8 +47,8 @@ export class ArduinoSimulator implements IPeaPodArduino{
 }
 
 export class PeaPodLogger implements IPeaPodPublisher{
-  async start(): Promise<{project: string, run: string}> {
-    return {project: 'testproject', run: 'testrun-'+uuid()};
+  async start() {
+    return {projectid: 'testproject', run: 'testrun-'+uuid()};
   }
   stop(){};
   async publish(msg: PeaPodMessage): Promise<void> {
