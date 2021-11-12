@@ -10,7 +10,7 @@ import { checkInternet, sleep, loadDotenv, findSerialPath } from './lib/utils'; 
 import Spinner from './lib/ui'; //UI utils
 import { User } from '@firebase/auth';
 
-async function main(){
+function main(): Promise<void> {
   
   // SETUP
   
@@ -51,106 +51,109 @@ async function main(){
   
   let user: User | undefined, arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
   
-  Spinner.succeed(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
+  Spinner.info(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
   
-  if(simulated){
-    arduino = new ArduinoSimulator({
-      air_temperature: {
-        min: 10,
-        max: 20,
-        interval: 2000
-      },
-      water_level: {
-        min: 0,
-        max: 1,
-        interval: 1000
-      }
-    });
-  } else {
-    Spinner.start('Finding Arduino serial port...');
-    const serialpath = await findSerialPath();
-    Spinner.succeed('Arduino serial port found: '+serialpath);
-    
-    arduino = new PeaPodArduinoInterface(serialpath);
-  } 
-  if (offline) {
-    publisher = new PeaPodLogger();
-  } else {
-    // Connect to Firebase
-    const app = initializeApp(firebaseConfig);
-    
-    // Check Internet connection
-    Spinner.start(`Checking for ${chalk.blue('Internet')} connection...'`);
-    if(!(await checkInternet())){
-      // TODO: Offline operation
-      throw new Error(`Could not connect to the {${chalk.blue('Internet')}!`);
-    }
-    Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
-    await sleep(1500);
-    
-    // Authenticate the user with Firebase
-    let auth = new DeviceFlowUI(app, authConfig);
-    user = await auth.signIn();
-    
-    // TODO: check that it matches deviceInfo.json
-    
-    publisher = new PeaPodPubSub({
-      cloudregion: 'us-central1',
-      projectid: 'cloudponics-bc383',
-      registryid: 'CloudPonics',
-      jwtexpiryminutes: 1440,
-    });
-  }
-  
-  let batch: PeaPodDataBatch = {};
-  let batchInterval: NodeJS.Timer;
-  
-  // Initialize Arduino communications interface
-  arduino.start((msg)=>{
-    if(msg.type == 'data') {
-      // Initialize batch array
-      if(batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
-      batch[msg.data.label].batch.push({
-        timestamp: Date.now(),
-        value: msg.data.value
-      })
-      
-      // TODO: Plan, act
-    }
-    // TODO: publish other message types
-  }).then(()=>{
-    // Arduino is initialized, initialize publisher interfae
-    publisher.start(config=>{
-      console.log("[CONFIG] - "+config);
-      // TODO: Respond to config (update instructions)
-    }, command=>{
-      console.log("[COMMAND] - "+command);
-      // TODO: Respond to commands (immediate actions)
-    }).then(({project, run})=>{
-      Spinner.succeed(`${chalk.green('PeaPod')} start - Project ${project}, Run ${run}`);
-      batchInterval = setInterval(()=>{
-        // Publish entire batch
-        try{
-          publisher.publish({
-            type: 'data',
-            metadata: {
-              owner: user?.uid ?? 'user',
-              project: project,
-              run: run
-            },
-            data: batch
-          });
-        } catch {
-          // Publish failed, do not clear cache
-          return;
+  return new Promise(async (res, rej)=>{
+
+    if(simulated){
+      arduino = new ArduinoSimulator({
+        air_temperature: {
+          min: 10,
+          max: 20,
+          interval: 2000
+        },
+        water_level: {
+          min: 0,
+          max: 1,
+          interval: 1000
         }
+      });
+    } else {
+      Spinner.start('Finding Arduino serial port...');
+      const serialpath = await findSerialPath();
+      Spinner.succeed('Arduino serial port found: '+serialpath);
+      
+      arduino = new PeaPodArduinoInterface(serialpath);
+    } 
+    if (offline) {
+      publisher = new PeaPodLogger();
+    } else {
+      // Connect to Firebase
+      const app = initializeApp(firebaseConfig);
+      
+      // Check Internet connection
+      Spinner.start(`Checking for ${chalk.blue('Internet')} connection...'`);
+      if(!(await checkInternet())){
+        // TODO: Offline operation
+        rej(new Error(`Could not connect to the {${chalk.blue('Internet')}!`));
+      }
+      Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
+      await sleep(1500);
+      
+      // Authenticate the user with Firebase
+      let auth = new DeviceFlowUI(app, authConfig);
+      user = await auth.signIn();
+      
+      // TODO: check that it matches deviceInfo.json
+      
+      publisher = new PeaPodPubSub({
+        cloudregion: 'us-central1',
+        projectid: 'cloudponics-bc383',
+        registryid: 'CloudPonics',
+        jwtexpiryminutes: 1440,
+      });
+    }
+    
+    let batch: PeaPodDataBatch = {};
+    let batchInterval: NodeJS.Timer;
+    
+    // Initialize Arduino communications interface
+    arduino.start((msg)=>{
+      if(msg.type == 'data') {
+        // Initialize batch array
+        if(batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
+        batch[msg.data.label].batch.push({
+          timestamp: Date.now(),
+          value: msg.data.value
+        })
         
-        console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce((sum, entry)=>{return sum+entry.batch.length}, 0)} datapoints published.`);
-        
-        // Reset batch to empty
-        batch = {};
-      }, batchPublishInterval*1000)
-    });
+        // TODO: Plan, act
+      }
+      // TODO: publish other message types
+    }).then(()=>{
+      // Arduino is initialized, initialize publisher interfae
+      publisher.start(config=>{
+        console.log("[CONFIG] - "+config);
+        // TODO: Respond to config (update instructions)
+      }, command=>{
+        console.log("[COMMAND] - "+command);
+        // TODO: Respond to commands (immediate actions)
+      }).then(({project, run})=>{
+        Spinner.info(`${chalk.green('PeaPod')} start - Project ${project}, Run ${run}`);
+        batchInterval = setInterval(()=>{
+          // Publish entire batch
+          try{
+            publisher.publish({
+              type: 'data',
+              metadata: {
+                owner: user?.uid ?? 'user',
+                project: project,
+                run: run
+              },
+              data: batch
+            });
+          } catch {
+            // Publish failed, do not clear cache
+            return;
+          }
+          
+          console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce((sum, entry)=>{return sum+entry.batch.length}, 0)} datapoints published.`);
+          
+          // Reset batch to empty
+          batch = {};
+        }, batchPublishInterval*1000);
+      }).catch(e=>{rej(e)});
+    }).catch(e=>{rej(e)});
   });
 }
 

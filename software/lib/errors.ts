@@ -15,9 +15,3 @@ export class ArduinoInstructionsError extends Error {
         super("Failed to send instructions to Arduino: '"+JSON.stringify(instructions)+"'");
     }
 }
-
-export class CloudPonicsError extends Error {
-  constructor(msg: string){
-    super(msg);
-  }
-}

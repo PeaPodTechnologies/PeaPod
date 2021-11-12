@@ -8,7 +8,6 @@ import { getAuth } from 'firebase/auth';
 import { fetchServerCert } from './utils';
 import * as inquirer from 'inquirer';
 import {v4 as uuid} from 'uuid';
-import { CloudPonicsError } from './errors';
 
 export type PeaPodDataBatch = {
   [key: string]: {
@@ -79,12 +78,13 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
         privatekey = fs.readFileSync('./rsa_private.pem').toString();
         this.deviceId = JSON.parse(fs.readFileSync('./deviceInfo.json').toString())['id'];
       } else {
-        throw '';
+        throw 0;
       }
     } catch {
-      Spinner.fail('Private key and/or device info not found!');
+      Spinner.info('Private key and/or device info not found!');
       Spinner.start('Registering device...');
-      let result = await this.register();
+      const registerDevice = httpsCallable<void, RegisterResponse>(getFunctions(), 'registerDevice');
+      let result = (await registerDevice()).data;
       Spinner.succeed('Device '+(result.id) + ' registered!');
       
       fs.writeFileSync('./rsa_private.pem', result.privateKey);
@@ -131,34 +131,21 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
   * Select a project owned by the current user
   * @returns {Promise<DocumentReference>}
   */
-  private async selectProject(){
+  private async selectProject(): Promise<DocumentReference> {
     if(!getAuth().currentUser){
       throw new Error('Not authenticated!');
     }
-    const userdoc = doc(getFirestore(), 'users/'+getAuth().currentUser?.uid);
-    const projectids = (await getDoc(userdoc)).get('projects') as string[];
-    let projects : {
-      id: string,
-      name: string,
-      ref: DocumentReference
-    }[] = [];
-    if(!projects){
-      throw new CloudPonicsError("No projects found! Create one first.");
-    }
-    for(const projectid of projectids){
-      const projectname = (await getDoc(doc(getFirestore(), 'projects/'+projectid))).get('name');
-      projects.push({
-        id: projectid,
-        name: projectname,
-        ref: doc(getFirestore(), 'projects/'+projectid)
-      });
+    const myProjects = query(collection(getFirestore(), 'projects'), where('owner', '==', getAuth().currentUser?.uid));
+    const projects = (await getDocs(myProjects)).docs;
+    if(projects.length < 1){
+      throw new Error("No projects found! Create one first.");
     }
     const ref = (await inquirer.prompt<{ref: DocumentReference}>([
       {
         type: 'list',
         name: 'ref',
         message: 'Select a project:',
-        choices: projects.map(project=>({name: project.name+' - '+project.id, value: project.ref}))
+        choices: projects.map(project=>({name: project.get('name')+' - '+project.id, value: project.ref}))
       }
     ])).ref;
     return ref;
@@ -193,7 +180,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
     const myRuns = query(collection(getFirestore(), project.path+'/runs'), where('owner', '==', getAuth().currentUser?.uid));
     const runs = ((await getDocs(myRuns)).docs.map(doc=>({id: doc.id,ref: doc.ref})));
     if(runs.length == 0){
-      throw new CloudPonicsError("No runs found! Create one first.");
+      throw new Error("No runs found! Create one first.");
     }
     const ref = (await inquirer.prompt<{ref: DocumentReference}>([
       {
@@ -204,11 +191,6 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       }
     ])).ref;
     return ref;
-  }
-  
-  private async register(): Promise<RegisterResponse> {
-    const registerDevice = httpsCallable<void, RegisterResponse>(getFunctions(), 'registerDevice');
-    return (await registerDevice()).data;
   }
   
   /**
