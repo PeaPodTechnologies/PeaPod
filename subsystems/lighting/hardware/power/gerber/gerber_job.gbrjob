@@ -1,7 +1,7 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2021-10-26T00:24:21Z",
+        "CreationDate": "2021-11-15T08:20:36Z",
         "GenerationSoftware": {
             "Application": "EAGLE",
             "Vendor": "Autodesk",
@@ -13,7 +13,7 @@
         "BoardThickness": 1.57,
         "LayerNumber": 2,
         "Name": {
-            "ProjectId": "Lighting Power Board (PCB) v14"
+            "ProjectId": "Lighting Power Board (PCB) v15"
         },
         "Owner": "Jayden Lefebvre <jayden.lefebvre@infinitytechnology.ca>",
         "Size": {

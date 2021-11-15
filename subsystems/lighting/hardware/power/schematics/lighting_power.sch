@@ -192,113 +192,6 @@
 </deviceset>
 </devicesets>
 </library>
-<library name="Molex Micro-Lock PLUS 6-Pin 90deg" urn="urn:adsk.wipprod:fs.file:vf.aLnYsiJBRyGIcsa2SAseLA">
-<packages>
-<package name="CON_5055670671" library_version="3">
-<smd name="1" x="0" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="2" x="-1.25" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="3" x="-2.5" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="4" x="-3.75" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="5" x="-5" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="6" x="-6.25" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="7" x="1.9" y="2.295" dx="1.3" dy="2.15" layer="1"/>
-<smd name="8" x="-8.15" y="2.295" dx="1.3" dy="2.15" layer="1"/>
-<wire x1="2.5146" y1="0" x2="4.0386" y2="0.635" width="0.1524" layer="21"/>
-<wire x1="4.0386" y1="0.635" x2="4.0386" y2="-0.635" width="0.1524" layer="21"/>
-<wire x1="4.0386" y1="-0.635" x2="2.5146" y2="0" width="0.1524" layer="21"/>
-<wire x1="-8.509" y1="3.8608" x2="-8.509" y2="3.683" width="0.1524" layer="21"/>
-<wire x1="-8.509" y1="-0.3556" x2="-6.9596" y2="-0.3556" width="0.1524" layer="21"/>
-<wire x1="2.2606" y1="-0.3556" x2="2.2606" y2="0.889" width="0.1524" layer="21"/>
-<wire x1="2.2606" y1="3.8608" x2="-8.509" y2="3.8608" width="0.1524" layer="21"/>
-<wire x1="0.7112" y1="-0.3556" x2="2.2606" y2="-0.3556" width="0.1524" layer="21"/>
-<wire x1="2.2606" y1="3.683" x2="2.2606" y2="3.8608" width="0.1524" layer="21"/>
-<wire x1="-8.509" y1="0.889" x2="-8.509" y2="-0.3556" width="0.1524" layer="21"/>
-<wire x1="2.5146" y1="0" x2="4.0386" y2="0.635" width="0.1524" layer="51"/>
-<wire x1="4.0386" y1="0.635" x2="4.0386" y2="-0.635" width="0.1524" layer="51"/>
-<wire x1="4.0386" y1="-0.635" x2="2.5146" y2="0" width="0.1524" layer="51"/>
-<wire x1="-8.509" y1="-0.3556" x2="2.2606" y2="-0.3556" width="0.1524" layer="51"/>
-<wire x1="2.2606" y1="-0.3556" x2="2.2606" y2="3.8608" width="0.1524" layer="51"/>
-<wire x1="2.2606" y1="3.8608" x2="-8.509" y2="3.8608" width="0.1524" layer="51"/>
-<wire x1="-8.509" y1="3.8608" x2="-8.509" y2="-0.3556" width="0.1524" layer="51"/>
-<text x="-10.2108" y="-0.635" size="1.27" layer="25" ratio="6" rot="SR90" align="center-left">&gt;Name</text>
-</package>
-</packages>
-<packages3d>
-<package3d name="CON_5055670671" urn="" wip_urn="urn:adsk.wipprod:fs.file:vf.ZhRZvNezSJa09WGYEOUI9w?version=2" locally_modified="yes" type="model" library_version="3">
-<packageinstances>
-<packageinstance name="CON_5055670671"/>
-</packageinstances>
-</package3d>
-</packages3d>
-<symbols>
-<symbol name="CON_5055670671" library_version="3">
-<pin name="1" x="0" y="0" visible="pad" length="middle" direction="pas"/>
-<pin name="2" x="0" y="-2.54" visible="pad" length="middle" direction="pas"/>
-<pin name="3" x="0" y="-5.08" visible="pad" length="middle" direction="pas"/>
-<pin name="4" x="0" y="-7.62" visible="pad" length="middle" direction="pas"/>
-<pin name="5" x="0" y="-10.16" visible="pad" length="middle" direction="pas"/>
-<pin name="6" x="0" y="-12.7" visible="pad" length="middle" direction="pas"/>
-<pin name="7" x="0" y="-15.24" visible="pad" length="middle" direction="pas"/>
-<pin name="8" x="0" y="-17.78" visible="pad" length="middle" direction="pas"/>
-<wire x1="10.16" y1="0" x2="5.08" y2="0" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-2.54" x2="5.08" y2="-2.54" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-5.08" x2="5.08" y2="-5.08" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-7.62" x2="5.08" y2="-7.62" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-10.16" x2="5.08" y2="-10.16" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-12.7" x2="5.08" y2="-12.7" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-15.24" x2="5.08" y2="-15.24" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-17.78" x2="5.08" y2="-17.78" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="0" x2="8.89" y2="0.8382" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-2.54" x2="8.89" y2="-1.7018" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-5.08" x2="8.89" y2="-4.2418" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-7.62" x2="8.89" y2="-6.7818" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-10.16" x2="8.89" y2="-9.3218" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-12.7" x2="8.89" y2="-11.8618" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-15.24" x2="8.89" y2="-14.4018" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-17.78" x2="8.89" y2="-16.9418" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="0" x2="8.89" y2="-0.8382" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-2.54" x2="8.89" y2="-3.3782" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-5.08" x2="8.89" y2="-5.9182" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-7.62" x2="8.89" y2="-8.4582" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-10.16" x2="8.89" y2="-10.9982" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-12.7" x2="8.89" y2="-13.5382" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-15.24" x2="8.89" y2="-16.0782" width="0.1524" layer="94"/>
-<wire x1="10.16" y1="-17.78" x2="8.89" y2="-18.6182" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="2.54" x2="5.08" y2="-20.32" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="-20.32" x2="12.7" y2="-20.32" width="0.1524" layer="94"/>
-<wire x1="12.7" y1="-20.32" x2="12.7" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="12.7" y1="2.54" x2="5.08" y2="2.54" width="0.1524" layer="94"/>
-<text x="4.1656" y="5.3086" size="2.0828" layer="95" ratio="6" rot="SR0">&gt;Name</text>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="MOLEX-MICROLOCK-6PIN" prefix="J" library_version="3">
-<gates>
-<gate name="G$1" symbol="CON_5055670671" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="CON_5055670671">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-<connect gate="G$1" pin="4" pad="4"/>
-<connect gate="G$1" pin="5" pad="5"/>
-<connect gate="G$1" pin="6" pad="6"/>
-<connect gate="G$1" pin="7" pad="7"/>
-<connect gate="G$1" pin="8" pad="8"/>
-</connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.wipprod:fs.file:vf.ZhRZvNezSJa09WGYEOUI9w?version=2"/>
-</package3dinstances>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="DC Barrel Jack (Locking)" urn="urn:adsk.wipprod:fs.file:vf.h4XB8JKWQlqKkOKCMBcezA">
 <packages>
 <package name="DCBARRELJACK">
@@ -309,9 +202,9 @@
 <text x="3.048" y="0" size="1.778" layer="51" align="center">+</text>
 <text x="-8.89" y="0" size="1.778" layer="51" align="center">-</text>
 <text x="-6.35" y="5.08" size="1.778" layer="21">&gt;Name</text>
-<pad name="P$1" x="0" y="0" drill="3.29999375" shape="square"/>
-<pad name="P$2" x="-2.99999375" y="-4.700015625" drill="3.29999375" shape="square"/>
-<pad name="P$3" x="-5.9999875" y="0" drill="3.29999375" shape="square"/>
+<pad name="P$1" x="0" y="0" drill="3.09999375" shape="square"/>
+<pad name="P$2" x="-2.99999375" y="-4.700015625" drill="3.09999375" shape="square"/>
+<pad name="P$3" x="-5.9999875" y="0" drill="3.09999375" shape="square"/>
 </package>
 </packages>
 <packages3d>
@@ -370,6 +263,103 @@
 </deviceset>
 </devicesets>
 </library>
+<library name="Molex Micro-Lock PLUS 6-Pin 90deg" urn="urn:adsk.wipprod:fs.file:vf.aLnYsiJBRyGIcsa2SAseLA">
+<packages>
+<package name="CON_5055670671" library_version="5">
+<smd name="1" x="0" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="2" x="-1.25" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="3" x="-2.5" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="4" x="-3.75" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="5" x="-5" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="6" x="-6.25" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="NC2" x="1.9" y="2.295" dx="1.3" dy="2.15" layer="1"/>
+<smd name="NC1" x="-8.15" y="2.295" dx="1.3" dy="2.15" layer="1"/>
+<wire x1="2.5146" y1="0" x2="4.0386" y2="0.635" width="0.1524" layer="21"/>
+<wire x1="4.0386" y1="0.635" x2="4.0386" y2="-0.635" width="0.1524" layer="21"/>
+<wire x1="4.0386" y1="-0.635" x2="2.5146" y2="0" width="0.1524" layer="21"/>
+<wire x1="-8.509" y1="3.8608" x2="-8.509" y2="3.683" width="0.1524" layer="21"/>
+<wire x1="-8.509" y1="-0.3556" x2="-6.9596" y2="-0.3556" width="0.1524" layer="21"/>
+<wire x1="2.2606" y1="-0.3556" x2="2.2606" y2="0.889" width="0.1524" layer="21"/>
+<wire x1="2.2606" y1="3.8608" x2="-8.509" y2="3.8608" width="0.1524" layer="21"/>
+<wire x1="0.7112" y1="-0.3556" x2="2.2606" y2="-0.3556" width="0.1524" layer="21"/>
+<wire x1="2.2606" y1="3.683" x2="2.2606" y2="3.8608" width="0.1524" layer="21"/>
+<wire x1="-8.509" y1="0.889" x2="-8.509" y2="-0.3556" width="0.1524" layer="21"/>
+<wire x1="2.5146" y1="0" x2="4.0386" y2="0.635" width="0.1524" layer="51"/>
+<wire x1="4.0386" y1="0.635" x2="4.0386" y2="-0.635" width="0.1524" layer="51"/>
+<wire x1="4.0386" y1="-0.635" x2="2.5146" y2="0" width="0.1524" layer="51"/>
+<wire x1="-8.509" y1="-0.3556" x2="2.2606" y2="-0.3556" width="0.1524" layer="51"/>
+<wire x1="2.2606" y1="-0.3556" x2="2.2606" y2="3.8608" width="0.1524" layer="51"/>
+<wire x1="2.2606" y1="3.8608" x2="-8.509" y2="3.8608" width="0.1524" layer="51"/>
+<wire x1="-8.509" y1="3.8608" x2="-8.509" y2="-0.3556" width="0.1524" layer="51"/>
+<text x="-10.2108" y="-0.635" size="1.27" layer="25" ratio="6" rot="SR90" align="center-left">&gt;Name</text>
+</package>
+</packages>
+<packages3d>
+<package3d name="CON_5055670671" urn="" wip_urn="urn:adsk.wipprod:fs.file:vf.ZhRZvNezSJa09WGYEOUI9w?version=2" locally_modified="yes" type="model" library_version="5" footprint_synced="no">
+<packageinstances>
+<packageinstance name="CON_5055670671"/>
+</packageinstances>
+</package3d>
+</packages3d>
+<symbols>
+<symbol name="CON_5055670671" library_version="5">
+<pin name="1" x="0" y="0" visible="pad" length="middle" direction="pas"/>
+<pin name="2" x="0" y="-2.54" visible="pad" length="middle" direction="pas"/>
+<pin name="3" x="0" y="-5.08" visible="pad" length="middle" direction="pas"/>
+<pin name="4" x="0" y="-7.62" visible="pad" length="middle" direction="pas"/>
+<pin name="5" x="0" y="-10.16" visible="pad" length="middle" direction="pas"/>
+<pin name="6" x="0" y="-12.7" visible="pad" length="middle" direction="pas"/>
+<wire x1="10.16" y1="0" x2="5.08" y2="0" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-2.54" x2="5.08" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-5.08" x2="5.08" y2="-5.08" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-7.62" x2="5.08" y2="-7.62" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-10.16" x2="5.08" y2="-10.16" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-12.7" x2="5.08" y2="-12.7" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="0" x2="8.89" y2="0.8382" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-2.54" x2="8.89" y2="-1.7018" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-5.08" x2="8.89" y2="-4.2418" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-7.62" x2="8.89" y2="-6.7818" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-10.16" x2="8.89" y2="-9.3218" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-12.7" x2="8.89" y2="-11.8618" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="0" x2="8.89" y2="-0.8382" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-2.54" x2="8.89" y2="-3.3782" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-5.08" x2="8.89" y2="-5.9182" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-7.62" x2="8.89" y2="-8.4582" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-10.16" x2="8.89" y2="-10.9982" width="0.1524" layer="94"/>
+<wire x1="10.16" y1="-12.7" x2="8.89" y2="-13.5382" width="0.1524" layer="94"/>
+<wire x1="5.08" y1="2.54" x2="5.08" y2="-15.24" width="0.1524" layer="94"/>
+<wire x1="5.08" y1="-15.24" x2="12.7" y2="-15.24" width="0.1524" layer="94"/>
+<wire x1="12.7" y1="-15.24" x2="12.7" y2="2.54" width="0.1524" layer="94"/>
+<wire x1="12.7" y1="2.54" x2="5.08" y2="2.54" width="0.1524" layer="94"/>
+<text x="4.1656" y="5.3086" size="2.0828" layer="95" ratio="6" rot="SR0">&gt;Name</text>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="MOLEX-MICROLOCK-6PIN" prefix="J" library_version="5">
+<gates>
+<gate name="G$1" symbol="CON_5055670671" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="CON_5055670671">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+<connect gate="G$1" pin="4" pad="4"/>
+<connect gate="G$1" pin="5" pad="5"/>
+<connect gate="G$1" pin="6" pad="6"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.wipprod:fs.file:vf.ZhRZvNezSJa09WGYEOUI9w?version=2"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -388,10 +378,10 @@
 <part name="LEDPWR5" library="MeanWell NLDD-H Series" library_urn="urn:adsk.wipprod:fs.file:vf.nCAHRKd-TY-_0m2xnwCGDw" deviceset="NLDD-300~1000H" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.79fXbV2uTguYW1ZRYxGECA?version=2" value="LDD-700H"/>
 <part name="TP1" library="Test Point" library_urn="urn:adsk.wipprod:fs.file:vf.-YUoFGRWTEqdap1enj_r5g" deviceset="TP_CIRCLE_2.5MM" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.3FkuZaG9RiGo42nBWSli3w?version=2" value="GND"/>
 <part name="TP2" library="Test Point" library_urn="urn:adsk.wipprod:fs.file:vf.-YUoFGRWTEqdap1enj_r5g" deviceset="TP_CIRCLE_2.5MM" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.3FkuZaG9RiGo42nBWSli3w?version=2" value="VCC"/>
+<part name="J4" library="DC Barrel Jack (Locking)" library_urn="urn:adsk.wipprod:fs.file:vf.h4XB8JKWQlqKkOKCMBcezA" deviceset="DCBARRELJACK" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.mIvCFUCFT52mx3mRBPJ7Ng?version=3"/>
 <part name="J1" library="Molex Micro-Lock PLUS 6-Pin 90deg" library_urn="urn:adsk.wipprod:fs.file:vf.aLnYsiJBRyGIcsa2SAseLA" deviceset="MOLEX-MICROLOCK-6PIN" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.ZhRZvNezSJa09WGYEOUI9w?version=2"/>
 <part name="J2" library="Molex Micro-Lock PLUS 6-Pin 90deg" library_urn="urn:adsk.wipprod:fs.file:vf.aLnYsiJBRyGIcsa2SAseLA" deviceset="MOLEX-MICROLOCK-6PIN" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.ZhRZvNezSJa09WGYEOUI9w?version=2"/>
 <part name="J3" library="Molex Micro-Lock PLUS 6-Pin 90deg" library_urn="urn:adsk.wipprod:fs.file:vf.aLnYsiJBRyGIcsa2SAseLA" deviceset="MOLEX-MICROLOCK-6PIN" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.ZhRZvNezSJa09WGYEOUI9w?version=2"/>
-<part name="J4" library="DC Barrel Jack (Locking)" library_urn="urn:adsk.wipprod:fs.file:vf.h4XB8JKWQlqKkOKCMBcezA" deviceset="DCBARRELJACK" device="" package3d_urn="urn:adsk.wipprod:fs.file:vf.mIvCFUCFT52mx3mRBPJ7Ng?version=3"/>
 </parts>
 <sheets>
 <sheet>
@@ -426,6 +416,9 @@
 <attribute name="NAME" x="-40.64" y="-40.64" size="1.778" layer="95" align="bottom-center"/>
 <attribute name="VALUE" x="-40.64" y="-43.18" size="1.778" layer="96" align="bottom-center"/>
 </instance>
+<instance part="J4" gate="G$1" x="-53.34" y="-30.48" smashed="yes">
+<attribute name="NAME" x="-57.542109375" y="-25.77483125" size="1.27246875" layer="95"/>
+</instance>
 <instance part="J1" gate="G$1" x="-38.1" y="5.08" smashed="yes" rot="MR0">
 <attribute name="NAME" x="-42.2656" y="10.3886" size="2.0828" layer="95" ratio="6" rot="SMR0"/>
 </instance>
@@ -434,9 +427,6 @@
 </instance>
 <instance part="J3" gate="G$1" x="38.1" y="-66.04" smashed="yes">
 <attribute name="NAME" x="42.2656" y="-60.7314" size="2.0828" layer="95" ratio="6" rot="SR0"/>
-</instance>
-<instance part="J4" gate="G$1" x="-53.34" y="-30.48" smashed="yes">
-<attribute name="NAME" x="-57.542109375" y="-25.77483125" size="1.27246875" layer="95"/>
 </instance>
 </instances>
 <busses>
@@ -491,13 +481,7 @@
 <segment>
 <wire x1="-38.1" y1="-7.62" x2="-35.56" y2="-7.62" width="0.1524" layer="91"/>
 <label x="-35.56" y="-7.62" size="1.778" layer="95" rot="R270" xref="yes"/>
-<wire x1="-38.1" y1="-12.7" x2="-38.1" y2="-10.16" width="0.1524" layer="91"/>
 <pinref part="J1" gate="G$1" pin="6"/>
-<junction x="-38.1" y="-7.62"/>
-<pinref part="J1" gate="G$1" pin="7"/>
-<wire x1="-38.1" y1="-10.16" x2="-38.1" y2="-7.62" width="0.1524" layer="91"/>
-<junction x="-38.1" y="-10.16"/>
-<pinref part="J1" gate="G$1" pin="8"/>
 </segment>
 <segment>
 <wire x1="-15.24" y1="-5.08" x2="-17.78" y2="-5.08" width="0.1524" layer="91"/>
@@ -532,22 +516,14 @@
 <pinref part="J4" gate="G$1" pin="3"/>
 </segment>
 <segment>
-<wire x1="38.1" y1="-7.62" x2="38.1" y2="-10.16" width="0.1524" layer="91"/>
 <label x="38.1" y="-12.7" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="38.1" y1="-7.62" x2="38.1" y2="-12.7" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="6"/>
-<pinref part="J2" gate="G$1" pin="7"/>
-<wire x1="38.1" y1="-10.16" x2="38.1" y2="-12.7" width="0.1524" layer="91"/>
-<junction x="38.1" y="-10.16"/>
-<pinref part="J2" gate="G$1" pin="8"/>
 </segment>
 <segment>
-<wire x1="38.1" y1="-78.74" x2="38.1" y2="-81.28" width="0.1524" layer="91"/>
 <label x="38.1" y="-83.82" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="38.1" y1="-78.74" x2="38.1" y2="-83.82" width="0.1524" layer="91"/>
 <pinref part="J3" gate="G$1" pin="6"/>
-<pinref part="J3" gate="G$1" pin="7"/>
-<wire x1="38.1" y1="-81.28" x2="38.1" y2="-83.82" width="0.1524" layer="91"/>
-<junction x="38.1" y="-81.28"/>
-<pinref part="J3" gate="G$1" pin="8"/>
 </segment>
 <segment>
 <wire x1="-45.72" y1="-49.53" x2="-45.72" y2="-50.8" width="0.1524" layer="91"/>
