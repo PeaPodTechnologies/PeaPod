@@ -1,13 +1,13 @@
 Part                       ,Quantity ,Materials             ,Materials Unit Cost (CAD) ,Process           ,Time Each (min) ,Reference
-L Bracket (3xM5)           ,12       ,PETG Filament         ,0.24                      ,3D Printing       ,47              ,./shell/frame/brackets/LBracketB.stl
-L Bracket Alt. (4xM5)      ,4        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./shell/frame/brackets/LBracketAlt.stl
-T Bracket (4xM5)           ,10       ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./shell/frame/brackets/TBracket.stl
-Extrusion Cap              ,8        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./shell/frame/ExtrusionCap.stl
-Tray Mount A               ,4        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./trays/TrayMountA.stl
-Tray Mount B               ,4        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./trays/TrayMountB.stl
-Grow Plate Quarters        ,4        ,210x210x5mm PET Sheet ,TBA                       ,CNC/Vinyl Cutting ,TBA             ,./trays/growtray/GrowPlateQuarter.stl
-Grow Plate Washer          ,1        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./trays/growtray/GrowPlateWasher.stl
-Nozzle Mount A             ,2        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./trays/growtray/NozzleMountA.stl
-Nozzle Mount B             ,2        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./trays/growtray/NozzleMountB.stl
-Lighting LED Board Mount   ,5        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./trays/lightingtray/LightingLEDMount.stl
-Lighting Power Board Mount ,1        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,./trays/lightingtray/LightingPowerMount.stl
+L Bracket (3xM5)           ,12       ,PETG Filament         ,0.24                      ,3D Printing       ,47              ,../fabrication/brackets/LBracket.stl
+L Bracket Alt. (4xM5)      ,4        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/brackets/LBracketAlt.stl
+T Bracket (4xM5)           ,10       ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/brackets/TBracket.stl
+Extrusion Cap              ,8        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/ExtrusionCap.stl
+Tray Mount A               ,4        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/TrayMountA.stl
+Tray Mount B               ,4        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/TrayMountB.stl
+Grow Plate Quarters        ,4        ,210x210x5mm PET Sheet ,TBA                       ,CNC/Vinyl Cutting ,TBA             ,../fabrication/growtray/GrowPlateQuarter.stl
+Grow Plate Washer          ,1        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/growtray/GrowPlateWasher.stl
+Nozzle Mount A             ,2        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/growtray/NozzleMountA.stl
+Nozzle Mount B             ,2        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/growtray/NozzleMountB.stl
+Lighting LED Board Mount   ,5        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/lightingtray/LightingLEDMount.stl
+Lighting Power Board Mount ,1        ,PETG Filament         ,TBA                       ,3D Printing       ,TBA             ,../fabrication/lightingtray/LightingPowerMount.stl
