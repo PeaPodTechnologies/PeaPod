@@ -78,6 +78,11 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
     // Authenticate the user with Firebase
     const auth = new DeviceFlowUI(getApp(), this.authConfig);
     const user = await auth.signIn();
+    if(user.displayName){
+      Spinner.info(`Welcome, ${chalk.bold(user.displayName)}!`);
+    } else {
+      Spinner.info('Welcome!');
+    }
     
     if(fs.existsSync('./rsa_private.pem') && fs.existsSync('./deviceInfo.json')){
       Spinner.succeed('Private key and device info found!');
@@ -86,8 +91,6 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       this.deviceId = deviceinfo['id'];
       if(deviceinfo['owner'] != user.uid){
         throw new Error('This PeaPod is not owned by this user!');
-      } else {
-        Spinner.info(`Welcome, ${chalk.bold(user.displayName ?? 'User')}!`);
       }
     } else {
       Spinner.info('Private key and/or device info not found!');
@@ -97,7 +100,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       Spinner.succeed('Device '+(result.id) + ' registered!');
       
       fs.writeFileSync('./rsa_private.pem', result.privateKey);
-      fs.writeFileSync('./deviceInfo.json', JSON.stringify({name: result.name, id: result.id}, null, 2));
+      fs.writeFileSync('./deviceInfo.json', JSON.stringify({name: result.name, id: result.id, owner: getAuth().currentUser?.uid}, null, 2));
       privatekey = result.privateKey;
       this.deviceId = result.id;
     }
@@ -141,7 +144,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
   * @returns {Promise<[DocumentReference, string]>}
   */
   private async selectProject(): Promise<[DocumentReference, string]> {
-    const myProjects = query(collection(getFirestore(), 'projects'), where('owner', '==', getAuth().currentUser?.uid));
+    const myProjects = query(collection(getFirestore(), 'projects'), where('owners', 'array-contains', getAuth().currentUser?.uid));
     const projects = (await getDocs(myProjects)).docs;
     if(projects.length < 1){
       throw new Error("No projects found! Create one first.");
