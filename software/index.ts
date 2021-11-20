@@ -1,6 +1,7 @@
+#!/usr/bin/env node
 import chalk from 'chalk'; //Colored CLI text
 import { DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 import PeaPodArduinoInterface, { IPeaPodArduino } from './lib/PeaPodArduino';
@@ -50,7 +51,7 @@ function main(): Promise<void> {
   };
   
   // Seconds between data batch publications
-  const batchPublishInterval = 30;
+  const batchPublishInterval = 5;
   
   // IN PRODUCTION: fetch serial port with findSerialPath
   const simulated = process.argv.includes('simulate');
@@ -102,29 +103,33 @@ function main(): Promise<void> {
     
     let batch: PeaPodDataBatch = {};
     let batchInterval: NodeJS.Timer;
-    
-    // Initialize Arduino communications interface
-    arduino.start((msg)=>{
-      if(msg.type == 'data') {
-        // Initialize batch array
-        if(batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
-        batch[msg.data.label].batch.push({
-          timestamp: Date.now(),
-          value: msg.data.value
-        })
-        
-        // TODO: Plan, act
-      }
-      // TODO: publish other message types
-    }).then(()=>{
-      // Arduino is initialized, initialize publisher interfae
-      publisher.start(config=>{
-        console.log("[CONFIG] - "+config);
-        // TODO: Respond to config (update instructions)
-      }, command=>{
-        console.log("[COMMAND] - "+command);
-        // TODO: Respond to commands (immediate actions)
-      }).then(({projectid, projectname, run})=>{
+
+    // Initialize publisher (ready for Arduino), fetch initial instructions
+    publisher.start(config=>{
+      console.log("[CONFIG] - "+config);
+      // TODO: Respond to config (update instructions)
+    }, command=>{
+      console.log("[COMMAND] - "+command);
+      // TODO: Respond to commands (immediate actions)
+    }).then(({projectid, projectname, run})=>{
+      // Get program
+
+      // Initialize Arduino communications interface
+      arduino.start((msg)=>{
+        if(msg.type == 'data') {
+          // Initialize batch array
+          if(batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
+          batch[msg.data.label].batch.push({
+            timestamp: Date.now(),
+            value: msg.data.value
+          })
+          
+          // TODO: Plan, act
+        } else {
+          Spinner.info(`[${chalk.blueBright('ARDUINO')} | ${msg.type.toUpperCase()}] - ${JSON.stringify(msg.data)}`)
+        }
+        // TODO: publish other message types
+      }).then(()=>{
         Spinner.info(`${chalk.green('PeaPod')} start - Project ${chalk.bold(projectname ?? projectid)}, Run ${chalk.bold(run)}`);
         batchInterval = setInterval(()=>{
           // Publish entire batch
@@ -132,14 +137,14 @@ function main(): Promise<void> {
             publisher.publish({
               type: 'data',
               metadata: {
-                owner: getAuth().currentUser?.uid ?? 'user',
+                owner: ((getApps().length && getAuth().currentUser) ? getAuth().currentUser.uid : 'user'),
                 project: projectid,
                 run
               },
               data: batch
             });
           } catch {
-            // Publish failed, do not clear cache
+            Spinner.fail('Batch publish failed, will retry...');
             return;
           }
           

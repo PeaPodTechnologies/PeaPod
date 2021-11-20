@@ -1,6 +1,6 @@
 # PeaPodOS <!-- omit in toc -->
 
-![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Open%22) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
+[![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Open%22) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
 
 <!-- TODO: Build Statuses? -->
  
@@ -12,6 +12,7 @@ Designed as both a hassle-free food production system and a research tool for pr
 ## Table of Contents
 - [Development](#development)
   - [Requirements](#requirements)
+    - [Setting Up Raspberry Pi](#setting-up-raspberry-pi)
     - [Building from Repo](#building-from-repo)
     - [Running from Package](#running-from-package)
 ***
@@ -28,7 +29,21 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 > Note: In Development, any computer may be used. In Production, a Raspberry Pi Zero W 2 is used.
 
-<!-- TODO: Automate these features in a bash script for RPi startup -->
+### Setting Up Raspberry Pi
+
+1. Format your SD card with a single FAT partition.
+2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
+3. Flash the SD card with a *Raspberry Pi OS Lite* image.
+
+> Note: In Future, a custom PeaPod image will be produced.
+
+4. Plug in a keyboard and display, and power the device.
+5. Login with the default username (`pi`) and password (`raspberry`).
+6. Execute `sudo raspi-config` and perform these steps to setup the Pi:
+   1. *System Options > Wireless Lan* - Setup WiFi
+   2. *System Options > Hostname* - Set a unique host name (`e.g. john-peapod`)
+   3. *System Options > Boot/Auto Login* - Select `Console Autologin`
+   4. *Interface Options > Camera* - Enable Camera
 
 ### Building from Repo
 

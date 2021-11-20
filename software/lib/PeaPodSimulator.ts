@@ -4,6 +4,7 @@ import { stringsToTuple } from './utils';
 import chalk from 'chalk';
 import { v4 as uuid} from 'uuid';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import Spinner from './ui';
 
 // Convert our set of strings to a union type. TypeScript nonsense.
 const DataLabels = stringsToTuple('air_temperature', 'water_level');
@@ -48,10 +49,12 @@ export class ArduinoSimulator implements IPeaPodArduino{
 
 export class PeaPodLogger implements IPeaPodPublisher{
   async start() {
-    return {projectid: 'testproject', run: 'testrun-'+uuid()};
+    let config = {projectid: 'testproject', run: 'testrun-'+uuid()};
+    Spinner.info(`Logging data to ${chalk.bold('projects/'+config.projectid+'/runs/'+config.run+'/')}`);
+    return config;
   }
   stop(){};
-  async publish(msg: PeaPodMessage): Promise<void> {
+  publish(msg: PeaPodMessage): void {
     switch(msg.type){
       case 'data':
         for(const label of Object.keys(msg.data)){
