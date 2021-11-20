@@ -79,6 +79,7 @@ function main(): Promise<void> {
     } else {
       let serialpath;
       if(process.env.SERIALPORT){
+        Spinner.info('Using serial port: '+process.env.SERIALPORT);
         serialpath = process.env.SERIALPORT;
       } else {
         Spinner.start('Finding Arduino serial port...');
