@@ -77,9 +77,14 @@ function main(): Promise<void> {
         }
       });
     } else {
-      Spinner.start('Finding Arduino serial port...');
-      const serialpath = await findSerialPath();
-      Spinner.succeed('Arduino serial port found: '+serialpath);
+      let serialpath;
+      if(process.env.SERIALPORT){
+        serialpath = process.env.SERIALPORT;
+      } else {
+        Spinner.start('Finding Arduino serial port...');
+        serialpath = await findSerialPath();
+        Spinner.succeed('Arduino serial port found: '+serialpath);
+      }
       
       arduino = new PeaPodArduinoInterface(serialpath);
     } 

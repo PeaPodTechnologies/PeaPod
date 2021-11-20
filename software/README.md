@@ -44,6 +44,15 @@ Designed as both a hassle-free food production system and a research tool for pr
    2. *System Options > Hostname* - Set a unique host name (`e.g. john-peapod`)
    3. *System Options > Boot/Auto Login* - Select `Console Autologin`
    4. *Interface Options > Camera* - Enable Camera
+   5. Locale
+   6. Timezone
+   7. Keyboard
+
+> Note: In Future, this will be automated at startup.
+7. Update Packages:
+   1. `sudo apt-get update`
+   2. `sudo apt-get install nodejs npm`
+   3. `sudo npm i -g @peapodtech/peapodos --save`
 
 ### Building from Repo
 

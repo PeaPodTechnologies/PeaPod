@@ -11,3 +11,8 @@ test.js
 .gitattributes
 .npmignore
 package-lock.json
+
+.env
+*.pem
+deviceInfo.json
+./projects/**
