@@ -73,6 +73,20 @@ namespace Spinner {
       Spinner = ora({text}).succeed();
     }
   }
+
+  /**
+   * Set the loading spinner to info (blue `i`)
+   * @param text Text to display.
+   */
+  export const info = (text: string = "") => {
+    if(Spinner.isSpinning) {
+      // If it's spinning, change the text and set to info
+      Spinner.info(text);
+    } else {
+            // Otherwise, start a new one and info it
+      Spinner = ora({text}).info();
+    }
+  }
 }
 
 export default Spinner;
