@@ -12,6 +12,7 @@ Designed as both a hassle-free food production system and a research tool for pr
 ### Table of Contents
 - [Background](#background)
 - [Development](#development)
+- [Production](#production)
     - [Setting Up Raspberry Pi](#setting-up-raspberry-pi)
 ***
 
@@ -24,6 +25,8 @@ Designed as both a hassle-free food production system and a research tool for pr
 # Development
 
 <!-- TODO: Dev environment, testing modes, making an ENV file -->
+
+# Production
 
 ### Setting Up Raspberry Pi
 
