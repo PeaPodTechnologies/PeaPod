@@ -143,7 +143,7 @@ function main(): Promise<void> {
             publisher.publish({
               type: 'data',
               metadata: {
-                owner: ((getApps().length && getAuth().currentUser) ? getAuth().currentUser.uid : 'user'),
+                owner: (getAuth().currentUser?.uid ?? 'user'),
                 project: projectid,
                 run
               },
@@ -166,4 +166,5 @@ function main(): Promise<void> {
 
 main().catch((err: Error)=>{
   Spinner.fail(err.message);
+  process.exit(1);
 });
