@@ -1,5 +1,8 @@
-#include "./src/SHT31.h"
 #include "./src/Sensor.h"
+#include "./src/SHT31.h"
+
+#include "./src/Actuator.h"
+#include "./src/LED.h"
 // #include "Wire.h"
 // #include "K30.h"
 // #include "FloatSensor.h"
@@ -7,6 +10,7 @@
 
 //MACRO DEFINITIONS
 #define NUM_SENSORS 2
+#define NUM_ACTUATORS 1
 // #define FLOATSENSOR_PIN 5
 #define REVISION 0
 
@@ -18,13 +22,21 @@ SHT31_hum hum = SHT31_hum(&sht31);
 // Scale scale;
 // FloatSensor fs = FloatSensor(FLOATSENSOR_PIN);
 
-Sensor *sensors [NUM_SENSORS] = {
+Sensor* sensors [NUM_SENSORS] = {
     &temp,
     &hum,
     // &k30,
     // &fs,
     // &scale
 };
+
+//Actuators
+LED led;
+
+Actuator* actuators [NUM_ACTUATORS] = {
+    &led
+}
+
 
 void setup()
 {
@@ -151,6 +163,21 @@ bool post(){
         } else {
             Serial.print("{\"type\":\"debug\",\"data\":\"Sensor '");
             Serial.print(sensors[i]->name);
+            Serial.print("' initialized successfully.\"}\n");
+        }
+    }
+    
+    // Test actuator protocols - per-actuator tests
+    for(int i = 0; i < NUM_ACTUATORS; i++){
+        bool latest = actuators[i]->begin();
+        success &= latest;
+        if(!latest){
+            Serial.print("{\"type\":\"error\",\"data\":\"Failed to initialize actuator '");
+            Serial.print(actuators[i]->name);
+            Serial.print("'. Check wiring.\"}\n");
+        } else {
+            Serial.print("{\"type\":\"debug\",\"data\":\"Actuator '");
+            Serial.print(actuators[i]->name);
             Serial.print("' initialized successfully.\"}\n");
         }
     }
