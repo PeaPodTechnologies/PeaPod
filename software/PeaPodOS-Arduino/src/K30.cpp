@@ -17,6 +17,7 @@ float K30::read()
 {
   byte recValue[4] = {0,0,0,0};
 
+  // Instruct to take a reading
   wire->beginTransmission(_i2c_address);
   wire->write(0x22);
   wire->write(0x00);
@@ -25,7 +26,7 @@ float K30::read()
   wire->endTransmission();
   delay(30); 
   
-
+  // Request reading
   wire->requestFrom(_i2c_address,4);
   delay(20);
    

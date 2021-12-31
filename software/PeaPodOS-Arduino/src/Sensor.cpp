@@ -14,7 +14,7 @@ Sensor::Sensor(String name, String id, String evname, uint16_t delta){
     this->id = id;
     this->name = name;
     this->evname = evname;
-    //just in case
+    //"Air Temperature" -> "air-temperature"
     this->evname.toLowerCase();
     this->evname.replace(' ','-');
     this->delta = delta;
@@ -43,3 +43,9 @@ bool Sensor::begin(){
     ready = init();
     return ready;
 }
+
+// Class = Type
+// Object = Variable
+// Constructor: function on class that creates the object (same name as class)
+// `this` keyword
+

@@ -18,7 +18,7 @@ SHT31_hum hum = SHT31_hum(&sht31);
 // Scale scale;
 // FloatSensor fs = FloatSensor(FLOATSENSOR_PIN);
 
-Sensor *sensors [NUM_SENSORS] = {
+Sensor* sensors [NUM_SENSORS] = {
     &temp,
     &hum,
     // &k30,
@@ -142,7 +142,7 @@ bool post(){
     // Test sensor protocols - per-sensor tests
     bool success = true;
     for(int i = 0; i < NUM_SENSORS; i++){
-        bool latest = sensors[i]->begin();
+        bool latest = sensors[i]->begin(); 
         success &= latest;
         if(!latest){
             Serial.print("{\"type\":\"error\",\"data\":\"Failed to initialize sensor '");
@@ -152,6 +152,8 @@ bool post(){
             Serial.print("{\"type\":\"debug\",\"data\":\"Sensor '");
             Serial.print(sensors[i]->name);
             Serial.print("' initialized successfully.\"}\n");
+
+            // {type: debug, data: "Sensor 'Temperature Sensor' initialized successfully."}
         }
     }
     return success;
