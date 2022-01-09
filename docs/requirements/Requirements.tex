@@ -179,8 +179,8 @@ The following are the overall challenge requirements compiled from DSFC Applican
         \item \label{hl:output} Food Output Suitability \hfill (\ref{s:1}, \ref{r:1}, \ref{r:1a}, \ref{r:1c}, \ref{r:1d}, \ref{r:2})
         \item \label{hl:environment} Environment Control, Automation, and Optimization \hfill (\ref{s:2}, \ref{r:1b}, \ref{r:1d}, \ref{r:2}, \ref{r:3}, \ref{r:4})
         \item \label{hl:contamination} Cross-Contamination \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1b}, \ref{r:2})
-        \item \label{hl:efficiency} Time and Energy Efficiency \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1d}, \ref{r:2}, \ref{r:3})
-        \item \label{hl:safety} Safety, Stability, Reliability \hfill (\ref{s:1}, \ref{r:1b}, \ref{s:2})
+        \item \label{hl:efficiency} Time and Resource Efficiency \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1d}, \ref{r:2}, \ref{r:3})
+        \item \label{hl:safety} Safety, Stability, Reliability \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1b})
         % \item \label{hl:modularity} Modularity, Repairability \hfill (\ref{s:1}, \ref{s:2}, \ref{r:2d})
         \item \label{hl:feasability} Feasability \hfill (\ref{s:2}, \ref{r:2}, \ref{r:5})
     \end{enumerate}
@@ -197,12 +197,12 @@ The following are the overall challenge requirements compiled from DSFC Applican
         \item \label{ll:control_airhum} Leaf-Zone Humidity Control \hfill (\ref{hl:environment})
         \item \label{ll:control_gas} Gas Concentration Control \hfill (\ref{hl:environment})
         \item \label{ll:control_light} Lighting Control \hfill (\ref{hl:environment}, \ref{hl:efficiency})
-        \item \label{ll:insulateisolate} Insulation, Isolation \hfill (\ref{hl:environment}, \ref{hl:efficiency}, \ref{hl:contamination}))
+        \item \label{ll:insulateisolate} Insulation, Isolation \hfill (\ref{hl:environment}, \ref{hl:contamination}, \ref{hl:efficiency})
         \item \label{ll:control_aircirculation} Air Circulation Control \hfill (\ref{hl:environment}, \ref{hl:contamination})
         \item \label{ll:control_nutrientsolution} Nutrient Solution Control \hfill (\ref{hl:environment})
         \item \label{ll:control_roottemp} Root-Zone Temperature Control \hfill (\ref{hl:environment})
-        \item \label{ll:germinationsuccess} Germination Success \hfill (\ref{hl:environment}, \ref{hl:efficiency})
-        \item \label{ll:automation} High Degree of Automation \hfill (\ref{hl:efficiency}, \ref{hl:contamination})
+        \item \label{ll:germinationsuccess} Germination Success \hfill (\ref{hl:environment}, \ref{hl:efficiency}, \ref{hl:safety})
+        \item \label{ll:automation} High Degree of Automation \hfill (\ref{hl:contamination}, \ref{hl:efficiency})
         \item \label{ll:efficiency_energy} Energy Efficiency \hfill (\ref{hl:efficiency})
         \item \label{ll:efficiency_water} Water Usage \hfill (\ref{hl:efficiency})
         % \item \label{ll:efficiency_plantmatter} Plant Matter Usage \hfill (\ref{hl:efficiency})
@@ -606,9 +606,18 @@ The following are the overall challenge requirements compiled from DSFC Applican
 
 \input{tex/referencedesigns/OpenAG_PFC.tex}
 
-% \begin{appendices}
-% TODO: Appendices?
-% \end{appendices}
+\begin{appendices}
+\section{Requirements Graph}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth,angle=90,origin=c]{images/requirements-graph.png}
+  \caption{Requirements inheritance graph.}
+  \label{fig:requirements-graph}
+\end{figure}
+
+\end{appendices}
+
 \newpage
 
 % References
