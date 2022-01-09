@@ -1,0 +1,121 @@
+\documentclass{report}
+\usepackage{setspace} % Setting line spacing
+\usepackage{ulem} % Underline
+\usepackage{caption} % Captioning figures
+\usepackage{subcaption} % Subfigures
+\usepackage{geometry} % Page layout
+\usepackage{multicol} % Columned pages
+\usepackage{array,etoolbox}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[toc,page]{appendix}
+\setlist{noitemsep}
+
+% Page layout (margins, size, line spacing)
+\geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
+\setstretch{1}
+
+% Headers
+\pagestyle{fancy}
+\lhead{PeaPod - Testing Plan}
+\rhead{PeaPod Technologies Inc.}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.2cm}
+
+        \textbf{\large{PeaPod - Testing Plan}}
+
+        \vspace{0.5cm}
+
+        NASA/CSA Deep Space Food Challenge Phase 2
+
+        \vfill
+        \input{../tex/Namecard.tex}
+        \vspace{.75cm}
+
+        Revision 0.1\\
+        PeaPod Technologies Inc.\\
+        January 9th, 2022
+
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{plain}
+
+\tableofcontents
+\newpage
+
+\section{Testing Procedure}
+% Per-requirement testing plan
+% Processes, measurements, experiments
+% NOTE: Often, acceptable ranges in results depend on specifics of the technology
+
+\subsection{Acceptability}
+% Are people willing to eat output? Incl. appearance, aroma, flavor, and texture
+% Specific preparation and/or incorporation of output (formulation) for tasting
+
+% Suggestion: Double-blind volunteer study?
+
+\subsection{Safety of Process}
+% SPECIFICALLY food production area
+% Chemical hazards - Toxins, heavy metals (As, Cd, Hg, Pb, etc.)
+% Biohazards - total aerobic plate count, ATP testing of food contact surfaces
+% TODO: What do those^ mean? How do we test them?
+
+\subsection{Safety of Outputs}
+% SPECIFICALLY food outputs
+% Biohazards - total aerobic count, specific pathogens (enterobacteriaceae, salmonella, yeasts, molds, E. coli, Listeria, etc.)
+
+\subsection{Resource Outputs}
+% Nutritional analysis - macro- and micro-nutrients
+
+\subsection{Reliability and Stability of Outputs}
+% Biohazards - total aerobic plate count, enterobacteriaceae, yeasts, molds
+
+\section{Sample Collection Procedure and Schedule}
+% Days/cycles of operation before sample collection?
+% Incl. sample collection (size, timing, quantity), packaging, shipping
+
+\section{Hazard Analysis and Critical Control Point (HACCP) Plan}
+% Def'n of terms: https://www.fda.gov/food/hazard-analysis-critical-control-point-haccp/haccp-principles-application-guidelines#princ
+% HACCP reference: https://spinoff.nasa.gov/moon-landing-food-safety?utm_source=TWITTER&utm_medium=KathyLueders&utm_campaign=NASASocial&linkId=141839394
+
+\subsection{Food Production System Description}
+% Incl. flowchart
+
+\subsection{Critical Points}
+
+\subsubsection{Critical Point A}
+% Hazard description
+% Critical limits
+% Monitoring procedures
+% Deviation procedures
+% Associated documents
+
+\subsubsection{Critical Point ...}
+
+\subsection{Standard Test Record}
+
+\subsubsection{Purpose and Summary}
+
+\subsubsection{Safety and Quality}
+
+\subsubsection{Test Processes}
+
+% Preparation of inputs
+% Verification
+% Setup, maintenance, and collection protocols
+% Storage
+% Cleanup and Turnover
+
+\subsubsection{Closeout}
+
+\newpage
+
+% References
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
