@@ -90,22 +90,22 @@ The three underlined criteria in the challenge statement in Section \ref{sec:pur
 \item \label{sc:1} The longer the duration of the space mission (up to and including interplanetary travel and permanent colonization) the lesser the feasibility of
     resupply\footnote{Minimal resupply is also listed as a constraint directly in the challenge details \cite{applicantguide,dsfc-phase2}.}.
     The lesser the feasibility of resupply, and the more minimal the input (i.e. launch mass), the less food will be able to be packed at launch, thus the more the design will need to generate \uline{net-new food grown on-board during the mission}.
-\item \label{sc:2} The minimization of inputs (launch mass), the minimization of other negative criteria such as growth time, design complexity, etc. and the maximization of safety (pathogenic and otherwise) means that food animal growth has been deemed not feasible, and is outside the scope of this document. Thus, the design should focus on \uline{food-producing plant (or crop)
+\item \label{sc:2} The minimization of inputs (launch mass), the minimization of other negative criteria such as growth time, design complexity, etc. and the maximization of safety (pathogenic and otherwise) means that food animal growth has been deemed not feasible, and is outside the scope of this document. Thus, the design should focus on \uline{food-producing plant
     growth}\footnote{This is primarily an issue in-transit; for colonization, non-plant food production systems should definitely be considered.}.
-\item \label{sc:3} Spacecraft are not good crop growth systems (lack of water access, proper lighting and nutrition, etc.), thus the design should encompass a \uline{crop growth environment} that:
+\item \label{sc:3} Spacecraft are not good plant growth systems (lack of water access, proper lighting and nutrition, etc.), thus the design should encompass a \uline{plant growth environment} that:
     \begin{enumerate}[label=SC3\alph*., ref=SC3\alph*]
-        \item \label{sc:3a} provides of all necessary \uline{crop growth inputs} (water, nutrients, lighting, etc.);
-        \item \label{sc:3b} contains or otherwise encompasses a viable \uline{crop growth environment} (temperature, humidity, gas concentrations, airflow, etc.);
-        \item \label{sc:3c} has control over all \uline{parameters} of both a) and b) (environment parameters); these together are the (crop growth) \uline{environment conditions}.
+        \item \label{sc:3a} provides of all necessary \uline{plant growth inputs} (water, nutrients, lighting, etc.);
+        \item \label{sc:3b} contains or otherwise encompasses a viable \uline{plant growth environment} (temperature, humidity, gas concentrations, airflow, etc.);
+        \item \label{sc:3c} has control over all \uline{parameters} of both a) and b) (environment parameters); these together are the (plant growth) \uline{environment conditions}.
     \end{enumerate}
-\item \label{sc:4} To maximize safety (of both the crops and the crew) and redundancy, and to minimize inputs (required human interaction), the environment should be \uline{automated and isolated} from the spacecraft cabin with regards to all environment conditions (thermally, water-tight, etc.) unless beneficial and efficient (i.e no loss).
+\item \label{sc:4} To maximize safety (of both the plants and the crew) and redundancy, and to minimize inputs (required human interaction), the environment should be \uline{automated and isolated} from the spacecraft cabin with regards to all environment conditions (thermally, water-tight, etc.) unless beneficial and efficient (i.e no loss).
 \newpage
-\item \label{sc:5} A greater degree of nutrition and palatability of food outputs implies a greater variety of crops (incl. leafy greens, fruits, root vegetables, legumes, etc.); as such the food production system should be able to \uline{generate a continuous and wide variety of environmental conditions} such that \uline{virtually any food crops} could be grown within.
-\item \label{sc:6} The demand for high crop variety, automation, parameter control, efficiency/input minimization (water, nutrients, footprint per crop), etc. implies the use of an \uline{aeroponic crop growth method} \cite{spinoff}.
+\item \label{sc:5} A greater degree of nutrition and palatability of food outputs implies a greater variety of plants (incl. leafy greens, fruits, root vegetables, legumes, etc.); as such the food production system should be able to \uline{generate a continuous and wide variety of environmental conditions} such that \uline{any food plants} could be grown within.
+\item \label{sc:6} The demand for high plant variety, automation, parameter control, efficiency/input minimization (water, nutrients, footprint per plant), etc. implies the use of an \uline{aeroponic plant growth method} \cite{spinoff}.
 \item \label{sc:7} Output nutrient and yield maximization in a controlled-environment implies \uline{environment parameter optimization}. 
     This is best accomplished via data collection of both plant-growth and environment metrics and cross-growth-environment networking (data versatility, sharing, and machine intelligence).
-\item \label{sc:8} A solution focussed on palatability (focus on enjoyable crops) and variety (adaptability to many distinct environment requirements) is not suited to high caloric output. 
-    Most crops are simply not able of producing the required daily caloric output in the space allotted (Section \ref{sec:constraints}). 
+\item \label{sc:8} A solution focussed on palatability (focus on enjoyable plants) and variety (adaptability to many distinct environment requirements) is not suited to high caloric output. 
+    Most plants are simply not capable of producing the required daily caloric output in the space allotted (Section \ref{sec:constraints}). 
     As such, the scope of our solution places \uline{far greater importance on output palatability and variety} (both culinary and nutritional) as well as production of critical micronutrients as opposed to pure caloric 
     yield\footnote{The solution "need not meet the full nutritional requirements of future crews, but can contribute significantly to, and integrate with, a comprehensive food system." \cite{applicantguide}}.
 \end{enumerate}
@@ -127,7 +127,7 @@ A number of useful definitions have emerged from the above scoping:
 \item \textbf{(Plant Growth) Environment Parameters} - The independent quantitative parameters defining the Environment. Inputs to the control system.
 \item \textbf{(Plant) Growth System} - Includes the physical enclosure isolating the plant and Environment from the surroundings, as well as any infrastructure required to implement the Environment Parameters and generate the Environment by controlling Environment conditions. Satisfies all requirements in this document.
 \item \textbf{(Plant) Growth Metrics} - The quantitative measures of plant growth, including yield mass, growth rate, compound concentrations (i.e. nutrients, flavour compounds), caloric density, etc.
-\item \textbf{(Environment) Program} - The to-date most optimized set of Environment Parameters for a given Crop Growth Metric (i.e. Program X maximizes yield mass for lettuce), implemented by the Crop Growth System.
+\item \textbf{(Environment) Program} - The to-date most optimized set of Environment Parameters for a given Plant Growth Metric (i.e. Program X maximizes yield mass for lettuce), implemented by the Plant Growth System.
 \end{enumerate}
 
 \newpage
@@ -137,7 +137,7 @@ A number of useful definitions have emerged from the above scoping:
 \subsection{Opportunity}
 \label{sec:opportunity}
 
-Design an automated and isolated aeroponic crop growth system for the Deep Space Food Challenge \cite{dsfc}, able to generate any environment from a combination of independent environment parameters, with both environment and plant metric data collection.
+Design an automated and isolated aeroponic plant growth system for the Deep Space Food Challenge \cite{dsfc}, able to generate any environment from a combination of independent environment parameters, with both environment and plant metric data collection.
 
 \subsection{Challenge Requirements}
 \label{sec:requirements}
@@ -240,7 +240,7 @@ The following are the overall challenge requirements compiled from DSFC Applican
     Plant Species Variety \mlabel{m:plant_variety} \hfill (\ref{ll:output_variety}) & Y/N (per plant species) \\
     \hline
     % TODO: ref hedonic scale
-    Palatability of Output \mlabel{m:palatability} \hfill (\ref{ll:output_palatability}) & 1-9 Hedonic (per crop) \\
+    Palatability of Output \mlabel{m:palatability} \hfill (\ref{ll:output_palatability}) & 1-9 Hedonic (per plant) \\
     \hline
     Protein Output \mlabel{m:nutrient_protein} \hfill (\ref{ll:output_nutrients}) & g/kg body mass/crewmember/day \\
     \hline
@@ -262,7 +262,7 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \hline
     Fiber Output \mlabel{m:nutrient_fiber} \hfill (\ref{ll:output_nutrients}) & g/day/crewmember \\
     \hline
-    % Crew Nutrient Requirement Coverage \mlabel{m:14} \hfill (\ref{ll:output_nutrients}) & \% (best crop combo) \\
+    % Crew Nutrient Requirement Coverage \mlabel{m:14} \hfill (\ref{ll:output_nutrients}) & \% (best plant combo) \\
     % \hline
     Caloric Output \mlabel{m:output_calories} \hfill (\ref{ll:output_energy}) & kCal/day/crewmember \\
     \hline
@@ -284,9 +284,9 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \hline
     CO${}_2$ Concentration Control Stability \mlabel{m:co2_stability} \hfill (\ref{ll:control_gas}) & $\pm$ppm CO${}_2$ at each ppm CO${}_2$ \\
     \hline
-    Light Spectrum Wavelength Range \mlabel{m:light_waverange} \hfill (\ref{ll:control_light}) & min, max nm \\
+    Light Spectrum Wavelength Range \mlabel{m:light_waverange} \hfill (\ref{ll:control_light}, \ref{ll:crosscontamination}) & min, max nm \\
     \hline
-    Light Spectrum PAR Match \mlabel{m:light_parmatch} \hfill (\ref{ll:control_light}) & \% (each crop) \\
+    Light Spectrum PAR Match \mlabel{m:light_parmatch} \hfill (\ref{ll:control_light}) & \% (each plant) \\
     \hline
     Light Intensity Control Range \mlabel{m:lightintensity_range} \hfill (\ref{ll:control_light}) & min, max $\mu$mol m${}^{-2}$sec${}^{-1}$ at each nm \\
     \hline
@@ -354,13 +354,13 @@ The following are the overall challenge requirements compiled from DSFC Applican
     % \hline
     % O${}_2$ Production - Fraction of Typical Reclaimer Production \mlabel{m:54} \hfill (\ref{ll:efficiency_gasexchange}) & \% \\
     % \hline
-    % Number of Harvests per Planting \mlabel{m:55} \hfill (\ref{ll:efficiency_harvest}) & \# (each crop)\\
+    % Number of Harvests per Planting \mlabel{m:55} \hfill (\ref{ll:efficiency_harvest}) & \# (each plant)\\
     % \hline
-    Reharvest Period - Fruiting Crops \mlabel{m:time_reharvest} \hfill (\ref{ll:time_harvest}) & days (each crop)  \\
+    Reharvest Period - Fruiting Plants \mlabel{m:time_reharvest} \hfill (\ref{ll:time_harvest}) & days (each plant)  \\
     \hline
-    Germination Time \mlabel{m:time_germination} \hfill (\ref{ll:time_germination}) & hours (each crop) \\
+    Germination Time \mlabel{m:time_germination} \hfill (\ref{ll:time_germination}) & hours (each plant) \\
     \hline
-    Time to Harvest \mlabel{m:time_harvest} \hfill (\ref{ll:time_growth}) & days from planting (each crop) \\
+    Time to Harvest \mlabel{m:time_harvest} \hfill (\ref{ll:time_growth}) & days from planting (each plant) \\
     \hline
     Potential for Contamination - Germination \mlabel{m:contamination_germination} \hfill (\ref{ll:crosscontamination}) & \% (each event)\\
     \hline 
@@ -384,9 +384,9 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \hline
     % Infrastructure Failure Notification? \mlabel{m:69} \hfill (\ref{ll:29}) & Y/N \\
     % \hline
-    % Independent Crop Growth Environments? \mlabel{m:70} \hfill (\ref{ll:30}) & Y/N \\
+    % Independent Plant Growth Environments? \mlabel{m:70} \hfill (\ref{ll:30}) & Y/N \\
     % \hline
-    % Support for N+1 Crop Growth Environments? \mlabel{m:71} \hfill (\ref{ll:31}) & Y/N \\
+    % Support for N+1 Plant Growth Environments? \mlabel{m:71} \hfill (\ref{ll:31}) & Y/N \\
     % \hline
     % Lighting System Swappable? \mlabel{m:72} \hfill (\ref{ll:32}) & Y/N \\
     % \hline
@@ -463,7 +463,7 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \mref{m:co2_range} & >1000ppm ($\approx$600 above ambient) \hfill (\ref{sc:5}) \\
     \hline
     % TODO: Source? Disinfection?
-    \mref{m:light_waverange} & Min < 300nm (Near-UV), Max > 800nm (Near-IR) \hfill (\ref{sc:5}, \ref{sc:7}) \\
+    \mref{m:light_waverange} & Min < 300nm\footnotemark[6] (ultraviolet), Max > 800nm (infrared) \hfill (\ref{sc:5}, \ref{sc:7}) \cite{uvc-disinfection} \\
     \hline
     % TODO: Source?
     \mref{m:light_parmatch} & $\ge$ 95\% match \hfill (\ref{sc:5}) \\
@@ -482,19 +482,27 @@ The following are the overall challenge requirements compiled from DSFC Applican
     % TODO: Source?
     \mref{m:nutrient_range} & Min = 0, Max $\ge$ max plant requirement \hfill (\ref{sc:5}, \ref{sc:7}) \\
     \hline
-    \mref{m:time_maintenance} & 4 hrs/week \hfill \cite{applicantguide}\\
+    \mref{m:time_maintenance} & 0.5 hrs/week \hfill \cite{dsfc-phase2}\\
     \hline
-    \mref{m:longevity} & $\le$10\% \hfill \cite{applicantguide}\\
+    \mref{m:efficiency_water} & $\le$4L/day \hfill \cite{dsfc-phase2} \\
     \hline
-    \mref{m:shelflife_input} & $\ge$3 years (1095 days) \hfill \cite{applicantguide}\\
+    \mref{m:water_initial} & $\le$80L \hfill \cite{dsfc-phase2} \\
     \hline
-    \mref{m:dimensions} & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m \hfill \cite{applicantguide} \\
+    \mref{m:longevity} & $\le$10\% \hfill \cite{applicantguide,dsfc-phase2}\\
     \hline
-    \mref{m:volume} & $\le$ 2 m${}^3$ \hfill \cite{applicantguide}\\
+    \mref{m:shelflife_input} & $\ge$3 years (1095 days) \hfill \cite{applicantguide,dsfc-phase2}\\
     \hline
-    \mref{m:power} & Avg. <1500W; Peak < 3000W \hfill \cite{applicantguide}\\
+    \mref{m:shelflife_output} & $\ge$3 days \hfill \cite{dsfc-phase2} \\
+    \hline
+    \mref{m:dimensions} & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m \hfill \cite{applicantguide,dsfc-phase2} \\
+    \hline
+    \mref{m:volume} & $\le$ 2 m${}^3$ \hfill \cite{applicantguide,dsfc-phase2}\\
+    \hline
+    \mref{m:power} & Avg. <1500W; Peak < 3000W \hfill \cite{applicantguide,dsfc-phase2}\\
     \hline
 \end{tabular}
+\vfill
+\footnotetext[6]{Also for disinfection purposes.}
 
 \subsection{Criteria}
 \label{sec:criteria}
@@ -516,7 +524,7 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \hline
     \mref{m:airtemp_stability} & Should Minimize \hfill (\ref{sc:5}, \ref{sc:7}) \\
     \hline
-    \mref{m:airhum_rate} & Should Maximize \hfill (\ref{sc:5}, \ref{sc:7}) \\
+    \mref{m:airhum_rate} & Should Maximize \hfill (\ref{sc:5}, \ref{sc:7}) \\                                               
     \hline
     \mref{m:airhum_stability} & Should Minimize \hfill (\ref{sc:5}, \ref{sc:7}) \\
     \hline
@@ -556,10 +564,6 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \hline
     \mref{m:efficiency_energy} & Should Maximize \hfill (\ref{r:3}) \\
     \hline
-    \mref{m:efficiency_water} & Should Maximize \hfill (\ref{r:3}) \\
-    \hline
-    \mref{m:water_initial} & Should Minimize \hfill (\ref{r:3}) \\
-    \hline
     \mref{m:time_reharvest} & Should Minimize \hfill (\ref{r:1b}, \ref{r:3}) \\
     \hline
     \mref{m:time_germination} & Should Minimize \hfill (\ref{r:1b}) \\
@@ -579,8 +583,6 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \mref{m:hazards_other} & Should Avoid, Mitigate \hfill (\ref{r:1b}) \\
     \hline
     \mref{m:safety_consumption} & Should Avoid, Mitigate \hfill (\ref{r:1b}) \\
-    \hline
-    \mref{m:shelflife_output} & Should Maximize \hfill \cite{applicantguide} \\
     \hline
     \mref{m:cost} & Could Minimize \hfill (\ref{s:2}) \\
     \hline
