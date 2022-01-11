@@ -1,0 +1,108 @@
+\documentclass{report}
+\usepackage{setspace} % Setting line spacing
+\usepackage{ulem} % Underline
+\usepackage{caption} % Captioning figures
+\usepackage{subcaption} % Subfigures
+\usepackage{geometry} % Page layout
+\usepackage{multicol} % Columned pages
+\usepackage{array,etoolbox}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[toc,page]{appendix}
+\setlist{noitemsep}
+
+% Page layout (margins, size, line spacing)
+\geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
+\setstretch{1}
+
+% Headers
+\pagestyle{fancy}
+\lhead{PeaPod - Final Report}
+\rhead{PeaPod Technologies Inc.}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.2cm}
+
+        \textbf{\large{PeaPod - Final Report}}
+
+        \vspace{0.5cm}
+
+        NASA/CSA Deep Space Food Challenge Phase 2
+
+        \vfill
+        \input{../tex/Namecard.tex}
+        \vspace{.75cm}
+
+        Revision 0.1\\
+        PeaPod Technologies Inc.\\
+        January 10th, 2022
+
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{plain}
+
+\tableofcontents
+\newpage
+
+\section{Summary}
+% How does it work?
+% What is novel, sustainable, and innovative?
+% What foods does it create?
+% How are you minimizing inputs and maximizing outputs?
+
+\input{../tex/Process.tex}
+
+\section{Inputs}
+
+\section{Outputs}
+
+\input{../tex/TestingProcedure.tex}
+
+\section{Results}
+
+\subsection{Acceptability}
+% Are people willing to eat output? Incl. appearance, aroma, flavor, and texture
+% Specific preparation and/or incorporation of output (formulation) for tasting
+
+% Suggestion: Double-blind volunteer study?
+
+\subsection{Safety of Process}
+% SPECIFICALLY food production area
+% Chemical hazards - Toxins, heavy metals (As, Cd, Hg, Pb, etc.)
+% Biohazards - total aerobic plate count, ATP testing of food contact surfaces
+% TODO: What do those^ mean? How do we test them?
+
+\subsection{Safety of Outputs}
+% SPECIFICALLY food outputs
+% Biohazards - total aerobic count, specific pathogens (enterobacteriaceae, salmonella, yeasts, molds, E. coli, Listeria, etc.)
+
+\subsection{Resource Outputs}
+% Nutritional analysis - macro- and micro-nutrients
+
+\subsection{Reliability and Stability of Outputs}
+% Biohazards - total aerobic plate count, enterobacteriaceae, yeasts, molds
+
+\input{../tex/HACCP.tex}
+
+\input{../tex/Materials.tex}
+
+\subsection{Demonstration and Testing Materials}
+
+\section{Terrestrial Application}
+% Preliminary concrete step-by-step plan on how the tech could improve terrestrial food production
+% Identify gaps/deficient areas in existing processes, and explain how this system would fill
+% Incl. summary of the problem and how we solve it, list of potential engagements with communities (local and otherwise), co-creation strategy (?) for a future implementation
+
+\section{Scaling Potential}
+% Main steps for building the full-scale technology (for phase 3)
+
+\newpage
+
+% References
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
