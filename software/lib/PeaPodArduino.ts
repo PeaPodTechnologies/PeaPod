@@ -13,7 +13,7 @@ export type IPeaPodArduino = {
      * Establish communications with the Arduino.
      * @param onMessage Pipe recieved messages.
      */
-    start(onMessage : (msg : ArduinoMessage)=> void): void;
+    start(onMessage : (msg : ArduinoMessage) => void): Promise<void>
     /**
      * Halt communications.
      */

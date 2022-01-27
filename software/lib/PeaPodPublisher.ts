@@ -5,7 +5,7 @@ import Spinner from './ui'; //UI utils
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { fetchServerCert } from './utils';
 
-type PubSubData = {
+export type PeaPodDataBatch = {
   [key: string]: {
     batch: {
       timestamp: number,
@@ -25,7 +25,7 @@ export type PeaPodMessage = {
     project: string,
     run: string
   }
-  data: PubSubData
+  data: PeaPodDataBatch
 }
 
 /**
@@ -59,8 +59,10 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
     if(!this.mqttclient || !this.mqttclient.connected){
       throw new Error('MQTT client not connected!');
     }
-    const topic = `/devices/${this.deviceId}/` + (msg.type == 'data' ? 'data' : msg.type == 'info' ? 'events' : 'state');
-    this.mqttclient.publish(topic, JSON.stringify(Object.fromEntries(Object.entries(msg).filter(m=>m[0]!='type'))), {qos: 1});
+    // Build topic path
+    const topic = `/devices/${this.deviceId}/` + (msg.type == 'data' ? 'events/data' : msg.type == 'info' ? 'events' : 'state');
+    // Strip type from published object
+    this.mqttclient.publish(topic, JSON.stringify({...msg, type: undefined}), {qos: 1});
   }
   async start(onConfig: (message: string)=>void, onCommand: (message: string)=>void): Promise<void> {
     let privatekey = '';
@@ -77,7 +79,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       Spinner.fail('Private key and/or device info not found!');
       Spinner.start('Registering device...');
       let result = await this.register();
-      Spinner.succeed('Device '+(result.name ?? result.id) + ' registered!');
+      Spinner.succeed('Device '+(result.id) + ' registered!');
       
       fs.writeFileSync('./rsa_private.pem', result.privateKey);
       fs.writeFileSync('./deviceInfo.json', JSON.stringify({name: result.name, id: result.id}));
@@ -154,12 +156,13 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       ca: [servercert],
     });
     
-    return new Promise<void>(()=>{
+    return new Promise<void>((res)=>{
       client.on('connect', packet => {
         if (!packet) {
           throw new Error('Could not connect to MQTT broker!');
         }
         this.mqttclient = client;
+        res();
       });
     });
   }

@@ -35,7 +35,7 @@ export class ArduinoSimulator implements IPeaPodArduino{
             clearInterval(interval);
         }
     }
-    start(onMessage: (msg: ArduinoMessage) => any): void {
+    async start(onMessage: (msg: ArduinoMessage) => any): Promise<void> {
         for(const label in this.parameters){
             this.intervals.push(setInterval(()=>{
                 onMessage(generateData(
@@ -50,6 +50,18 @@ export class ArduinoSimulator implements IPeaPodArduino{
 export class PeaPodLogger implements IPeaPodPublisher{
     async start(): Promise<void> {}
     async publish(msg: PeaPodMessage): Promise<void> {
-        console.log(`[${chalk.magenta(msg.type.toUpperCase())}] - ${JSON.stringify(msg.data)}`);
+      switch(msg.type){
+        case 'data':
+          for(const label of Object.keys(msg.data)){
+            for(const datum of msg.data[label].batch){
+              console.log(`[${chalk.magenta(msg.type.toUpperCase())}] - [${(new Date(datum.timestamp)).toLocaleTimeString()}] - ${label}: ${datum.value}`);
+            }
+          }
+          break;
+        default:
+          console.log(`[${chalk.yellow(msg.type.toUpperCase())}] - ${JSON.stringify(msg.data)}`);
+          break;
+      }
+        
     }
 }
