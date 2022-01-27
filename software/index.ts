@@ -3,6 +3,7 @@ import chalk from 'chalk'; //Colored CLI text
 import { DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import PiCamera from 'pi-camera';
 
 import PeaPodArduinoInterface, { IPeaPodArduino } from './lib/PeaPodArduino';
 import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './lib/PeaPodPublisher';
@@ -10,6 +11,9 @@ import { ArduinoSimulator, PeaPodLogger } from './lib/PeaPodSimulator';
 
 import { checkInternet, sleep, loadDotenv, findSerialPath } from './lib/utils'; //Utilities
 import Spinner from './lib/ui'; //UI utils
+import PeaPodCamera, { IPeaPodCamera } from './lib/PeaPodCamera';
+
+// Global State
 
 function main(): Promise<void> {
   
@@ -49,6 +53,15 @@ function main(): Promise<void> {
       clientsecret : process.env.GITHUB_CLIENTSECRET
     }
   };
+
+  const RTCServers = {
+    iceServers: [
+      {
+        urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+      },
+    ],
+    iceCandidatePoolSize: 10,
+  };
   
   // Seconds between data batch publications
   const batchPublishInterval = 5;
@@ -57,7 +70,7 @@ function main(): Promise<void> {
   const simulated = process.argv.includes('simulate');
   const offline = process.argv.includes('offline');
   
-  let arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
+  let arduino : IPeaPodArduino, publisher : IPeaPodPublisher, camera: IPeaPodCamera | null;
   
   Spinner.info(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
   
@@ -76,6 +89,8 @@ function main(): Promise<void> {
           interval: 1000
         }
       });
+
+      camera = null;
     } else {
       let serialpath;
       if(process.env.SERIALPORT){
@@ -88,6 +103,7 @@ function main(): Promise<void> {
       }
       
       arduino = new PeaPodArduinoInterface(serialpath);
+      camera = new PeaPodCamera;
     } 
     if (offline) {
       publisher = new PeaPodLogger();
@@ -95,16 +111,17 @@ function main(): Promise<void> {
       // Check Internet connection
       Spinner.start(`Checking for ${chalk.blue('Internet')} connection...'`);
       if(!(await checkInternet())){
-        // TODO: Offline operation
-        rej(new Error(`Could not connect to the {${chalk.blue('Internet')}!`));
-      }
-      Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
-      await sleep(1500);
+        Spinner.fail(`Could not connect to the ${chalk.blue('Internet')}! Running in ${chalk.bold('Offline')} mode.`);
+        publisher = new PeaPodLogger();
+      } else {
+        Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
 
-      // Connect to Firebase
-      initializeApp(firebaseConfig);
-      
-      publisher = new PeaPodPubSub(iotConfig, authConfig);
+        // Connect to Firebase
+        initializeApp(firebaseConfig);
+        
+        publisher = new PeaPodPubSub(iotConfig, authConfig);
+      }
+      await sleep(1500);
     }
     
     let batch: PeaPodDataBatch = {};
@@ -117,6 +134,24 @@ function main(): Promise<void> {
     }, command=>{
       console.log("[COMMAND] - "+command);
       // TODO: Respond to commands (immediate actions)
+      if(command.type == 'livestreamoffer'){
+
+        // Assumes webcam hardware has been initialized
+
+        // 1. Create answer from command data
+        // 2. Call cloud function with answer
+        // 3. Enable video feed
+
+        // camera?.stream().pipe();
+
+        /**
+         * {
+         *  type: 'livestreamoffer',
+         *  data: {...}
+         * }
+         */
+
+      }
     }).then(({projectid, projectname, run})=>{
       // Get program
 

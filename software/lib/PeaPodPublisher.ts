@@ -35,11 +35,17 @@ export type PeaPodMessage = {
   data: PeaPodDataBatch
 }
 
+export type PeaPodCommand = {
+  type: 'livestreamoffer',
+  data: any
+  // TODO: import types from WebRTC
+}
+
 /**
 * Abstract base class for any PeaPod message destination.
 */
 export type IPeaPodPublisher = {
-  start(onConfig?: (message: string)=>void, onCommand?: (message: string)=>void) : Promise<{projectid: string, projectname?: string, run: string}>,
+  start(onConfig?: (message: string)=>void, onCommand?: (message: PeaPodCommand)=>void) : Promise<{projectid: string, projectname?: string, run: string}>,
   stop(): void;
   publish(msg : PeaPodMessage) : void
 }
@@ -72,7 +78,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
     // Strip type from published object
     this.mqttclient.publish(topic, JSON.stringify({...msg, type: undefined}), {qos: 1});
   }
-  async start(onConfig: (message: string)=>void, onCommand: (message: string)=>void) {
+  async start(onConfig: (message: string)=>void, onCommand: (message: PeaPodCommand)=>void) {
     let privatekey = '';
 
     // Authenticate the user with Firebase
@@ -132,7 +138,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       if (topic === `/devices/${this.deviceId}/config`) {
         onConfig(message.toString());
       } else if (topic.startsWith(`/devices/${this.deviceId}/commands`)) {
-        onCommand(message.toString());
+        onCommand(JSON.parse(message.toString()) as PeaPodCommand);
       }
     });
 
