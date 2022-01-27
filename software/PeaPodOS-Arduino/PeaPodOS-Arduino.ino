@@ -1,29 +1,29 @@
-#include "SHT31.h"
-#include "Sensor.h"
-#include "Wire.h"
-#include "K30.h"
-#include "FloatSensor.h"
-#include "Scale.h"
+#include "./src/SHT31.h"
+#include "./src/Sensor.h"
+// #include "Wire.h"
+// #include "K30.h"
+// #include "FloatSensor.h"
+// #include "Scale.h"
 
 //MACRO DEFINITIONS
-#define NUM_SENSORS 5
-#define FLOATSENSOR_PIN 5
+#define NUM_SENSORS 2
+// #define FLOATSENSOR_PIN 5
 #define REVISION 0
 
 // Sensors
 SHT31 sht31;
 SHT31_temp temp = SHT31_temp(&sht31);
 SHT31_hum hum = SHT31_hum(&sht31);
-K30 k30;
-Scale scale;
-FloatSensor fs = FloatSensor(FLOATSENSOR_PIN);
+// K30 k30;
+// Scale scale;
+// FloatSensor fs = FloatSensor(FLOATSENSOR_PIN);
 
-Sensor *sensors [NUM_SENSORS] = {
+Sensor* sensors [NUM_SENSORS] = {
     &temp,
     &hum,
-    &k30,
-    &fs,
-    &scale
+    // &k30,
+    // &fs,
+    // &scale
 };
 
 void setup()
@@ -40,7 +40,9 @@ void setup()
     }
 
     // Tell computer 'ready', wait to receive valid program.
-    Serial.println(0);
+    Serial.print("{\"type\":\"revision\",\"data\":");
+    Serial.print(REVISION);
+    Serial.print("}\n");
 
     String ins;
     do{
@@ -62,11 +64,11 @@ void loop()
     for(int i = 0; i < NUM_SENSORS; i++){
         float read = sensors[i]->getRead();
         if(!isnan(read)){
-            Serial.print("{\"type\":\"data\",\"msg\":{\"label\":\"");
+            Serial.print("{\"type\":\"data\",\"data\":{\"label\":\"");
             Serial.print(sensors[i]->evname);
             Serial.print("\",\"value\":");
             Serial.print(read);
-            Serial.println("}}");
+            Serial.print("}}\n");
         }
     }
     delay(10);
@@ -84,19 +86,19 @@ bool handleInstruction(String in){
         float value = in.substring(split+1).toFloat();
 
         //INSTRUCTION HANDLING IF BLOCKS - EACH RETURNS TRUE
-        if(var.equals("scale")){
-            scale.calibrate(value);
-            return true;
-        }
-        Serial.print("{\"type\":\"error\",\"msg\":\"Unknown target '");
+        // if(var.equals("scale")){
+        //     scale.calibrate(value);
+        //     return true;
+        // }
+        Serial.print("{\"type\":\"error\",\"data\":\"Unknown target '");
         Serial.print(var);
-        Serial.println("'\"}");
+        Serial.print("'\"}\n");
         return false;
     }
-    Serial.print("{\"type\":\"error\",\"msg\":\"Failed to handle instruction '");
+    Serial.print("{\"type\":\"error\",\"data\":\"Failed to handle instruction '");
     in.replace("\"", "\\\"");
     Serial.print(in);
-    Serial.println("'\"}");
+    Serial.print("'\"}\n");
     return false;
 }
 
@@ -111,9 +113,9 @@ bool handleInstructions(String ins){
         return true;  //Empty dictionary, by default handled
     }
     if(ins.charAt(0) != '{' || ins.charAt(ins.length()-1) != '}'){
-        Serial.print("{\"type\":\"error\",\"msg\":\"Invalid instructions dictionary '");
+        Serial.print("{\"type\":\"error\",\"data\":\"Invalid instructions dictionary '");
         Serial.print(ins);
-        Serial.println("'\"}");
+        Serial.print("'\"}\n");
         return false;
     }
     ins = ins.substring(1, ins.length()-1); //Strips surrounding {}
@@ -134,29 +136,24 @@ bool handleInstructions(String ins){
 }
 
 bool post(){
-    Serial.begin(9600);
+    Serial.begin(115200);
     while(!Serial); //Waits until serial opens
-
-    // Test Serial protocol: send software revision byte, recieve check (0) byte or stop (!0) byte
-    Serial.println(REVISION);
-    while(!Serial.available());
-    if(Serial.parseInt() != 0){
-        return false;
-    }
 
     // Test sensor protocols - per-sensor tests
     bool success = true;
     for(int i = 0; i < NUM_SENSORS; i++){
-        bool latest = sensors[i]->begin();
+        bool latest = sensors[i]->begin(); 
         success &= latest;
         if(!latest){
-            Serial.print("{\"type\":\"error\",\"msg\":\"Failed to initialize sensor '");
+            Serial.print("{\"type\":\"error\",\"data\":\"Failed to initialize sensor '");
             Serial.print(sensors[i]->name);
-            Serial.println("'. Check wiring.\"}");
+            Serial.print("'. Check wiring.\"}\n");
         } else {
-            Serial.print("{\"type\":\"debug\",\"msg\":\"Sensor '");
+            Serial.print("{\"type\":\"debug\",\"data\":\"Sensor '");
             Serial.print(sensors[i]->name);
-            Serial.println("' initialized successfully.\"}");
+            Serial.print("' initialized successfully.\"}\n");
+
+            // {type: debug, data: "Sensor 'Temperature Sensor' initialized successfully."}
         }
     }
     return success;
