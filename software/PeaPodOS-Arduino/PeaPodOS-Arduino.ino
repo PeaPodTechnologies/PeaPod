@@ -31,10 +31,18 @@ Sensor* sensors [NUM_SENSORS] = {
 };
 
 //Actuators
-LED led;
+LED led_blue(3);
+LED led_cool(5);
+LED led_warm(6);
+LED led_red(9);
+LED led_far(10);
 
 Actuator* actuators [NUM_ACTUATORS] = {
-    &led
+  &led_blue,
+  &led_cool,
+  &led_warm,
+  &led_red,
+  &led_far,
 }
 
 
@@ -98,11 +106,27 @@ bool handleInstruction(String in){
         float value = in.substring(split+1).toFloat();
 
         //INSTRUCTION HANDLING IF BLOCKS - EACH RETURNS TRUE
-        // if(var.equals("scale")){
-        //     scale.calibrate(value);
-        //     return true;
-        // }
-        Serial.print("{\"type\":\"error\",\"data\":\"Unknown target '");
+        if(var.equals("led_blue")){
+            led_blue.target = value;
+            return true;
+        }
+        if(var.equals("led_cool")){
+            led_cool.target = value;
+            return true;
+        }
+        if(var.equals("led_warm")){
+            led_warm.target = value;
+            return true;
+        }
+        if(var.equals("led_red")){
+            led_red.target = value;
+            return true;
+        }
+        if(var.equals("led_far")){
+            led_far.target = value;
+            return true;
+        }
+        Serial.print("{\"type\":\"error\",\"data\":\"Unknown instruction target '");
         Serial.print(var);
         Serial.print("'\"}\n");
         return false;
