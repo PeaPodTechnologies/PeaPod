@@ -8,24 +8,53 @@
 % Specific preparation and/or incorporation of output (formulation) for tasting
 
 % Suggestion: Double-blind volunteer study
+Tested via blind studies where participants are divided into two groups and given either control outputs (i.e. established commercial product) or test outputs (i.e. produced by PeaPod). Participants will rate outputs on 4 criteria (appearance, aroma, flavour, and texture) on a 9-point scale.
+
+Blind studies are eminent in consumer testing as they allow researchers to get a completely unbiased dataset. Special care needs to be taken when presenting, preparing, and collecting samples for testing to ensure researchers do not influence results. Ideally, resources will permit a double-blind study where researchers hire an outside entity to conduct the test and return results with generic labels.
+
+The 4 criteria and 9-point metric scale are given by !CITE which states they are !INFO
 
 \subsection{Safety of Process}
 % SPECIFICALLY food production area
 % Chemical hazards - Toxins, heavy metals (As, Cd, Hg, Pb, etc.)
 % Biohazards - total aerobic plate count, ATP testing of food contact surfaces
 % TODO: What do those^ mean? How do we test them?
+\subsubsection{Chemical Hazards}
+As per the parts manifest !LINK, all components involved in the unit are clear of toxins and heavy metals by composition.
+
+\subsubsection{Biological Hazards}
+Aerobic Plate Count (APC) testing to be done with the Conventional Plate Count Method outlined in the FDA's \href{https://www.fda.gov/food/laboratory-methods-food/bam-chapter-3-aerobic-plate-count}{BAM Chapter 3: Aerobic Plate Count}. This is selected over the Spiral Plate Method as it is inexpensive and uses many household materials. The goal of APC testing is to indicate the bacterial population in food-adjacent sections of the design. Results to be compared against STD-3001 to ensure a maximum of 3000 colony forming units/square ft. Plate count to be minimized by following !CITE (surface cleaning standards? hard to find). 
+
+ATP testing to be done using !CITE (lots of stuff about methods but no standards? look at requirements more)
 
 \subsection{Safety of Outputs}
 % SPECIFICALLY food outputs
 % Biohazards - total aerobic count, specific pathogens (enterobacteriaceae, salmonella, yeasts, molds, E. coli, Listeria, etc.)
+APC testing conducted on samples as outlined above to ensure bacterial population below 20 000 CFU/g per STD-3001.
+
+Critical pathogens to be tested for individually:
+%most testing procedures are a product (like MicroSnap)--is this in budget?
+\begin{itemize}
+    \item Enterobacteriaceae: 100 CFU/g
+    \item Salmonella: 0 CFU/g
+    \item Yeast and Molds: 1000 CFU/g
+    \item Escherichia Coli: dep. on tech
+    \item Listeria: dep. on tech
+\end{itemize}
+
 
 \subsection{Resource Outputs}
 % Nutritional analysis - macro- and micro-nutrients
 % TODO: How to perform nutritional analysis?
+Personally testing nutritional makeup of outputs is far beyond the resources and scope of this project. Instead, a variety of outputs will be produced and shipped to an external, ISO-17025 certified lab such as SGS Canada for testing.
 
 \subsection{Reliability and Stability of Outputs}
 % Biohazards - total aerobic plate count, enterobacteriaceae, yeasts, molds
+%is this not the same as safety of outputs?
 
 \section{Sample Collection Procedure and Schedule}
 % Days/cycles of operation before sample collection?
 % Incl. sample collection (size, timing, quantity), packaging, shipping
+The number of days required for sample collection is entirely dependnent on what sample is being produced. For one-time growth products, such as carrots or lettuce, the days required is exactly the time to harvest of the plant. Size of collection is dependent on how many units are run at the same time. For plants that produce products multiple times, such as beans or tomatoes, samples should be collected after each production cycle. This means the time required to collect n samples is C + n*X, where C is the initial growth period of the plant and X the time between harvests. It is important to collect multiple subsequent harvests in order to see the relationship between this and produce quality.
+
+Packaging and shipping will be done according to freight standards of the carrier being used, such as \href{https://www.fedex.com/en-us/shipping/how-to-ship-perishables.html#1}{this guide from FedEx}. 
