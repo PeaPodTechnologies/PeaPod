@@ -1,11 +1,12 @@
 node_modules/
 tsconfig.json
 
+**/build/
 *.ts
 !*.d.ts
 
 .git/
-.gitignore
+**/.gitignore
 .gitattributes
 .npmignore
 package-lock.json

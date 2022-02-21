@@ -8,10 +8,10 @@ import PiCamera from 'pi-camera';
 import PeaPodArduinoInterface, { IPeaPodArduino } from './lib/PeaPodArduino';
 import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './lib/PeaPodPublisher';
 import { ArduinoSimulator, PeaPodLogger } from './lib/PeaPodSimulator';
+import PeaPodCamera, { IPeaPodCamera } from './lib/PeaPodCamera';
 
 import { checkInternet, sleep, loadDotenv, findSerialPath } from './lib/utils'; //Utilities
 import Spinner from './lib/ui'; //UI utils
-import PeaPodCamera, { IPeaPodCamera } from './lib/PeaPodCamera';
 
 // Global State
 
@@ -74,9 +74,9 @@ function main(): Promise<void> {
   
   Spinner.info(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
   
-  return new Promise(async (res, rej)=>{
+  return new Promise(async (res, rej) => {
 
-    if(simulated){
+    if (simulated) {
       arduino = new ArduinoSimulator({
         air_temperature: {
           min: 10,
@@ -93,7 +93,7 @@ function main(): Promise<void> {
       camera = null;
     } else {
       let serialpath;
-      if(process.env.SERIALPORT){
+      if (process.env.SERIALPORT) {
         Spinner.info('Using serial port: '+process.env.SERIALPORT);
         serialpath = process.env.SERIALPORT;
       } else {
@@ -110,7 +110,7 @@ function main(): Promise<void> {
     } else {
       // Check Internet connection
       Spinner.start(`Checking for ${chalk.blue('Internet')} connection...'`);
-      if(!(await checkInternet())){
+      if (!(await checkInternet())) {
         Spinner.fail(`Could not connect to the ${chalk.blue('Internet')}! Running in ${chalk.bold('Offline')} mode.`);
         publisher = new PeaPodLogger();
       } else {
@@ -127,52 +127,54 @@ function main(): Promise<void> {
     let batch: PeaPodDataBatch = {};
     let batchInterval: NodeJS.Timer;
 
-    // Initialize publisher (ready for Arduino), fetch initial instructions
-    publisher.start(config=>{
-      console.log("[CONFIG] - "+config);
-      // TODO: Respond to config (update instructions)
-    }, command=>{
-      console.log("[COMMAND] - "+command);
-      // TODO: Respond to commands (immediate actions)
-      if(command.type == 'livestreamoffer'){
-
-        // Assumes webcam hardware has been initialized
-
-        // 1. Create answer from command data
-        // 2. Call cloud function with answer
-        // 3. Enable video feed
-
-        // camera?.stream().pipe();
-
-        /**
-         * {
-         *  type: 'livestreamoffer',
-         *  data: {...}
-         * }
-         */
-
+    // Initialize Arduino communications interface first
+    arduino.start((msg) => {
+      if(msg.type == 'data') {
+        // Initialize batch array
+        if (batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
+        // Accumulate data into batches
+        batch[msg.data.label].batch.push({
+          timestamp: Date.now(),
+          value: msg.data.value
+        })
+        
+        // TODO: Plan, act
+      } else {
+        Spinner.info(`[${chalk.blueBright('ARDUINO')} | ${msg.type.toUpperCase()}] - ${JSON.stringify(msg.data)}`)
       }
-    }).then(({projectid, projectname, run})=>{
+      // TODO: publish other message types
+    }).then(() => {
+      // Initialize publisher, fetch initial instructions
+      publisher.start(config => {
+        console.log("[CONFIG] - "+config);
+        // TODO: Respond to config (update instructions)
+      }, command => {
+        console.log("[COMMAND] - "+command);
+        // TODO: Respond to commands (immediate actions)
+        if (command.type == 'livestreamoffer') {
+
+          // Assumes webcam hardware has been initialized
+
+          // 1. Create answer from command data
+          // 2. Call cloud function with answer
+          // 3. Enable video feed
+
+          // camera?.stream().pipe();
+
+          /**
+          * {
+          *  type: 'livestreamoffer',
+          *  data: {...}
+          * }
+          */
+
+        }
+      }).then(({projectid, projectname, run}) => {
       // Get program
 
-      // Initialize Arduino communications interface
-      arduino.start((msg)=>{
-        if(msg.type == 'data') {
-          // Initialize batch array
-          if(batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
-          batch[msg.data.label].batch.push({
-            timestamp: Date.now(),
-            value: msg.data.value
-          })
-          
-          // TODO: Plan, act
-        } else {
-          Spinner.info(`[${chalk.blueBright('ARDUINO')} | ${msg.type.toUpperCase()}] - ${JSON.stringify(msg.data)}`)
-        }
-        // TODO: publish other message types
-      }).then(()=>{
+     
         Spinner.info(`${chalk.green('PeaPod')} start - Project ${chalk.bold(projectname ?? projectid)}, Run ${chalk.bold(run)}`);
-        batchInterval = setInterval(()=>{
+        batchInterval = setInterval(() => {
           // Publish entire batch
           try{
             publisher.publish({
@@ -189,17 +191,17 @@ function main(): Promise<void> {
             return;
           }
           
-          console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce((sum, entry)=>{return sum+entry.batch.length}, 0)} datapoints published.`);
+          console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce((sum, entry) => { return sum+entry.batch.length }, 0)} datapoints published.`);
           
           // Reset batch to empty
           batch = {};
         }, batchPublishInterval*1000);
-      }).catch(e=>{rej(e)});
-    }).catch(e=>{rej(e)});
+      }).catch(e => { rej(e) });
+    }).catch(e => { rej(e) });
   });
 }
 
-main().catch((err: Error)=>{
+main().catch((err: Error) => {
   Spinner.fail(err.message);
   process.exit(1);
 });

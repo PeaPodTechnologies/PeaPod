@@ -1,7 +1,8 @@
 #include "LED.h"
 
-LED::LED(uint8_t pin, led_t color) : Actuator(parseLED(color), String("CREE" + parseLED(color)), "Lighting"){
+LED::LED(uint8_t pin, led_color_t color) : Actuator(parseLED(color), String("CREE " + parseLED(color)), "Lighting"){
     this->pin = pin;
+    this->color = color;
 }
 
 String parseLED(led_t led){

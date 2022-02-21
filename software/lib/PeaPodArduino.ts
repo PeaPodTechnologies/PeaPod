@@ -1,11 +1,13 @@
 import { PeaPodMessage } from './PeaPodPublisher';
-import SerialPort from 'serialport';
-import { ArduinoInstructionsError, RevisionError } from './errors';
+import { SerialPort, ReadlineParser } from 'serialport';
+import { ArduinoInstructionsError, SerialTimeoutError } from './errors';
 import Spinner from './ui';
+import { updateArduino } from './utils';
 import chalk from 'chalk';
 
 const BAUDRATE = 115200;
-const ARDUINO_REVISION = "0";
+const ARDUINO_REVISION = "1";
+const TIMEOUT_SECONDS = 5;
 
 /**
 * Abstract base type for any PeaPod message source.
@@ -43,39 +45,57 @@ type ArduinoInstructions = {
 /**
 * Interface between this computer and the Arduino.
 */
-export default class PeaPodArduinoInterface implements IPeaPodArduino{
+export default class PeaPodArduinoInterface implements IPeaPodArduino {
   serial : SerialPort;
-  parser : SerialPort.parsers.Readline;
-  constructor(readonly serialpath: string, private initialInstructions: ArduinoInstructions = {}){
-    // Open the serial port
-    this.serial = new SerialPort(serialpath, {
+  parser : ReadlineParser;
+  constructor(readonly serialpath: string, private initialInstructions: ArduinoInstructions = {}) {
+    // Create the serial port interface
+    this.serial = new SerialPort({
+      path: serialpath,
       baudRate: BAUDRATE,
       autoOpen: false
     });
     
     // Create the newline parser
-    this.parser = this.serial.pipe(new SerialPort.parsers.Readline({ 
+    this.parser = this.serial.pipe(new ReadlineParser({ 
       delimiter: '\n',
       includeDelimiter: false
     }));
   }
   async start(onMessage : (msg : ArduinoMessage) => void): Promise<void> {
-    this.serial.open(err=>{if(err){throw err};});
+    // Open the serial port
+    this.serial.open(err => { if(err){ throw err }; });
+
+    // Reusable timeout, enabled at serial open (fails if no messages recieved after starting)
+    let timeout: NodeJS.Timeout;
+    const resetTimeout = (timeoutSeconds: number = TIMEOUT_SECONDS) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        this.stop();
+        throw new SerialTimeoutError(timeoutSeconds)
+      }, timeoutSeconds*1000);
+    }
+    // Initial timeout
+    resetTimeout();
     
     // Set up the listener
-    this.parser.on('data', msgtxt =>{
-      try{
-        // Parse the raw text as a JSON object.
+    this.parser.on('data', msgtxt => {
+      clearTimeout(timeout);
+      try {
+        // Attempt to parse the raw text as a valid JSON object
         const msg = JSON.parse(msgtxt) as ArduinoMessage;
         // Handle all message types except: 'info', 'data', 'debug', 'error' 
         switch (msg.type) {
           case 'revision':
             onMessage(msg);
-            if((msg.data as typeof ARDUINO_REVISION) == ARDUINO_REVISION){
+            if((msg.data as typeof ARDUINO_REVISION) == ARDUINO_REVISION) {
               this.write(this.initialInstructions);
             } else {
-              // TODO: Update Arduino if revision does not match
-              throw new RevisionError(ARDUINO_REVISION, msg.data as string);
+              Spinner.fail(`Arduino revision check failed! Expected ${ARDUINO_REVISION}, recieved ${msg.data}`);
+              // Attempt to update the Arduino, and then restart
+              this.update().finally(() => {
+                process.exit();
+              });
             }
             break;
           default:
@@ -83,10 +103,19 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino{
             break;
         }
       } catch (err) {
+        throw err;
       }
     });
   }
-  write(msg : any){
+  async update() {
+    Spinner.start('Compiling Arduino software and flashing to board...');
+    await updateArduino(this.serialpath).catch(e => {
+      Spinner.fail(e);
+    }).then(() => {
+      Spinner.succeed('Updated Arduino software successfully!');
+    })
+  }
+  write(msg : any) {
     Spinner.info(`[${chalk.yellow('WRITE')}] - ${JSON.stringify(msg)}`);
     if(!this.serial?.write(JSON.stringify(msg)+'\n')){
       throw new ArduinoInstructionsError(JSON.stringify(msg));

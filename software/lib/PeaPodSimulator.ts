@@ -30,39 +30,39 @@ function generateData(label: TDataLabels, min : number, max : number) : ArduinoM
 /** 
 * A simulated Arduino for generating random data.
 */
-export class ArduinoSimulator implements IPeaPodArduino{
-  intervals : NodeJS.Timeout[] = []
-  constructor(public parameters : SimulatorParameters){}
+export class ArduinoSimulator implements IPeaPodArduino {
+  intervals : NodeJS.Timeout[] = [];
+  constructor(public parameters : SimulatorParameters) { }
   async stop(): Promise<void> {
-    for(const interval of this.intervals){
+    for (const interval of this.intervals) {
       clearInterval(interval);
     }
   }
   async start(onMessage: (msg: ArduinoMessage) => any): Promise<void> {
-    for(const label in this.parameters){
-      this.intervals.push(setInterval(()=>{
+    for(const label in this.parameters) {
+      this.intervals.push(setInterval(() => {
         onMessage(generateData(label as TDataLabels, this.parameters[label as TDataLabels].min, this.parameters[label as TDataLabels].max));
       }, this.parameters[label as TDataLabels].interval));
     }
   }
 }
 
-export class PeaPodLogger implements IPeaPodPublisher{
+export class PeaPodLogger implements IPeaPodPublisher {
   async start() {
-    let config = {projectid: 'testproject', run: 'testrun-'+uuid()};
+    let config = { projectid: 'testproject', run: 'testrun-'+uuid() };
     Spinner.info(`Logging data to ${chalk.bold('projects/'+config.projectid+'/runs/'+config.run+'/')}`);
     return config;
   }
-  stop(){};
+  stop() { };
   publish(msg: PeaPodMessage): void {
-    switch(msg.type){
+    switch(msg.type) {
       case 'data':
-        for(const label of Object.keys(msg.data)){
-          for(const datum of msg.data[label].batch){
+        for (const label of Object.keys(msg.data)) {
+          for (const datum of msg.data[label].batch) {
             console.log(`[${chalk.magenta(msg.type.toUpperCase())}] - [${(new Date(datum.timestamp)).toLocaleTimeString()}] - ${label}: ${datum.value}`);
           }
           const dir = `./projects/${msg.metadata.project}/runs/${msg.metadata.run}/${label}/`;
-          if (!existsSync(dir)){
+          if (!existsSync(dir)) {
             mkdirSync(dir, { recursive: true });
           }
           writeFileSync(`${dir}${label+'-'+uuid()+'.json'}`, JSON.stringify(msg.data[label].batch, null, 2))
@@ -72,6 +72,5 @@ export class PeaPodLogger implements IPeaPodPublisher{
         console.log(`[${chalk.yellow(msg.type.toUpperCase())}] - ${JSON.stringify(msg.data)}`);
         break;
     }
-    
   }
 }

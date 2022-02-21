@@ -1,8 +1,8 @@
 #include "./src/Sensor.h"
 #include "./src/SHT31.h"
 
-#include "./src/Actuator.h"
-#include "./src/LED.h"
+// #include "./src/Actuator.h"
+// #include "./src/LED.h"
 // #include "Wire.h"
 // #include "K30.h"
 // #include "FloatSensor.h"
@@ -10,7 +10,7 @@
 
 //MACRO DEFINITIONS
 #define NUM_SENSORS 2
-#define NUM_ACTUATORS 1
+// #define NUM_ACTUATORS 0
 // #define FLOATSENSOR_PIN 5
 #define REVISION 0
 
@@ -31,19 +31,19 @@ Sensor* sensors [NUM_SENSORS] = {
 };
 
 //Actuators
-LED led_blue(3);
-LED led_cool(5);
-LED led_warm(6);
-LED led_red(9);
-LED led_far(10);
+// LED led_blue(3);
+// LED led_cool(5);
+// LED led_warm(6);
+// LED led_red(9);
+// LED led_far(10);
 
-Actuator* actuators [NUM_ACTUATORS] = {
-  &led_blue,
-  &led_cool,
-  &led_warm,
-  &led_red,
-  &led_far,
-}
+// Actuator* actuators [NUM_ACTUATORS] = {
+//   &led_blue,
+//   &led_cool,
+//   &led_warm,
+//   &led_red,
+//   &led_far,
+// }
 
 
 void setup()
@@ -106,26 +106,26 @@ bool handleInstruction(String in){
         float value = in.substring(split+1).toFloat();
 
         //INSTRUCTION HANDLING IF BLOCKS - EACH RETURNS TRUE
-        if(var.equals("led_blue")){
-            led_blue.target = value;
-            return true;
-        }
-        if(var.equals("led_cool")){
-            led_cool.target = value;
-            return true;
-        }
-        if(var.equals("led_warm")){
-            led_warm.target = value;
-            return true;
-        }
-        if(var.equals("led_red")){
-            led_red.target = value;
-            return true;
-        }
-        if(var.equals("led_far")){
-            led_far.target = value;
-            return true;
-        }
+        // if(var.equals("led_blue")){
+        //     led_blue.target = value;
+        //     return true;
+        // }
+        // if(var.equals("led_cool")){
+        //     led_cool.target = value;
+        //     return true;
+        // }
+        // if(var.equals("led_warm")){
+        //     led_warm.target = value;
+        //     return true;
+        // }
+        // if(var.equals("led_red")){
+        //     led_red.target = value;
+        //     return true;
+        // }
+        // if(var.equals("led_far")){
+        //     led_far.target = value;
+        //     return true;
+        // }
         Serial.print("{\"type\":\"error\",\"data\":\"Unknown instruction target '");
         Serial.print(var);
         Serial.print("'\"}\n");
@@ -194,18 +194,18 @@ bool post(){
     }
     
     // Test actuator protocols - per-actuator tests
-    for(int i = 0; i < NUM_ACTUATORS; i++){
-        bool latest = actuators[i]->begin();
-        success &= latest;
-        if(!latest){
-            Serial.print("{\"type\":\"error\",\"data\":\"Failed to initialize actuator '");
-            Serial.print(actuators[i]->name);
-            Serial.print("'. Check wiring.\"}\n");
-        } else {
-            Serial.print("{\"type\":\"debug\",\"data\":\"Actuator '");
-            Serial.print(actuators[i]->name);
-            Serial.print("' initialized successfully.\"}\n");
-        }
-    }
+    // for(int i = 0; i < NUM_ACTUATORS; i++){
+    //     bool latest = actuators[i]->begin();
+    //     success &= latest;
+    //     if(!latest){
+    //         Serial.print("{\"type\":\"error\",\"data\":\"Failed to initialize actuator '");
+    //         Serial.print(actuators[i]->name);
+    //         Serial.print("'. Check wiring.\"}\n");
+    //     } else {
+    //         Serial.print("{\"type\":\"debug\",\"data\":\"Actuator '");
+    //         Serial.print(actuators[i]->name);
+    //         Serial.print("' initialized successfully.\"}\n");
+    //     }
+    // }
     return success;
 }

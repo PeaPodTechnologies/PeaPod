@@ -2,5 +2,16 @@
 node_modules/
 *.js
 *.d.ts
+
+# Runtime files
 deviceInfo.json
 projects/
+
+# Logs
+logs/**
+
+# Arduino Binaries
+*.elf
+*.hex
+*.eep
+*.bin

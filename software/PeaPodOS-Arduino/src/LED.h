@@ -3,17 +3,17 @@
 
 #include "Actuator.h"
 
-enum led_t {
+typedef enum {
   LED_BLUE,
   LED_COOL,
   LED_WARM,
   LED_RED,
   LED_FAR
-};
+} led_color_t;
 
 class LED : public Actuator {
     public:
-        LED(uint8_t pin);
+        LED(uint8_t pin, led_color_t color);
     private:
         void update() override;
         bool init() override;
@@ -21,6 +21,7 @@ class LED : public Actuator {
          * PWM output pin.
          * */
         uint8_t pin;
+        led_color_t color;
 };
 
 #endif
