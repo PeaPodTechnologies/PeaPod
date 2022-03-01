@@ -3,12 +3,12 @@ import chalk from 'chalk'; //Colored CLI text
 import { DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import PiCamera from 'pi-camera';
+// import PiCamera from 'pi-camera';
 
 import PeaPodArduinoInterface, { IPeaPodArduino } from './lib/PeaPodArduino';
 import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './lib/PeaPodPublisher';
 import { ArduinoSimulator, PeaPodLogger } from './lib/PeaPodSimulator';
-import PeaPodCamera, { IPeaPodCamera } from './lib/PeaPodCamera';
+// import PeaPodCamera, { IPeaPodCamera } from './lib/PeaPodCamera';
 
 import { checkInternet, sleep, loadDotenv, findSerialPath } from './lib/utils'; //Utilities
 import Spinner from './lib/ui'; //UI utils
@@ -54,14 +54,14 @@ function main(): Promise<void> {
     }
   };
 
-  const RTCServers = {
-    iceServers: [
-      {
-        urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
-      },
-    ],
-    iceCandidatePoolSize: 10,
-  };
+  // const RTCServers = {
+  //   iceServers: [
+  //     {
+  //       urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+  //     },
+  //   ],
+  //   iceCandidatePoolSize: 10,
+  // };
   
   // Seconds between data batch publications
   const batchPublishInterval = 5;
@@ -70,9 +70,10 @@ function main(): Promise<void> {
   const simulated = process.argv.includes('simulate');
   const offline = process.argv.includes('offline');
   
-  let arduino : IPeaPodArduino, publisher : IPeaPodPublisher, camera: IPeaPodCamera | null;
+  let arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
+  // let camera: IPeaPodCamera | null;
   
-  Spinner.info(`Running in ${chalk.bold(simulated ? 'Simulated' : 'Live')} mode with ${chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud')} publishing.`);
+  Spinner.info(`Running in ${ chalk.bold(simulated ? 'Simulated' : 'Live') } mode with ${ chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud') } publishing.`);
   
   return new Promise(async (res, rej) => {
 
@@ -90,7 +91,7 @@ function main(): Promise<void> {
         }
       });
 
-      camera = null;
+      // camera = null;
     } else {
       let serialpath;
       if (process.env.SERIALPORT) {
@@ -103,18 +104,18 @@ function main(): Promise<void> {
       }
       
       arduino = new PeaPodArduinoInterface(serialpath);
-      camera = new PeaPodCamera;
+      // camera = new PeaPodCamera;
     } 
     if (offline) {
       publisher = new PeaPodLogger();
     } else {
       // Check Internet connection
-      Spinner.start(`Checking for ${chalk.blue('Internet')} connection...'`);
+      Spinner.start(`Checking for ${ chalk.blue('Internet') } connection...'`);
       if (!(await checkInternet())) {
-        Spinner.fail(`Could not connect to the ${chalk.blue('Internet')}! Running in ${chalk.bold('Offline')} mode.`);
+        Spinner.fail(`Could not connect to the ${ chalk.blue('Internet') }! Running in ${ chalk.bold('Offline') } mode.`);
         publisher = new PeaPodLogger();
       } else {
-        Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
+        Spinner.succeed(`Connected to the ${ chalk.blue('Internet') }!`);
 
         // Connect to Firebase
         initializeApp(firebaseConfig);
@@ -124,7 +125,7 @@ function main(): Promise<void> {
       await sleep(1500);
     }
     
-    let batch: PeaPodDataBatch = {};
+    let batch: PeaPodDataBatch = { };
     let batchInterval: NodeJS.Timer;
 
     // Initialize Arduino communications interface first
@@ -140,7 +141,7 @@ function main(): Promise<void> {
         
         // TODO: Plan, act
       } else {
-        Spinner.info(`[${chalk.blueBright('ARDUINO')} | ${msg.type.toUpperCase()}] - ${JSON.stringify(msg.data)}`)
+        Spinner.info(`[${ chalk.blueBright('ARDUINO') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
       }
       // TODO: publish other message types
     }).then(() => {
@@ -173,10 +174,10 @@ function main(): Promise<void> {
       // Get program
 
      
-        Spinner.info(`${chalk.green('PeaPod')} start - Project ${chalk.bold(projectname ?? projectid)}, Run ${chalk.bold(run)}`);
+        Spinner.info(`${ chalk.green('PeaPod') } start - Project ${ chalk.bold(projectname ?? projectid) }, Run ${ chalk.bold(run) }`);
         batchInterval = setInterval(() => {
           // Publish entire batch
-          try{
+          try {
             publisher.publish({
               type: 'data',
               metadata: {
@@ -191,10 +192,10 @@ function main(): Promise<void> {
             return;
           }
           
-          console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce((sum, entry) => { return sum+entry.batch.length }, 0)} datapoints published.`);
+          console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${ Object.values(batch).reduce((sum, entry) => { return sum+entry.batch.length }, 0) } datapoints published.`);
           
           // Reset batch to empty
-          batch = {};
+          batch = { };
         }, batchPublishInterval*1000);
       }).catch(e => { rej(e) });
     }).catch(e => { rej(e) });

@@ -1,28 +1,72 @@
-#include "Arduino.h"
+#include "Base.h"
 #include "Actuator.h"
 
-/**
- * Constructor. 
- * @param name - Meaningful, readable name of the sensor.
- * @param id - Identifying name of the associated hardware.
- * @param evname - Name of the environment variable the sensor records.
- **/
-Actuator::Actuator(String name, String id, String evname){
-    this->id = id;
-    this->name = name;
-    this->evname = evname;
-    //just in case
-    this->evname.toLowerCase();
-    this->evname.replace(' ','-');
+Actuator::Actuator(actuatorid_t actuatorid, float failtarget) {
+  this->actuatorid = actuatorid;
+  state.error = ERR_NONE;
+  state.debug = DS_DISABLED;
+
+  // Default start target
+  target = this->failtarget = failtarget;
 }
 
-void Actuator::updateActuator(){
-    if(this->ready){
-        this->update();
+ActuatorState* Actuator::begin(void) {
+  state.error = initialize();
+  if (state.error > ERR_NONE) {
+    // Failed
+    state.debug = DS_DISABLED;
+  } else {
+    // Success
+    state.debug = DS_INITIALIZED;
+    // Perform first update
+    update();
+  }
+  return &state;
+}
+
+ActuatorState* Actuator::update(void) {
+  // Check state preconditions, and do not attempt set if the target hasn't changed
+  if (state.error < ERR_FATAL && state.debug >= DS_INITIALIZED) {
+    if (state.lasttarget != target) {
+      // Attempt to set actuator state from target
+      state.error = set(state.lasttarget);
+
+      switch (state.error) {
+        case ERR_NONE:
+          // Success!
+          state.debug = DS_SUCCESS;
+          state.lasttarget = target;
+          break;
+
+        case ERR_WARNING:
+          // Set didn't go as planned, non-fatal
+          // DO NOT UPDATE STATE VALUES
+          break;
+
+        case ERR_FATAL:
+          // Set failed catastrophically
+          state.debug = DS_DISABLED;
+
+          // Failsafe
+          set(failtarget);
+          break;
+      }
+    } else {
+      // No `target` updates since last `update()` call
+      state.debug = DS_WAITING;
     }
+  }
+  return &state;
 }
 
-bool Actuator::begin(){
-    this->ready = init();
-    return ready;
+ActuatorState* Actuator::getState(void) {
+  return &state;
+}
+
+actuatorid_t Actuator::getID(void) {
+  return actuatorid;
+}
+
+void Actuator::setTarget(float target) {
+  this->target = target;
 }

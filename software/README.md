@@ -48,11 +48,12 @@ The following are performed on the Raspberry Pi:
    3. *System Options > Boot/Auto Login* - Select `Console Autologin`
    4. *Interface Options > SSH* - `Enable` SSH Server
    5. *Interface Options > Serial Port* - `Disable` serial login shell, but `Enable` the serial port hardware
-   6. *Localisation Options > Locale* (i.e. `en_US.UTF-8`)
-   7. *Localisation Options > Timezone* (i.e. `US` > `Eastern`)
-   8. *Localisation Options > Keyboard* (i.e. `Generic 105-key` > `English (US)` > `Default` > `No compose key`)
-   9. Optional: *Advanced Options > Expand Filesystem*
-   10. Reboot to save: `sudo reboot` 
+   6. *Performance Options > GPU Memory* - 256 (MB)
+   7. *Localisation Options > Locale* (i.e. `en_US.UTF-8`)
+   8. *Localisation Options > Timezone* (i.e. `US` > `Eastern`)
+   9. *Localisation Options > Keyboard* (i.e. `Generic 105-key` > `English (US)` > `Default` > `No compose key`)
+   10. Optional: *Advanced Options > Expand Filesystem*
+   11. Reboot to save: `sudo reboot` 
 
 > You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@peapod.local`, or with VS Code)
 
@@ -163,12 +164,17 @@ The following are performed on the Raspberry Pi:
         
         (*Ctrl-O* to save, *Ctrl-X* to exit; *avrdude* can be located with `whereis avrdude`)
 
-12. Import `.env` file with Firebase and auth keys (TBA), as well as the fields `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART) and `PASSWORD="raspberry"` with "raspberry" replaced with your password (used for `sudo` execution of *avrdude*).
+12. Install the *UV4L* camera library:
+    1.  `curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -`
+    2.  Add the package listings: `echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list`
+    3.  Update packages: `sudo apt-get update`
+    4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6`
 
-13. Run the main program by executing `peapodos`.
+13. Populate a `.env` file with Firebase and Google and/or GitHub auth keys (a template is provided as `.env.template`), as well as the field `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART).
+
+14. Run the main program by executing `peapodos`.
 
 <!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->
-
 # Development
 
 ### Arduino CLI - Compilation and Upload

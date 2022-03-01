@@ -2,7 +2,7 @@ import { PeaPodMessage } from './PeaPodPublisher';
 import { SerialPort, ReadlineParser } from 'serialport';
 import { ArduinoInstructionsError, SerialTimeoutError } from './errors';
 import Spinner from './ui';
-import { updateArduino } from './utils';
+import { sleep, updateArduino } from './utils';
 import chalk from 'chalk';
 
 const BAUDRATE = 115200;
@@ -93,6 +93,8 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
             } else {
               Spinner.fail(`Arduino revision check failed! Expected ${ARDUINO_REVISION}, recieved ${msg.data}`);
               // Attempt to update the Arduino, and then restart
+              this.stop();
+              clearTimeout(timeout);
               this.update().finally(() => {
                 process.exit();
               });
@@ -109,11 +111,12 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
   }
   async update() {
     Spinner.start('Compiling Arduino software and flashing to board...');
-    await updateArduino(this.serialpath).catch(e => {
+    await updateArduino().catch(e => {
       Spinner.fail(e);
     }).then(() => {
-      Spinner.succeed('Updated Arduino software successfully!');
+      Spinner.succeed('Updated Arduino software successfully! Rebooting in 3 seconds...');
     })
+    await sleep(3000);
   }
   write(msg : any) {
     Spinner.info(`[${chalk.yellow('WRITE')}] - ${JSON.stringify(msg)}`);

@@ -10,4 +10,4 @@ Test the functionality of the `arduino-cli` and `avrdude` utilities (and their c
 
 ### Communications Protocol Test - `revision.ino`
 
-Test communications between the Arduino and Raspberry Pi including timeout and revision. Essentially a skeleton of the main `PeaPodOS-Arduino.ino` script, with no sensors or actuators.
+Test communications between the Arduino and Raspberry Pi including timeout and revision checking. Essentially a skeleton of the main `PeaPodOS-Arduino.ino` script, with no sensors or actuators.

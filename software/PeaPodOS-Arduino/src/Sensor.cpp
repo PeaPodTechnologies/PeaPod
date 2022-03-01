@@ -1,51 +1,95 @@
-#include "Arduino.h"
+#include "Base.h"
 #include "Sensor.h"
 
-/**
- * Constructor. 
- * @param _name - Meaningful, readable name of the sensor.
- * @param _id - Identifying name of the associated hardware.
- * @param _evname - Name of the environment variable the sensor records.
- * @param _delta - The minimum time (in ms) between sensor reads.
- * @param __read - Pointer to the hardware-level read function.
- * @param _args - Pointer to static arguments to pass to hardware-level read function.
- **/
-Sensor::Sensor(String name, String id, String evname, uint16_t delta){
-    this->id = id;
-    this->name = name;
-    this->evname = evname;
-    //"Air Temperature" -> "air-temperature"
-    this->evname.toLowerCase();
-    this->evname.replace(' ','-');
-    this->delta = delta;
-    //Buffer - Resets the last read time to the current time
-    lastread = millis();
+Sensor::Sensor(sensorid_t sensorid, const t_sensordatasetup* setup, uint32_t delta) {
+  this->sensorid = sensorid;
+  this->delta = delta;
+
+  // Initial error and debug states
+  state.error = ERR_NONE;
+  state.debug = DS_DISABLED;
+
+  // Allocate data state
+  state.data = (t_datapoint*)malloc(sizeof(t_datapoint)*(setup->numdata));
+  state.numdata = setup->numdata;
+  for (int i = 0; i < setup->numdata; i++) {
+    // Since setup->labels[i] is a const char*, we can just reassign our pointer
+    state.data[i].label = setup->labels[i];
+    state.data[i].value = NULL;
+  }
 }
 
-/**
- * Wrapper for hardware-level read function. Checks that enough time has passed between reads, and checks for `ready` flag and types. 
- * @return Sensor read, or nan. Usually nan. Like 99% of the time nan.
- **/
-float Sensor::getRead(){
-    float result = NAN;
-    //Has enough time passed between reads?
-    if(ready && millis()-lastread > delta){
-        result = read();
-        //Reset the last read time to now
-        //BUFFER - Happens post-read
-        lastread = millis();
-        cachedread = result;
+SensorState* Sensor::begin(void) {
+  state.error = initialize();
+  if (state.error > ERR_NONE) {
+    // Failed
+    state.debug = DS_DISABLED;
+  } else {
+    // Success
+    state.debug = DS_INITIALIZED;
+    // Refresh read delay
+    state.timestamp = millis();
+  }
+  return &state;
+}
+
+SensorState* Sensor::update(void) {
+  // Check state preconditions
+  if (state.error < ERR_FATAL && state.debug >= DS_INITIALIZED) {
+    // Check timing
+    if (millis() - lastread > delta) {
+
+      // Allocate new data buffer on heap
+      float* buffer = (float*)malloc(sizeof(float)*state.numdata);
+
+      // Read and refresh read delay
+      state.error = read(&buffer, state.numdata);
+      lastread = millis();
+
+      switch (state.error) {
+        case ERR_NONE:
+          // Success!
+          // Indicate that new data is available
+          state.debug = DS_SUCCESS;
+          state.timestamp = lastread;
+
+          // Make state data pointers point to the buffer
+          for (int i = 0; i < state.numdata; i++) {
+            // Free old data buffer
+            free(state.data[i].value);
+            // Point to new data buffer
+            state.data[i].value = &buffer[i];
+          }
+          break;
+
+        case ERR_WARNING:
+          // Read didn't go as planned, non-fatal
+          // DO NOT UPDATE ANY STATE VALUES
+          break;
+
+        case ERR_FATAL:
+          // Read failed catastrophically
+          state.debug = DS_DISABLED;
+
+          // Free data buffer and reset to NULL
+          for (int i = 0; i < state.numdata; i++) {
+            free(state.data[i].value);
+            state.data[i].value = NULL;
+          }
+          break;
+      }
+    } else {
+      // Attempted to update between valid read cycles
+      state.debug = DS_WAITING;
     }
-    return result;
+  }
+  return &state;
 }
 
-bool Sensor::begin(){
-    ready = init();
-    return ready;
+SensorState* Sensor::getState(void) {
+  return &state;
 }
 
-// Class = Type
-// Object = Variable
-// Constructor: function on class that creates the object (same name as class)
-// `this` keyword
-
+sensorid_t Sensor::getID(void) {
+  return sensorid;
+}

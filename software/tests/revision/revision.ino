@@ -1,6 +1,7 @@
 #define REVISION 0
 
 void setup() {
+    pinMode(13, OUTPUT);
     digitalWrite(13, LOW);
     if (!post()) {
         // Failed POST
