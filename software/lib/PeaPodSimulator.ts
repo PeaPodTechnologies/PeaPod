@@ -45,6 +45,7 @@ export class ArduinoSimulator implements IPeaPodArduino {
       }, this.parameters[label as TDataLabels].interval));
     }
   }
+  write() {}
 }
 
 export class PeaPodLogger implements IPeaPodPublisher {

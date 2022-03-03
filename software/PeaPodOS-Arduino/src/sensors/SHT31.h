@@ -50,7 +50,7 @@ class SHT31 : public Sensor {
   private:
     errorlevel_t initialize(void) override;
 
-    errorlevel_t read(float** data, uint8_t numdata) override;
+    errorlevel_t read(float* data, uint8_t numdata) override;
 
     /**
      * Internal function to perform and I2C write.

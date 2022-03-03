@@ -1,0 +1,4 @@
+
+Fixed Arduino Serial vs Post ordering
+Added logging function to Spinner (pauses and restarts spinner)
+Fixed batch publishing in local logging mode

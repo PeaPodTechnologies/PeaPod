@@ -5,7 +5,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 // import PiCamera from 'pi-camera';
 
-import PeaPodArduinoInterface, { IPeaPodArduino } from './lib/PeaPodArduino';
+import PeaPodArduinoInterface, { IPeaPodArduino, ArduinoInstructions } from './lib/PeaPodArduino';
 import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './lib/PeaPodPublisher';
 import { ArduinoSimulator, PeaPodLogger } from './lib/PeaPodSimulator';
 // import PeaPodCamera, { IPeaPodCamera } from './lib/PeaPodCamera';
@@ -73,7 +73,7 @@ function main(): Promise<void> {
   let arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
   // let camera: IPeaPodCamera | null;
   
-  Spinner.info(`Running in ${ chalk.bold(simulated ? 'Simulated' : 'Live') } mode with ${ chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud') } publishing.`);
+  Spinner.log(`Running in ${ chalk.bold(simulated ? 'Simulated' : 'Live') } mode with ${ chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud') } publishing.`);
   
   return new Promise(async (res, rej) => {
 
@@ -95,7 +95,7 @@ function main(): Promise<void> {
     } else {
       let serialpath;
       if (process.env.SERIALPORT) {
-        Spinner.info('Using serial port: '+process.env.SERIALPORT);
+        Spinner.log('Using serial port: '+process.env.SERIALPORT);
         serialpath = process.env.SERIALPORT;
       } else {
         Spinner.start('Finding Arduino serial port...');
@@ -137,18 +137,20 @@ function main(): Promise<void> {
         batch[msg.data.label].batch.push({
           timestamp: Date.now(),
           value: msg.data.value
-        })
+        });
         
         // TODO: Plan, act
       } else {
-        Spinner.info(`[${ chalk.blueBright('ARDUINO') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
+        console.log(`[${ chalk.blueBright('ARDUINO') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
       }
       // TODO: publish other message types
     }).then(() => {
-      // Initialize publisher, fetch initial instructions
+      // Initialize publisher
       publisher.start(config => {
+        // Hot-swap programs
         console.log("[CONFIG] - "+config);
-        // TODO: Respond to config (update instructions)
+
+        // TODO: Handle this
       }, command => {
         console.log("[COMMAND] - "+command);
         // TODO: Respond to commands (immediate actions)
@@ -171,17 +173,23 @@ function main(): Promise<void> {
 
         }
       }).then(({projectid, projectname, run}) => {
-      // Get program
+        // TODO: Get program
+        let initialinstructions = {}
 
-     
-        Spinner.info(`${ chalk.green('PeaPod') } start - Project ${ chalk.bold(projectname ?? projectid) }, Run ${ chalk.bold(run) }`);
+        // START
+        Spinner.log(`${ chalk.green('PeaPod') } start - Project ${ chalk.bold(projectname ?? projectid) }, Run ${ chalk.bold(run) }`);
+
+        arduino.write(initialinstructions);
+        // Reset
+        batch = { };
+
         batchInterval = setInterval(() => {
           // Publish entire batch
           try {
             publisher.publish({
               type: 'data',
               metadata: {
-                owner: (getAuth().currentUser?.uid ?? 'user'),
+                owner: (getApps().length ? (getAuth().currentUser?.uid ?? 'user') : 'user'),
                 project: projectid,
                 run
               },

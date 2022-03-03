@@ -12,6 +12,13 @@ tsconfig.json
 package-lock.json
 
 .env
+.env.template
 *.pem
 deviceInfo.json
 projects/
+
+# Arduino Binaries
+*.elf
+*.hex
+*.eep
+*.bin

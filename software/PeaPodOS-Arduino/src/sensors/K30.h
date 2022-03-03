@@ -23,7 +23,7 @@ class K30 : public Sensor {
   private:
     errorlevel_t initialize(void) override;
 
-    errorlevel_t read(float** data, uint8_t numdata) override;
+    errorlevel_t read(float* data, uint8_t numdata) override;
 
     // Address of the K30 on the I2C bus.
     uint8_t address;

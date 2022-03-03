@@ -1,54 +1,64 @@
-import { PeaPodMessage } from './PeaPodPublisher';
-import { SerialPort, ReadlineParser } from 'serialport';
-import { ArduinoInstructionsError, SerialTimeoutError } from './errors';
+// import { PeaPodMessage } from './PeaPodPublisher';
+import chalk from 'chalk';
+import { ReadlineParser, SerialPort } from 'serialport';
+import { ArduinoInstructionsError } from './errors';
 import Spinner from './ui';
 import { sleep, updateArduino } from './utils';
-import chalk from 'chalk';
 
 const BAUDRATE = 115200;
-const ARDUINO_REVISION = "1";
-const TIMEOUT_SECONDS = 5;
+const ARDUINO_REVISION = 0;
+// const TIMEOUT_SECONDS = 5;
 
 /**
-* Abstract base type for any PeaPod message source.
-*/
+ * Abstract base type for any PeaPod message source.
+ */
 export type IPeaPodArduino = {
   /**
-  * Establish communications with the Arduino.
-  * @param onMessage Pipe recieved messages.
-  */
+   * Establish communications with the Arduino.
+   * @param onMessage Pipe recieved messages.
+   */
   start(onMessage : (msg : ArduinoMessage) => void): Promise<void>
+
   /**
-  * Halt communications.
-  */
+   * Write new instructions to the Arduino.
+   * @param instructions 
+   */
+  write(instructions: ArduinoInstructions): void;
+
+  /**
+   * Halt communications with the Arduino.
+   */
   stop(): void;
 };
 
 /**
-* Expanded message type to include all types of messages from the Arduino
-*/
+ * Expanded message type to include all types of messages from the Arduino
+ */
 export type ArduinoMessage = {
-  type: 'revision' | 'info' | 'debug' | 'error',
-  data: any
+  type: 'info' | 'debug' | 'error',
+  data: string
 } | {
   type: 'data',
   data: {
     label: string,
     value: number
   }
+} | {
+  type: 'revision',
+  data: number
 }
 
-type ArduinoInstructions = {
+export type ArduinoInstructions = {
   [key: string]: number;
 }
 
 /**
-* Interface between this computer and the Arduino.
-*/
+ * Interface between this computer and the Arduino.
+ */
 export default class PeaPodArduinoInterface implements IPeaPodArduino {
   serial : SerialPort;
   parser : ReadlineParser;
-  constructor(readonly serialpath: string, private initialInstructions: ArduinoInstructions = {}) {
+  constructor(readonly serialpath: string) {
     // Create the serial port interface
     this.serial = new SerialPort({
       path: serialpath,
@@ -62,59 +72,78 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
       includeDelimiter: false
     }));
   }
-  async start(onMessage : (msg : ArduinoMessage) => void): Promise<void> {
-    // Open the serial port
-    this.serial.open(err => { if(err){ throw err }; });
+  start(onMessage : (msg : ArduinoMessage) => void): Promise<void> {
+    return new Promise<void>(async (res, rej) => {
+      // Open the serial port
+      await new Promise<void>((reso, reje) => {
+        Spinner.start('Establishing serial communications with the Arduino...');
+        this.serial.open(err => { 
+          if (err) {
+            reje(err);
+          } else {
+            Spinner.succeed('Arduino serial communications established!');
+            reso();
+          }
+        });
+      });
 
-    // Reusable timeout, enabled at serial open (fails if no messages recieved after starting)
-    let timeout: NodeJS.Timeout;
-    const resetTimeout = (timeoutSeconds: number = TIMEOUT_SECONDS) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        this.stop();
-        throw new SerialTimeoutError(timeoutSeconds)
-      }, timeoutSeconds*1000);
-    }
-    // Initial timeout
-    resetTimeout();
-    
-    // Set up the listener
-    this.parser.on('data', msgtxt => {
-      clearTimeout(timeout);
-      try {
-        // Attempt to parse the raw text as a valid JSON object
-        const msg = JSON.parse(msgtxt) as ArduinoMessage;
+      Spinner.start('Awaiting Arduino software revision number...');
+
+      // Reusable timeout, enabled at serial open (fails if no messages recieved after starting)
+      // let timeout: NodeJS.Timeout;
+      // const resetTimeout = (timeoutSeconds: number = TIMEOUT_SECONDS) => {
+      //   clearTimeout(timeout);
+      //   timeout = setTimeout(() => {
+      //     this.stop();
+      //     throw new SerialTimeoutError(timeoutSeconds)
+      //   }, timeoutSeconds*1000);
+      // }
+      // Initial timeout
+      // resetTimeout();
+      
+      // Set up the listener
+      this.parser.on('data', msgtxt => {
+        // Attempt to parse the raw text as a valid JSON object'
+        var msg : ArduinoMessage;
+        try {
+          msg = JSON.parse(msgtxt) as ArduinoMessage;
+        } catch (err) {
+          rej(err);
+          return;
+        }
         // Handle all message types except: 'info', 'data', 'debug', 'error' 
         switch (msg.type) {
           case 'revision':
             onMessage(msg);
-            if((msg.data as typeof ARDUINO_REVISION) == ARDUINO_REVISION) {
-              this.write(this.initialInstructions);
+            if(msg.data == ARDUINO_REVISION) {
+              Spinner.succeed('Arduino software up to date!');
+              res();
             } else {
-              Spinner.fail(`Arduino revision check failed! Expected ${ARDUINO_REVISION}, recieved ${msg.data}`);
+              Spinner.fail(`Arduino software out of date! Expected ${ARDUINO_REVISION}.`);
               // Attempt to update the Arduino, and then restart
               this.stop();
-              clearTimeout(timeout);
+              // clearTimeout(timeout);
               this.update().finally(() => {
                 process.exit();
               });
+              // Do not reset timeout
+              return;
             }
             break;
           default:
             onMessage(msg);
             break;
         }
-      } catch (err) {
-        throw err;
-      }
+        // resetTimeout();
+      });
     });
   }
   async update() {
-    Spinner.start('Compiling Arduino software and flashing to board...');
-    await updateArduino().catch(e => {
-      Spinner.fail(e);
-    }).then(() => {
+    Spinner.start('Compiling latest Arduino software and flashing to board...');
+    await updateArduino().then(() => {
       Spinner.succeed('Updated Arduino software successfully! Rebooting in 3 seconds...');
+    }).catch(e => {
+      Spinner.fail(e);
     })
     await sleep(3000);
   }

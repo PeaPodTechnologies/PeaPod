@@ -32,7 +32,7 @@ errorlevel_t SHT31::initialize(void) {
   }
 }
 
-errorlevel_t SHT31::read(float** data, uint8_t numdata) {
+errorlevel_t SHT31::read(float* data, uint8_t numdata) {
   uint8_t buffer[6];
 
   // Ready up
@@ -58,12 +58,12 @@ errorlevel_t SHT31::read(float** data, uint8_t numdata) {
   // Temperature conversion
   int32_t stemp = (int32_t)(((uint32_t)buffer[0] << 8) | buffer[1]);
   stemp = ((4375 * stemp) >> 14) - 4500;
-  (*data)[0] = (float)stemp / 100.0f;
+  data[0] = (float)stemp / 100.0f;
 
   // Humidity conversion
   uint32_t shum = ((uint32_t)buffer[3] << 8) | buffer[4];
   shum = (625 * shum) >> 12;
-  (*data)[1] = (float)shum / 100.0f;
+  data[1] = (float)shum / 100.0f;
 
   return ERR_NONE;
 }

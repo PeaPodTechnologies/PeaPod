@@ -6,14 +6,19 @@
 // #include "./src/actuators/LED.h"
 
 // CONSTANTS
-#define NUM_SENSORS 2
+#define NUM_SENSORS   1
 // #define NUM_ACTUATORS 0
-#define REVISION 0
-// #define LEDPIN_BLUE 3
-// #define LEDPIN_COOL 5
-// #define LEDPIN_WARM 6
-// #define LEDPIN_RED 9
-// #define LEDPIN_FAR 10
+#define REVISION      0
+#define BAUDRATE      115200
+#define DEBUG         true
+
+// PINS
+#define PIN_STATUS    13
+// #define PIN_LEDBLUE   3
+// #define PIN_LEDCOOL   5
+// #define PIN_LEDWARM   6
+// #define PIN_LEDRED    9
+// #define PIN_LEDFAR    10
 
 // SENSORS
 SHT31 sht31 = SHT31();
@@ -40,87 +45,104 @@ Sensor* sensors[NUM_SENSORS] = {
 // }
 
 void setup(void) {
-  pinMode(13, OUTPUT);
-  digitalWrite(13, LOW);
-  if (!post()) {
-    // Failed POST
-    while (true) {
-      delay(250);
-      digitalWrite(13, HIGH);
-      delay(250);
-      digitalWrite(13, LOW);
-    }
+  // Status LED
+  pinMode(PIN_STATUS, OUTPUT);
+  digitalWrite(PIN_STATUS, LOW);
+
+  // Await serial start
+  Serial.begin(BAUDRATE);
+  while (!Serial) {
+    delay(1);
   }
 
-  // Send software revision
+  // Send software revision first
   Serial.print("{\"type\":\"revision\",\"data\":");
   Serial.print(REVISION);
   Serial.print("}\n");
 
-  // Await valid initial instruction set
-  String ins;
-  do {
-    // Await instructions
-    while (!Serial.available());
-    ins = Serial.readString();
+  // Serial communications established, initialize sensors and actuators
+  if (!post()) {
+    // Failed POST
+    while (true) {
+      delay(250);
+      digitalWrite(PIN_STATUS, HIGH);
+      delay(250);
+      digitalWrite(PIN_STATUS, LOW);
+    }
+  }
 
-    // Trim whitespace, newline terminator
-    ins.trim();
-  } while (!handleInstructions(ins));
-  digitalWrite(13, HIGH);
+  // Await valid initial instruction set
+  // String ins;
+  // do {
+  //   // Await instructions
+  //   while (!Serial.available());
+  //   ins = Serial.readString();
+
+  //   // Trim whitespace, newline terminator
+  //   ins.trim();
+  // } while (!handleInstructions(ins));
+  digitalWrite(PIN_STATUS, HIGH);
 }
 
 void loop(void) {
   // Check for instructions
-  if (Serial.available()) {
-    String in = Serial.readString();
+  // if (Serial.available()) {
+  //   String in = Serial.readString();
     
-    // Trim whitespace, newline terminator
-    in.trim();
-    handleInstructions(in);
-  }
+  //   // Trim whitespace, newline terminator
+  //   in.trim();
+  //   handleInstructions(in);
+  // }
 
   for (int i = 0; i < NUM_SENSORS; i++) {
     SensorState* state = sensors[i]->update();
+
+    #if DEBUG
+      Serial.print(F("{\"type\":\"debug\",\"data\":\"Sensor "));
+      Serial.print(sensors[i]->getID());
+      Serial.print(F(" state: DS = "));
+      Serial.print(state->debug);
+      Serial.print(F(", ERR = "));
+      Serial.print(state->error);
+      Serial.print(F("\"}\n"));
+    #endif
+
     if (state->error == ERR_NONE) {
       if (state->debug == DS_SUCCESS) {
         for (int j = 0; j < state->numdata; j++) {
-          Serial.print("{\"type\":\"data\",\"data\":{\"label\":\"");
+          Serial.print(F("{\"type\":\"data\",\"data\":{\"label\":\""));
           Serial.print(state->data[j].label);
-          Serial.print("\",\"value\":");
-          Serial.print(*(state->data[j].value));
-          Serial.print("}}\n");
+          Serial.print(F("\",\"value\":"));
+          Serial.print(state->data[j].value);
+          Serial.print(F("}}\n"));
         }
       } // else do nothing
     } else if (state->error == ERR_WARNING) {
-      Serial.print("{\"type\":\"debug\",\"data\":\"Failed to read from sensor ");
+      Serial.print(F("{\"type\":\"debug\",\"data\":\"Failed to read from sensor "));
       Serial.print(sensors[i]->getID());
-      Serial.print(" (non-fatal)\"}\n");
+      Serial.print(F(" (non-fatal)\"}\n"));
     } else if (state->error == ERR_FATAL) {
-      Serial.print("{\"type\":\"error\",\"data\":\"Failed to read from sensor ");
+      Serial.print(F("{\"type\":\"error\",\"data\":\"Failed to read from sensor "));
       Serial.print(sensors[i]->getID());
-      Serial.print(" (FATAL, SENSOR DISABLED!)\"}\n");
+      Serial.print(F(" (FATAL, SENSOR DISABLED!)\"}\n"));
     }
   }
-  delay(10);
+  delay(500);
 }
 
 bool post(void) {
-  Serial.begin(115200);
-  while(!Serial); //Waits until serial opens
-
   bool success = true;
   for (int i = 0; i < NUM_SENSORS; i++) {
     SensorState* state = sensors[i]->begin();
-    bool latest = (state->debug == ERR_NONE);
-    if (!latest) {
-      Serial.print("{\"type\":\"error\",\"data\":\"Failed to initialize sensor ");
-      Serial.print(sensors[i]->getID());
-      Serial.print(". Check wiring.\"}\n");
-    } else {
+    bool latest = (state->debug == DS_INITIALIZED && state->error == ERR_NONE);
+    if (latest) {
       Serial.print("{\"type\":\"debug\",\"data\":\"Sensor ");
       Serial.print(sensors[i]->getID());
       Serial.print(" initialized successfully.\"}\n");
+    } else {
+      Serial.print("{\"type\":\"error\",\"data\":\"Failed to initialize sensor ");
+      Serial.print(sensors[i]->getID());
+      Serial.print(". Check wiring.\"}\n");
     }
     success &= latest;
   }

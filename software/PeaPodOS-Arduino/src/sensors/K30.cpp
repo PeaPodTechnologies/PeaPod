@@ -21,7 +21,7 @@ errorlevel_t K30::initialize(void) {
   return ERR_NONE;
 }
 
-errorlevel_t K30::read(float** data, uint8_t numdata) {
+errorlevel_t K30::read(float* data, uint8_t numdata) {
   byte recValue[4] = {0,0,0,0};
 
   // Instruct to take a reading
@@ -49,7 +49,7 @@ errorlevel_t K30::read(float** data, uint8_t numdata) {
     return ERR_WARNING;
   }
 
-  (*data)[0] = (float)((recValue[1] << 8) + recValue[2]);
+  data[0] = (float)((recValue[1] << 8) + recValue[2]);
 
   return ERR_NONE;
 }

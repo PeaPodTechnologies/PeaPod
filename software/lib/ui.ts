@@ -75,7 +75,7 @@ namespace Spinner {
   }
 
   /**
-   * Set the loading spinner to info (blue `i`)
+   * Complete the loading spinner with info (blue `i`)
    * @param text Text to display.
    */
   export const info = (text: string = "") => {
@@ -85,6 +85,23 @@ namespace Spinner {
     } else {
             // Otherwise, start a new one and info it
       Spinner = ora({text}).info();
+    }
+  }
+
+  /**
+   * If spinning: stop and clear the current spinner, log some text, then restart the spinner
+   * Else: Just log
+   * 
+   * @param text Text to log
+   */
+  export const log = (text: string) => {
+    let oldtext = Spinner.text;
+    if(Spinner.isSpinning) {
+      Spinner.stop();
+      console.log(text);
+      Spinner.start(oldtext);
+    } else {
+      ora({text}).info();
     }
   }
 }

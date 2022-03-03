@@ -15,7 +15,6 @@ Sensor::Sensor(sensorid_t sensorid, const t_sensordatasetup* setup, uint32_t del
   for (int i = 0; i < setup->numdata; i++) {
     // Since setup->labels[i] is a const char*, we can just reassign our pointer
     state.data[i].label = setup->labels[i];
-    state.data[i].value = NULL;
   }
 }
 
@@ -34,16 +33,15 @@ SensorState* Sensor::begin(void) {
 }
 
 SensorState* Sensor::update(void) {
+  // Allocate new data buffer on stack
+  float buffer[state.numdata];
+
   // Check state preconditions
   if (state.error < ERR_FATAL && state.debug >= DS_INITIALIZED) {
     // Check timing
     if (millis() - lastread > delta) {
-
-      // Allocate new data buffer on heap
-      float* buffer = (float*)malloc(sizeof(float)*state.numdata);
-
       // Read and refresh read delay
-      state.error = read(&buffer, state.numdata);
+      state.error = read(buffer, state.numdata);
       lastread = millis();
 
       switch (state.error) {
@@ -53,12 +51,9 @@ SensorState* Sensor::update(void) {
           state.debug = DS_SUCCESS;
           state.timestamp = lastread;
 
-          // Make state data pointers point to the buffer
+          // Copy from buffer to state data
           for (int i = 0; i < state.numdata; i++) {
-            // Free old data buffer
-            free(state.data[i].value);
-            // Point to new data buffer
-            state.data[i].value = &buffer[i];
+            state.data[i].value = buffer[i];
           }
           break;
 
@@ -70,12 +65,6 @@ SensorState* Sensor::update(void) {
         case ERR_FATAL:
           // Read failed catastrophically
           state.debug = DS_DISABLED;
-
-          // Free data buffer and reset to NULL
-          for (int i = 0; i < state.numdata; i++) {
-            free(state.data[i].value);
-            state.data[i].value = NULL;
-          }
           break;
       }
     } else {

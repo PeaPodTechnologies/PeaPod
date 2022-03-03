@@ -179,12 +179,12 @@ The following are performed on the Raspberry Pi:
 
 ### Arduino CLI - Compilation and Upload
 
-To manually compile and upload the test sketch `blink` to an Arduino Nano (ATMega328P aka `m328p`):
-1. `arduino-cli compile -b arduino:avr:nano blink -e` 
+To manually compile and upload the test sketch `./tests/blink.ino` to an Arduino Nano (ATMega328P aka `m328p`):
+1. `arduino-cli compile -b arduino:avr:nano tests/blink -e` 
   
     (`-b`: board FQBN, `-e`: export binary to sketch folder)
 
-2. `sudo avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v -U flash:w:blink/build/arduino.avr.nano/blink.ino.hex:i`
+2. `sudo avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v -U flash:w:tests/blink/build/arduino.avr.nano/blink.ino.hex:i`
 
     (`-p`: microprocessor ID, `-C`: custom configuration file path, `-c`: programmer ID, `-v`: verify sketch after upload, `-U`: upload options and path to binary)
 

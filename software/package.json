@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/PeaPodTechnologies/PeaPod#readme",
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.8",
     "@peapodtech/firebasedeviceflow": "^0.2.0",
     "@types/yargs": "^16.0.0",
     "chalk": "^4.1.0",

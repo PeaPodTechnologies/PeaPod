@@ -11,8 +11,8 @@ typedef enum sensorid_t {
 
 // Single datapoint
 typedef struct t_datapoint {
-  // Value (pointer to heap memory)
-  float* value;
+  // Value
+  float value;
 
   // Dataset label (string literal)
   const char* label;
@@ -80,11 +80,11 @@ class Sensor {
 
     /**
      * Reads data from sensor. To be implemented by the child class.
-     * @param data Pointer to the data array to be read into
+     * @param data The data array to be read into
      * @param numdata Length of the data array
      * @return Error level for this read attempt
      */
-    virtual errorlevel_t read(float** data, uint8_t numdata) = 0;
+    virtual errorlevel_t read(float* data, uint8_t numdata) = 0;
     
   private:
     // Stores all the latest state data for this sensor.
