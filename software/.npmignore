@@ -2,6 +2,8 @@
 
 # Build files
 **/build/
+
+# TypeScript files (keep type files)
 *.ts
 !*.d.ts
 tsconfig.json
@@ -21,6 +23,7 @@ deviceInfo.json
 projects/
 
 # Test Scripts
+tests/
 *.test.js
 *.test.js.map
 *.test.d.ts
@@ -31,3 +34,6 @@ projects/
 *.hex
 *.eep
 *.bin
+
+# Extras
+assets/
