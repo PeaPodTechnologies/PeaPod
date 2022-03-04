@@ -1,5 +1,10 @@
-#include "Base.h"
-#include "Sensor.h"
+#include "sensor.h"
+
+#include <stdlib.h>
+
+#include "Arduino.h"
+
+#include "base.h"
 
 Sensor::Sensor(sensorid_t sensorid, const t_sensordatasetup* setup, uint32_t delta) {
   this->sensorid = sensorid;
@@ -12,7 +17,7 @@ Sensor::Sensor(sensorid_t sensorid, const t_sensordatasetup* setup, uint32_t del
   // Allocate data state
   state.data = (t_datapoint*)malloc(sizeof(t_datapoint)*(setup->numdata));
   state.numdata = setup->numdata;
-  for (int i = 0; i < setup->numdata; i++) {
+  for (int i = 0; i < setup->numdata; ++i) {
     // Since setup->labels[i] is a const char*, we can just reassign our pointer
     state.data[i].label = setup->labels[i];
   }
@@ -52,7 +57,7 @@ SensorState* Sensor::update(void) {
           state.timestamp = lastread;
 
           // Copy from buffer to state data
-          for (int i = 0; i < state.numdata; i++) {
+          for (int i = 0; i < state.numdata; ++i) {
             state.data[i].value = buffer[i];
           }
           break;

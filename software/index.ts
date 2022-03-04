@@ -141,18 +141,18 @@ function main(): Promise<void> {
         
         // TODO: Plan, act
       } else {
-        console.log(`[${ chalk.blueBright('ARDUINO') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
+        Spinner.log(`[${ chalk.blueBright('ARDUINO') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
       }
       // TODO: publish other message types
     }).then(() => {
       // Initialize publisher
       publisher.start(config => {
         // Hot-swap programs
-        console.log("[CONFIG] - "+config);
+        Spinner.log("[CONFIG] - "+config);
 
         // TODO: Handle this
       }, command => {
-        console.log("[COMMAND] - "+command);
+        Spinner.log("[COMMAND] - "+command);
         // TODO: Respond to commands (immediate actions)
         if (command.type == 'livestreamoffer') {
 
@@ -200,7 +200,7 @@ function main(): Promise<void> {
             return;
           }
           
-          console.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${ Object.values(batch).reduce((sum, entry) => { return sum+entry.batch.length }, 0) } datapoints published.`);
+          Spinner.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${ Object.values(batch).reduce((sum, entry) => { return sum+entry.batch.length }, 0) } datapoints published.`);
           
           // Reset batch to empty
           batch = { };

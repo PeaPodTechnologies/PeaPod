@@ -1,8 +1,10 @@
+#include "k30.h"
+
 #include "Arduino.h"
-#include "../Base.h"
-#include "../Sensor.h"
 #include "Wire.h"
-#include "K30.h"
+
+#include "../base.h"
+#include "../sensor.h"
 
 // Data setup
 static const char* labels[1] = { "co2_ppm" };
@@ -38,7 +40,7 @@ errorlevel_t K30::read(float* data, uint8_t numdata) {
   delay(20);
   
   // Store reading
-  for(int i = 0; wire->available() && i < 4; i++) {
+  for(int i = 0; wire->available() && i < 4; ++i) {
     recValue[i] = wire->read();
   }
 

@@ -1,9 +1,11 @@
-#ifndef K30_H
-#define K30_H
+#ifndef PEAPOD_SENSORS_K30_H_
+#define PEAPOD_SENSORS_K30_H_
 
-#include "../Base.h"
-#include "../Sensor.h"
+#include "Arduino.h"
 #include "Wire.h"
+
+#include "../base.h"
+#include "../sensor.h"
 
 #define K30_DEFAULT_ADDR 0x68
 #define K30_DELTA 2000

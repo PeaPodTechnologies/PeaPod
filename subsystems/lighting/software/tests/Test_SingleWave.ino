@@ -1,6 +1,6 @@
 #include "Arduino.h"
 #include "Actuator.h"
-#include "LED.h"
+#include "led.h"
 
 #define LED_PIN 3
 #define STEP 0.1

@@ -1,7 +1,7 @@
-#ifndef ACTUATOR_H
-#define ACTUATOR_H
+#ifndef PEAPOD_ACTUATOR_H_
+#define PEAPOD_ACTUATOR_H_
 
-#include "Base.h"
+#include "base.h"
 
 // Actuator identifiers
 typedef enum actuatorid_t {

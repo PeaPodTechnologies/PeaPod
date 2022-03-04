@@ -1,8 +1,10 @@
+#include "sht31.h"
+
 #include "Arduino.h"
-#include "../Base.h"
-#include "../Sensor.h"
 #include "Wire.h"
-#include "SHT31.h"
+
+#include "../base.h"
+#include "../sensor.h"
 
 static uint8_t crc8(const uint8_t *data, int len);
 

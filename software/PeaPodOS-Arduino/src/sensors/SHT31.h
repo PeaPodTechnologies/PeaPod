@@ -1,10 +1,11 @@
-#ifndef SHT31_H
-#define SHT31_H
+#ifndef PEAPOD_SENSORS_SHT31_H_
+#define PEAPOD_SENSORS_SHT31_H_
 
 #include "Arduino.h"
-#include "../Base.h"
-#include "../Sensor.h"
 #include "Wire.h"
+
+#include "../base.h"
+#include "../sensor.h"
 
 #define SHT31_DEFAULT_ADDR 0x44           // SHT31 Default Address
 #define SHT31_MEAS_HIGHREP_STRETCH 0x2C06 // Measurement High Repeatability with Clock Stretch Enabled

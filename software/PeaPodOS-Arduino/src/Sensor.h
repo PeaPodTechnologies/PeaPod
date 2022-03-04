@@ -1,7 +1,9 @@
-#ifndef SENSOR_H
-#define SENSOR_H
+#ifndef PEAPOD_SENSOR_H_
+#define PEAPOD_SENSOR_H_
 
-#include "Base.h"
+#include "Arduino.h"
+
+#include "base.h"
 
 // Sensor identifiers
 typedef enum sensorid_t {

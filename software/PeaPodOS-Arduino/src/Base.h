@@ -1,7 +1,5 @@
-#ifndef BASE_H
-#define BASE_H
-
-#include "Arduino.h"
+#ifndef PEAPOD_BASE_H_
+#define PEAPOD_BASE_H_
 
 // Degree of error occurred
 typedef enum errorlevel_t {

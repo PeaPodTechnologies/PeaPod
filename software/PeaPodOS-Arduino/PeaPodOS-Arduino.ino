@@ -3,7 +3,7 @@
 #include "./src/sensors/SHT31.h"
 // #include "./src/sensors/K30.h"
 // #include "./src/Actuator.h"
-// #include "./src/actuators/LED.h"
+// #include "./src/actuators/led.h"
 
 // CONSTANTS
 #define NUM_SENSORS   1
@@ -94,7 +94,7 @@ void loop(void) {
   //   handleInstructions(in);
   // }
 
-  for (int i = 0; i < NUM_SENSORS; i++) {
+  for (int i = 0; i < NUM_SENSORS; ++i) {
     SensorState* state = sensors[i]->update();
 
     #if DEBUG
@@ -109,7 +109,7 @@ void loop(void) {
 
     if (state->error == ERR_NONE) {
       if (state->debug == DS_SUCCESS) {
-        for (int j = 0; j < state->numdata; j++) {
+        for (int j = 0; j < state->numdata; ++j) {
           Serial.print(F("{\"type\":\"data\",\"data\":{\"label\":\""));
           Serial.print(state->data[j].label);
           Serial.print(F("\",\"value\":"));
@@ -132,7 +132,7 @@ void loop(void) {
 
 bool post(void) {
   bool success = true;
-  for (int i = 0; i < NUM_SENSORS; i++) {
+  for (int i = 0; i < NUM_SENSORS; ++i) {
     SensorState* state = sensors[i]->begin();
     bool latest = (state->debug == DS_INITIALIZED && state->error == ERR_NONE);
     if (latest) {
@@ -156,6 +156,9 @@ bool post(void) {
  * @return were all instructions handled in a valid way?
  */
 bool handleInstructions(String ins) {
+  if(ins.equals("{}")){
+    return true;
+  }
   if (ins.charAt(0) != '{' || ins.charAt(ins.length()-1) != '}' || ins.indexOf(':') == -1) {
       Serial.print("{\"type\":\"error\",\"data\":\"Invalid instructions dictionary '");
       Serial.print(ins);

@@ -101,7 +101,7 @@ namespace Spinner {
       console.log(text);
       Spinner.start(oldtext);
     } else {
-      ora({text}).info();
+      console.log(text);
     }
   }
 }

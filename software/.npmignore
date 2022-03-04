@@ -1,21 +1,30 @@
-node_modules/
-tsconfig.json
+# Basically just include .js files ("binary" package)
 
+# Build files
 **/build/
 *.ts
 !*.d.ts
+tsconfig.json
 
+# Aux files
 .git/
 **/.gitignore
 .gitattributes
 .npmignore
 package-lock.json
 
+# Unpublishables
 .env
 .env.template
 *.pem
 deviceInfo.json
 projects/
+
+# Test Scripts
+*.test.js
+*.test.js.map
+*.test.d.ts
+*.test.ts
 
 # Arduino Binaries
 *.elf
