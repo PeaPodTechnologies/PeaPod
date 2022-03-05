@@ -1,7 +1,7 @@
 {
   "name": "@peapodtech/peapodos",
   "version": "0.0.9",
-  "description": "A cloud-enabled IoT automated plant growth environment. Designed as a research tool for precise and distributed mapping of the plant-environment relationship.",
+  "description": "Main software for PeaPod.",
   "main": "index.js",
   "directories": {
     "lib": "lib"

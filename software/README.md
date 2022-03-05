@@ -1,9 +1,11 @@
-# PeaPodOS <!-- omit in toc -->
+# PeaPod OS <!-- omit in toc -->
 
 [![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Open%22) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
 
 <!-- TODO: Build Statuses? -->
  
+Main software for PeaPod.
+
 A cloud-connected isolated and automated plant growth environment, able to generate any environment from a combination of independent environment parameters. 
 
 Designed as both a hassle-free food production system and a research tool for precise and distributed mapping of the plant-environment relationship.
@@ -21,7 +23,7 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 # Background
 
-<a href="https://www.youtube.com/watch?v=2zWv9JC5G3w" target="_blank"><img src="assets/control_flow.png" width=60% style="border: 5px solid #333"/></a>
+<img src="assets/control_flow.png" width=60% style="border: 5px solid #333"/>
 
 ***
 
@@ -35,11 +37,11 @@ The following are performed on a computer:
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
 3. Flash the SD card with a *Raspberry Pi OS Lite* image.
 
-> Note: In Future, a custom PeaPod image will be released with steps 5, 6, and 10 already complete.
+> Note: In Future, a custom PeaPod image will be released with steps 5, 6, and 12 already complete.
 
 4. Plug in a keyboard and display, insert the microSD card, and power the Raspberry Pi device.
 
-The following are performed on the Raspberry Pi:
+The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 5. Login with the default username (`pi`) and password (`raspberry`).
 6. Execute `sudo raspi-config` and perform these steps to setup the Pi:
@@ -57,13 +59,13 @@ The following are performed on the Raspberry Pi:
 
 > You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@peapod.local`, or with VS Code)
 
-> Note: In Future, steps 7-9 will be automated at startup.
+> Note: In Future, steps 7-11 will be automated at startup.
 7. Update Packages:
      1. Update package listings, upgrade existing packages: `sudo apt-get update && sudo apt-get upgrade -y`
      2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt-get install -y nodejs npm avrdude` (could take a while)
      3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
 
-9.  Install and configure the Arduino CLI:
+8. Install and configure the Arduino CLI:
     1. Install with `curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh`. Successful output ends with something like:
       ```
       arduino-cli  Version: 0.21.0 Commit: 10107d24 Date: 2022-02-08T15:05:43Z installed successfully in /home/pi/bin
@@ -74,8 +76,8 @@ The following are performed on the Raspberry Pi:
     5. Update the list of cores: `arduino-cli core update-index`
     6. Install the AVR cores (incl. Arduino Nano/ATMega328P): `arduino-cli core install arduino:avr`
 
-10. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
-   3.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
+9.  Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
+   1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
 
        ```
        # Raspberry Pi GPIO configuration for avrdude.
@@ -90,7 +92,7 @@ The following are performed on the Raspberry Pi:
        ;
        ```
        (*Ctrl-O* to save, *Ctrl-X* to exit)
-   4.  Verify the configuration and connection to the Arduino with `sudo avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v`. A successful output should look something like:
+   2.  Verify the configuration and connection to the Arduino with `sudo avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v`. A successful output should look something like:
        ```
        avrdude: Version 6.3-20171130
             Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
@@ -156,7 +158,7 @@ The following are performed on the Raspberry Pi:
        avrdude done.  Thank you.
        ```
 
-11. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
+10. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
     1.  Open the `sudoers` file: `sudo visudo`
     2.  Add the following line to the end (assuming your username is `pi`, the hostname is `peapod`, and the `avrdude` binary is located at `/usr/bin/avrdude`):
         
@@ -164,15 +166,15 @@ The following are performed on the Raspberry Pi:
         
         (*Ctrl-O* to save, *Ctrl-X* to exit; *avrdude* can be located with `whereis avrdude`)
 
-12. Install the *UV4L* camera library:
+11. Install the *UV4L* camera library:
     1.  `curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -`
     2.  Add the package listings: `echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list`
     3.  Update packages: `sudo apt-get update`
     4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6`
 
-13. Populate a `.env` file with Firebase and Google and/or GitHub auth keys (a template is provided as `.env.template`), as well as the field `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART).
+12. Populate a `.env` file with Firebase and Google and/or GitHub auth keys (a template is provided as `.env.template`), as well as the field `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART).
 
-14. Run the main program by executing `peapodos`.
+13. Run the main program by executing `peapodos`.
 
 <!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->
 # Development

@@ -34,6 +34,3 @@ tests/
 *.hex
 *.eep
 *.bin
-
-# Extras
-assets/
