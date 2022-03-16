@@ -25,7 +25,7 @@
 // Import the default `Wire` interface provided by Arduino.
 extern TwoWire Wire;
 
-// Interface for the Adafruit SHT31-D Temperature and Humidity breakout board. Does NOT inherit from `Sensor`.
+// Interface for the Adafruit SHT31-D Temperature and Humidity breakout board.
 class SHT31 : public Sensor {
   public:
     /**

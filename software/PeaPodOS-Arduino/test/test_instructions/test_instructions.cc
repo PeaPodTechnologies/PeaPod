@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <unity.h>
 
 #include <utils/base.h>
 #include <actuators/actuator.h>

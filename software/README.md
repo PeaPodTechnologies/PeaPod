@@ -59,8 +59,8 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 > You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@peapod.local`, or with VS Code)
 
-> Note: In Future, a PeaPodOS Docker container will be released with steps 7-11 already complete.
-7. Update Packages:
+> Note: In Future, steps 7-11 will be performed at runtime.
+1. Update Packages:
      1. Update package listings, upgrade existing packages: `sudo apt-get update && sudo apt-get upgrade -y`
      2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt-get install -y nodejs npm avrdude` (could take a while)
      3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
