@@ -1,8 +1,8 @@
-#include "actuator.h"
+#include <actuators/actuator.h>
 
-#include "Arduino.h"
+#include <Arduino.h>
 
-#include "base.h"
+#include <utils/base.h>
 
 Actuator::Actuator(actuatorid_t actuatorid, float failtarget) {
   this->actuatorid = actuatorid;

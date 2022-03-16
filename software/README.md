@@ -16,7 +16,7 @@ Designed as both a hassle-free food production system and a research tool for pr
 - [Production](#production)
     - [Setting Up Raspberry Pi](#setting-up-raspberry-pi)
 - [Development](#development)
-    - [Arduino CLI - Compilation and Upload](#arduino-cli---compilation-and-upload)
+    - [Arduino Test Suite](#arduino-test-suite)
     - [Raspberry Pi Serial Testing](#raspberry-pi-serial-testing)
     - [Build from Source](#build-from-source)
 ***
@@ -37,7 +37,7 @@ The following are performed on a computer:
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
 3. Flash the SD card with a *Raspberry Pi OS Lite* image.
 
-> Note: In Future, a custom PeaPod image will be released with steps 5, 6, and 12 already complete.
+> Note: In Future, a custom PeaPod Raspberry Pi OS Lite image will be released with steps 5, 6, and 12 already complete.
 
 4. Plug in a keyboard and display, insert the microSD card, and power the Raspberry Pi device.
 
@@ -59,13 +59,13 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 > You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@peapod.local`, or with VS Code)
 
-> Note: In Future, steps 7-11 will be automated at startup.
+> Note: In Future, a PeaPodOS Docker container will be released with steps 7-11 already complete.
 7. Update Packages:
      1. Update package listings, upgrade existing packages: `sudo apt-get update && sudo apt-get upgrade -y`
      2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt-get install -y nodejs npm avrdude` (could take a while)
      3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
 
-8. Install and configure the Arduino CLI:
+<!-- 8. Install and configure the Arduino CLI:
     1. Install with `curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh`. Successful output ends with something like:
       ```
       arduino-cli  Version: 0.21.0 Commit: 10107d24 Date: 2022-02-08T15:05:43Z installed successfully in /home/pi/bin
@@ -74,7 +74,9 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
     3. Reboot to reset the path: `sudo reboot`
     4. Perform initial configuration: `arduino-cli config init`
     5. Update the list of cores: `arduino-cli core update-index`
-    6. Install the AVR cores (incl. Arduino Nano/ATMega328P): `arduino-cli core install arduino:avr`
+    6. Install the AVR cores (incl. Arduino Nano/ATMega328P): `arduino-cli core install arduino:avr` -->
+
+8. Install PlatformIO Core with `python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
 
 9.  Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
    1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
@@ -179,12 +181,48 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 <!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->
 # Development
 
-### Arduino CLI - Compilation and Upload
+### Arduino Test Suite
 
 To manually compile and upload the test sketch `./tests/blink.ino` to an Arduino Nano (ATMega328P aka `m328p`):
-1. `arduino-cli compile -b arduino:avr:nano tests/blink -e` 
+<!-- 1. `arduino-cli compile -b arduino:avr:nano tests/blink -e` 
   
-    (`-b`: board FQBN, `-e`: export binary to sketch folder)
+    (`-b`: board FQBN, `-e`: export binary to sketch folder) -->
+
+1. `~/.platformio/penv/bin/platformio run -d tests/`
+
+    Successful output should look like this:
+
+    ```
+      Processing peapod (platform: atmelavr; board: nanoatmega328; framework: arduino)
+      ----------------------------------------------------------------------------------
+      Verbose mode can be enabled via `-v, --verbose` option
+      CONFIGURATION: https://docs.platformio.org/page/boards/atmelavr/nanoatmega328.html
+      PLATFORM: Atmel AVR (3.4.0) > Arduino Nano ATmega328
+      HARDWARE: ATMEGA328P 16MHz, 2KB RAM, 30KB Flash
+      DEBUG: Current (avr-stub) On-board (avr-stub, simavr)
+      PACKAGES: 
+       - framework-arduino-avr 5.1.0 
+       - toolchain-atmelavr 1.70300.191015 (7.3.0)
+      LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+      LDF Modes: Finder ~ chain, Compatibility ~ soft
+      Found 5 compatible libraries
+      Scanning dependencies...
+      Dependency Graph
+      |-- <Wire> 1.0
+      Building in release mode
+      Compiling .pio/build/peapod/src/actuators/actuator.cc.o
+      Compiling .pio/build/peapod/src/actuators/led.cc.o
+      Compiling .pio/build/peapod/src/main.cpp.o
+      ...
+      Indexing .pio/build/peapod/libFrameworkArduino.a
+      Linking .pio/build/peapod/firmware.elf
+      Checking size .pio/build/peapod/firmware.elf
+      Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+      RAM:   [====      ]  41.3% (used 846 bytes from 2048 bytes)
+      Flash: [=====     ]  45.0% (used 13832 bytes from 30720 bytes)
+      Building .pio/build/peapod/firmware.hex
+      ========================= [SUCCESS] Took 1.49 seconds =========================
+    ```
 
 2. `sudo avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v -U flash:w:tests/blink/build/arduino.avr.nano/blink.ino.hex:i`
 

@@ -1,10 +1,10 @@
 #ifndef PEAPOD_ACTUATORS_LED_H_
 #define PEAPOD_ACTUATORS_LED_H_
 
-#include "Arduino.h"
+#include <Arduino.h>
 
-#include "../base.h"
-#include "../actuator.h"
+#include <utils/base.h>
+#include <actuators/actuator.h>
 
 typedef enum {
   LEDCOLOR_BLUE,

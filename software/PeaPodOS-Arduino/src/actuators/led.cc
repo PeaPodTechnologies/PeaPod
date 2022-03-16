@@ -1,9 +1,9 @@
-#include "led.h"
+#include <actuators/led.h>
 
-#include "Arduino.h"
+#include <Arduino.h>
 
-#include "../base.h"
-#include "../actuator.h"
+#include <utils/base.h>
+#include <actuators/actuator.h>
 
 LED::LED(uint8_t pin, led_color_t color) : Actuator(ACTUATOR_LED, 0) {
   this->pin = pin;

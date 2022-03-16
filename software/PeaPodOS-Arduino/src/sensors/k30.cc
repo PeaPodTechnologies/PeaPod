@@ -1,16 +1,16 @@
-#include "k30.h"
+#include <sensors/k30.h>
 
-#include "Arduino.h"
-#include "Wire.h"
+#include <Arduino.h>
+#include <Wire.h>
 
-#include "../base.h"
-#include "../sensor.h"
+#include <utils/base.h>
+#include <sensors/sensor.h>
 
 // Data setup
 static const char* labels[1] = { "co2_ppm" };
-static const t_sensordatasetup datasetup = {
-  1,
-  labels
+static const SensorDataSetup datasetup = {
+  .numdata = 1,
+  .labels = labels
 };
 
 K30::K30(TwoWire* wire, uint8_t address) : Sensor(SENSOR_K30, &datasetup, K30_DELTA) {

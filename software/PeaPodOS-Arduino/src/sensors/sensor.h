@@ -1,24 +1,25 @@
-#ifndef PEAPOD_SENSOR_H_
-#define PEAPOD_SENSOR_H_
+#ifndef PEAPOD_SENSORS_SENSOR_H_
+#define PEAPOD_SENSORS_SENSOR_H_
 
-#include "Arduino.h"
+#include <Arduino.h>
 
-#include "base.h"
+#include <utils/base.h>
 
 // Sensor identifiers
 typedef enum sensorid_t {
+  SENSOR_NULL,
   SENSOR_SHT31,
   SENSOR_K30,
 } sensorid_t;
 
 // Single datapoint
-typedef struct t_datapoint {
+typedef struct DataPoint {
   // Value
   float value;
 
   // Dataset label (string literal)
   const char* label;
-} t_datapoint;
+} DataPoint;
 
 // All sensor state info + latest datum - used as the "cache" in the sensor object.
 typedef struct SensorState {
@@ -32,19 +33,19 @@ typedef struct SensorState {
   uint32_t timestamp;
 
   // Array of datapoints
-  t_datapoint* data;
+  DataPoint* data;
 
   // Length of `data` array
   uint8_t numdata;
 } SensorState;
 
-typedef struct t_sensordatasetup {
+typedef struct SensorDataSetup {
   // Number of datasets recorded by this sensor
   const uint8_t numdata;
 
   // Array of string literals corresponding to the labels for each dataset
   const char** labels;
-} t_sensordatasetup;
+} SensorDataSetup;
 
 class Sensor {
   public:
@@ -54,7 +55,7 @@ class Sensor {
      * @param setup Pointer to datasets setup
      * @param delta Minimum delay (in milliseconds) between sensor read attempts
      */
-    Sensor(sensorid_t sensorid, const t_sensordatasetup* setup, uint32_t delta);
+    Sensor(sensorid_t sensorid, const SensorDataSetup* setup, uint32_t delta);
     
     /** Wrapper function for `initialize()`. Sets debug state to indicate initialization success or failure.
      * @return Pointer to sensor state

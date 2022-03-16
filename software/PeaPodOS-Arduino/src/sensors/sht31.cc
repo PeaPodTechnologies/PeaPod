@@ -1,18 +1,18 @@
-#include "sht31.h"
+#include <sensors/sht31.h>
 
-#include "Arduino.h"
-#include "Wire.h"
+#include <Arduino.h>
+#include <Wire.h>
 
-#include "../base.h"
-#include "../sensor.h"
+#include <utils/base.h>
+#include <sensors/sensor.h>
 
 static uint8_t crc8(const uint8_t *data, int len);
 
 // Data setup
 static const char* labels[2] = { "air_temperature", "air_humidity" };
-static const t_sensordatasetup datasetup = {
-  2,
-  labels
+static const SensorDataSetup datasetup = {
+  .numdata = 2,
+  .labels = labels
 };
 
 // CONSTRUCTOR
@@ -48,7 +48,7 @@ errorlevel_t SHT31::read(float* data, uint8_t numdata) {
   }
 
   // Read into buffer
-  for (size_t i = 0; i < sizeof(buffer); i++) {
+  for (size_t i = 0; i < sizeof(buffer); ++i) {
     buffer[i] = wire->read();
   }
 

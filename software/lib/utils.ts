@@ -87,39 +87,32 @@ export const fetchServerCert = async (): Promise<string> => {
   return (await axios.get('https://pki.goog/roots.pem')).data as string;
 }
 
-export const checkArduino = async (processor: string = 'm328p') => {
+export const checkArduino = async () => {
   // Create log folder
   if (!existsSync('logs/')) {
     mkdirSync('logs/', { recursive: true });
   }
-  execute(`avrdude -p ${processor} -C ~/avrdude_gpio.conf -c peapod -v`, [1]).catch(err => {
-    writeFileSync('logs/arduinoComms.log', err);
-    throw new Error(`Failed to communicate with the Arduino. See logs/arduinoComms.log`);
+  execute(`avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v`, [1]).catch(err => {
+    writeFileSync('logs/checkArduino.log', err);
+    throw new Error(`Failed to communicate with the Arduino. See logs/checkArduino.log`);
   }).then(log1 => {
-    writeFileSync('logs/arduinoComms.log', log1);
+    writeFileSync('logs/checkArduino.log', log1);
   });
 }
 
-export const updateArduino = (sketch: string = 'PeaPodOS-Arduino', fqbn: string = 'arduino:avr:nano', processor: string = 'm328p'): Promise<void> => {
+export const updateArduino = (): Promise<void> => {
   return new Promise<void>((res, rej) => {
     // Create log folder
     if (!existsSync('logs/')) {
       mkdirSync('logs/', { recursive: true });
     }
-    execute(`arduino-cli compile -b ${fqbn} ${sketch} -e`, [1])
+    execute(`${process.env.HOME}/.platformio/penv/bin/platformio run -d PeaPodOS-Arduino/ -e peapod -t upload`, [1])
     .then(log1 => {
-      if (log1) writeFileSync('logs/arduinoCompile.log', log1);
-      // execute('arduino-cli', ['upload', '-p', serialport, '-b', fqbn, script], { sudo: true, failureCodes: [1] })
-      execute(`sudo avrdude -p ${processor} -C ${process.env.HOME}/avrdude_gpio.conf -c peapod -v -U flash:w:${sketch}/build/${fqbn.replace(/:/g, '.')}/${sketch}.ino.hex:i`, [1])
-      .then(log2 => {
-        writeFileSync('logs/arduinoUpload.log', log2);
-      }).catch(err => {
-        writeFileSync('logs/arduinoUpload.log', err);
-        rej(new Error(`Failed to flash the '${sketch}' binary to the Arduino. See logs/arduinoUpload.log`));
-      });
+      if (log1) writeFileSync('logs/updateArduino.log', log1);
+      res();
     }).catch(err => {
-      writeFileSync('logs/arduinoCompile.log', err);
-      rej(new Error(`Failed to compile '${sketch}'. See logs/arduinoCompile.log`));
+      writeFileSync('logs/updateArduino.log', err);
+      rej(new Error(`Failed to update the Arduino software. See logs/updateArduino.log`));
     });
   });
 }

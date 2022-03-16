@@ -1,12 +1,12 @@
-#include "sensor.h"
+#include <sensors/sensor.h>
 
 #include <stdlib.h>
 
-#include "Arduino.h"
+#include <Arduino.h>
 
-#include "base.h"
+#include <utils/base.h>
 
-Sensor::Sensor(sensorid_t sensorid, const t_sensordatasetup* setup, uint32_t delta) {
+Sensor::Sensor(sensorid_t sensorid, const SensorDataSetup* setup, uint32_t delta) {
   this->sensorid = sensorid;
   this->delta = delta;
 
@@ -15,7 +15,7 @@ Sensor::Sensor(sensorid_t sensorid, const t_sensordatasetup* setup, uint32_t del
   state.debug = DS_DISABLED;
 
   // Allocate data state
-  state.data = (t_datapoint*)malloc(sizeof(t_datapoint)*(setup->numdata));
+  state.data = (DataPoint*)malloc(sizeof(DataPoint)*(setup->numdata));
   state.numdata = setup->numdata;
   for (int i = 0; i < setup->numdata; ++i) {
     // Since setup->labels[i] is a const char*, we can just reassign our pointer

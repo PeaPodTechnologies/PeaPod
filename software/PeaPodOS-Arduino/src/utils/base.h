@@ -1,5 +1,5 @@
-#ifndef PEAPOD_BASE_H_
-#define PEAPOD_BASE_H_
+#ifndef PEAPOD_UTILS_BASE_H_
+#define PEAPOD_UTILS_BASE_H_
 
 // Degree of error occurred
 typedef enum errorlevel_t {
