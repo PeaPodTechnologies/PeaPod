@@ -5,7 +5,7 @@
 #include <utils/jsonmessenger.h>
 
 void test_revision(void) {
-  TEST_ASSERT_EQUAL_STRING(JSONMessenger::sendRevision(63).c_str(), "{\"type\":\"revision\",\"data\":63}\n")
+  TEST_ASSERT_EQUAL_STRING(JSONMessenger::sendRevision(63).c_str(), "{\"type\":\"revision\",\"data\":63}\n");
 }
 
 void test_debug(void) {

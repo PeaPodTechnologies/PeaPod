@@ -23,11 +23,13 @@ tests/
 *.test.js.map
 *.test.d.ts
 *.test.ts
+jest.config.js
 
 # Arduino Binaries
 *.elf
 *.hex
 *.eep
 *.bin
+*.oo
 **/.vscode/
 **/.pio/

@@ -6,16 +6,16 @@
 #include <utils/base.h>
 #include <actuators/actuator.h>
 
-typedef enum {
-  LEDCOLOR_BLUE,
-  LEDCOLOR_COOL,
-  LEDCOLOR_WARM,
-  LEDCOLOR_RED,
-  LEDCOLOR_FAR
-} led_color_t;
-
 class LED : public Actuator {
   public:
+    typedef enum {
+      LEDCOLOR_BLUE,
+      LEDCOLOR_COOL,
+      LEDCOLOR_WARM,
+      LEDCOLOR_RED,
+      LEDCOLOR_FAR
+    } led_color_t;
+    
     /**
      * Constructor.
      * @param pin PWM pin for controlling this LED.

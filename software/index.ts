@@ -5,13 +5,13 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 // import PiCamera from 'pi-camera';
 
-import PeaPodArduinoInterface, { IPeaPodArduino, ArduinoInstructions } from './lib/PeaPodArduino';
-import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './lib/PeaPodPublisher';
-import { ArduinoSimulator, PeaPodLogger } from './lib/PeaPodSimulator';
-// import PeaPodCamera, { IPeaPodCamera } from './lib/PeaPodCamera';
+import PeaPodArduinoInterface, { IPeaPodArduino } from './src/PeaPodArduino';
+import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './src/PeaPodPublisher';
+import { ArduinoSimulator, PeaPodLogger } from './src/PeaPodSimulator';
+// import PeaPodCamera, { IPeaPodCamera } from './src/PeaPodCamera';
 
-import { checkInternet, sleep, loadDotenv, findSerialPath } from './lib/utils'; //Utilities
-import Spinner from './lib/ui'; //UI utils
+import { checkInternet, sleep, loadDotenv, findSerialPath } from './src/utils'; //Utilities
+import Spinner from './src/ui'; //UI utils
 
 // Global State
 

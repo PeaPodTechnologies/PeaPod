@@ -87,16 +87,19 @@ export const fetchServerCert = async (): Promise<string> => {
   return (await axios.get('https://pki.goog/roots.pem')).data as string;
 }
 
-export const checkArduino = async () => {
-  // Create log folder
-  if (!existsSync('logs/')) {
-    mkdirSync('logs/', { recursive: true });
-  }
-  execute(`avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v`, [1]).catch(err => {
-    writeFileSync('logs/checkArduino.log', err);
-    throw new Error(`Failed to communicate with the Arduino. See logs/checkArduino.log`);
-  }).then(log1 => {
-    writeFileSync('logs/checkArduino.log', log1);
+export const checkArduino = (): Promise<void> => {
+  return new Promise<void>((res, rej) => {
+    // Create log folder
+    if (!existsSync('logs/')) {
+      mkdirSync('logs/', { recursive: true });
+    }
+    execute(`avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v`, [1]).catch(err => {
+      writeFileSync('logs/checkArduino.log', err);
+      rej(new Error(`Failed to communicate with the Arduino. See logs/checkArduino.log`));
+    }).then(log1 => {
+      log1 ? writeFileSync('logs/checkArduino.log', log1) : null;
+      res();
+    });
   });
 }
 
@@ -132,9 +135,9 @@ export const execute = (command: string, failureCodes: number[] = []): Promise<s
       log += out;
     });
     eprocess.on('error', error => {
-      eprocess.kill();
       log += error.message;
       rej(log);
+      eprocess.kill();
     });
     eprocess.on('close', code => {
       if (code) {

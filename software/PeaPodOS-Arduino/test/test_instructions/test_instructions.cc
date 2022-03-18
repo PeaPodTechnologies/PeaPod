@@ -11,7 +11,7 @@ class TestActuator : public Actuator {
   private:
     errorlevel_t initialize(void) override;
     errorlevel_t set(float target) override;
-}
+};
 
 TestActuator::TestActuator(void) : Actuator(ACTUATOR_NULL, 0) { }
 
@@ -23,43 +23,46 @@ errorlevel_t TestActuator::set(float target) {
   return ERR_NONE;
 }
 
-TestActuator actuatorA();
-TestActuator actuatorB();
+TestActuator actuatorA = TestActuator();
+TestActuator actuatorB = TestActuator();
+
+const char* ins[2] = { "A", "B" };
+Actuator* acts[2] = { &actuatorA, &actuatorB };
 
 static const InstructionActuatorMatrix matrix = {
   .numActuators = 2,
-  .actuators = {&actuatorA, &actuatorB},
-  .instructions = {"A", "B"}
-}
+  .actuators = acts,
+  .instructions = ins
+};
 
 void test_non_json(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("what"), ERR_FATAL);
+  TEST_ASSERT_EQUAL(handleInstructions("what", &matrix), ERR_FATAL);
 }
 
 void test_incomplete_json(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"incomplete"), ERR_FATAL);
+  TEST_ASSERT_EQUAL(handleInstructions("{\"incomplete", &matrix), ERR_FATAL);
 }
 
 void test_invalid_target(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"incomplete\":abc"), ERR_FATAL);
+  TEST_ASSERT_EQUAL(handleInstructions("{\"incomplete\":abc", &matrix), ERR_FATAL);
 }
 
 void test_bad_instruction(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"C\":0}"), ERR_WARNING);
+  TEST_ASSERT_EQUAL(handleInstructions("{\"C\":0}", &matrix), ERR_WARNING);
 }
 
 void test_empty_instruction_set(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{}"), ERR_NONE);
-  TEST_ASSERT_EQUAL(handleInstructions("{ }"), ERR_NONE);
+  TEST_ASSERT_EQUAL(handleInstructions("{}", &matrix), ERR_NONE);
+  TEST_ASSERT_EQUAL(handleInstructions("{ }", &matrix), ERR_NONE);
 }
 
 void test_one_instruction(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"A\":1.3}"), ERR_NONE);
+  TEST_ASSERT_EQUAL(handleInstructions("{\"A\":1.3}", &matrix), ERR_NONE);
   TEST_ASSERT_EQUAL(actuatorA.update()->lasttarget, 1.3);
 }
 
 void test_multiple_instructions(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"A\":2.4,\"B\":4.3}"), ERR_NONE);
+  TEST_ASSERT_EQUAL(handleInstructions("{\"A\":2.4,\"B\":4.3}", &matrix), ERR_NONE);
   TEST_ASSERT_EQUAL(actuatorA.update()->lasttarget, 2.4);
   TEST_ASSERT_EQUAL(actuatorB.update()->lasttarget, 4.3);
 }

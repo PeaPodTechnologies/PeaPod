@@ -12,7 +12,15 @@
     MESSAGE_ERROR,
   } jsonmessagetype_t;
 
-  #ifndef UNIT_TEST
+  #ifdef UNIT_TEST
+
+  String sendMessage(jsonmessagetype_t type, String message);
+
+  String sendRevision(uint8_t revision);
+
+  String sendData(const char* label, float value);
+  
+  #else
 
   /**
    * Send a JSON-formatted message over Serial.
@@ -33,14 +41,6 @@
    * @param value Sensor data value
    */
   void sendData(const char* label, float value);
-
-  #elif
-
-  String sendMessage(jsonmessagetype_t type, String message);
-
-  String sendRevision(uint8_t revision);
-
-  String sendData(const char* label, float value);
 
   #endif
 }
