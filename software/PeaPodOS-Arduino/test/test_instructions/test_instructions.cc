@@ -36,35 +36,44 @@ static const InstructionActuatorMatrix matrix = {
 };
 
 void test_non_json(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("what", &matrix), ERR_FATAL);
+  uint8_t result = handleInstructions("hello world", &matrix);
+  TEST_ASSERT_EQUAL_UINT8(ERR_FATAL, result);
 }
 
 void test_incomplete_json(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"incomplete", &matrix), ERR_FATAL);
+  uint8_t result = handleInstructions("{\"incomplete", &matrix);
+  TEST_ASSERT_EQUAL_UINT8(ERR_FATAL, result);
 }
 
 void test_invalid_target(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"incomplete\":abc", &matrix), ERR_FATAL);
+  uint8_t result = handleInstructions("{\"incomplete\":abc", &matrix);
+  TEST_ASSERT_EQUAL_UINT8(ERR_FATAL, result);
 }
 
 void test_bad_instruction(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"C\":0}", &matrix), ERR_WARNING);
+  uint8_t result = handleInstructions("{\"C\":0}", &matrix);
+  TEST_ASSERT_EQUAL_UINT8(ERR_WARNING, result);
 }
 
 void test_empty_instruction_set(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{}", &matrix), ERR_NONE);
-  TEST_ASSERT_EQUAL(handleInstructions("{ }", &matrix), ERR_NONE);
+  uint8_t result = handleInstructions("{}"), &matrix);
+  TEST_ASSERT_EQUAL_UINT8(ERR_NONE, result);
 }
 
 void test_one_instruction(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"A\":1.3}", &matrix), ERR_NONE);
-  TEST_ASSERT_EQUAL(actuatorA.update()->lasttarget, 1.3);
+  uint8_t result = handleInstructions("{\"A\":1.3}", &matrix);
+  TEST_ASSERT_EQUAL_UINT8(ERR_NONE, result);
+  float target = actuatorA.update()->lasttarget;
+  TEST_ASSERT_EQUAL_FLOAT(1.3, target);
 }
 
 void test_multiple_instructions(void) {
-  TEST_ASSERT_EQUAL(handleInstructions("{\"A\":2.4,\"B\":4.3}", &matrix), ERR_NONE);
-  TEST_ASSERT_EQUAL(actuatorA.update()->lasttarget, 2.4);
-  TEST_ASSERT_EQUAL(actuatorB.update()->lasttarget, 4.3);
+  uint8_t result = handleInstructions("{\"A\":2.4,\"B\":4.3}", &matrix);
+  TEST_ASSERT_EQUAL_UINT8(ERR_NONE, result);
+  float target = actuatorA.update()->lasttarget;
+  TEST_ASSERT_EQUAL_FLOAT(2.4, target);
+  target = actuatorB.update()->lasttarget;
+  TEST_ASSERT_EQUAL_FLOAT(4.3, target);
 }
 
 void setup(void) {

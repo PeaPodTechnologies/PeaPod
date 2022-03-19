@@ -25,16 +25,15 @@ void setup() {
 }
 
 uint8_t i = 0;
-uint8_t max_blinks = 5;
 
 void loop() {
-  if (i < max_blinks) {
+  if (i < 3) {
     RUN_TEST(test_led_state_high);
     delay(500);
     RUN_TEST(test_led_state_low);
     delay(500);
     i++;
-  } else if (i == max_blinks) {
+  } else {
     UNITY_END();
   }
 }

@@ -60,9 +60,9 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 > You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@peapod.local`, or with VS Code)
 
 > Note: In Future, steps 7-11 will be performed at runtime.
-1. Update Packages:
+7. Update Packages:
      1. Update package listings, upgrade existing packages: `sudo apt-get update && sudo apt-get upgrade -y`
-     2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt-get install -y nodejs npm avrdude` (could take a while)
+     2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt-get install -y nodejs npm avrdude python3-venv` (could take a while)
      3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
 
 <!-- 8. Install and configure the Arduino CLI:
@@ -78,8 +78,8 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 8. Install PlatformIO Core with `python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
 
-9.  Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
-   1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
+9. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
+   1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/software/PeaPodOS-Arduino/avrdude_gpio.conf`, then modify your copy with `nano ~/software/PeaPodOS-Arduino/avrdude_gpio.conf`. Copy the following to the end of the file:
 
        ```
        # Raspberry Pi GPIO configuration for avrdude.
@@ -94,7 +94,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
        ;
        ```
        (*Ctrl-O* to save, *Ctrl-X* to exit)
-   2.  Verify the configuration and connection to the Arduino with `sudo avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v`. A successful output should look something like:
+   2.  Verify the configuration and connection to the Arduino with `sudo avrdude -p m328p -C ~/software/PeaPodOS-Arduino/avrdude_gpio.conf -c peapod -v`. A successful output should look something like:
        ```
        avrdude: Version 6.3-20171130
             Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
@@ -160,7 +160,9 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
        avrdude done.  Thank you.
        ```
 
-10. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
+10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -d ~/software/PeaPodOS-Arduino/ --target upload`
+
+11. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
     1.  Open the `sudoers` file: `sudo visudo`
     2.  Add the following line to the end (assuming your username is `pi`, the hostname is `peapod`, and the `avrdude` binary is located at `/usr/bin/avrdude`):
         
@@ -168,151 +170,22 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
         
         (*Ctrl-O* to save, *Ctrl-X* to exit; *avrdude* can be located with `whereis avrdude`)
 
-11. Install the *UV4L* camera library:
+12. Install the *UV4L* camera library:
     1.  `curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -`
     2.  Add the package listings: `echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list`
     3.  Update packages: `sudo apt-get update`
     4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6`
 
-12. Populate a `.env` file with Firebase and Google and/or GitHub auth keys (a template is provided as `.env.template`), as well as the field `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART).
+13. Populate a `.env` file with Firebase and Google and/or GitHub auth keys (a template is provided as `.env.template`), as well as the field `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART).
 
-13. Run the main program by executing `peapodos`.
+14. Run the main program by executing `peapodos`.
 
 <!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->
 # Development
 
 ### Arduino Test Suite
 
-To manually compile and upload the test sketch `./tests/blink.ino` to an Arduino Nano (ATMega328P aka `m328p`):
-<!-- 1. `arduino-cli compile -b arduino:avr:nano tests/blink -e` 
-  
-    (`-b`: board FQBN, `-e`: export binary to sketch folder) -->
-
-1. `~/.platformio/penv/bin/platformio run -d tests/`
-
-    Successful output should look like this:
-
-    ```
-      Processing peapod (platform: atmelavr; board: nanoatmega328; framework: arduino)
-      ----------------------------------------------------------------------------------
-      Verbose mode can be enabled via `-v, --verbose` option
-      CONFIGURATION: https://docs.platformio.org/page/boards/atmelavr/nanoatmega328.html
-      PLATFORM: Atmel AVR (3.4.0) > Arduino Nano ATmega328
-      HARDWARE: ATMEGA328P 16MHz, 2KB RAM, 30KB Flash
-      DEBUG: Current (avr-stub) On-board (avr-stub, simavr)
-      PACKAGES: 
-       - framework-arduino-avr 5.1.0 
-       - toolchain-atmelavr 1.70300.191015 (7.3.0)
-      LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
-      LDF Modes: Finder ~ chain, Compatibility ~ soft
-      Found 5 compatible libraries
-      Scanning dependencies...
-      Dependency Graph
-      |-- <Wire> 1.0
-      Building in release mode
-      Compiling .pio/build/peapod/src/actuators/actuator.cc.o
-      Compiling .pio/build/peapod/src/actuators/led.cc.o
-      Compiling .pio/build/peapod/src/main.cpp.o
-      ...
-      Indexing .pio/build/peapod/libFrameworkArduino.a
-      Linking .pio/build/peapod/firmware.elf
-      Checking size .pio/build/peapod/firmware.elf
-      Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
-      RAM:   [====      ]  41.3% (used 846 bytes from 2048 bytes)
-      Flash: [=====     ]  45.0% (used 13832 bytes from 30720 bytes)
-      Building .pio/build/peapod/firmware.hex
-      ========================= [SUCCESS] Took 1.49 seconds =========================
-    ```
-
-2. `sudo avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v -U flash:w:tests/blink/build/arduino.avr.nano/blink.ino.hex:i`
-
-    (`-p`: microprocessor ID, `-C`: custom configuration file path, `-c`: programmer ID, `-v`: verify sketch after upload, `-U`: upload options and path to binary)
-
-    Successful output should look like this:
-
-    ```
-    avrdude: Version 6.3-20171130
-            Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
-            Copyright (c) 2007-2014 Joerg Wunsch
-
-            System wide configuration file is "/home/pi/avrdude_gpio.conf"
-            User configuration file is "/root/.avrduderc"
-            User configuration file does not exist or is not a regular file, skipping
-
-            Using Port                    : unknown
-            Using Programmer              : peapod
-            AVR Part                      : ATmega328P
-            Chip Erase delay              : 9000 us
-            PAGEL                         : PD7
-            BS2                           : PC2
-            RESET disposition             : dedicated
-            RETRY pulse                   : SCK
-            serial program mode           : yes
-            parallel program mode         : yes
-            Timeout                       : 200
-            StabDelay                     : 100
-            CmdexeDelay                   : 25
-            SyncLoops                     : 32
-            ByteDelay                     : 0
-            PollIndex                     : 3
-            PollValue                     : 0x53
-            Memory Detail                 :
-
-                                     Block Poll               Page                       Polled
-              Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
-              ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
-              eeprom        65    20     4    0 no       1024    4      0  3600  3600 0xff 0xff
-              flash         65     6   128    0 yes     32768  128    256  4500  4500 0xff 0xff
-              lfuse          0     0     0    0 no          1    0      0  4500  4500 0x00 0x00
-              hfuse          0     0     0    0 no          1    0      0  4500  4500 0x00 0x00
-              efuse          0     0     0    0 no          1    0      0  4500  4500 0x00 0x00
-              lock           0     0     0    0 no          1    0      0  4500  4500 0x00 0x00
-              calibration    0     0     0    0 no          1    0      0     0     0 0x00 0x00
-              signature      0     0     0    0 no          3    0      0     0     0 0x00 0x00
-
-            Programmer Type : linuxgpio
-            Description     : Use the Linux sysfs interface to bitbang GPIO lines
-            Pin assignment  : /sys/class/gpio/gpio{n}
-              RESET   =  8
-              SCK     =  11
-              MOSI    =  10
-              MISO    =  9
-
-      avrdude: AVR device initialized and ready to accept instructions
-
-      Reading | ################################################## | 100% 0.00s
-
-      avrdude: Device signature = 0x1e950f (probably m328p)
-      avrdude: safemode: lfuse reads as FF
-      avrdude: safemode: hfuse reads as DA
-      avrdude: safemode: efuse reads as FD
-      avrdude: NOTE: "flash" memory has been specified, an erase cycle will be performed
-               To disable this feature, specify the -D option.
-      avrdude: erasing chip
-      avrdude: reading input file "blink/build/arduino.avr.nano/blink.ino.hex"
-      avrdude: writing flash (922 bytes):
-
-      Writing | ################################################## | 100% 0.31s
-
-      avrdude: 922 bytes of flash written
-      avrdude: verifying flash memory against blink/build/arduino.avr.nano/blink.ino.hex:
-      avrdude: load data flash data from input file blink/build/arduino.avr.nano/blink.ino.hex:
-      avrdude: input file blink/build/arduino.avr.nano/blink.ino.hex contains 922 bytes
-      avrdude: reading on-chip flash data:
-
-      Reading | ################################################## | 100% 0.28s
-
-      avrdude: verifying ...
-      avrdude: 922 bytes of flash verified
-
-      avrdude: safemode: lfuse reads as FF
-      avrdude: safemode: hfuse reads as DA
-      avrdude: safemode: efuse reads as FD
-      avrdude: safemode: Fuses OK (E:FD, H:DA, L:FF)
-
-      avrdude done.  Thank you.
-    ```
-
+To run the PlatformIO Arduino test suite: `~/.platformio/penv/bin/platformio test -d ~/software/PeaPodOS-Arduino/`
 
 ### Raspberry Pi Serial Testing
 

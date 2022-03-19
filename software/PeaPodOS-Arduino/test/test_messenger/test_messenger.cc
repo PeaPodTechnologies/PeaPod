@@ -5,19 +5,23 @@
 #include <utils/jsonmessenger.h>
 
 void test_revision(void) {
-  TEST_ASSERT_EQUAL_STRING(JSONMessenger::sendRevision(63).c_str(), "{\"type\":\"revision\",\"data\":63}\n");
+  const char* result = JSONMessenger::sendRevision(63).c_str();
+  TEST_ASSERT_EQUAL_STRING("{\"type\":\"revision\",\"data\":63}\n", result);
 }
 
 void test_debug(void) {
-  TEST_ASSERT_EQUAL_STRING(JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, "hello world").c_str(), "{\"type\":\"debug\",\"data\":\"hello world\"}\n");
+  const char* result = JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, "hello world").c_str();
+  TEST_ASSERT_EQUAL_STRING("{\"type\":\"debug\",\"data\":\"hello world\"}\n", result);
 }
 
 void test_error(void) {
-  TEST_ASSERT_EQUAL_STRING(JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, "oh no").c_str(), "{\"type\":\"error\",\"data\":\"oh no\"}\n");
+  const char* result = JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, "oh no").c_str();
+  TEST_ASSERT_EQUAL_STRING("{\"type\":\"error\",\"data\":\"oh no\"}\n", result);
 }
 
 void test_data(void) {
-  TEST_ASSERT_EQUAL_STRING(JSONMessenger::sendData("testlabel", 32.4).c_str(), "{\"type\":\"data\",\"data\":{\"label\":\"testlabel\",\"value\":32.40}}\n");
+  const char* result = JSONMessenger::sendData("testlabel", 32.4).c_str();
+  TEST_ASSERT_EQUAL_STRING("{\"type\":\"data\",\"data\":{\"label\":\"testlabel\",\"value\":32.40}}\n", result);
 }
 
 void setup(void) {

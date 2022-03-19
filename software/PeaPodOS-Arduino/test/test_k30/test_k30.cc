@@ -9,26 +9,26 @@ K30 sensor = K30();
 
 void test_begin(void) {
   SensorState* state = sensor.begin();
-  TEST_ASSERT_EQUAL(state->debug, DS_INITIALIZED);
-  TEST_ASSERT_EQUAL(state->error, ERR_NONE);
+  TEST_ASSERT_EQUAL(DS_INITIALIZED, state->debug);
+  TEST_ASSERT_EQUAL(ERR_NONE, state->error);
 }
 
 void test_read(void) {
   SensorState* state = sensor.update();
-  TEST_ASSERT_EQUAL(state->debug, DS_SUCCESS);
-  TEST_ASSERT_EQUAL(state->error, ERR_NONE);
+  TEST_ASSERT_EQUAL(DS_SUCCESS, state->debug);
+  TEST_ASSERT_EQUAL(ERR_NONE, state->error);
 }
 
 void test_delta(void) {
   SensorState* state = sensor.update();
-  TEST_ASSERT_EQUAL(state->debug, DS_INITIALIZED);
-  TEST_ASSERT_EQUAL(state->error, ERR_NONE);
+  TEST_ASSERT_EQUAL(DS_SUCCESS, state->debug);
+  TEST_ASSERT_EQUAL(ERR_NONE, state->error);
 
   // No delay
 
   state = sensor.update();
-  TEST_ASSERT_EQUAL(state->debug, DS_WAITING);
-  TEST_ASSERT_EQUAL(state->error, ERR_NONE);
+  TEST_ASSERT_EQUAL(DS_WAITING, state->debug);
+  TEST_ASSERT_EQUAL(ERR_NONE, state->error);
 }
 
 void setup(void) {
@@ -42,12 +42,12 @@ void setup(void) {
 int i = 0;
 
 void loop(void) { 
-  if (i < 5) {
-    delay(2000);
+  if (i < 3) {
+    delay(3000);
 
     RUN_TEST(test_read);
 
-    delay(2000);
+    delay(3000);
 
     RUN_TEST(test_delta);
     i++;
