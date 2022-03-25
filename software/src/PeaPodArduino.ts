@@ -147,11 +147,11 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
     })
     await sleep(3000);
   }
-  write(msg : any) {
+  write(msg : ArduinoInstructions) {
     Spinner.info(`[${chalk.yellow('WRITE')}] - ${JSON.stringify(msg)}`);
-    if(!this.serial?.write(JSON.stringify(msg)+'\n')){
-      throw new ArduinoInstructionsError(JSON.stringify(msg));
-    }
+    this.serial.write(JSON.stringify(msg)+'\n', undefined, (err)=>{
+      if(err) throw new ArduinoInstructionsError(JSON.stringify(msg));
+    });
   }
   stop() {
     this.serial.close();

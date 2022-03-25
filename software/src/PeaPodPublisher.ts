@@ -10,6 +10,7 @@ import { fetchServerCert } from './utils';
 import * as inquirer from 'inquirer';
 import {v4 as uuid} from 'uuid';
 import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
+import { ArduinoInstructions } from './PeaPodArduino';
 import chalk from 'chalk';
 
 export type PeaPodDataBatch = {
@@ -36,6 +37,9 @@ export type PeaPodMessage = {
 }
 
 export type PeaPodCommand = {
+  type: 'instructions',
+  data: ArduinoInstructions
+} | {
   type: 'livestreamoffer',
   data: any
   // TODO: import types from WebRTC

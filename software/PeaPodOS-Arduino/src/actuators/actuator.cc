@@ -30,9 +30,9 @@ ActuatorState* Actuator::begin(void) {
 ActuatorState* Actuator::update(void) {
   // Check state preconditions, and do not attempt set if the target hasn't changed
   if (state.error < ERR_FATAL && state.debug >= DS_INITIALIZED) {
-    if (state.lasttarget != target) {
+    if (target != state.lasttarget) {
       // Attempt to set actuator state from target
-      state.error = set(state.lasttarget);
+      state.error = set(target);
 
       switch (state.error) {
         case ERR_NONE:

@@ -62,7 +62,6 @@ void loop(void) {
   // Check for instructions
   if (Serial.available()) {
     String in = Serial.readStringUntil('\n');
-    
     in.trim();
     handleInstructions(in, &matrix);
   }
@@ -81,6 +80,14 @@ void loop(void) {
       JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to read from sensor " + String(sensors[i]->getID()) + " (FATAL, SENSOR DISABLED!)."));
     }
   }
+  for (int i = 0; i < NUM_ACTUATORS; ++i) {
+    ActuatorState* state = actuators[i]->update();
+    if (state->error == ERR_WARNING) {
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to update actuator " + String(actuators[i]->getID()) + " (non-fatal)."));
+    } else if (state->error == ERR_FATAL) {
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to update actuator " + String(actuators[i]->getID()) + " (FATAL, ACTUATOR DISABLED!)."));
+    }
+  }
 
   #if ENABLE_WATCHDOG
     wdt_enable(WDTO_1S);
@@ -91,7 +98,7 @@ bool post(void) {
   bool success = true;
   for (int i = 0; i < NUM_SENSORS; ++i) {
     SensorState* state = sensors[i]->begin();
-    bool latest = (state->debug == DS_INITIALIZED && state->error == ERR_NONE);
+    bool latest = (state->debug >= DS_INITIALIZED && state->error == ERR_NONE);
     if (latest) {
       JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Sensor " + String(sensors[i]->getID()) + " initialized successfully."));
     } else {
@@ -101,11 +108,11 @@ bool post(void) {
   }
   for (int i = 0; i < NUM_ACTUATORS; ++i) {
     ActuatorState* state = actuators[i]->begin();
-    bool latest = (state->debug == DS_INITIALIZED && state->error == ERR_NONE);
+    bool latest = (state->debug >= DS_INITIALIZED && state->error == ERR_NONE);
     if (latest) {
-      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Actuator " + String(actuators[i]->getID()) + " initialized successfully."));
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Actuator " + String(actuators[i]->getID()) + " initialized successfully."));
     } else {
-      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Failed to initialize actuator " + String(actuators[i]->getID()) + ". Check wiring."));
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to initialize actuator " + String(actuators[i]->getID()) + ". Check wiring."));
     }
     success &= latest;
   }

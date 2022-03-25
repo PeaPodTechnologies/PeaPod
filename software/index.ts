@@ -154,7 +154,9 @@ function main(): Promise<void> {
       }, command => {
         Spinner.log("[COMMAND] - "+command);
         // TODO: Respond to commands (immediate actions)
-        if (command.type == 'livestreamoffer') {
+        if (command.type == 'instructions') {
+          arduino.write(command.data);
+        } else if (command.type == 'livestreamoffer') {
 
           // Assumes webcam hardware has been initialized
 
@@ -174,7 +176,7 @@ function main(): Promise<void> {
         }
       }).then(({projectid, projectname, run}) => {
         // TODO: Get program
-        let initialinstructions = {}
+        let initialinstructions = {};
 
         // START
         Spinner.log(`${ chalk.green('PeaPod') } start - Project ${ chalk.bold(projectname ?? projectid) }, Run ${ chalk.bold(run) }`);

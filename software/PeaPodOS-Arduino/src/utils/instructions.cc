@@ -29,7 +29,7 @@ errorlevel_t handleInstructions(String instructionSet, const InstructionActuator
 
   // If invalid, throw error
   if (!isValidSet(instructionSet)) {
-    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String(F("Invalid instruction set '")) + instructionSet + String(F("', bad formatting.")));
+    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Invalid instruction set '" + instructionSet + "', bad formatting."));
     return ERR_FATAL;
   }
 
@@ -41,7 +41,9 @@ errorlevel_t handleInstructions(String instructionSet, const InstructionActuator
   while (instructionSet.indexOf(':') != -1) {
     // Find end of leftmost instruction
     int stop = instructionSet.indexOf(',');
-    stop = (stop == -1) ? instructionSet.indexOf('}') : stop;
+    if (stop == -1) {
+      stop = instructionSet.length();
+    }
 
     // Handle leftmost instruction
     String instruction = instructionSet.substring(0, stop);
@@ -68,7 +70,7 @@ errorlevel_t handleInstruction(String instruction, const InstructionActuatorMatr
     float value = instruction.substring(split+1).toFloat();
 
     if(value == 0 && !(instruction.charAt(split+1) == '0' || (instruction.charAt(split+1) == '.' && instruction.charAt(split+2) == '0'))) {
-      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String(F("Invalid target value '")) + instruction.substring(split+1) + "'.");
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Invalid target value '" + instruction.substring(split+1) + "'."));
       return ERR_FATAL;
     }
 
@@ -78,9 +80,9 @@ errorlevel_t handleInstruction(String instruction, const InstructionActuatorMatr
         return ERR_NONE;
       }
     }
-    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String(F("Unknown instruction label '")) + label + "'.");
+    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Unknown instruction label '" + label + "'."));
     return ERR_WARNING;
   }
-  JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String(F("Invalid instruction '")) + instruction + String(F("', bad formatting.")));
+  JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Invalid instruction '" + instruction + String("', bad formatting.")));
   return ERR_FATAL;
 }
