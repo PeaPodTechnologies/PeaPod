@@ -1,7 +1,7 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2022-02-01T02:52:31Z",
+        "CreationDate": "2022-03-25T00:40:22Z",
         "GenerationSoftware": {
             "Application": "EAGLE",
             "Vendor": "Autodesk",
@@ -13,7 +13,7 @@
         "BoardThickness": 1.57,
         "LayerNumber": 2,
         "Name": {
-            "ProjectId": "Lighting Power Board (PCB) v23"
+            "ProjectId": "Lighting Driver Board (PCB) v24"
         },
         "Owner": "Jayden Lefebvre <jayden.lefebvre@peapodtech.com>",
         "Size": {

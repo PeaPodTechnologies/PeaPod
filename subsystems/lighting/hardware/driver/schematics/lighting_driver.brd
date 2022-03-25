@@ -82,7 +82,7 @@
 <text x="6.223" y="95.758" size="1.778" layer="21" rot="R270">SIGNAL</text>
 <text x="162.433" y="88.265" size="3.81" layer="21">+</text>
 <text x="162.56" y="68.326" size="6.35" layer="21">-</text>
-<text x="1.016" y="61.722" size="1.778" layer="21">PeaPod Lighting Power Board V0.5</text>
+<text x="1.016" y="61.722" size="1.778" layer="21">PeaPod Lighting Driver Board V0.5</text>
 <hole x="14.351" y="96.52" drill="4"/>
 <hole x="161.417" y="64.516" drill="4"/>
 <text x="158.75" y="77.47" size="1.27" layer="21">PeaPod

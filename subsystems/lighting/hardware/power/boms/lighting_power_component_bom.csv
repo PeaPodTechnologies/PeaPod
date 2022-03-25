@@ -1,6 +1,0 @@
-﻿Index ,Manufacturer Part Number ,Manufacturer Name  ,Description                       ,Requested Quantity ,Digi-Key Part Number      ,Unit Price ,Extended Price ,Datasheet                                                        ,Reference Designator
-1     ,LDD-700H                 ,MEAN WELL USA Inc. ,LED DRIVER CC BUCK 2-52V 700MA    ,5                  ,1866-3119-ND              ,9.34000    ,$46.70         ,https://www.meanwellusa.com/upload/pdf/LDD-H/LDD-H-spec.pdf      ,LEDPWR1-5
-2     ,5055670681               ,Molex              ,CONN HEADER SMD R/A 6POS 1.25MM   ,3                  ,WM22471DKR-ND             ,1.42000    ,$4.26          ,https://www.molex.com/pdm_docs/ps/5055650002-000.pdf             ,J1-3
-3     ,KLDX-PA-0202-A-LT        ,"Kycon, Inc."      ,"POWER PLUG ASSEMBLY, 2.0 MM DIA" ,1                  ,2092-KLDX-PA-0202-A-LT-ND ,4.24000    ,$4.24          ,http://www.kycon.com/2013Catalogpage/DC%20Power/KLDX-P.pdf       ,
-4     ,KLDX-0202-A-LT           ,"Kycon, Inc."      ,CONN PWR JACK 2.0X5.5MM SOLDER    ,1                  ,2092-KLDX-0202-A-LT-ND    ,1.89000    ,$1.89          ,http://www.kycon.com/2013Catalogpage/DC%20Power/KLDX_0202_LT.pdf ,J4
-5, RC0402JR-0710KL, YAGEO, RES 10K OHM 5% 1/16W 0402, 5, 311-10KJRCT-ND, 0.15, $0.75, https://www.yageo.com/upload/media/product/productsearch/datasheet/rchip/PYu-RC_Group_51_RoHS_L_11.pdf,
