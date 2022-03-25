@@ -1,4 +1,4 @@
-# PeaPod Arduino Software
+# PeaPodOS Arduino
  
 Includes all libraries and code for PeaPod's Arduino Micro.
 
@@ -23,4 +23,4 @@ Verify, then upload the sketch.
 Open the Arduino IDE Serial Monitor (Tools > Serial Monitor). To start the PeaPod's data gathering, send it a valid "Instruction Set" JSON-formatted string where each key-value pair is an Instruction.
 
 The currently supported Instructions are:
-- Scale calibration: `"scale":weight`, i.e. `"scale":0` to tare
+- None. GTFO.

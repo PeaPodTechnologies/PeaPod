@@ -1,13 +1,16 @@
 node_modules/
 tsconfig.json
 
-# src/*
-test.ts
-test.d.ts
-test.js
+*.ts
+!*.d.ts
 
 .git/
 .gitignore
 .gitattributes
 .npmignore
 package-lock.json
+
+.env
+*.pem
+deviceInfo.json
+projects/
