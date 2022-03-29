@@ -2,3 +2,5 @@
 node_modules/
 *.js
 *.d.ts
+deviceInfo.json
+projects/

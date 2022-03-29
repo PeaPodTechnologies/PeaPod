@@ -1,13 +1,15 @@
 {
-  "name": "peapod",
-  "version": "0.0.2",
+  "name": "@peapodtech/peapodos",
+  "version": "0.0.8",
   "description": "A cloud-enabled IoT automated plant growth environment. Designed as a research tool for precise and distributed mapping of the plant-environment relationship.",
   "main": "index.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "node . simulate",
+    "test": "node . simulate offline",
+    "offline": "node . offline",
+    "simulate": "node . simulate",
     "build": "npm i && tsc",
     "start": "node ."
   },
@@ -35,16 +37,23 @@
     "jsonwebtoken": "^8.5.1",
     "mqtt": "^4.2.8",
     "ora": "^5.3.0",
+    "pi-camera": "^1.6.0",
     "rxjs": "^6.6.3",
     "serialport": "^9.0.6",
     "uuid": "^8.3.2",
+    "wrtc": "^0.4.7",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
     "@serialport/parser-readline": "^9.0.1",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/pi-camera": "^1.5.3",
     "@types/project-name-generator": "^2.1.0",
     "@types/serialport": "^8.0.2",
     "@types/uuid": "^8.3.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": "index.js"
 }
