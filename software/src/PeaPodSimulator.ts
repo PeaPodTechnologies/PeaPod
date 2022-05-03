@@ -59,14 +59,14 @@ export class PeaPodLogger implements IPeaPodPublisher {
     switch(msg.type) {
       case 'data':
         for (const label of Object.keys(msg.data)) {
-          for (const datum of msg.data[label].batch) {
+          for (const datum of msg.data[label]) {
             console.log(`[${chalk.magenta(msg.type.toUpperCase())}] - [${(new Date(datum.timestamp)).toLocaleTimeString()}] - ${label}: ${datum.value}`);
           }
           const dir = `./projects/${msg.metadata.project}/runs/${msg.metadata.run}/${label}/`;
           if (!existsSync(dir)) {
             mkdirSync(dir, { recursive: true });
           }
-          writeFileSync(`${dir}${label+'-'+uuid()+'.json'}`, JSON.stringify(msg.data[label].batch, null, 2))
+          writeFileSync(`${dir}${label+'-'+uuid()+'.json'}`, JSON.stringify(msg.data[label], null, 2))
         }
         break;
       default:

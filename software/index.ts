@@ -132,9 +132,9 @@ function main(): Promise<void> {
       switch (msg.type) {
         case "data":
           // Initialize batch array
-          if (batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
+          if (batch[msg.data.label] === undefined) batch[msg.data.label] = [];
           // Accumulate data into batches
-          batch[msg.data.label].batch.push({
+          batch[msg.data.label].push({
             timestamp: Date.now(),
             value: msg.data.value
           });
@@ -202,7 +202,7 @@ function main(): Promise<void> {
             return;
           }
           
-          Spinner.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${ Object.values(batch).reduce((sum, entry) => { return sum+entry.batch.length }, 0) } datapoints published.`);
+          Spinner.log(`[${chalk.magenta('PUBLISH')}] - Batch of ${ Object.values(batch).reduce((sum, entry) => { return sum+entry.length }, 0) } datapoints published.`);
           
           // Reset batch to empty
           batch = { };

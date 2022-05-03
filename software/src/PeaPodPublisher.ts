@@ -1,25 +1,25 @@
-import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs';
+import {v4 as uuid} from 'uuid';
+import * as jwt from 'jsonwebtoken';
 import * as mqtt from 'mqtt';
-import Spinner from './ui'; //UI utils
+import * as inquirer from 'inquirer';
+import chalk from 'chalk';
+
 import { getApp } from 'firebase/app';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { getFirestore, doc, setDoc, collection, getDocs, query, where, DocumentReference } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+
+import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow';
+import Spinner from './ui';
 import { fetchServerCert } from './utils';
-import * as inquirer from 'inquirer';
-import {v4 as uuid} from 'uuid';
-import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
 import { ArduinoInstructions } from './PeaPodArduino';
-import chalk from 'chalk';
 
 export type PeaPodDataBatch = {
   [key: string]: {
-    batch: {
-      timestamp: number,
-      value: number
-    }[]
-  }
+    timestamp: number,
+    value: number
+  }[]
 }
 
 // PeaPod Message to Cloud
