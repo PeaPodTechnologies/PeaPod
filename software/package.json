@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Main software for PeaPod.",
   "main": "index.js",
   "directories": {
@@ -48,8 +48,9 @@
   },
   "devDependencies": {
     "@serialport/parser-readline": "^9.0.1",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^27.5.0",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/node": "^17.0.31",
     "@types/pi-camera": "^1.5.3",
     "@types/project-name-generator": "^2.1.0",
     "@types/serialport": "^8.0.2",

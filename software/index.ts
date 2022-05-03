@@ -5,7 +5,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 // import PiCamera from 'pi-camera';
 
-import PeaPodArduinoInterface, { IPeaPodArduino } from './src/PeaPodArduino';
+import PeaPodArduinoInterface, { ArduinoInstructions, IPeaPodArduino } from './src/PeaPodArduino';
 import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './src/PeaPodPublisher';
 import { ArduinoSimulator, PeaPodLogger } from './src/PeaPodSimulator';
 // import PeaPodCamera, { IPeaPodCamera } from './src/PeaPodCamera';
@@ -125,23 +125,25 @@ function main(): Promise<void> {
       await sleep(1500);
     }
     
-    let batch: PeaPodDataBatch = { };
-    let batchInterval: NodeJS.Timer;
+    let batch: PeaPodDataBatch = { }, batchInterval: NodeJS.Timer, instructions: ArduinoInstructions = {};
 
     // Initialize Arduino communications interface first
     arduino.start((msg) => {
-      if(msg.type == 'data') {
-        // Initialize batch array
-        if (batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
-        // Accumulate data into batches
-        batch[msg.data.label].batch.push({
-          timestamp: Date.now(),
-          value: msg.data.value
-        });
-        
-        // TODO: Plan, act
-      } else {
-        Spinner.log(`[${ chalk.blueBright('ARDUINO') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
+      switch (msg.type) {
+        case "data":
+          // Initialize batch array
+          if (batch[msg.data.label] === undefined) batch[msg.data.label] = {batch: []};
+          // Accumulate data into batches
+          batch[msg.data.label].batch.push({
+            timestamp: Date.now(),
+            value: msg.data.value
+          });
+          break;
+        case "revision":
+          arduino.write(instructions);
+          break;
+        default:
+          Spinner.log(`[${ chalk.blueBright('ARDUINO') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
       }
       // TODO: publish other message types
     }).then(() => {
@@ -175,13 +177,11 @@ function main(): Promise<void> {
 
         }
       }).then(({projectid, projectname, run}) => {
-        // TODO: Get program
-        let initialinstructions = {};
+        // Todo: get instructions
 
         // START
         Spinner.log(`${ chalk.green('PeaPod') } start - Project ${ chalk.bold(projectname ?? projectid) }, Run ${ chalk.bold(run) }`);
 
-        arduino.write(initialinstructions);
         // Reset
         batch = { };
 

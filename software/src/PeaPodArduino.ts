@@ -3,11 +3,12 @@ import chalk from 'chalk';
 import { ReadlineParser, SerialPort } from 'serialport';
 import { ArduinoInstructionsError } from './errors';
 import Spinner from './ui';
-import { sleep, updateArduino } from './utils';
+import { gpioUnexport, gpioWrite, sleep, updateArduino } from './utils';
 
 const BAUDRATE = 115200;
 const ARDUINO_REVISION = 0;
 // const TIMEOUT_SECONDS = 5;
+const RESET_PIN = 5;
 
 /**
  * Abstract base type for any PeaPod message source.
@@ -74,6 +75,9 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
   }
   start(onMessage : (msg : ArduinoMessage) => void): Promise<void> {
     return new Promise<void>(async (res, rej) => {
+      // Reset the Arduino
+      await this.reset();
+
       // Open the serial port
       await new Promise<void>((reso, reje) => {
         Spinner.start('Establishing serial communications with the Arduino...');
@@ -114,10 +118,10 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
         // Handle all message types except: 'info', 'data', 'debug', 'error' 
         switch (msg.type) {
           case 'revision':
-            onMessage(msg);
             if(msg.data == ARDUINO_REVISION) {
               Spinner.succeed('Arduino software up to date!');
               res();
+              // Do not break
             } else {
               Spinner.fail(`Arduino software out of date! Expected ${ARDUINO_REVISION}.`);
               // Attempt to update the Arduino, and then restart
@@ -155,5 +159,11 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
   }
   stop() {
     this.serial.close();
+  }
+  async reset() {
+    gpioWrite(RESET_PIN, 1);
+    await sleep(100);
+    gpioWrite(RESET_PIN, 0);
+    gpioUnexport(5);
   }
 }

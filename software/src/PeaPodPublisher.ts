@@ -142,7 +142,14 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       if (topic === `/devices/${this.deviceId}/config`) {
         onConfig(message.toString());
       } else if (topic.startsWith(`/devices/${this.deviceId}/commands`)) {
-        onCommand(JSON.parse(message.toString()) as PeaPodCommand);
+        try {
+          const command = JSON.parse(message.toString()) as PeaPodCommand;
+          onCommand(command);
+        } catch (e) {
+          if (e instanceof SyntaxError) {
+            // TODO: handle invalid command
+          }
+        }
       }
     });
 

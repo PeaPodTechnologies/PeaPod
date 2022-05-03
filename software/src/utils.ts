@@ -1,5 +1,5 @@
 import * as dns from 'dns';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import dotenv from 'dotenv';
 import { SerialPort } from 'serialport';
 import axios from 'axios';
@@ -30,7 +30,7 @@ export const checkInternet = (timeout : number = 5000, url: string = 'www.google
 * @param millis Number of milliseconds to sleep.
 * @returns 
 */
-export const sleep = (millis : number) => {
+export const sleep = (millis : number): Promise<void> => {
   return new Promise(resolve => {
     setTimeout(resolve, millis);
   });
@@ -41,7 +41,7 @@ export const sleep = (millis : number) => {
 * 
 * Throws an error if the file does not exist.
 */
-export const loadDotenv = (path: string = '.env') => {
+export const loadDotenv = (path: string = '.env'): void => {
   // Check for file
   if(existsSync(path)){
     const config = dotenv.config({path});
@@ -151,4 +151,49 @@ export const execute = (command: string, failureCodes: number[] = []): Promise<s
       res(log);
     });
   });
+}
+
+/**
+ * Exports a pin (if it is not already)
+ * @param pin The GPIO pin to export.
+ */
+export const gpioExport = (pin: number): void => {
+  if(!existsSync(`/sys/class/gpio/gpio${pin}/`)) {
+    execute(`echo ${pin} > /sys/class/gpio/export`);
+  }
+}
+
+/**
+ * Unexports a pin (if it has been previously exported)
+ * @param pin The GPIO pin to unexport.
+ */
+export const gpioUnexport = (pin: number): void => {
+  if(existsSync(`/sys/class/gpio/gpio${pin}/`)) {
+    execute(`echo ${pin} > /sys/class/gpio/unexport`);
+  }
+}
+
+/**
+ * Exports and sets the direction (output) of a pin, and writes either 1 or 0 to it.
+ * Does NOT unexport the pin.
+ * @param pin The GPIO pin to write to.
+ * @param value 1 or 0.
+ */
+export const gpioWrite = (pin: number, value: 0 | 1): void => {
+  gpioExport(pin);
+  writeFileSync(`/sys/class/gpio/gpio${pin}/direction`, 'out');
+  writeFileSync(`/sys/class/gpio/gpio${pin}/value`, `${value}`);
+}
+
+/**
+ * Exports and sets the direction (input) of a pin, reads from it, and returns the value.
+ * Does NOT unexport the pin.
+ * @param pin The GPIO pin to read from.
+ * @param value 
+ */
+export const gpioRead = (pin: number): number => {
+  gpioExport(pin);
+  writeFileSync(`/sys/class/gpio/gpio${pin}/direction`, 'in');
+  const value: number = Number.parseInt(readFileSync(`/sys/class/gpio/gpio${pin}/value`).toString());
+  return value;
 }
