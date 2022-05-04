@@ -15,6 +15,8 @@ import Spinner from './ui';
 import { fetchServerCert } from './utils';
 import { ArduinoInstructions } from './PeaPodArduino';
 
+// TYPES
+
 export type PeaPodDataBatch = {
   [key: string]: {
     timestamp: number,
@@ -39,10 +41,6 @@ export type PeaPodMessage = {
 export type PeaPodCommand = {
   type: 'instructions',
   data: ArduinoInstructions
-} | {
-  type: 'livestreamoffer',
-  data: any
-  // TODO: import types from WebRTC
 }
 
 /**
@@ -62,11 +60,13 @@ type RegisterResponse = {
 
 export type IoTConfig = {
   deviceid?: string,
-  projectid: string,
-  cloudregion: string,
-  registryid: string,
+  projectid?: string,
+  cloudregion?: string,
+  registryid?: string,
   jwtexpiryminutes: number
 }
+
+// MAIN CLASS
 
 export default class PeaPodPubSub implements IPeaPodPublisher {
   private tokenRefreshInterval?: NodeJS.Timer;
@@ -94,6 +94,7 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
       Spinner.info('Welcome!');
     }
     
+    // Keypair management
     if(fs.existsSync('./rsa_private.pem') && fs.existsSync('./deviceInfo.json')){
       Spinner.succeed('Private key and device info found!');
       privatekey = fs.readFileSync('./rsa_private.pem').toString();
@@ -196,22 +197,22 @@ export default class PeaPodPubSub implements IPeaPodPublisher {
   * Select a run owned by the current user under a given project.
   * @returns {Promise<DocumentReference>}
   */
-  async selectRun(project : DocumentReference){
-    const myRuns = query(collection(getFirestore(), project.path+'/runs'), where('owner', '==', getAuth().currentUser?.uid));
-    const runs = ((await getDocs(myRuns)).docs.map(doc=>({id: doc.id,ref: doc.ref})));
-    if(runs.length == 0){
-      throw new Error("No runs found! Create one first.");
-    }
-    const ref = (await inquirer.prompt<{ref: DocumentReference}>([
-      {
-        type: 'list',
-        name: 'ref',
-        message: 'Select a run:',
-        choices: runs.map(run=>({name: run.id, value: run.ref}))
-      }
-    ])).ref;
-    return ref;
-  }
+  // private async selectRun(project : DocumentReference){
+  //   const myRuns = query(collection(getFirestore(), project.path+'/runs'), where('owner', '==', getAuth().currentUser?.uid));
+  //   const runs = ((await getDocs(myRuns)).docs.map(doc=>({id: doc.id,ref: doc.ref})));
+  //   if(runs.length == 0){
+  //     throw new Error("No runs found! Create one first.");
+  //   }
+  //   const ref = (await inquirer.prompt<{ref: DocumentReference}>([
+  //     {
+  //       type: 'list',
+  //       name: 'ref',
+  //       message: 'Select a run:',
+  //       choices: runs.map(run=>({name: run.id, value: run.ref}))
+  //     }
+  //   ])).ref;
+  //   return ref;
+  // }
   
   /**
   * Sign a new JWT.

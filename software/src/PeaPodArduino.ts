@@ -1,14 +1,16 @@
-// import { PeaPodMessage } from './PeaPodPublisher';
 import chalk from 'chalk';
 import { ReadlineParser, SerialPort } from 'serialport';
-import { ArduinoInstructionsError } from './errors';
+import { ArduinoInstructionsError, SerialTimeoutError } from './errors';
 import Spinner from './ui';
 import { gpioUnexport, gpioWrite, sleep, updateArduino } from './utils';
 
+// CONSTANTS
 const BAUDRATE = 115200;
 const ARDUINO_REVISION = 0;
-// const TIMEOUT_SECONDS = 5;
+const TIMEOUT_SECONDS = 10;
 const RESET_PIN = 5;
+
+// TYPES
 
 /**
  * Abstract base type for any PeaPod message source.
@@ -53,13 +55,19 @@ export type ArduinoInstructions = {
   [key: string]: number;
 }
 
+// MAIN CLASS
+
 /**
  * Interface between this computer and the Arduino.
  */
 export default class PeaPodArduinoInterface implements IPeaPodArduino {
+
   serial : SerialPort;
   parser : ReadlineParser;
+  timeout?: NodeJS.Timeout;
+
   constructor(readonly serialpath: string) {
+
     // Create the serial port interface
     this.serial = new SerialPort({
       path: serialpath,
@@ -73,6 +81,7 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
       includeDelimiter: false
     }));
   }
+
   start(onMessage : (msg : ArduinoMessage) => void): Promise<void> {
     return new Promise<void>(async (res, rej) => {
       // Reset the Arduino
@@ -81,7 +90,7 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
       // Open the serial port
       await new Promise<void>((reso, reje) => {
         Spinner.start('Establishing serial communications with the Arduino...');
-        this.serial.open(err => { 
+        this.serial.open(err => {
           if (err) {
             reje(err);
           } else {
@@ -92,22 +101,12 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
       });
 
       Spinner.start('Awaiting Arduino software revision number...');
-
-      // Reusable timeout, enabled at serial open (fails if no messages recieved after starting)
-      // let timeout: NodeJS.Timeout;
-      // const resetTimeout = (timeoutSeconds: number = TIMEOUT_SECONDS) => {
-      //   clearTimeout(timeout);
-      //   timeout = setTimeout(() => {
-      //     this.stop();
-      //     throw new SerialTimeoutError(timeoutSeconds)
-      //   }, timeoutSeconds*1000);
-      // }
-      // Initial timeout
-      // resetTimeout();
+      // this.resetTimeout();
       
       // Set up the listener
       this.parser.on('data', msgtxt => {
-        // Attempt to parse the raw text as a valid JSON object'
+
+        // Attempt to parse the raw text as a valid JSON object
         var msg : ArduinoMessage;
         try {
           msg = JSON.parse(msgtxt) as ArduinoMessage;
@@ -115,34 +114,46 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
           rej(err);
           return;
         }
-        // Handle all message types except: 'info', 'data', 'debug', 'error' 
+
+        // "Internal" (relevant to arduino only) message handling
         switch (msg.type) {
           case 'revision':
             if(msg.data == ARDUINO_REVISION) {
               Spinner.succeed('Arduino software up to date!');
-              res();
-              // Do not break
+              res();  //Successful start sequence
             } else {
               Spinner.fail(`Arduino software out of date! Expected ${ARDUINO_REVISION}.`);
               // Attempt to update the Arduino, and then restart
               this.stop();
-              // clearTimeout(timeout);
+              // this.clearTimeout();
               this.update().finally(() => {
                 process.exit();
               });
-              // Do not reset timeout
-              return;
+              return; //Do not settle promise
             }
-            break;
+            // Do not break
           default:
             onMessage(msg);
             break;
         }
-        // resetTimeout();
+        // this.resetTimeout();
       });
     });
   }
-  async update() {
+
+  private clearTimeout = () => {
+    if(this.timeout) clearTimeout(this.timeout);
+  }
+
+  private resetTimeout = (timeoutSeconds: number = TIMEOUT_SECONDS) => {
+    this.clearTimeout();
+    this.timeout = setTimeout(() => {
+      this.stop();
+      throw new SerialTimeoutError(timeoutSeconds);
+    }, timeoutSeconds*1000);
+  }
+
+  private async update() {
     Spinner.start('Compiling latest Arduino software and flashing to board...');
     await updateArduino().then(() => {
       Spinner.succeed('Updated Arduino software successfully! Rebooting in 3 seconds...');
@@ -151,16 +162,21 @@ export default class PeaPodArduinoInterface implements IPeaPodArduino {
     })
     await sleep(3000);
   }
+
   write(msg : ArduinoInstructions) {
     Spinner.info(`[${chalk.yellow('WRITE')}] - ${JSON.stringify(msg)}`);
     this.serial.write(JSON.stringify(msg)+'\n', undefined, (err)=>{
       if(err) throw new ArduinoInstructionsError(JSON.stringify(msg));
     });
   }
+
   stop() {
+    this.clearTimeout();
     this.serial.close();
+    this.reset();
   }
-  async reset() {
+
+  private async reset() {
     gpioWrite(RESET_PIN, 1);
     await sleep(100);
     gpioWrite(RESET_PIN, 0);

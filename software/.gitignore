@@ -2,6 +2,7 @@
 node_modules/
 *.js
 *.d.ts
+!jest.config.js
 
 # Runtime files
 deviceInfo.json

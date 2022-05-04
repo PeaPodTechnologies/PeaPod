@@ -1,77 +1,57 @@
 #!/usr/bin/env node
-import chalk from 'chalk'; //Colored CLI text
-import { DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow'; //Firebase Auth via OAuth2 'Device Flow'
+import chalk from 'chalk';
+import { DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow';
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-// import PiCamera from 'pi-camera';
 
 import PeaPodArduinoInterface, { ArduinoInstructions, IPeaPodArduino } from './src/PeaPodArduino';
 import PeaPodPubSub, { IoTConfig, IPeaPodPublisher, PeaPodDataBatch } from './src/PeaPodPublisher';
 import { ArduinoSimulator, PeaPodLogger } from './src/PeaPodSimulator';
-// import PeaPodCamera, { IPeaPodCamera } from './src/PeaPodCamera';
+import { loadDotenv, checkInternet, sleep, findSerialPath } from './src/utils';
+import Spinner from './src/ui';
 
-import { checkInternet, sleep, loadDotenv, findSerialPath } from './src/utils'; //Utilities
-import Spinner from './src/ui'; //UI utils
+loadDotenv();
 
-// Global State
+// CONSTANTS
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_APIKEY,
+  authDomain: process.env.FIREBASE_AUTHDOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASEURL,
+  projectId: process.env.FIREBASE_PROJECTID,
+  storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.FIREBASE_APPID,
+  measurementId: process.env.FIREBASE_MEASUREMENTID
+};
+
+const iotConfig : IoTConfig = {
+  cloudregion: process.env.IOT_CLOUDREGION,
+  projectid: process.env.FIREBASE_PROJECTID,
+  registryid: process.env.IOT_REGISTRY,
+  jwtexpiryminutes: 1440,
+};
+
+const authConfig : DeviceFlowUIOptions = {
+  Google : {
+    scopes : process.env.GOOGLE_SCOPES?.split(' '),
+    clientid : process.env.GOOGLE_CLIENTID,
+    clientsecret : process.env.GOOGLE_CLIENTSECRET
+  },
+  GitHub : {
+    scopes : process.env.GITHUB_SCOPES?.split(' '),
+    clientid : process.env.GITHUB_CLIENTID,
+    clientsecret : process.env.GITHUB_CLIENTSECRET
+  }
+};
+
+// Seconds between data batch publications
+const batchPublishInterval = 5;
+const simulated = process.argv.includes('simulate');
+const offline = process.argv.includes('offline');
 
 function main(): Promise<void> {
   
-  // SETUP
-  
-  // Load environment variables
-  loadDotenv();
-  
-  // CONSTANTS
-  const firebaseConfig = {
-    apiKey: process.env.FIREBASE_APIKEY,
-    authDomain: process.env.FIREBASE_AUTHDOMAIN,
-    databaseURL: process.env.FIREBASE_DATABASEURL,
-    projectId: process.env.FIREBASE_PROJECTID,
-    storageBucket: process.env.FIREBASE_STORAGEBUCKET,
-    messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
-    appId: process.env.FIREBASE_APPID,
-    measurementId: process.env.FIREBASE_MEASUREMENTID
-  };
-
-  const iotConfig : IoTConfig = {
-    cloudregion: 'us-central1',
-    projectid: 'cloudponics-bc383',
-    registryid: 'CloudPonics',
-    jwtexpiryminutes: 1440,
-  };
-  
-  const authConfig : DeviceFlowUIOptions = {
-    Google : {
-      scopes : process.env.GOOGLE_SCOPES?.split(' '),
-      clientid : process.env.GOOGLE_CLIENTID,
-      clientsecret : process.env.GOOGLE_CLIENTSECRET
-    },
-    GitHub : {
-      scopes : process.env.GITHUB_SCOPES?.split(' '),
-      clientid : process.env.GITHUB_CLIENTID,
-      clientsecret : process.env.GITHUB_CLIENTSECRET
-    }
-  };
-
-  // const RTCServers = {
-  //   iceServers: [
-  //     {
-  //       urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
-  //     },
-  //   ],
-  //   iceCandidatePoolSize: 10,
-  // };
-  
-  // Seconds between data batch publications
-  const batchPublishInterval = 5;
-  
-  // IN PRODUCTION: fetch serial port with findSerialPath
-  const simulated = process.argv.includes('simulate');
-  const offline = process.argv.includes('offline');
-  
   let arduino : IPeaPodArduino, publisher : IPeaPodPublisher;
-  // let camera: IPeaPodCamera | null;
   
   Spinner.log(`Running in ${ chalk.bold(simulated ? 'Simulated' : 'Live') } mode with ${ chalk.bold(offline ? 'Local Filesystem' : 'Google Cloud') } publishing.`);
   
@@ -90,8 +70,6 @@ function main(): Promise<void> {
           interval: 1000
         }
       });
-
-      // camera = null;
     } else {
       let serialpath;
       if (process.env.SERIALPORT) {
@@ -155,26 +133,10 @@ function main(): Promise<void> {
         // TODO: Handle this
       }, command => {
         Spinner.log("[COMMAND] - "+command);
-        // TODO: Respond to commands (immediate actions)
-        if (command.type == 'instructions') {
-          arduino.write(command.data);
-        } else if (command.type == 'livestreamoffer') {
-
-          // Assumes webcam hardware has been initialized
-
-          // 1. Create answer from command data
-          // 2. Call cloud function with answer
-          // 3. Enable video feed
-
-          // camera?.stream().pipe();
-
-          /**
-          * {
-          *  type: 'livestreamoffer',
-          *  data: {...}
-          * }
-          */
-
+        switch (command.type) {
+          case 'instructions':
+            arduino.write(command.data);
+            break;
         }
       }).then(({projectid, projectname, run}) => {
         // Todo: get instructions
