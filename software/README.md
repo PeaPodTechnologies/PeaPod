@@ -79,7 +79,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 8. Install PlatformIO Core with `python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
 
 9. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
-   1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/software/PeaPodOS-Arduino/avrdude_gpio.conf`, then modify your copy with `nano ~/software/PeaPodOS-Arduino/avrdude_gpio.conf`. Copy the following to the end of the file:
+   1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/software/microcontroller/avrdude_gpio.conf`, then modify your copy with `nano ~/software/microcontroller/avrdude_gpio.conf`. Copy the following to the end of the file:
 
        ```
        # Raspberry Pi GPIO configuration for avrdude.
@@ -94,7 +94,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
        ;
        ```
        (*Ctrl-O* to save, *Ctrl-X* to exit)
-   2.  Verify the configuration and connection to the Arduino with `sudo avrdude -p m328p -C ~/software/PeaPodOS-Arduino/avrdude_gpio.conf -c peapod -v`. A successful output should look something like:
+   2.  Verify the configuration and connection to the Arduino with `sudo avrdude -p m328p -C/avrdude_gpio.conf -c peapod -v`. A successful output should look something like:
        ```
        avrdude: Version 6.3-20171130
             Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
@@ -160,7 +160,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
        avrdude done.  Thank you.
        ```
 
-10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -d ~/software/PeaPodOS-Arduino/ --target upload`
+10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -d ~/software/microcontroller/ --target upload`
 
 11. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
     1.  Open the `sudoers` file: `sudo visudo`
@@ -185,7 +185,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 ### Arduino Test Suite
 
-To run the PlatformIO Arduino test suite: `~/.platformio/penv/bin/platformio test -d ~/software/PeaPodOS-Arduino/`
+To run the PlatformIO Arduino test suite: `~/.platformio/penv/bin/platformio test -d ~/software/microcontroller/`
 
 ### Raspberry Pi Serial Testing
 

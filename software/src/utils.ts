@@ -44,25 +44,6 @@ export async function fetchServerCert(): Promise<string> {
 }
 
 /**
- * Checks that the microcontroller is connected properly and accessible for flashing.
- */
-export function checkMicrocontroller(): Promise<void> {
-  return new Promise<void>((res, rej) => {
-    // Create log folder
-    if (!existsSync('logs/')) {
-      mkdirSync('logs/', { recursive: true });
-    }
-    execute(`avrdude -p m328p -C ~/avrdude_gpio.conf -c peapod -v`, [1]).catch(err => {
-      writeFileSync('logs/checkMicrocontroller.log', err);
-      rej(new Error(`Failed to communicate with the microcontroller. See logs/checkMicrocontroller.log`));
-    }).then(log1 => {
-      if (log1) writeFileSync('logs/checkMicrocontroller.log', log1);
-      res();
-    });
-  });
-}
-
-/**
  * Compiles the microcontroller software, and flashes the binary to the chip.
  */
 export function updateMicrocontroller(): Promise<void> {
@@ -71,7 +52,7 @@ export function updateMicrocontroller(): Promise<void> {
     if (!existsSync('logs/')) {
       mkdirSync('logs/', { recursive: true });
     }
-    execute(`${ process.env.HOME }/.platformio/penv/bin/platformio run -d PeaPodOS-Arduino/ -e peapod -t upload`, [1]).catch(err => {
+    execute(`${ process.env.HOME }/.platformio/penv/bin/platformio run -d microcontroller/ -e peapod -t upload`, [1]).catch(err => {
       writeFileSync('logs/updateMicrocontroller.log', err);
       rej(new Error(`Failed to update the microcontroller software. See logs/updateMicrocontroller.log`));
     }).then(log1 => {

@@ -1,5 +1,5 @@
 import { promiseToReject } from './utils';
-import { execute, checkMicrocontroller } from '../src/utils';
+import { execute } from '../src/utils';
 import { mkdirSync, writeFileSync, existsSync } from 'fs';
 
 /**
@@ -12,7 +12,7 @@ function arduinoUnitTests() {
     if (!existsSync('logs/')) {
       mkdirSync('logs/', { recursive: true });
     }
-    execute(`pio test -d PeaPodOS-Arduino`, [1]).catch(err => {
+    execute(`pio test -d microcontroller`, [1]).catch(err => {
       writeFileSync('logs/arduinoUnitTests.log', err);
       rej(new Error(`One or more unit tests failed. See logs/arduinoUnitTests.log`));
     }).then(log1 => {
@@ -23,11 +23,6 @@ function arduinoUnitTests() {
 }
 
 jest.setTimeout(60000);
-
-test('avrdude can talk to the Arduino', () => {
-  expect.assertions(1);
-  return expect(promiseToReject(checkMicrocontroller())).resolves.toBe(false);
-});
 
 test('Arduino unit tests', () => {
   expect.assertions(1);

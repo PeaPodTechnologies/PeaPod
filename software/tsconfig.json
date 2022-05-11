@@ -12,5 +12,5 @@
     // No outDir: keep index.js at package root, only the binary gets published
   },
   "include": ["index.ts", "./src/"],
-  "exclude": ["node_modules", "PeaPodOS-Arduino", "**/*.spec.ts"],
+  "exclude": ["node_modules", "microcontroller", "**/*.spec.ts"],
 }
