@@ -4,7 +4,7 @@
  * @param f Promise to check.
  * @returns False if resolved, error (or true) if rejected.
  */
-export const promiseToReject = (f: Promise<any>): Promise<boolean> => {
+export function promiseToReject(f: Promise<any>): Promise<boolean> {
  return new Promise(res => {
    f.catch((err)=>{ res((err === {} || !err) ? true : err) }).then(()=>{ res(false) });
  });

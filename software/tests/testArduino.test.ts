@@ -1,12 +1,12 @@
 import { promiseToReject } from './utils';
-import { execute, checkArduino } from '../src/utils';
+import { execute, checkMicrocontroller } from '../src/utils';
 import { mkdirSync, writeFileSync, existsSync } from 'fs';
 
 /**
  * Run Arduino unit tests, powered by PlatformIO. Log results to file.
  * @returns Resolves with void, rejects with error.
  */
-const arduinoUnitTests = () => {
+function arduinoUnitTests() {
   return new Promise<void>((res, rej) => {
     // Create log folder
     if (!existsSync('logs/')) {
@@ -26,7 +26,7 @@ jest.setTimeout(60000);
 
 test('avrdude can talk to the Arduino', () => {
   expect.assertions(1);
-  return expect(promiseToReject(checkArduino())).resolves.toBe(false);
+  return expect(promiseToReject(checkMicrocontroller())).resolves.toBe(false);
 });
 
 test('Arduino unit tests', () => {
