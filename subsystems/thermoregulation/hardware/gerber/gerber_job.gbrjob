@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2022-02-04T18:23:01Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.7.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "Peltier Driver Circuit v4"
+        },
+        "Owner": "Jayden Lefebvre <jayden.lefebvre@peapodtech.com>",
+        "Size": {
+            "X": 71.1,
+            "Y": 49.2
+        }
+    }
+}
