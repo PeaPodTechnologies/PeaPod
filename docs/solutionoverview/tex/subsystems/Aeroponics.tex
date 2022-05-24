@@ -1,0 +1,178 @@
+\subsection{Aeroponics}
+\label{sec:aeroponics}
+
+\textbf{Purpose}: Delivers nutrients and pH-balanced, temperature-controlled water to the plant roots via a fine mist.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Reverse osmosis water\footnote{RO water has no dissolved nutrients and a neutral pH of 7.0. This enables easier and more reliable calculations. In addition, it has no particulate or minerals, minimizing the chances of nozzle clog.} under positive pressure, pH up \& down solutions, concentrated nutrient solutions, pump control (on/off to relay for pump power), nozzle control (on/off to relay for solenoid power), pH and nutrient solution ratios as signals (stepper positions/valve open percent), thermoregulation power as signal (PWM to H-bridge polarity switch to MOSFET to Peltier), thermoregulation fan power
+    \item \textbf{Outputs}: Mist (50 micron mean droplet diameter), runoff water
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Hook up all inputs;
+        \item Connect the quick-disconnect fitting;
+        \item Fill nutrient, pH solution containers;
+        \item Calibrate pressure, temperature sensors to atmospheric;
+        \item Enable water input to prime system (if known pressure/temperature, calibrate sensors);
+        \item Mount container, connect runoff output line to extraction port;
+    \end{enumerate}
+\newpage
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Temperature, pressure sensors communicate as expected;
+        \item No leaks at any connections under a) source pressure, b) fully pressurized;
+        \item Pump auto-shuts off near 80PSI;
+        \item Tubing and all components withstand full pressurization;
+        \item Solenoid is normally closed, withstands full pressurization, and opens when power is applied;
+        \item Quick-disconnect operates as intended at full pressurization without leaks;
+        \item Nozzles produce full-cone mist;
+        \item Manual and servo-actuated valves operate as intended;
+        \item Runoff container is sealed, and extraction port works;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Water is pressurized to constant 80PSI;
+        \item Heat is added to or removed from the water (\ref{sec:automation}); % TODO: Add water temp to environment control?
+        \item Temperature and pressure of the water is read (feeds back);
+        \item Nutrient and pH (\ref{sec:nutrientsph}) solutions are mixed in-line at an adjustable ratio (\ref{sec:automation}); \footnote{I.e. add X mL of nutrient solution Y per mL water to achieve Z ppm, or add A mL of pH down solution per mL water to achieve a pH of B.}
+        \item Flow to nozzle is controlled (on/off) (\ref{sec:automation});
+        \item Nozzle turns pressurized water into mist, which is 98\% more water efficient than traditional farming;
+        \item Mist runoff is contained by a container, and extracted for processing as waste water;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Extract all remaining runoff;
+        \item Power down the pump and thermoregulation unit;
+        \item Close the nutrient and pH solution valves;
+        \item Close the source shutoff valve;
+        \item Open the drain valve, and allow the system to depressurize and  drain completely;
+        \item Power down the solenoid;
+        \item Disconnect the quick-disconnect fitting;
+        \item Disconnect the inputs;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features} (in order of plumbing; source $\to$ nozzle):
+\begin{itemize}
+    \item \textit{Water Source}: Input for reverse-osmosis water.
+    \item \textit{Manual Source Shutoff Valve}
+    \item \textit{Diaphragm Pump}: Self-priming, auto-shutoff at 80psi. Power is controlled by external relay signal (\ref{sec:automation}).
+    \item \textit{Inline Water Heater/Cooler}: Thermoelectric heater/cooler. Peltier tiles (H-bridge polarity control, PWM dimming), aluminum water block/heat sink combo, and fans.
+    \item \textit{Accumulator Tank}: Uses an air bladder to create and stabilize pressure.
+    \item \textit{Pressure Sensor}: Reports to computer (\ref{sec:automation}). Allows for shutoff of pump in case of emergency.
+    \item \textit{Manual Drain Valve}: Ball valve. Allows the system to be depressurized and drained.
+    \item \textit{Nutrient and pH Adjustment Solutions}: Section \ref{sec:nutrientsph}
+    \item \textit{Adjustable-rate Siphon Injection Manifold}: Section \ref{sec:manifold}.
+    \item \textit{Solenoid Valve}: Enables on-demand (\ref{sec:automation}) misting.
+    \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
+    \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets, optimal for plant growth. %TODO: Source??
+    \item \textit{Runoff Collection Container}: Mounted and \textbf{sealed} to the grow tray. Encapsulates the nozzles and root zone \textbf{entirely}, and provides a runoff water extraction port.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Solution Nutrients and pH}
+\label{sec:nutrientsph}
+
+\textbf{Purpose}: Providing all necessary plant nutrients at the correct pH.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Plant nutrients, pH up solution, pH down solution (all stored)
+    \item \textbf{Outputs}: Plant nutrients, pH up solution, pH down solution (on-demand)
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Fill containers with nutrient, pH solutions;
+        \item Install and connect fill level sensors;
+        \item Install output tubes;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item No container leaks;
+        \item Fill level sensors operate as intended;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Solutions are held in containers;
+        \item Solutions are siphoned from containers on-demand;
+        \item Fill level sensors notify user (\ref{sec:automation}) when empty;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Empty containers;
+        \item Disconnect fill level sensors and output tubes;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Nutrient Solutions}: Aqueous. Highly concentrated. Selectable as part of the program (\ref{sec:automation})\footnote{Many different solutions can be combined (according to solubility laws, pH requirements, etc.).}, and may include any of:
+    \begin{itemize}
+        \item Bioavailable nonmetals (ammonia, ammonium, nitrates, nitrites, phosphates, sulfates, etc.)
+        \item Bioavailable metals (potassium, etc.)
+        \item Minerals (magnesium, calcium)
+        \item Other trace elements
+        \item Custom solutions (i.e. fungicides/algicides)
+    \end{itemize} 
+    \item \textit{pH Adjustment Solutions}\footnote{\textit{NOTE:} Ionic composition of pH solutions should be considered in the understanding of the spray (i.e. phosphic acid results in phosphate ions in spray)}: Aqueous. Highly concentrated. One for pH up (>8), one for pH down (<6).
+    \item \textit{Solution Storage Containers}: Opaque, insulated, chemical-safe, refillable cartridges. Prevent degradation of solution compounds over time via light or heat.
+    \begin{itemize}
+        \item \textit{Fill Level Sensors}: Depth sensors measure fill level of container. Notifies user to refill.
+    \end{itemize}
+\end{itemize}
+
+\newpage
+
+\subsubsection{Solution Injection Manifold}
+\label{sec:manifold}
+
+\textbf{Purpose}: A manifold of parallel in-line injectors, allowing for adjustable mixing ratios for nutrient and pH solutions.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Pressurized RO water, per-solution flow-ratio control signal (calculated from desired per-nutrient concentrations; \ref{sec:automation}), pH flow-ratio control signal (calculated from desired pH; \ref{sec:automation})
+    \item \textbf{Outputs}: Pressurized mixed solution with set pH and nutrient concentrations
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect inlet lines to siphon inlets;
+        \item Connect solution containers to inlet lines;
+        \item Connect flow control servos to control module;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Flow control servos and valves operate as intended;
+        \item Injection ratios are accurate;
+        \item Check valves prevent backflow when solenoid is closed;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Water splits into parallel injection "branches";
+        \item Each branch injects solution at an adjustable (\ref{sec:automation}) ratio (flow:flow);
+        \item Branches recombine;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect inlet lines from siphons, containers;
+        \item Disconnect flow control servos from control module;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Venturi Siphons}: Venturi-based siphons for flow-ratio injection of solutions (one siphon per solution).
+    \item \textit{Input, Output Manifold}: Manifolds for distribution of water to branches, and recombination of solution post-injection.
+    \item \textit{Flow Control Valves}: Completely adjustable flow control, driven by servos.
+    \item \textit{Check Valves}: Prevents backflow through siphon inlet when output solenoid is closed.
+\end{itemize}

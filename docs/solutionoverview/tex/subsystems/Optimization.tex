@@ -1,0 +1,36 @@
+\subsection{Optimization}
+\label{sec:optimization}
+
+\textbf{Purpose}: Continuously improve yield/etc. of crops as more environment parameter and crop metric data is gathered across iterations.
+
+\textbf{Method}: 
+
+Assume a plant's growth rate (or state change) is related to its current internal state $\vec P \in \R^n$ (for $n$ plant metrics) and the environment conditions $\vec E \in \R^m$ (for $m$ environment parameters). Let these both be functions $\vec P (t),\vec E(t)$ defined at each $t$, where $t=0$ indicates the time of planting. Assume that this relationship is constant for all members of a given species.
+
+Define plant state change $\vec P'$: 
+
+$$\vec P'(t) = \frac{d}{dt}\vec P(t)$$
+
+Define the plant-environment behaviour function $Q$: 
+
+$$Q(\vec P(t), \vec E(t), t)=\vec P'(t)$$ 
+
+Given the current internal and external states, determine the plant's state change.
+
+\begin{enumerate}
+    \item Set $\vec E_{set}(t)~\forall~ t$, aka the program (\ref{sec:automation});
+    \item Record $\vec P(t)~\forall~ t$ and $\vec E(t)\approx \vec E_{set}(t)~\forall~ t$ (\ref{sec:environment});
+    \item Calculate $\vec P'(t)~\forall~ t$;
+    \item Fit $\vec Q$ to our data;
+\end{enumerate}
+
+By fitting $\vec Q$ across iterations, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
+
+$$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Machine Learning Model}: Represents $Q$. Operates on the main automation hardware, or in the cloud.
+    \item \textit{Environment Sensors}: See Section \ref{sec:automation}. Collects $\vec E$ over time.
+    \item \textit{Plant Metrics}: See Section \ref{sec:automation}. Collects $\vec P$ over time.
+\end{itemize}
