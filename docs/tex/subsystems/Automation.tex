@@ -5,8 +5,8 @@
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Environment sensor reading signals, program
-    \item \textbf{Outputs}: Actuator control signals, crew messaging
+    \item \textbf{Inputs}: Environment data stream (sensor readings), growth program
+    \item \textbf{Outputs}: Actuator control signals, crew/cloud messaging, environment data (stored), timelapse photo set
 \end{itemize}
 
 \textbf{Method}:
@@ -14,34 +14,40 @@
     \item \textit{Setup}:
     \begin{enumerate}
         \item Power is connected and system is booted;
-        \item Program is inputted by user;
+        \item Program is selected by user;
     \end{enumerate}
     \item \textit{Testing}:
     \begin{itemize}
-        \item Power-on Self-Test (POST) passes;
-        \item Systems enact program as intended;
+        \item Power-on Self-Test (POST) passes (i.e. all hardware is online and communicating as expected);
+        \item Systems enact program as intended (i.e. control systems respond properly);
     \end{itemize}
     \item \textit{Process}:
     \begin{enumerate}
         \item Checks operating preconditions (self POST and per-subsystem);
-        \item \textbf{Environment Control Loop} (matches \textit{Sense-Plan-Act} model of robotics):
+        \item \textbf{Environment Control Loop} (matches \textit{Sense-Plan-Act} model of robotics): %TODO cite the model
         \begin{enumerate}
-            \item Receives and stores data about current environment state;
-            \item Compares current state to desired state, develops a "plan" to reach desired state;
-            \item Controls subsystem operations in order to enact the plan;
+            \item \textit{Sense}: Receives and stores data about current environment state;
+            \item \textit{Plan}: Compares current state to "desired"/program state, develops a "plan"/actuator control to reach desired state;
+            \item \textit{Act}: Controls subsystem operations in order to enact the plan;
         \end{enumerate}
-        \item Notifies user on maintenance requirement (i.e. non-automated input/output management, refills, repairs, etc.) and end-of-program (EOP);
+        \item Notifies user on maintenance requirement (i.e. non-automated input/output management, refills, repairs, etc.), end-of-program (EOP), and diagnostic info;
     \end{enumerate}
     \item \textit{Shutdown} (either manual or EOP):
     \begin{enumerate}
-        \item Stop subsystem operations;
+        \item Stop all subsystem operations;
+        \item Power down;
     \end{enumerate}
 \end{enumerate}
 
 \textbf{Features}:
+
+A dual-computer system was chosen, as this allowed for discrete management of high-level functionality (camera capture, internet/cloud functionality, local storage, complex calculations, etc.) and low-level functionality (hardware-level communications, actuator control and GPIO) in a master/slave topology with a constant two-way stream of shared data.
+
 \begin{itemize}
-    \item \textit{Computer System}: Manages \textbf{all} data collection, storage, analysis, and transmission/receiving, as well as planning and actuator control. Includes internal clock (for program, notification), network connection (for data transmission, notification), and storage (for data). 
-    \item \textit{Camera \& Plant Metrics}: Top-down and side-view cameras. For live feed transmission to users (local and remote), as well as plant health and yield metric collection via \textbf{computer vision analysis}, generating $\vec P$ for the optimization routine (\ref{sec:optimization}). Metrics include:
+    \item \textit{Computer (Master)}: Manages data collection, batch storage, analysis, and transmission/receiving, as well as planning/calculations for actuator control. Includes internal clock (for program, notification), network connection (for data transmission, notification), photo capture, and non-volatile storage (for data/photos). Sends instructions derived from the program to the microcontroller.
+    \item \textit{Microcontroller (Slave)}: Manages detailed sensor/actuator states and communications with them (on/off, sensor readings, actuator control). Streams collected sensor readings to the computer.
+    \item \textit{Program}: Set of actuated instructions (e.g. lights on) and control targets (e.g. hold air temperature at 22°C) to enact at specific points in the growth cycle, as well as config data;
+    \item \textit{Camera Capture \& Plant Performance Metric (PPM) Extraction}: Top-down and side-view cameras, captured under standard lighting at regular intervals throughout the course of the growth cycle. For live feed transmission to users (local and remote), as well as PPM extraction via computer vision and machine learning for yield and diagnostic analysis. Potentially relevant PPMs include (but are not limited to):
     \begin{itemize}
         \item Leaf health indicators (i.e. leaf tip burn, leaf curl, chlorosis);
         \item Leaf count, size distribution;
@@ -49,11 +55,21 @@
         \item Canopy dimensions/surface area;
         \item Plant height;
         \item Fruit/harvest body size, ripeness;
-        \item etc.
     \end{itemize}
-    \item \textit{Environment Sensors}: Record the environment's current state. Covers each environment control loop (see \ref{sec:environment} \textbf{outputs}). Matches $\vec E$ from the optimization routine (\ref{sec:optimization}).
-\newpage
-    \item \textit{Diagnostic Systems}: Include informative sensors tracking system input availability, etc. as well as notification triggers.
-    \item \textit{Program}: Set of action (e.g. lights on) and control target (e.g. hold air temperature at 22°C) \textbf{time-series} instructions;
-    \item \textit{Actuator Control}: Induce a change. Covers each environment control (see \ref{sec:environment}, \ref{sec:lighting} \textbf{inputs});
+    \item \textit{Environment Data}: Record the environment's current state. Covers each \textit{control loop} environment parameter (e.g. included in a feedback loop). Control loop environment parameters include:
+    \begin{itemize}
+        \item Leaf-zone temperature (see \ref{sec:airthermoregulation});
+        \item Leaf-zone humidity (see \ref{sec:humidityregulation});
+        \item Root-zone temperature (see \ref{sec:aeroponics});
+        \item Gas concentrations (see \ref{sec:gas});
+    \end{itemize}
+    \item \textit{Actuator Control}: Induces change in environment parameters. Covers both \textit{control loop} and \textit{actuated instruction} environment parameters. Actuated instruction environment parameters include:
+    \begin{itemize}
+        \item Lighting (see \ref{sec:lighting});
+        \item Water delivery (see \ref{sec:aeroponics});
+        \item Plant nutrient delivery (see \ref{sec:aeroponics});
+        \item Water pH (see \ref{sec:aeroponics});
+        \item Air circulation rate (see \ref{sec:airthermoregulation});
+    \end{itemize}
+    \item \textit{Diagnostic Systems}: Include informative sensors tracking system input availability, subsystem diagnostics, etc. as well as notification triggers.
 \end{itemize}

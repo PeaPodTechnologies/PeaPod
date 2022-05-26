@@ -5,8 +5,8 @@
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation}), air circulation control signal (\ref{sec:automation});
-    \item \textbf{Outputs}: $\pm$Heat to environment, $\mp$heat to surroundings, internal air circulation, internal air temperature sensor signal (\ref{sec:automation});
+    \item \textbf{Inputs}: Power, air temperature control signal (\ref{sec:automation}), air circulation control signal (\ref{sec:automation})
+    \item \textbf{Outputs}: Heat to/from environment, by-product heat from/to surroundings, internal air circulation, internal air temperature sensor readings (\ref{sec:automation})
 \end{itemize}
 
 \textbf{Method}:
@@ -21,8 +21,8 @@
     \item \textit{Process}:
     \begin{enumerate}
         \item Air is circulated throughout the environment;
-        \item Temperature is measured, sent to control module;
-        \item Control module controls heat pump speed and direction (heating vs. cooling);
+        \item Temperature is measured, sent to automation system (\ref{sec:automation});
+        \item Control module controls heat pump speed and direction (heating vs. cooling environment, \ref{sec:automation});
     \end{enumerate}
 \end{enumerate}
 
@@ -37,39 +37,42 @@ Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature r
     Q_{gain}=\frac{(T_{surr}-T_{sys-min}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-10\degree \text{C}) * (16 \text{ faces} * 0.5\text{m} * 0.5\text{m})}{0.0328 \text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1} * 25.4 \text{mm}}=57.61 W\\\vspace{.05cm}\\
     \label{eqn:airmass}
     m_{air}=\frac{P*V*M}{R*T_{avg}}=\frac{101325\text{Pa}*(0.5\text{m}*0.5\text{m}*0.5\text{m}*4\text{ units})*28.97\frac g{mol}}{8.314\frac{J}{\text{mol}*K}*300\text{K}}=588.4g\\
-    \vspace{1.5cm}\\
-    \text{Continued on next page}
-\end{gather*}
-\vspace{1cm}
-
-\begin{gather*}
-  \label{eqn:heating}
-  W_{heating}=\frac{m*c_p*(T_{surr}-T_{sys-max})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-35\degree \text{C})}{120\text{ sec}}=-64.13\text{W}\\
-  \label{eqn:cooling}
-  W_{cooling}=\frac{m*c_p*(T_{surr}-T_{sys-min})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-10\degree \text{C})}{120\text{ sec}}=59.19\text{W}
+    \label{eqn:heating}
+    W_{heating}=\frac{m*c_p*(T_{surr}-T_{sys-max})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-35\degree \text{C})}{120\text{ sec}}=-64.13\text{W}\\
+    \label{eqn:cooling}
+    W_{cooling}=\frac{m*c_p*(T_{surr}-T_{sys-min})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-10\degree \text{C})}{120\text{ sec}}=59.19\text{W}
 \end{gather*}
 
-$\therefore$ A thermoelectric system able to transfer at least 70W (such as \cite{peltier}, which transfers up to 85W) will supply enough power to heat/cool the system from ambient to extremes in 120 seconds and maintain temperature.
+$\therefore$ A thermoelectric system able to transfer at least \textbf{70W} (such as \cite{peltier}, which transfers up to 85W) will supply enough power to heat/cool the system from ambient to extremes in 120 seconds and maintain temperature.
 
 \begin{gather*}
-  \label{eqn:thermalresistance-hot}
-  R_{\theta~Peltier-Surr}=R_{\theta~Peltier-Sink}+R_{\theta~Sink-Air}\le\frac{T_{h~max} - T_{surr}}{Q_{max}}=\frac{50\degree C - 22\degree C}{85W}=0.329\degree \text{C W}^{-1}\\
-  \label{eqn:thermalresistance-cold}
-  R_{\theta~Peltier-Sys}=R_{\theta~Peltier-Sink}+R_{\theta~Sink-Air}
+    \label{eqn:thermalresistance-hot}
+    R_{\theta~Peltier-Surr}=R_{\theta~Peltier-Sink}+R_{\theta~Sink-Air}\le\frac{T_{h~max} - T_{surr}}{Q_{max}}=\frac{50\degree C - 22\degree C}{85W}=0.329\degree \text{C W}^{-1}\\
+    \label{eqn:thermalresistance-cold}
+    R_{\theta~Peltier-Sys}=R_{\theta~Peltier-Sink}+R_{\theta~Sink-Air}
 \end{gather*}
 
 \textbf{Features}:
 \begin{itemize}
-    \item \textit{Circulation Fans}: Located in growth environment to circulate air even temperature distribution.
-    \item \textit{Temperature Sensors}: SHT31 \cite{sht31} sensors on breakout boards located throughout the growth environment to measure air temperature. Informs a \textbf{PID control loop} (\ref{sec:automation}).
+    \item \textit{Circulation Fans}: Located in growth environment to circulate air for even temperature distribution, rapid system flushing, and automatic pollination.
+    \item \textit{Temperature Sensors}: Multiple temperature and humidity sensors \cite{sht31} on small daughterboards frame-mounted throughout the growth environment to measure air temperature ($\degree$C). Informs the \textbf{PID control loop}.
     \item \textit{Heat Pump}: Pumps heat in or out of the growth environment. Is comprised of:
     \begin{itemize}
-        \item \textit{Peltier Device}: 85W bidirectional solid-state \textbf{thermoelectric device} (aka Peltier tile) \cite{peltier} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
-        \item \textit{Peltier Driver Circuit}: Controls magnitude and direction of Peltier device heat pump via a \textbf{dimmable voltage source} and \textbf{MOSFET H-bridge}, respectively. See Figure \ref{fig:peltierdriver}.
+        \item \textit{Peltier Device}: \textbf{CP854345H} by CUI Devices. 85W bidirectional solid-state \textbf{thermoelectric device} (aka Peltier tile) \cite{peltier} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
+        \item \textit{Peltier Driver Circuit}: Controls \textit{magnitude} and \textit{direction} of heat transfer via a \textbf{dimmable voltage source} (low-pass-filtered PWM to a voltage buffer and amplifier w/ feedback) and \textbf{relay H-bridge}, respectively.
+        % See Figure \ref{fig:peltierdriver}.
         \item \textit{Heat Sinks}: Aluminum blocks with fins hold and exchange heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound for better transfer.
         \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
     \end{itemize}
+    \item \textit{PID Control Loop}: A propotional-integral-derivative control loop enables increased accuracy (see \ref{eqn:pid}). Temperature sensors inform the loop, "error" is calculated (current vs desired temperature, see $E(t)$ \ref{eqn:piderror}), and this informs the magnitude and direction of heat pump control ($u(t)$). Requires tuning of parameters ($K_p, K_i, K_d$; automatic). Built into the automation system (see \ref{sec:automation});
 \end{itemize}
+
+\begin{gather*}
+    \label{eqn:piderror}
+    E(t)=T_{target}(t)-T_{measured}(t)\\
+    \label{eqn:pid}
+    u(t)=K_pE(t)+K_i\int_0^{t}E(t)dt+K_d\frac{dE(t)}{dt}\\
+\end{gather*}
 
 % \begin{figure}[h]
 %   \centering
