@@ -24,8 +24,19 @@
     \item \textit{Humidification System}: See Section \ref{sec:humidification}.
     \item \textit{Dehumidification System}: See Section \ref{sec:dehumidification}.
     \item \textit{Humidity Sensors}: Multiple temperature and humidity sensors \cite{sht31} on small daughterboards frame-mounted throughout the growth environment to measure air relative humidity (\%RH). Informs the \textbf{bang-bang control loop}.
-    \item \textit{Bang-Bang Control Loop}: A bang-bang (on/off) control loop with a hysteresis dead-zone. Humidity sensors inform the loop, "error" is calculated (current vs desired humidity), and this informs whether or not to activate either the humidification or dehumidification systems (or neither). Requires tuning of dead-zone (automatic). Built into the automation system (see \ref{sec:automation});
+    \item \textit{Bang-Bang Control Loop}: A bang-bang (on/off) control loop with a hysteresis dead-zone (see equation \ref{eqn:bangbang}). Humidity sensors inform the loop, "error" is calculated (current vs desired humidity), and this informs whether or not to activate either the humidification or dehumidification systems (or neither). Requires tuning of dead-zone (automatic). Built into the automation system (see \ref{sec:automation});
 \end{itemize}
+
+\begin{gather}
+    \label{eqn:bangbang}
+    u(t)=\begin{dcases}
+        -1  &   x < -d \\
+        0   &   -d \leq x \leq d \\
+        1   &   x > d \\
+    \end{dcases}
+\end{gather}
+
+\clearpage
 
 \subsubsection{Humidification}
 \label{sec:humidification}
@@ -75,6 +86,8 @@
     \end{itemize}
 \end{itemize}
 
+\clearpage
+
 \subsubsection{Dehumidification}
 \label{sec:dehumidification}
 
@@ -117,13 +130,13 @@
 \textbf{Calculations}:
 Assuming an air temperature of 30$\degree$ C, water vapour saturation of $30.4g/m^{3}$, RH of 90\%, target RH of 20\%, and 6\% dessicant capacity (by mass):
 \vspace{.05cm}
-\begin{gather*}
+\begin{gather}
     90\% RH = 0.90 * 30.4g/m^{3} = 27.36g/m^{3} \\
     20\% RH = 0.20 * 30.4g/m^{3} = 6.08g/m^{3} \\
     V_{4 units} = 0.5m * 0.5m * 0.5m * 4 = 0.5m^{3} \\
     m_{extracted water} = (27.36g/m^{3} * 0.5m^{3}) - (6.08g/m^{3} * 0.5m^{3}) = 10.64g water \\
-    \frac{10.64g water}{0.06 \frac{g water}{g desiccant}} = 177.3g desiccant \\
-\end{gather*}
+    \frac{10.64g water}{0.06 \frac{g water}{g desiccant}} = 177.3g desiccant
+\end{gather}
 
 $\therefore$ 177.3g of 6\% capacity desiccant is needed to change the RH\% of a 4 unit setup from 90\% to 20\%.
 

@@ -19,7 +19,6 @@
         \item Enable water input to prime system (if known pressure/temperature, calibrate sensors);
         \item Mount container, connect runoff collection line to recycling port;
     \end{enumerate}
-\newpage
     \item \textit{Testing}:
     \begin{itemize}
         \item Temperature, pressure sensors communicate as expected;
@@ -42,6 +41,7 @@
         \item Nozzle turns pressurized water into mist;
         \item Runoff is contained by a water-tight container, and collected for recycling;
     \end{enumerate}
+    \clearpage
     \item \textit{Shutdown}:
     \begin{enumerate}
         \item Power down the pump and thermoregulation unit;
@@ -56,12 +56,13 @@
     \end{enumerate}
 \end{enumerate}
 
-\textbf{Features} (in order of plumbing; source $\to$ nozzle):
+\textbf{Features}:
 \begin{itemize}
     \item \textit{Water Source}: Input for ambient reverse-osmosis water.
     \item \textit{Manual Source Shutoff Valve}: Ball valve.
     \item \textit{Diaphragm Pump}: Self-priming, auto-shutoff at 80psi. Power is controlled by a relay.
     \item \textit{Inline Thermoelectric Water Heater/Cooler Block}: Aluminum water block heat pump. See Section \ref{sec:airthermoregulation}.
+    \item \textit{PID Control Loop}: A propotional-integral-derivative control loop enables increased accuracy (see equation \ref{eqn:pid}, \ref{sec:airthermoregulation}).
     \item \textit{Solution Injection Manifold}: A manifold of parallel inline injectors, allowing for on-demand adjustment of mixing ratios for nutrient and pH solutions. Comprises:
     \begin{itemize}
         \item \textit{Manifold}: Splits the water line into a set of parallel branches with inline tees to enable solution injection.
@@ -87,5 +88,25 @@
     \item \textit{Solenoid Valve}: Controls delivery to the nozzles to enable on-demand misting.
     \item \textit{Grow Tray Quick-Disconnect}: Connectors between aeroponics supply and nozzles that allow for quick disconnection with auto-shutoff so the trays may be removed.
     \item \textit{Nozzle}: Mounted to grow tray, pointed at plant roots. 80psi water through a 0.4-0.6mm orifice produces 5-50 micron water droplets, optimal for plant growth. This method is 98\% more water-efficient than traditional farming.%TODO: Sources??
-    \item \textit{Root-Zone Container}: Watertight container that encapsulates the entire root zone. Made of a woven waterproof composite fabric (CT5K.18 mylar with Dyneema, 1.43oz/yd${}^2$), chosen for high strength-to-weight ratio (15x that of steel) and natural no-coating food-safe waterproof quality \cite{dyneema}. Mounted and \textbf{sealed} to the grow tray with a drawstring for easy root zone access. Provides water supply and runoff collection ports.
+    \item \textit{Root-Zone Container}: Watertight container that encapsulates the entire root zone. Made of a woven waterproof composite fabric (CT5K.18 mylar with Dyneema, 1.43oz/yd${}^2$ or 33.89g/m${}^2$), chosen for high strength-to-weight ratio (15x that of steel) and natural no-coating food-safe waterproof quality \cite{dyneema}. Mounted and \textbf{sealed} to the grow tray with a drawstring for easy root zone access. Provides water supply and runoff collection ports.
 \end{itemize}
+
+\textbf{Figures}
+
+\begin{figure}[h!]
+    \centering
+    \frame{\includegraphics[width=\textwidth]{../assets/figures/aeroponics_plumbing.png}}
+    \caption{Aeroponics plumbing diagram.}
+    \label{fig:aeroponics_plumbing}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \frame{\includegraphics[width=\textwidth]{../assets/figures/aeroponics_supply.png}}
+    \caption{Aeroponics supply system.}
+    \label{fig:aeroponics_supply}
+\end{figure}
+
+% TODO Pump model figure
+
+\clearpage
