@@ -44,6 +44,7 @@
         \item \textit{Fan}: Humidity-rated fans control gas intake and exhaust rates.
         \item \textit{Filter}: Polyethylene-polyropylene blend (non-toxic) MERV 13 (0.3 micron) air filters \cite{filter} eliminate risk of any airborne pathogens being transferred into or out of the system during gas exchange.
     \end{itemize}
-    \item \textit{Gas Concentration Sensors}: Collects data on concentrations (ppm) of relevant gasses (CO${}_2$, O${}_2$, etc.). Reports to automation (\ref{sec:automation}).
+    \item \textit{Gas Concentration Sensors}: A variety of sensors on small daugherboards frame-mounted in the growth environment collect data on concentrations (ppm) of relevant gasses (CO${}_2$ \cite{co2sensor}, O${}_2$, etc.). Informs the \textbf{bang-bang control loop}.
+    \item \textit{Bang-Bang Control Loop}: Maintains gas concentrations to within allowable ranges. See Section \ref{sec:humidityregulation}, Equation \ref{eqn:bangbang}.
     \item \textit{Output Dehumidifier}: \textbf{Onboard life support systems} provides a dehumidifier (as well as additional filtration) to mitigate exhaust humidity.
 \end{itemize}

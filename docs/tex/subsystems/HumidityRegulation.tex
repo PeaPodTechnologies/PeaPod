@@ -127,18 +127,18 @@
     \end{enumerate}
 \end{enumerate}
 
-\textbf{Calculations}:
-Assuming an air temperature of 30$\degree$ C, water vapour saturation of $30.4g/m^{3}$, RH of 90\%, target RH of 20\%, and 6\% dessicant capacity (by mass):
-\vspace{.05cm}
+\textbf{Calculations}:\\
+Assuming an air temperature of 30$\degree$C, water vapour saturation $p_{30C}$ of $30.4g/m^{3}$, relative humidity target range $[\text{\%RH}_{min},\text{\%RH}_{max}]$ of 20\% to 90\%, and 6\% dessicant capacity (by mass):
 \begin{gather}
-    90\% RH = 0.90 * 30.4g/m^{3} = 27.36g/m^{3} \\
-    20\% RH = 0.20 * 30.4g/m^{3} = 6.08g/m^{3} \\
-    V_{4 units} = 0.5m * 0.5m * 0.5m * 4 = 0.5m^{3} \\
-    m_{extracted water} = (27.36g/m^{3} * 0.5m^{3}) - (6.08g/m^{3} * 0.5m^{3}) = 10.64g water \\
-    \frac{10.64g water}{0.06 \frac{g water}{g desiccant}} = 177.3g desiccant
+    m_{vapour} = \text{\%RH} * p_{30C} * V\\
+    V_{4U} = (0.5m)^3 * 4 = 0.5m^{3} \\
+    m_{extracted} = m_{max} - m_{min} = (\text{\%RH}_{max}-\text{\%RH}_{min}) * p_{30C} * V = 10.64\text{g water}\\
+    m_{desiccant}=\frac{10.64g}{0.06 \%} = 177.3\text{g desiccant}
 \end{gather}
 
-$\therefore$ 177.3g of 6\% capacity desiccant is needed to change the RH\% of a 4 unit setup from 90\% to 20\%.
+$\therefore$ 177.3g of 6\% capacity desiccant is needed to change the RH\% of a 4U Class 2 setup from 90\% to 20\%.
+
+\clearpage
 
 \textbf{Features}:
 \begin{itemize}

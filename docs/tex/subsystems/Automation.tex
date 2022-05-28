@@ -46,10 +46,10 @@
 A dual-computer system was chosen, as this allowed for discrete management of high-level functionality (camera capture, internet/cloud functionality, local storage, complex calculations, etc.) and low-level functionality (hardware-level communications, actuator control and GPIO) in a master/slave topology with a constant two-way stream of shared data.
 
 \begin{itemize}
-    \item \textit{Computer (Master)}: Manages data collection, batch storage, analysis, and transmission/receiving, as well as planning/calculations for actuator control. Includes internal clock (for program, notification), network connection (for data transmission, notification), photo capture, and non-volatile storage (for data/photos). Sends instructions derived from the program to the microcontroller.
-    \item \textit{Microcontroller (Slave)}: Manages detailed sensor/actuator states and communications with them (on/off, sensor readings, actuator control). Streams collected sensor readings to the computer.
+    \item \textit{Computer (Master)} \cite{raspberrypi}: Manages data collection, batch storage, analysis, and transmission/receiving, as well as planning/calculations for actuator control. Includes internal clock (for program, notification), network connection (for data transmission, notification), photo capture, and non-volatile storage (for data/photos). Sends instructions derived from the program to the microcontroller.
+    \item \textit{Microcontroller (Slave)} \cite{arduino}: Manages detailed sensor/actuator states and communications with them (on/off, sensor readings, actuator control). Streams collected sensor readings to the computer.
     \item \textit{Program}: Set of actuated instructions (e.g. lights on) and control targets (e.g. hold air temperature at 22°C) to enact at specific points in the growth cycle, as well as config data;
-    \item \textit{Camera Capture \& Plant Performance Metric (PPM) Extraction}: Top-down and side-view cameras, captured under standard lighting at regular intervals throughout the course of the growth cycle. For live feed transmission to users (local and remote), as well as PPM extraction via computer vision and machine learning for yield and diagnostic analysis. Potentially relevant PPMs include (but are not limited to):
+    \item \textit{Camera Capture \& Plant Performance Metric (PPM) Extraction}: Top-down and side-view cameras \cite{camera}, captured under standard lighting at regular intervals throughout the course of the growth cycle. For live feed transmission to users (local and remote), as well as PPM extraction via computer vision and machine learning for yield and diagnostic analysis. Potentially relevant PPMs include (but are not limited to):
     \begin{itemize}
         \item Leaf health indicators (i.e. leaf tip burn, leaf curl, chlorosis);
         \item Leaf count, size distribution;
@@ -58,14 +58,14 @@ A dual-computer system was chosen, as this allowed for discrete management of hi
         \item Plant height;
         \item Fruit/harvest body size, ripeness;
     \end{itemize}
-    \item \textit{Environment Data}: Record the environment's current state. Covers each \textit{control loop} environment parameter (e.g. included in a feedback loop). Control loop environment parameters include:
+    \item \textit{Environment Data}: Record the environment's current state. Covers each \textit{control system} environment parameter (e.g. included in a feedback loop). Control system environment parameters include:
     \begin{itemize}
         \item Leaf-zone temperature (see \ref{sec:airthermoregulation});
         \item Leaf-zone humidity (see \ref{sec:humidityregulation});
         \item Root-zone temperature (see \ref{sec:aeroponics});
         \item Gas concentrations (see \ref{sec:gas});
     \end{itemize}
-    \item \textit{Actuator Control}: Induces change in environment parameters. Covers both \textit{control loop} and \textit{actuated instruction} environment parameters. Actuated instruction environment parameters include:
+    \item \textit{Actuator Control}: Induces change in environment parameters. Covers both \textit{control system} and \textit{actuated instruction} environment parameters. Actuated instruction environment parameters include:
     \begin{itemize}
         \item Lighting (see \ref{sec:lighting});
         \item Water delivery (see \ref{sec:aeroponics});

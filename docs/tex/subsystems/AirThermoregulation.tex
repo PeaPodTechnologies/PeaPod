@@ -28,20 +28,22 @@
 
 \textbf{Calculations}:
 
-Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature range $T_{surr}$ of 22$\degree$C, a system target temperature range $T_{sys-min}$, $T_{sys-max}$ of 10-35$\degree$C, a molar mass of dry air\footnote{Water vapour has a maximum concentration of 30g/kg at 30$\degree$C, or 3\%, which is negligible for mass and heat capacity calculations.} $M$ of 28.97 $\frac g{mol}$, a specific heat capacity of dry air $c_p$ of $1.006 \frac{J}{g*\text{K}}$, a 4-unit (2x2 units, 16 faces) expanded configuration, and a face insulation RSI per mm of $0.0328\text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1}$ (See Section \ref{sec:housing}):\\
+Assuming an atmospheric pressure $P$ of 101.325kPa, a surroundings temperature range $T_{surr}$ of 22$\degree$C, a system target temperature range $[T_{sys-min}$, $T_{sys-max}]$ of 10-35$\degree$C, a molar mass of dry air $M$ of 28.97 $\frac g{mol}$, a specific heat capacity of dry air $c_p$ of $1.006 \frac{J}{g*\text{K}}$\footnote{Water vapour has a maximum concentration of 30g/kg at 30$\degree$C, or 3\%, which is negligible for mass and heat capacity calculations.}, a 4U Class 2 expanded configuration (2x2 units, 16 faces; see \ref{sec:housing}), and a face insulation RSI per mm of $0.0328\text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1}$ (see \ref{sec:housing}):\\
 \vspace{.05cm}
 \begin{gather}
     \label{eqn:heatloss}
-    Q_{loss}=\frac{(T_{surr}-T_{sys-max}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-35\degree \text{C}) * (16 \text{ faces} * 0.5\text{m} * 0.5\text{m})}{0.0328 \text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1} * 25.4 \text{mm}}=-62.42 W\\\vspace{.05cm}\\
+    Q_{loss}=\frac{(T_{surr}-T_{sys-max}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-35\degree \text{C}) * (16 \text{ faces} * 0.5\text{m} * 0.5\text{m})}{0.0328 \text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1} * 25.4 \text{mm}}=-62.42 W\\
     \label{eqn:heatgain}
-    Q_{gain}=\frac{(T_{surr}-T_{sys-min}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-10\degree \text{C}) * (16 \text{ faces} * 0.5\text{m} * 0.5\text{m})}{0.0328 \text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1} * 25.4 \text{mm}}=57.61 W\\\vspace{.05cm}\\
+    Q_{gain}=\frac{(T_{surr}-T_{sys-min}) * A}{\text{RSI per mm} * \ell}=\frac{(22\degree \text{C}-10\degree \text{C}) * (16 \text{ faces} * 0.5\text{m} * 0.5\text{m})}{0.0328 \text{m}^2~  \degree \text{C}~\text{W}^{-1}~\text{mm}^{-1} * 25.4 \text{mm}}=57.61 W\\
     \label{eqn:airmass}
     m_{air}=\frac{P*V*M}{R*T_{avg}}=\frac{101325\text{Pa}*(0.5\text{m}*0.5\text{m}*0.5\text{m}*4\text{ units})*28.97\frac g{mol}}{8.314\frac{J}{\text{mol}*K}*300\text{K}}=588.4g\\
     \label{eqn:heating}
-    W_{heating}=\frac{m*c_p*(T_{surr}-T_{sys-max})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-35\degree \text{C})}{120\text{ sec}}=-64.13\text{W}\\
+    Q_{heating}=\frac{m*c_p*(T_{surr}-T_{sys-max})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-35\degree \text{C})}{120\text{ sec}}=-64.13\text{W}\\
     \label{eqn:cooling}
-    W_{cooling}=\frac{m*c_p*(T_{surr}-T_{sys-min})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-10\degree \text{C})}{120\text{ sec}}=59.19\text{W}
+    Q_{cooling}=\frac{m*c_p*(T_{surr}-T_{sys-min})}{t}=\frac{588.4g*1.006\frac{J}{g*\text{K}}*(22\degree \text{C}-10\degree \text{C})}{120\text{ sec}}=59.19\text{W}
 \end{gather}
+
+\clearpage
 
 $\therefore$ A thermoelectric system able to transfer at least \textbf{70W} (such as \cite{peltier}, which transfers up to 85W) will supply enough power to heat/cool the system from ambient to extremes in 120 seconds and maintain temperature.
 
@@ -58,9 +60,8 @@ $\therefore$ A thermoelectric system able to transfer at least \textbf{70W} (suc
     \item \textit{Temperature Sensors}: Multiple temperature and humidity sensors \cite{sht31} on small daughterboards frame-mounted throughout the growth environment to measure air temperature ($\degree$C). Informs the \textbf{PID control loop}.
     \item \textit{Heat Pump}: Pumps heat in or out of the growth environment. Is comprised of:
     \begin{itemize}
-        \item \textit{Peltier Device}: \textbf{CP854345H} by CUI Devices. 85W bidirectional solid-state \textbf{thermoelectric device} (aka Peltier tile) \cite{peltier} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
-        \item \textit{Thermoelectric Driver Board}: Controls \textit{magnitude} and \textit{direction} of heat transfer via a \textbf{dimmable voltage source} (low-pass-filtered PWM to a voltage buffer and amplifier w/ feedback) and \textbf{relay H-bridge}, respectively.
-        % See Figure \ref{fig:peltierdriver}.
+        \item \textit{Peltier Device}: 85W bidirectional solid-state \textbf{thermoelectric device} (aka Peltier tile) \cite{peltier} pumps heat from one face to the other. Better space efficiency, less complexity (no liquids, pressurized fluids, etc.), and more precise than other methods.
+        \item \textit{Thermoelectric Driver Board}: Controls \textit{magnitude} and \textit{direction} of heat transfer via a \textbf{dimmable voltage source} (low-pass-filtered PWM to a voltage buffer and amplifier w/ feedback) and \textbf{relay H-bridge}, respectively. See Figures \ref{fig:peltierdriver} and \ref{fig:thermoregulation_driver}.
         \item \textit{Heat Sinks}: Aluminum blocks with fins hold and exchange heat between air and Peltier devices. One set on each side of the Peltier (inside and outside environment) builds "heat pump". Mating face coated with thermal compound for better transfer.
         \item \textit{Heat Sink Fans}: Located on both sets of heat sinks for better heat dissipation.
     \end{itemize}
@@ -73,6 +74,8 @@ $\therefore$ A thermoelectric system able to transfer at least \textbf{70W} (suc
     \label{eqn:pid}
     u(t)=K_pE(t)+K_i\int_0^{t}E(t)dt+K_d\frac{dE(t)}{dt}
 \end{gather}
+
+\clearpage
 
 \textbf{Figures}
 
@@ -100,6 +103,7 @@ $\therefore$ A thermoelectric system able to transfer at least \textbf{70W} (suc
         \label{fig:thermoregulation_driver_brd}
       \end{subfigure}
       \caption{Thermoelectric driver board.}
+      \label{fig:thermoregulation_driver}
 \end{figure}
 
 \clearpage
