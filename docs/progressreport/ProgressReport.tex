@@ -36,9 +36,9 @@
         \input{../tex/Namecard.tex}
         \vspace{.75cm}
 
-        Revision 0.1\\
+        Revision 0.3\\
         PeaPod Technologies Inc.\\
-        January 9th, 2022
+        May 26th, 2022
 
     \end{center}
 \end{titlepage}
@@ -46,60 +46,140 @@
 \thispagestyle{plain}
 
 \tableofcontents
-\newpage
+\clearpage
 
 \section{Design Status}
 % SPECIFICALLY the design process - from establishment of base requirements, to selection of specific materials
-\subsection{Automation Subsystem}
-\subsection{Housing}
-\subsection{Aeroponic Subsystem}
-\subsubsection{Solution Nutrients and pH Regulation}
-\subsubsection{Solution/Root-Zone Temperature Regulation}
-\subsubsection{Mist Delivery}
-\subsection{Leaf-Zone Thermoregulation Subsystem}
-\subsection{Leaf-Zone Humidity Regulation Subsystem}
-\subsubsection{Leaf-Zone Humidification}
-\subsubsection{Leaf-Zone Dehumidification}
-\subsection{Gas Composition Regulation Subsystem}
-\subsubsection{Gas Exchange}
-\subsubsection{Gas Supplementation}
-\subsection{Lighting}
+
+\subsection{Completion}
+
+The design as of May 31st 2022 is 85\% complete. All high-level design is complete, but most of what remains is to select specific features/components for a few subsystems. A highly-accurate and detailed 3D model created in CAD software was created to select and validate placement, orientation, and fit of all components prior to prototyping.
 
 \input{../tex/Process.tex}
 
-\section{System-Level Build Process Report}
-% System-level report (i.e. block diagram) of build process
+\clearpage
 
-\input{../tex/Materials.tex}
+\section{System-Level Report}
+% To be extracted as a separate PDF and submitted as 1.3
+
+\input{../tex/design/Automation.tex}
+
+\clearpage
+
+\input{../tex/design/Housing.tex}
+
+\clearpage
+
+\input{../tex/design/Aeroponics.tex}
+
+\clearpage
+
+\input{../tex/design/AirThermoregulation.tex}
+
+\clearpage
+
+\input{../tex/design/HumidityRegulation.tex}
+
+\clearpage
+
+\input{../tex/design/GasComposition.tex}
+
+\clearpage
+
+\input{../tex/design/Lighting.tex}
+
+\clearpage
+
+\input{../tex/design/Optimization.tex}
+
+\clearpage
+
+% \section{System-Level Build Process Report}
+% % System-level report (i.e. block diagram) of build process
+
+% \input{../tex/Materials.tex}
 
 \section{Prototype Build Status}
 % SPECIFICALLY build status - from functional prototyping to testing to refinement
-\subsection{Automation Subsystem}
-\subsection{Housing}
-\subsection{Aeroponic Subsystem}
-\subsubsection{Solution Nutrients and pH Regulation}
-\subsubsection{Solution/Root-Zone Temperature Regulation}
-\subsubsection{Mist Delivery}
-\subsection{Leaf-Zone Thermoregulation Subsystem}
-\subsection{Leaf-Zone Humidity Regulation Subsystem}
-\subsubsection{Leaf-Zone Humidification}
-\subsubsection{Leaf-Zone Dehumidification}
-\subsection{Gas Composition Regulation Subsystem}
-\subsubsection{Gas Exchange}
-\subsubsection{Gas Supplementation}
-\subsection{Lighting}
 
-\section{Prototyping Summary}
-% What's going well? What's proving to be challenging?
-% Evidence (videos, photographs, diagrams, etc.)
+\subsection{Completion}
+The prototype as of May 31st 2022 is 50\% complete. The housing, aeroponics supply system (without dosage pumps or thermoregulation), lighting, and automation systems are fully operational.
 
-\section{Development Timeline}
-% Incl. estimated completion date
 
-\section{Preliminary Results}
-% Predicted and/or produced
+\subsection{Successes, Results, and Products}
+% Please describe any successes (e.g. preliminary results) and predicted and/or produced food outputs
 
-\newpage
+As of May 31st 2022, no food has been produced by PeaPod. However, we predict successful production of a variety of plant-based food products over the coming weeks, derived from a variety of plant types (leafy greens, legumes, garden vegetables, microgreens, root vegetables, herbs) and prepared using a variety of methods and combinations (i.e. meals). This is possible despite prototype incompleteness, as the remainder of subsystems (except nutrient/pH adjustment solution dosage) are non-critical to plant growth when ambient temperature, humidity, and gas composition are relatively suitable for plant growth at typical indoor ambient atmospheric conditions. In addition, this will still produce usable data for optimization, as all sensors are in place and collecting data even though their associated control systems are absent.
+
+\uline{\textbf{835 Characters} (5000 max)}
+
+\subsection{Challenges}
+% Please describe any challenges that you have encountered in developing your design and/or prototype since Phase 1.
+
+Processes for pollination and germination are still unclear, though simple solutions are possible (air circulation for pollination, seed planting/germination in-place).
+
+Due to the high current draw of the Peltier device (8.5A), as well as the necessity of voltage control over PWM, a custom driver circuit needed to be designed (as opposed to an off-the-shelf integrated circuit). The multi-stage driver (PWM to step-up MOSFETs to low-pass filter to operational amplifier voltage buffer to Darlington amplifier with feedback to relay H-bridge) was non-intuitive to design, and required many revisions (choosing Darlington over MOSFET due to op amp output current limits, choosing relays over MOSFETs due to variable supply voltage).
+
+Specific component placement and orientation for extended housing topologies (as well as the process of actually extending a housing) is still unclear.
+
+Selection of an aeroponics system type was a key design challenge, specifically around the ability to deliver mineral-rich water without calcification at high water delivery rates with suitable droplet diameter, which ultimately led to our selection of high-pressure nozzle-based aeroponics over piezoelectric mesh nebulizer aeroponics (as is used in some commercial settings).
+
+Initially, the method of nutrient and pH-adjustment solution injection was Venturi siphon based. This presented a number of key issues, mainly controlling injection rate/mixing proportions while preventing backflow under pressure, which led us to pivot to peristaltic pumps, which have proven to be superior in both aspects.
+
+\clearpage
+
+The lighting system PCBs went through 4 revisions before consistently successful functionality was achieved. This was due to a number of reasons, including pin alignment during LED board daisy-chaining, thermal management, and LED power limits.
+
+The fitting selection for the aeroponics supply system was fully redesigned twice, first because of new component selection, and then again for part count/mass optimization. The aeroponics supply system also leaked frequently prior to optimizing the assembly process (proper securing of tapered and parallel thread mating faces using PTFE tape and bonded O-rings, respectively, as well as proper tightening).
+
+The software has been restructured and portions completely rewritten countless times. Establishing and maintaining reliable computer-microcontroller communications over serial was challenging, as we did not initially realize that the two devices' IO operated at different voltages (3.3V vs 5V, respectively). Ensuring message validity (JSON formatting, delimiters, encoding, etc.) was also difficult, and was ultimately solved by writing unit testing suites for both devices' communication software. In addition, being able to flash microcontroller firmware from the computer on the fly required a number of revisions. 
+
+Cloud communication was also a major challenge, as registering an IoT device with an API required keypair generation. Manual/hard-coded keypairs are not user-friendly or particularly secure, and a cryptographic integrated circuit built into the motherboard goes against our open-source mission. We ultimately settled on the following process: the user securely enters their credentials for an authentication provider (Google, GitHub, Microsoft, etc.) using the OAuth Device Flow method, and the device "logs in" to our API as the user. The device can then request a private key from our API, which generates the keypair (supposing the user has not exceeded their device quota) and stores the public key on the backend. The device has effectively "self-registered", and can publish data and recieve live config data autonomously.
+
+For a long time, the aeroponic container was a "black box" in our design, meaning that we had no idea where to even begin. One of our team members suggested tent material, and prototyping took off once we found the specific composite that met our requirements (high strength/low weight, fully waterproof, no coating/food-safe, relatively easy to assemble). Assembling the container required a number of iterations, as we initially overlooked the additional material needed for seams (fused with pressure-sensitive adhesive) when calculating the dimensions, as well as choosing a variant of the composite fabric that was too thin and ultimately developed microtears.
+
+Logistical issues also presented themselves during the prototyping process. We had to move locations twice, and our primary 3D printer spontaneously broke.
+
+Currently, the custom peristaltic dosage pumps are being prototyped. This requires tight tolerances in 3D printing, due to the specific mechanism of peristalsis (pump housing not tight enough, tubing does not fully shut under force from the rollers and water is able to backflow through the pump; pump housing is too tight, and the tubing wears out very quickly, or the rollers don't move at all, overheating the stepper motor). In addition, the thermoregulation systems (both leaf- and root-zone) are nearing completion, with only heat sink selection and subsystem testing remaining.
+
+\uline{\textbf{5108 Characters} (5000 max)}
+
+\clearpage
+
+\subsection{Timeline}
+% What are your next steps? Incl. estimated completion date
+
+% maximum 5000 characters
+
+The timeline as of May 31st 2022 is as follows:
+\begin{itemize}
+    \item \textit{June 2022}: Finish design. Continue prototyping. Grow our first plants and collect data.
+    \item \textit{July 2022}: Complete prototype. Assemble and distribute prototypes to schools and volunteers for beta testing, publicly sharing collected data and diagnostic information. Make design/prototype improvements based on beta testing. Begin constructing the optimization machine learning model.
+    \item \textit{August 2022}: Collect samples for nutritional and safety analysis. Collaborate globally on distributed phenological research. Publish findings.
+\end{itemize}
+
+Estimated latest prototype completion date: \textbf{August 1st, 2022}.
+
+\clearpage
+
+\section{Prototype Progress}
+% To be extracted as a separate PDF and submitted as 2.5
+
+\input{../tex/prototype/Automation.tex}
+
+\clearpage
+
+\input{../tex/prototype/Housing.tex}
+
+\clearpage
+
+\input{../tex/prototype/Aeroponics.tex}
+
+\clearpage
+
+\input{../tex/prototype/Lighting.tex}
+
+\clearpage
 
 % References
 \bibliographystyle{IEEEtran}

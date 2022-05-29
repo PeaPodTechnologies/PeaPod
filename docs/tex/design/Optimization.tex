@@ -1,0 +1,44 @@
+\subsection{Optimization}
+\label{sec:optimization}
+
+\textbf{Purpose}: Iteratively improve yield, etc. of crops as more environment condition and plant metric data is gathered across different programs over multiple growth cycles.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Growth cycle datasets (Environment data across time (control system portion of $\vec E(t)$), plant performance metric (PPM) data across time ($\vec P(t)$), associated program (actuated portion of $\vec E(t)$))
+    \item \textbf{Outputs}: Plant-program performance prediction model, novel programs
+\end{itemize}
+
+\textbf{Method}: 
+
+Assume a plant's growth rate (or state change) is related to its current internal state $\vec P \in \R^n$ (for $n$ plant metrics) and the environment conditions $\vec E \in \R^m$ (for $m$ environment parameters). Let these both be functions $\vec P (t),\vec E(t)$ defined at each $t$, where $t=0$ indicates the time of planting. Assume that this relationship is constant for all members of a given species.
+
+Define plant state change $\vec P'$: 
+
+$$\vec P'(t) = \frac{d}{dt}\vec P(t)$$
+
+Define the plant-environment behaviour function $Q$: 
+
+$$Q(\vec P(t), \vec E(t), t)=\vec P'(t)$$ 
+
+Given the current internal and external states, determine the plant's state change.
+
+\begin{enumerate}
+    \item Set $\vec E_{set}(t)~\forall~ t$, aka the program (\ref{sec:automation});
+    \item Record $\vec P(t)~\forall~ t$ and $\vec E(t)\approx \vec E_{set}(t)~\forall~ t$;
+    \item Calculate $\vec P'(t)~\forall~ t$;
+    \item Fit $\vec Q$ to our data;
+\end{enumerate}
+
+By fitting $\vec Q$ across iterations, we can predict $\vec P$ at any $\vec E$ and $t$. For example:
+
+$$\vec P(t+\Delta t)=P(t)+\Delta t\cdot Q(\vec P(t),\vec E(t))$$
+
+Gradient ascent with this model can be used to generate novel (theoretically improved) programs.
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Machine Learning Model}: Represented by $Q$. Operates in the cloud.
+    \item \textit{Environment Data} (over time): Represented by $\vec E(t)$. Collected by sensors (for \textit{control loop} environment parameters) and extracted from the associated program (for \textit{actuated instruction} environment parameters). See Section \ref{sec:automation}.
+    \item \textit{PPM Data} (over time): Represented by $\vec P(t)$. Extracted from computer vision. See Section \ref{sec:automation}.
+\end{itemize}

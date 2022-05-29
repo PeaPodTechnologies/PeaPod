@@ -1,0 +1,155 @@
+\subsection{Leaf-Zone Humidity Regulation}
+\label{sec:humidityregulation}
+
+\textbf{Purpose}: Regulates the relative humidity of the leaf zone.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Humidification on/off control signal (\ref{sec:automation}), dehumidification on/off control signal (\ref{sec:automation})
+    \item \textbf{Outputs}: Humidification or dehumidification on-demand
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item When humidity is too low (outside dead-zone), humidification is activated;
+        \item When humidity is too high (outside dead-zone), dehumidification is activated;
+        \item When humidity is at target (within dead-zone), both systems are deactivated;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Humidification System}: See Section \ref{sec:humidification}.
+    \item \textit{Dehumidification System}: See Section \ref{sec:dehumidification}.
+    \item \textit{Humidity Sensors}: Multiple temperature and humidity sensors \cite{sht31} on small daughterboards frame-mounted throughout the growth environment to measure air relative humidity (\%RH). Informs the \textbf{bang-bang control loop}.
+    \item \textit{Bang-Bang Control Loop}: A bang-bang (on/off) control loop with a hysteresis dead-zone (see equation \ref{eqn:bangbang}). Humidity sensors inform the loop, "error" is calculated (current vs desired humidity), and this informs whether or not to activate either the humidification or dehumidification systems (or neither). Requires tuning of dead-zone (automatic). Built into the automation system (see \ref{sec:automation});
+\end{itemize}
+
+\begin{gather}
+    \label{eqn:bangbang}
+    u(t)=\begin{dcases}
+        -1  &   x < -d \\
+        0   &   -d \leq x \leq d \\
+        1   &   x > d \\
+    \end{dcases}
+\end{gather}
+
+\clearpage
+
+\subsubsection{Humidification}
+\label{sec:humidification}
+
+\textbf{Purpose}: Actively \textit{increases} growth environment air humidity.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water\footnote{RO water contains no minerals/particulate, and as such prevents the common problem of mesh clog/calcification.};
+    \item \textbf{Outputs}: Dry water vapour (\ref{sec:automation});
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect humidification control signal to control module;
+        \item Connect RO water line to water tank;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Humidification unit responds to control signal as expected;
+        \item Humidity sensor reads as expected;
+        \item Tank does not leak;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Water is delivered to a small tank (nebulizer is mounted);
+        \item Power and control signal activate a nebulizer driver;
+        \item Nebulizer vapourizes water;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect RO water line and drain tank;
+        \item Disconnect control signals from control module;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Circulation Fans}: To circulate dry water vapour for even humidification. See Section \ref{sec:airthermoregulation}.
+    \item \textit{Humidification Unit}: Easily controllable and produces a consistent vapour. Comprised of:
+    \begin{itemize}
+        \item \textit{Water Tank}: Holds a small amount of water behind the piezoelectric mesh.
+        \item \textit{Mesh Nebulizer}: Piezoelectric ceramic disc with a microporous stainless steel mesh in the center. Oscillates in such a way that dry vapour is generated when water is passed over the mesh. Mounted to the water tank.
+        \item \textit{Driver Circuit}: Fixed-frequency\footnote{113kHz for 20mm disc} 555 timer circuit driving an amplifier/LC circuit generates an sinusoidal signal. Powers the piezoelectric disc.
+    \end{itemize}
+\end{itemize}
+
+\clearpage
+
+\subsubsection{Dehumidification}
+\label{sec:dehumidification}
+
+\textbf{Purpose}: Actively \textit{decreases} growth environment air humidity.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Humid air (high water vapour content), dehumidification on/off control signal, dry desiccant;
+    \item \textbf{Outputs}: Dry air (low water vapour content), saturated desiccant, desiccant saturation level signal;
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect dehumidification control signal to control module;
+        \item Insert dry desiccant cartridge;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Desiccant removes moisture from air;
+        \item Desiccant indicates saturation as expected, which is sensed by computer;
+        \item Shutters operate as intended, and no dehumidification occurs when closed;
+        \item Maximum dehumidification rate exceeds total plant transpiration rate;
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item Dehumidification control signal activates fans and opens shutters;
+        \item Humid air passes over the desiccant, and dry air exits the unit;
+        \item Desiccant becomes saturated, and indicates degree of saturation;
+        \item Indication is sensed by computer (\ref{sec:automation}), which notifies the user when to replace and dehydrate/"recharge" desiccant;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect control signals from control module;
+        \item Recharge cartridge;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Calculations}:\\
+Assuming an air temperature of 30$\degree$C, water vapour saturation $p_{30C}$ of $30.4g/m^{3}$, relative humidity target range $[\text{\%RH}_{min},\text{\%RH}_{max}]$ of 20\% to 90\%, and 6\% dessicant capacity (by mass):
+\begin{gather}
+    m_{vapour} = \text{\%RH} * p_{30C} * V\\
+    V_{4U} = (0.5m)^3 * 4 = 0.5m^{3} \\
+    m_{extracted} = m_{max} - m_{min} = (\text{\%RH}_{max}-\text{\%RH}_{min}) * p_{30C} * V = 10.64\text{g water}\\
+    m_{desiccant}=\frac{10.64g}{0.06 \%} = 177.3\text{g desiccant}
+\end{gather}
+
+$\therefore$ 177.3g of 6\% capacity desiccant is needed to change the RH\% of a 4U Class 2 setup from 90\% to 20\%.
+
+\clearpage
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Dehumidification Unit}: One input port and one output port. Comprised of:
+    \begin{itemize}
+        \item \textit{Fans}: Humidity-rated fans force moist air through the desiccant cartridge input port and dry air out of the output port.
+        \item \textit{Filter}: Polyethylene-polyropylene blend (non-toxic) MERV 13 (0.3 micron) air filters \cite{filter} located at input and output ports of dehumidification chamber eliminate risk of any airborne pathogens being transferred onto silica beads and out of the system during cartridge recharging.
+        \item \textit{Shutters}: Servo-actuated shutters enable opening and closing of dehumidifier input and output on demand. Air-tight when closed to prevent unintended dehumidification.
+        \item \textit{Desiccant Cartridge}: Oven-safe. Easily removable for swapping and "recharging". Contains the silica gel desiccant.
+        \item \textit{Indicating Silica Gel Desiccant}: Cheap, efficient, food-safe, reusable chemical desiccant beads with a water mass capacity of 6\% \cite{desiccant}. Changes color from blue to pink when saturated.
+    \end{itemize}
+    \item \textit{Color Sensor}: Optical color sensor \cite{colorsensor} senses cartridge saturation. Informs when to recharge the desiccant cartridge (see \ref{sec:automation}).
+    \item \textit{Evaporator Oven}: A ventilated oven that can maintain 125°C for 12 hours \cite{desiccant}. Heats cartridge to evaporate/"bake off" moisture collected by silica beads, thus "recharging" them. Vapour is vented to onboard dehumidifier for recapture.
+\end{itemize}

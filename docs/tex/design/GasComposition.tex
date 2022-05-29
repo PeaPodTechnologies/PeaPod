@@ -1,0 +1,50 @@
+\subsection{Gas Composition Regulation and Exchange}
+\label{sec:gas}
+
+\textbf{Purpose}: Controls gas composition of the growth environment by mediating exchange with surroundings.
+
+\textbf{Function}:
+\begin{itemize}
+    \item \textbf{Inputs}: Power, exchange control signal (open/closed and exchange rate)
+    \item \textbf{Outputs}: Gas intake (from surroundings), gas exhaust (to surroundings; filtered and humidity-controlled)
+\end{itemize}
+
+\textbf{Method}:
+\begin{enumerate}
+    \item \textit{Setup}:
+    \begin{enumerate}
+        \item Connect exhaust port to onboard filtration/dehumidification system;
+        \item Connect shutter servos, fans to control module;
+    \end{enumerate}
+    \item \textit{Testing}:
+    \begin{itemize}
+        \item Shutter servos, fans operate as intended;
+        \item Ports are air-tight when closed;
+        \item Exhaust filter removes all aerosols (i.e. pollen, seeds) and pathogens;
+        \item Exhaust dehumidification brings humidity down to ambient (60\% on ISS); % TODO: Source?
+    \end{itemize}
+    \item \textit{Process}:
+    \begin{enumerate}
+        \item On-demand, intake and exhaust ports activate. Shutters open, and fans are enabled;
+        \item Intake port draws in air from surroundings;
+        \item Exhaust port expels air through filtration and dehumidification systems to be recycled;
+    \end{enumerate}
+    \item \textit{Shutdown}:
+    \begin{enumerate}
+        \item Disconnect exhaust port from filtration/dehumidification system;
+        \item Disconnect shutter servos, fans from control module;
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Features}:
+\begin{itemize}
+    \item \textit{Exchange Port}: Intake and exhaust, normally-sealed. Each comprises:
+    \begin{itemize}
+        \item \textit{Shutters}: Servo-actuated shutters enable opening and closing of ports on demand. Air-tight when closed.
+        \item \textit{Fan}: Humidity-rated fans control gas intake and exhaust rates.
+        \item \textit{Filter}: Polyethylene-polyropylene blend (non-toxic) MERV 13 (0.3 micron) air filters \cite{filter} eliminate risk of any airborne pathogens being transferred into or out of the system during gas exchange.
+    \end{itemize}
+    \item \textit{Gas Concentration Sensors}: A variety of sensors on small daugherboards frame-mounted in the growth environment collect data on concentrations (ppm) of relevant gasses (CO${}_2$ \cite{co2sensor}, O${}_2$, etc.). Informs the \textbf{bang-bang control loop}.
+    \item \textit{Bang-Bang Control Loop}: Maintains gas concentrations to within allowable ranges. See Section \ref{sec:humidityregulation}, Equation \ref{eqn:bangbang}.
+    \item \textit{Output Dehumidifier}: \textbf{Onboard life support systems} provides a dehumidifier (as well as additional filtration) to mitigate exhaust humidity.
+\end{itemize}
