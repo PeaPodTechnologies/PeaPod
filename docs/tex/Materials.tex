@@ -1,63 +1,115 @@
 \subsection{Materials}
+
+As of May 31st, any false or absent entries are as a result of design and/or prototype incompleteness.
+
 \subsubsection{System}
 
-\textbf{Automation}\\
+For a 4x3 extended topology with two control modules:
+\begin{itemize}
+    \item 2x Automation (\ref{tab:automation_components}, \ref{tab:automation_parts})
+    \item 12x Housing Shell (\ref{tab:housing_shell_parts}, \ref{tab:housing_shell_fabrication})
+    \item 12x min. Grow Tray (\ref{tab:housing_growtray_parts}, \ref{tab:housing_growtray_fabrication})
+    \item 12x min. Lighting Tray(\ref{tab:housing_lightingtray_parts}, \ref{tab:housing_lightingtray_fabrication})
+    \item 
+\end{itemize}
 
-\begin{table}[!h]
+\clearpage
+
+\textbf{Automation}
+\begin{table}[!ht]
     \centering
-    \begin{tabular}{|c|l|l|l|c|}
+    \begin{tabular}{|l|l|l|c|}
     \hline
-        Index   & Manufacturer Part Number  & Manufacturer Name         & Description                       & Quantity  \\ \hline
-        1       & A000005                   & Arduino                   & ARDUINO NANO ATMEGA328 EVAL BRD   & 1         \\ \hline
-        2       & S404GSEJ6-U3000-3         & Delkin Devices, Inc.      & 4GB MLC MICROSD CARD (-25C - +85  & 1         \\ \hline
-        3       & 61304021121               & Würth Elektronik          & CONN HEADER VERT 40POS 2.54MM     & 1         \\ \hline
-        4       & SC0510                    & Raspberry Pi              & ZERO 2 W                          & 1         \\ \hline
-        5       & DMN2005K-7                & Diodes Incorporated       & MOSFET N-CH 20V 300MA SOT23-3     & 2         \\ \hline
-        6       & RC0603FR-0710KL           & YAGEO                     & RES 10K OHM 1\% 1/10W 0603        & 5         \\ \hline
-        7       & 4484                      & Adafruit Industries LLC   & MINI PITFT 1.3 FOR RASPBERRY PI   & 1         \\ \hline
-        8       & 5055670271                & Molex                     & CONN HEADER SMD R/A 2POS 1.25MM   & 2         \\ \hline
-        9       & 5055670471                & Molex                     & CONN HEADER SMD R/A 4POS 1.25MM   & 5         \\ \hline
-        10      & 5055670871                & Molex                     & CONN HEADER SMD R/A 8POS 1.25MM   & 3         \\ \hline
-        11      & 5055670681                & Molex                     & CONN HEADER SMD R/A 6POS 1.25MM   & 3         \\ \hline
+        Part Number         & Manufacturer              & Description                           & Quantity  \\ \hline
+        A000005             & Arduino                   & Arduino Nano ATMega328                & 1         \\ \hline
+        S404GSEJ6-U3000-3   & Delkin Devices, Inc.      & 4GB MicroSD                           & 1         \\ \hline
+        61304021121         & Würth Elektronik          & Male Header Pins 40POS 2.54mm         & 1         \\ \hline
+        SC0510              & Raspberry Pi              & Raspberry Pi Zero 2 W                 & 1         \\ \hline
+        DMN2005K-7          & Diodes Incorporated       & MOSFET N-CH 20V 300mA SOT23-3         & 2         \\ \hline
+        RC0603FR-0710KL     & YAGEO                     & RES 10K OHM 1/10W 0603                & 5         \\ \hline
+        4484                & Adafruit Industries LLC   & 1.3" TFT Screen                     & 1         \\ \hline
+        5055670271          & Molex                     & Molex Micro-Lock PLUS 2pos 1.25mm     & 2         \\ \hline
+        5055670471          & Molex                     & Molex Micro-Lock PLUS 4pos 1.25mm     & 5         \\ \hline
+        5055670871          & Molex                     & Molex Micro-Lock PLUS 8pos 1.25mm     & 3         \\ \hline
+        5055670681          & Molex                     & Molex Micro-Lock PLUS 6pos 1.25mm     & 3         \\ \hline
     \end{tabular}
-    \caption{Automation system electronic components.}
+    \caption{Automation system electronic components. One per control module.}
     \label{tab:automation_components}
 \end{table}
-
-In addition, 1x \textit{Automation Motherboard PCB}: 2 Layers, 1 oz. Copper, 1.6mm Thickness, Suggested: HASL Finish (Lead-Free), White PCB, Black Silkscreen
-
-\textbf{Housing}\\
 
 \begin{table}[!ht]
     \centering
     \begin{tabular}{|l|l|c|l|l|}
     \hline
-        Part                    & Description                                           & Quantity  & Supplier          & Supplier Part Number  \\ \hline
-        Control Module Housing  & 5-Sided enclosure                                     & 1         & Protocase         & ~                     \\ \hline
-        Frame Front X Extrusion & Silver Painted, 20x20mm, Ordered 2ft., Cut to 500mm   & 2         & McMaster-Carr     & 5537T101              \\ \hline
-        Frame Door Y Extrusion  & Silver Painted, 20x20mm, Ordered 2ft., Cut to 500mm   & 2         & McMaster-Carr     & 5537T101              \\ \hline
-        Frame Rear X Extrusion  & Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm   & 2         & McMaster-Carr     & 5537T101              \\ \hline
-        Frame Door X Extrusion  & Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm   & 2         & McMaster-Carr     & 5537T101              \\ \hline
-        Frame Rear Y Extrusion  & Silver Painted, 20x40mm, Ordered 2ft., Cut to 460mm   & 2         & McMaster-Carr     & 5537T111              \\ \hline
-        Frame Front Y           & Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm   & 2         & McMaster-Carr     & 5537T101              \\ \hline
-        Frame Z                 & Silver Painted, 20x20mm, Ordered 2ft., Cut to 460mm   & 4         & McMaster-Carr     & 5537T101              \\ \hline
-        Tray X Extrusion        & Silver Painted, 20x20mm, Ordered 2ft., Cut to 440mm   & 4         & McMaster-Carr     & 5537T101              \\ \hline
-        Tray Z Extrusion        & Silver Painted, 20x20mm, Ordered 2ft., Cut to 400mm   & 6         & McMaster-Carr     & 5537T101              \\ \hline
-        Nozzle Arm Extrusion    & Silver Painted, 20x20mm, Ordered 1ft., Cut to 150mm   & 2         & McMaster-Carr     & 5537T101              \\ \hline
-        M5x0.8 10mm Bolts       & Alloy Steel, Black Oxide Coated, Socket Head Cap      & 139       & McMaster-Carr     & 91290A224             \\ \hline
-        M5x0.8 16mm Bolts       & Alloy Steel, Black Oxide Coated, Socket Head Cap      & 10        & McMaster-Carr     & 91290A232             \\ \hline
-        M4x0.7 16mm Bolts       & Alloy Steel, Black Oxide Coated, Socket Head Cap      & 12        & McMaster-Carr     & 91290A154             \\ \hline
-        M4x0.7 Hex Nuts         & High-Strength Steel, Black Oxide Coated               & 12        & McMaster-Carr     & 94166A110             \\ \hline
-        M5 T-Nuts               & Zinc-Plated Steel, Black Painted, for 5mm Slot        & 139       & McMaster-Carr     & 5537T651              \\ \hline
-        M5x0.8 Hex Nuts         & Alloy Steel, Black Oxide Coated                       & 10        & McMaster-Carr     & 94166A120             \\ \hline
-        Foam Insulation         & DUROSPAN GPS R5 4ft. x 8ft. x 1in.                    & 1         & Home Depot Canada & 1001211234            \\ \hline
-        Reflective Mylar        & 27in. x 12ft. x 0.002in., Aluminum-coated PET         & 1         & McMaster-Carr     & 7538T11               \\ \hline
-        Adhesive                & LePage PL300 Foamboard 295mL                          & 2         & Home Depot Canada & 1000403469            \\ \hline
-        Grow Cup                & 2in. Diameter                                         & 16        & Amazon            & ~                     \\ \hline
-        Door Hinges             & Plastic, Black, for 20x20mm Extrusion                 & 2         & McMaster-Carr     & 5537T85               \\ \hline
-        Feet Bumpers            & Adhesive-Back, Medium-Hard Polyurethane, Black        & 4         & McMaster-Carr     & 95495K24              \\ \hline
+        Part            & Description                       & Quantity  & Supplier  & Part Number  \\ \hline
+        Motherboard PCB & 2 Layers, HASL Finish (Lead-Free) & 1         & JLCPCB    & -                     \\ \hline
     \end{tabular}
-    \caption{Housing subsystem components.}
+    \caption{Automation subsystem parts. One per control module.}
+    \label{tab:automation_parts}
+\end{table}
+
+\clearpage
+
+\textbf{Housing}\\
+\uline{Shell}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|c|l|l|}
+    \hline
+        Part                    & Description                   & Quantity  & Supplier      & Part Number   \\ \hline
+        Control Module Housing  & 5-Sided Enclosure             & 1         & Protocase     & -             \\ \hline
+        Frame Front X           & 20x20mm, Cut to 500mm         & 2         & McMaster-Carr & 5537T101      \\ \hline
+        Frame Door Y            & 20x20mm, Cut to 500mm         & 2         & McMaster-Carr & 5537T101      \\ \hline
+        Frame Rear X            & 20x20mm, Cut to 460mm         & 2         & McMaster-Carr & 5537T101      \\ \hline
+        Frame Door X            & 20x20mm, Cut to 460mm         & 2         & McMaster-Carr & 5537T101      \\ \hline
+        Frame Rear Y            & 20x40mm, Cut to 460mm         & 2         & McMaster-Carr & 5537T111      \\ \hline
+        Frame Front Y           & 20x20mm, Cut to 460mm         & 2         & McMaster-Carr & 5537T101      \\ \hline
+        Frame Z                 & 20x20mm, Cut to 460mm         & 4         & McMaster-Carr & 5537T101      \\ \hline
+        Foam Insulation         & GPS, 4' x 8' x 1"             & 1         & Home Depot    & 1001211234    \\ \hline
+        Reflective Laminate     & 27" x 12' x 0.002"            & 1         & McMaster-Carr & 7538T11       \\ \hline
+        Adhesive                & LePage PL300 Foamboard        & 2         & Home Depot    & 1000403469    \\ \hline
+        Door Hinges             & Plastic, Black                & 2         & McMaster-Carr & 5537T85       \\ \hline
+        Feet Bumpers            & Adhesive-Back                 & 4         & McMaster-Carr & 95495K24      \\ \hline
+        M5x0.8 10mm Bolts       & Alloy Steel, Socket Head Cap  & 44        & McMaster-Carr & 91290A224     \\ \hline
+        M5 T-Nuts               & Zinc-Plated Steel             & 44        & McMaster-Carr & 5537T651      \\ \hline
+    \end{tabular}
+    \caption{Housing shell components.}
+    \label{tab:housing_shell_parts}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|c|l|l|}
+    \hline
+        Part        & Quantity  & Materials     & Process       \\ \hline
+        L Bracket   & 8         & PETG Filament & 3D Printing   \\ \hline
+        T Bracket   & 4         & PETG Filament & 3D Printing   \\ \hline
+        Feet        & 4         & PETG Filament & 3D Printing   \\ \hline
+    \end{tabular}
+    \caption{Housing shell fabricated parts.}
+    \label{tab:housing_shell_fabrication}
+\end{table}
+
+\clearpage
+
+\uline{Grow Tray}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|c|l|l|}
+    \hline
+        Part                & Description                   & Quantity  & Supplier          & Part Number   \\ \hline
+        Tray X              & 20x20mm, Cut to 440mm         & 2         & McMaster-Carr     & 5537T101      \\ \hline
+        Tray Z              & 20x20mm, Cut to 400mm         & 3         & McMaster-Carr     & 5537T101      \\ \hline
+        Nozzle Arm          & 20x20mm, Cut to 150mm         & 2         & McMaster-Carr     & 5537T101      \\ \hline
+        M5x0.8 10mm Bolts   & Alloy Steel, Socket Head Cap  & 25        & McMaster-Carr     & 91290A224     \\ \hline
+        M5x0.8 16mm Bolts   & Alloy Steel, Socket Head Cap  & 20        & McMaster-Carr     & 91290A232     \\ \hline
+        M4x0.7 16mm Bolts   & Alloy Steel, Socket Head Cap  & 12        & McMaster-Carr     & 91290A154     \\ \hline
+        M4x0.7 Hex Nuts     & High-Strength Steel           & 12        & McMaster-Carr     & 94166A110     \\ \hline
+        M5 T-Nuts           & Zinc-Plated Steel             & 35        & McMaster-Carr     & 5537T651      \\ \hline
+        M5x0.8 Hex Nuts     & Alloy Steel                   & 2         & McMaster-Carr     & 94166A120     \\ \hline
+        Grow Cup            & 2" Diameter                   & 16        & Amazon            & ~             \\ \hline
+    \end{tabular}
+    \caption{Grow tray frame components.}
     \label{tab:housing_parts}
 \end{table}
 
@@ -65,29 +117,184 @@ In addition, 1x \textit{Automation Motherboard PCB}: 2 Layers, 1 oz. Copper, 1.6
     \centering
     \begin{tabular}{|l|c|l|l|}
     \hline
-        Part                        & Quantity  & Materials             & Process           \\ \hline
-        L Bracket                   & 12        & PETG Filament         & 3D Printing       \\ \hline
-        L Bracket (Grow Tray)       & 4         & PETG Filament         & 3D Printing       \\ \hline
-        Diagonal Bracket            & 4         & PETG Filament         & 3D Printing       \\ \hline
-        T Bracket                   & 10        & PETG Filament         & 3D Printing       \\ \hline
-        Tray Hook BL                & 2         & PETG Filament         & 3D Printing       \\ \hline
-        Tray Hook BR                & 2         & PETG Filament         & 3D Printing       \\ \hline
-        Tray Hook FL                & 2         & PETG Filament         & 3D Printing       \\ \hline
-        Tray Hook FR                & 2         & PETG Filament         & 3D Printing       \\ \hline
-        Grow Plate Quarters         & 4         & 210x210x5mm PET Sheet & Table Saw         \\ \hline
-        Grow Plate Washer           & 1         & PETG Filament         & 3D Printing       \\ \hline
-        Nozzle Mount A              & 2         & PETG Filament         & 3D Printing       \\ \hline
-        Nozzle Mount B              & 2         & PETG Filament         & 3D Printing       \\ \hline
-        Lighting LED Board Mount    & 5         & PETG Filament         & 3D Printing       \\ \hline
-        Lighting Power Board Mount  & 1         & PETG Filament         & 3D Printing       \\ \hline
-        Feet                        & 4         & PETG Filament         & 3D Printing       \\ \hline
+        Part                    & Quantity  & Materials             & Process           \\ \hline
+        L Bracket (Grow Tray)   & 4         & PETG Filament         & 3D Printing       \\ \hline
+        Diagonal Bracket        & 4         & PETG Filament         & 3D Printing       \\ \hline
+        T Bracket               & 4         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook BL            & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook BR            & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook FL            & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook FR            & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Grow Plate Quarters     & 4         & 210x210x5mm PET Sheet & Table Saw         \\ \hline
+        Grow Plate Washer       & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Nozzle Mount A          & 2         & PETG Filament         & 3D Printing       \\ \hline
+        Nozzle Mount B          & 2         & PETG Filament         & 3D Printing       \\ \hline
     \end{tabular}
-    \caption{Housing subsystem fabricated parts.}
-    \label{tab:housing_fabrication}
+    \caption{Grow tray fabricated parts.}
+    \label{tab:housing_growtray_fabrication}
 \end{table}
 
-\textbf{Aeroponics}\\
+\clearpage
 
+\uline{Lighting Tray}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|c|l|l|}
+    \hline
+        Part                & Description                   & Quantity  & Supplier          & Part Number   \\ \hline
+        Tray X              & 20x20mm, Cut to 440mm         & 2         & McMaster-Carr     & 5537T101      \\ \hline
+        Tray Z              & 20x20mm, Cut to 400mm         & 3         & McMaster-Carr     & 5537T101      \\ \hline
+        M5x0.8 10mm Bolts   & Alloy Steel, Socket Head Cap  & 24        & McMaster-Carr     & 91290A224     \\ \hline
+        M5x0.8 16mm Bolts   & Alloy Steel, Socket Head Cap  & 12        & McMaster-Carr     & 91290A232     \\ \hline
+        M4x0.7 16mm Bolts   & Alloy Steel, Socket Head Cap  & 12        & McMaster-Carr     & 91290A154     \\ \hline
+        M4x0.7 Hex Nuts     & High-Strength Steel           & 12        & McMaster-Carr     & 94166A110     \\ \hline
+        M5 T-Nuts           & Zinc-Plated Steel             & 36        & McMaster-Carr     & 5537T651      \\ \hline
+    \end{tabular}
+    \caption{Lighting tray frame components.}
+    \label{tab:housing_lightingtray_parts}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|c|l|l|}
+    \hline
+        Part                        & Quantity  & Materials             & Process           \\ \hline
+        L Bracket                   & 4         & PETG Filament         & 3D Printing       \\ \hline
+        T Bracket                   & 2         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook BL                & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook BR                & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook FL                & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Tray Hook FR                & 1         & PETG Filament         & 3D Printing       \\ \hline
+        Lighting LED Board Mount    & 5         & PETG Filament         & 3D Printing       \\ \hline
+        Lighting Power Board Mount  & 1         & PETG Filament         & 3D Printing       \\ \hline
+    \end{tabular}
+    \caption{Lighting tray frame fabricated parts.}
+    \label{tab:housing_lightingtray_fabrication}
+\end{table}
+
+\clearpage
+
+\textbf{Aeroponics}
+
+All parts are rated for over 100PSI.
+
+\uline{Supply}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|c|l|l|}
+    \hline
+        Part                            & Description               & Quantity  & Supplier              & Part Number   \\ \hline
+        3/8" ID Tubing                  & 1/2" OD, 10', PET         & 1         & McMaster-Carr         & 1979T3        \\ \hline
+        1/4" OD Tubing                  & 1/8" ID, 25', PET         & 1         & McMaster-Carr         & 1979T4        \\ \hline
+        PTFE Tape                       & 1/2" x 21' Roll, White    & 1         & McMaster-Carr         & 4934A14       \\ \hline
+        SAE \#6 Hose Clamp (Pack of 10) & 7/32" to 5/8", Steel      & 1         & McMaster-Carr         & 5415K11       \\ \hline
+        Bonded O-Rings for 1/2 BSPP     & Nitrile Rubber and Steel  & 5         & McMaster-Carr         & 50915K816     \\ \hline
+        Grip-Lock Socket to 1/2 MPT     & Zinc-Plated Steel         & 1         & McMaster-Carr         & 6539K37       \\ \hline
+        Grip-Lock Plug to 1/2 MPT       & Zinc-Plated Steel         & 1         & McMaster-Carr         & 6539K67       \\ \hline
+        Shutoff Valve                   & Brass, 1/2 FPT            & 2         & McMaster-Carr         & 47865K23      \\ \hline
+        1/2 MPT to 3/8" Barb            & Brass                     & 1         & McMaster-Carr         & 2838N23       \\ \hline
+        Diaphragm Pump                  & 4.1L/min @80PSI           & 1         & Amazon                & ~             \\ \hline
+        3/8 MPT to 3/8" Barb            & Aluminum                  & 1         & McMaster-Carr         & 5357K37       \\ \hline
+        1/2 FPT to 3x 3/8 FPT Manifold  & Aluminum, Heat Block      & 1         & McMaster-Carr         & 3491N13       \\ \hline
+        3/8 MPT Manifold Plug           & Aluminum                  & 2         & McMaster-Carr         & 3867T364      \\ \hline
+        1/2 MPT to 3/8" Barb            & Aluminum                  & 1         & McMaster-Carr         & 5357K38       \\ \hline
+        3/8 MPT to 3/8" Barb            & Brass                     & 1         & McMaster-Carr         & 2838N22       \\ \hline
+        3/8 FPT Elbow                   & Brass                     & 2         & McMaster-Carr         & 50785K37      \\ \hline
+        3/8 MPT to 6 1/4" Push Connect  & Solution Manifold         & 2         & McMaster-Carr         & 5203K956      \\ \hline
+        1/4" Push Connect Tee           & Plastic                   & 6         & McMaster-Carr         & 5111K528      \\ \hline
+        1/4" Push Connect Plug          & Plastic                   & 6         & McMaster-Carr         & 5111K504      \\ \hline
+        % 1/4" Push Connect Elbow         & Plastic                   & 8         & McMaster-Carr         & 5111K488      \\ \hline
+        3/8 NPT Right-Angle Tee         & Brass                     & 1         & McMaster-Carr         & 50785K223     \\ \hline
+        1/2 FPT to 3/8 MPT Adapter      & Brass                     & 1         & McMaster-Carr         & 50785K29      \\ \hline
+        Accumulator Tank                & 0.75L                     & 1         & Amazon                & ~             \\ \hline
+        1/2 FPT to 1/2 M BSPP Adapter   & Brass                     & 1         & McMaster-Carr         & 1786N138      \\ \hline
+        1/2 BSPP Tee                    & Brass                     & 1         & McMaster-Carr         & 9151K272      \\ \hline
+        1/2 BSPP Nipple                 & Brass                     & 1         & McMaster-Carr         & 9151K375      \\ \hline
+        1/2 F BSPP to 1/2 MPT Adapter   & Brass                     & 1         & McMaster-Carr         & 50785K608     \\ \hline
+        1/2 FPT to 1/4" OD Compression  & Brass                     & 1         & McMaster-Carr         & 51875K14      \\ \hline
+    \end{tabular}
+    \caption{Aeroponics supply parts.}
+    \label{tab:aeroponics_supply_parts}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|l|l|l|c|}
+    \hline
+        Index   & Manufacturer Part Number  & Manufacturer                  & Description               & Quantity  \\ \hline
+        1       & SEN0257                   & DFRobot                       & Water Pressure Sensor     & 1         \\ \hline
+        2       & GE-2158                   & Amphenol Thermometrics        & Water Temperature Sensor  & 1         \\ \hline
+        3       & 996                       & Adafruit Industries LLC       & Solenoid Valve            & 1         \\ \hline
+        4       & 114991171                 & Seeed Technology Co., Ltd     & Water Flow Sensor         & 1         \\ \hline
+    \end{tabular}
+    \caption{Aeroponics supply electronic components.}
+    \label{tab:aeroponics_supply_components}
+\end{table}
+
+\clearpage
+
+\uline{Watering System}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|c|l|l|}
+    \hline
+        Part                                    & Description           & Quantity  & Supplier              & Part Number   \\ \hline
+        1/4" Compression Quick-Disconnect       & Plastic               & 2         & McMaster-Carr         & 5012K122      \\ \hline
+        1/4" Push Connect 1/8 MPT Inline Tee    & Plastic and Brass     & 1         & McMaster-Carr         & 51235K147     \\ \hline
+        1/4" Push Connect to 1/8 MPT Elbow      & Plastic and Brass     & 1         & McMaster-Carr         & 51235K127     \\ \hline
+        1/8 FPT Straight Coupling               & Brass                 & 2         & McMaster-Carr         & 50785K91      \\ \hline
+        80-Degree Full-Cone Misting Nozzle      & Brass, 1/8 MPT        & 2         & McMaster-Carr         & 3178K75       \\ \hline
+        Dyneema Composite                       & 1.43oz, 0.5x1.5yd     & 3         & Ripstop by the Roll   & ~             \\ \hline
+        Dyneema Pressure-Sensitive Adhesive     & 1/2" x 15'            & 3         & Ripstop by the Roll   & ~             \\ \hline
+        Drawstring                              & Nylon Cord, 25'       & 1         & McMaster-Carr         & 3696T38       \\ \hline
+        Drawstring Lock                         & Slide-Release         & 1         & McMaster-Carr         & 3734T4        \\ \hline
+    \end{tabular}
+    \caption{Grow tray watering system parts.}
+    \label{tab:aeroponics_watering_parts}
+\end{table}
+
+\uline{Dosage Pump}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|l|l|l|c|}
+    \hline
+        Index   & Part Number   & Manufacturer  & Description               & Quantity  \\ \hline
+        1       & 918           & Adafruit      & 12V Geared Stepper Motor  & 1         \\ \hline
+    \end{tabular}
+    \caption{Dosage pump electronic components.}
+    \label{tab:aeroponics_dosagepump_components}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|c|l|l|}
+    \hline
+        Part                & Description                       & Quantity  & Supplier      & Part Number   \\ \hline
+        M4x0.7 16mm Bolts   & Alloy Steel, Socket Head Cap      & 4         & McMaster-Carr & 91290A154     \\ \hline
+        M4x0.7 4mm Bolts    & 18-8 Stainless, Socket Head Cap   & 2         & McMaster-Carr & 91292A023     \\ \hline
+        Nylon Washer        & Lubricated, 15mm x 28mm           & 2         & McMaster-Carr & 91545A510     \\ \hline
+        Ball Bearing        & Sealed, Stainless Steel           & 3         & McMaster-Carr & 6138K65       \\ \hline
+        3/16" OD Tubing     & 1/16" ID, 10', Tygon PVC          & 1         & McMaster-Carr & 6516T62       \\ \hline
+    \end{tabular}
+    \caption{Dosage pump components.}
+    \label{tab:aeroponics_dosagepump_parts}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|c|l|l|}
+    \hline
+        Part                & Quantity  & Materials & Process       \\ \hline
+        Pump Body Lower     & 1         & PETG      & 3D Printing   \\ \hline
+        Pump Body Upper     & 1         & PETG      & 3D Printing   \\ \hline
+        Pump Roller Lower   & 1         & PETG      & 3D Printing   \\ \hline
+        Pump Roller Upper   & 1         & PETG      & 3D Printing   \\ \hline
+    \end{tabular}
+    \caption{Dosage pump fabricated components.}
+    \label{tab:aeroponics_dosagepump_fabrication}
+\end{table}
+
+\clearpage
 
 \textbf{Leaf-Zone Thermoregulation}\\
 
