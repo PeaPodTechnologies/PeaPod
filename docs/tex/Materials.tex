@@ -83,7 +83,7 @@ For a 4x3 extended topology with two control modules:
         M5x0.8 10mm Bolts       & Alloy Steel, Socket Head Cap  & 44        & McMaster-Carr & 91290A224     \\ \hline
         M5 T-Nuts               & Zinc-Plated Steel             & 44        & McMaster-Carr & 5537T651      \\ \hline
     \end{tabular}
-    \caption{Housing shell components.}
+    \caption{Housing shell parts.}
     \label{tab:housing_shell_parts}
 \end{table}
 
@@ -119,7 +119,7 @@ For a 4x3 extended topology with two control modules:
         M5x0.8 Hex Nuts     & Alloy Steel                   & 2         & McMaster-Carr     & 94166A120     \\ \hline
         Grow Cup            & 2" Diameter                   & 16        & Amazon            & ~             \\ \hline
     \end{tabular}
-    \caption{Grow tray frame components.}
+    \caption{Grow tray frame parts.}
     \label{tab:housing_parts}
 \end{table}
 
@@ -231,11 +231,11 @@ All parts are rated for over 100PSI.
     \centering
     \begin{tabular}{|c|l|l|l|c|}
     \hline
-        Index   & Manufacturer Part Number  & Manufacturer                  & Description               & Quantity  \\ \hline
-        1       & SEN0257                   & DFRobot                       & Water Pressure Sensor     & 1         \\ \hline
-        2       & GE-2158                   & Amphenol Thermometrics        & Water Temperature Sensor  & 1         \\ \hline
-        3       & 996                       & Adafruit Industries LLC       & Solenoid Valve            & 1         \\ \hline
-        4       & 114991171                 & Seeed Technology Co., Ltd     & Water Flow Sensor         & 1         \\ \hline
+        Part Number & Manufacturer                  & Description               & Quantity  \\ \hline
+        SEN0257     & DFRobot                       & Water Pressure Sensor     & 1         \\ \hline
+        GE-2158     & Amphenol Thermometrics        & Water Temperature Sensor  & 1         \\ \hline
+        996         & Adafruit Industries LLC       & Solenoid Valve            & 1         \\ \hline
+        114991171   & Seeed Technology Co., Ltd     & Water Flow Sensor         & 1         \\ \hline
     \end{tabular}
     \caption{Aeroponics supply electronic components.}
     \label{tab:aeroponics_supply_components}
@@ -275,7 +275,7 @@ All parts are rated for over 100PSI.
         Ball Bearing        & Sealed, Stainless Steel           & 3         & McMaster-Carr & 6138K65       \\ \hline
         3/16" OD Tubing     & 1/16" ID, 10', Tygon PVC          & 1         & McMaster-Carr & 6516T62       \\ \hline
     \end{tabular}
-    \caption{Dosage pump components.}
+    \caption{Dosage pump parts.}
     \label{tab:aeroponics_dosagepump_parts}
 \end{table}
 
@@ -289,7 +289,7 @@ All parts are rated for over 100PSI.
         Pump Roller Lower   & 1         & PETG      & 3D Printing   \\ \hline
         Pump Roller Upper   & 1         & PETG      & 3D Printing   \\ \hline
     \end{tabular}
-    \caption{Dosage pump fabricated components.}
+    \caption{Dosage pump fabricated parts.}
     \label{tab:aeroponics_dosagepump_fabrication}
 \end{table}
 
@@ -297,8 +297,8 @@ All parts are rated for over 100PSI.
     \centering
     \begin{tabular}{|c|l|l|l|c|}
     \hline
-        Index   & Part Number   & Manufacturer  & Description               & Quantity  \\ \hline
-        1       & 918           & Adafruit      & 12V Geared Stepper Motor  & 1         \\ \hline
+        Part Number   & Manufacturer  & Description               & Quantity  \\ \hline
+        918           & Adafruit      & 12V Geared Stepper Motor  & 1         \\ \hline
     \end{tabular}
     \caption{Dosage pump electronic components.}
     \label{tab:aeroponics_dosagepump_components}
@@ -308,10 +308,35 @@ All parts are rated for over 100PSI.
 
 \textbf{Thermoregulation}\\
 \uline{Leaf-Zone Heat Pump}\\
-\textit{Incomplete.}
+\textit{Incomplete}. Missing: heat sink.
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|c|}
+    \hline
+        Part Number         & Manufacturer              & Description                       & Quantity  \\ \hline
+        CP854345H           & CUI Devices               & 77W Peltier, 8.5A                 & 1         \\ \hline
+        2857                & Adafruit Industries LLC   & Humidity \& Temperature Sensor    & 2         \\ \hline
+        FAD1-12025CBHW12    & Qualtek                   & 12VDC Axial Fan                   & 2         \\ \hline
+    \end{tabular}
+    \caption{Leaf-zone heat pump components.}
+    \label{tab:thermoregulation_leafzone_components}
+\end{table}
 
 \uline{Root-Zone Heat Pump}\\
-\textit{Incomplete.}
+\textit{Incomplete}. Missing: heat sinks.
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|c|}
+    \hline
+        Part Number         & Manufacturer              & Description                       & Quantity  \\ \hline
+        CP854345H           & CUI Devices               & 77W Peltier, 8.5A                 & 1         \\ \hline
+        FAD1-12025CBHW12    & Qualtek                   & 12VDC Axial Fan                   & 1         \\ \hline
+    \end{tabular}
+    \caption{Root-zone/aeroponics heat pump components.}
+    \label{tab:thermoregulation_rootzone_components}
+\end{table}
+
+\clearpage
 
 \uline{Thermoelectric Driver}
 \begin{table}[!ht]
@@ -329,24 +354,24 @@ All parts are rated for over 100PSI.
     \centering
     \begin{tabular}{|c|l|l|l|c|}
     \hline
-        Index   & Part Number       & Manufacturer              & Description                   & Quantity  \\ \hline
-        1       & 2N6388G           & onsemi                    & NPN Darlington 80V 10A        & 1         \\ \hline
-        2       & LM324N            & Texas Instruments         & OPAMP 4-circuit               & 1         \\ \hline
-        3       & 0436450200        & Molex                     & Molex Micro-Fit 2pos          & 1         \\ \hline
-        4       & 0436500201        & Molex                     & Molex Micro-Fit 2pos          & 1         \\ \hline
-        5       & 0462355002        & Molex                     & 20-24AWG Crimp                & 2         \\ \hline
-        6       & G5LE-14 DC3       & Omron Electronics Inc     & Relay SPDT 10A 3V             & 2         \\ \hline
-        7       & MMBT2222A-7-F     & Diodes Incorporated       & NPN 40V 0.6A                  & 4         \\ \hline
-        8       & 5055670681        & Molex                     & Molex Micro-Lock PLUS 6pos    & 1         \\ \hline
-        9       & KLDX-0202-A-LT    & Kycon, Inc.               & Barrel Jack                   & 1         \\ \hline
-        10      & KLDX-PA-0202-A-LT & Kycon, Inc.               & Barrel Jack                   & 1         \\ \hline
-        11      & RC0402JR-0710KL   & YAGEO                     & Res 10k Ohm 5\% 1/16W         & 5         \\ \hline
-        12      & CL05A104KA5NNNC   & Samsung Electro-Mechanics & Cap Cer 0.1uF 25V X5R         & 1         \\ \hline
-        13      & RC0402JR-071KL    & YAGEO                     & Res 1k Ohm 5\% 1/16W          & 4         \\ \hline
-        14      & RC0402FR-071M6L   & YAGEO                     & Res 1.6M Ohm 1\% 1/16W        & 1         \\ \hline
-        15      & RNCP0805FTD20R0   & Stackpole Electronics Inc & Res 20 Ohm 1\% 1/4W           & 2         \\ \hline
-        16      & RC0402FR-07100KL  & YAGEO                     & Res 100k Ohm 1\% 1/16W        & 1         \\ \hline
-        17      & RC0402FR-07200KL  & YAGEO                     & Res 200k Ohm 1\% 1/16W        & 1         \\ \hline
+        Part Number       & Manufacturer              & Description                   & Quantity  \\ \hline
+        2N6388G           & onsemi                    & NPN Darlington 80V 10A        & 1         \\ \hline
+        LM324N            & Texas Instruments         & OPAMP 4-circuit               & 1         \\ \hline
+        0436450200        & Molex                     & Molex Micro-Fit 2pos          & 1         \\ \hline
+        0436500201        & Molex                     & Molex Micro-Fit 2pos          & 1         \\ \hline
+        0462355002        & Molex                     & 20-24AWG Crimp                & 2         \\ \hline
+        G5LE-14 DC3       & Omron Electronics Inc     & Relay SPDT 10A 3V             & 2         \\ \hline
+        MMBT2222A-7-F     & Diodes Incorporated       & NPN 40V 0.6A                  & 4         \\ \hline
+        5055670681        & Molex                     & Molex Micro-Lock PLUS 6pos    & 1         \\ \hline
+        KLDX-0202-A-LT    & Kycon, Inc.               & Barrel Jack                   & 1         \\ \hline
+        KLDX-PA-0202-A-LT & Kycon, Inc.               & Barrel Jack                   & 1         \\ \hline
+        RC0402JR-0710KL   & YAGEO                     & Res 10k Ohm 5\% 1/16W         & 5         \\ \hline
+        CL05A104KA5NNNC   & Samsung Electro-Mechanics & Cap Cer 0.1uF 25V X5R         & 1         \\ \hline
+        RC0402JR-071KL    & YAGEO                     & Res 1k Ohm 5\% 1/16W          & 4         \\ \hline
+        RC0402FR-071M6L   & YAGEO                     & Res 1.6M Ohm 1\% 1/16W        & 1         \\ \hline
+        RNCP0805FTD20R0   & Stackpole Electronics Inc & Res 20 Ohm 1\% 1/4W           & 2         \\ \hline
+        RC0402FR-07100KL  & YAGEO                     & Res 100k Ohm 1\% 1/16W        & 1         \\ \hline
+        RC0402FR-07200KL  & YAGEO                     & Res 200k Ohm 1\% 1/16W        & 1         \\ \hline
     \end{tabular}
     \caption{Thermoelectric driver electronic components.}
     \label{tab:airthermoregulation_driver_components}
@@ -355,10 +380,10 @@ All parts are rated for over 100PSI.
 \clearpage
 
 \textbf{Humidification}\\
-
+\textit{Incomplete.}
 
 \textbf{Dehumidification}\\
-
+\textit{Incomplete.}
 
 \textbf{Gas Composition Regulation and Exchange}\\
 
