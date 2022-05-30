@@ -13,6 +13,6 @@ bool LED::init(){
 void LED::update(){
     // Clamp to 0<x<1
     this->target = min(max(target, 0), 1);
-    Serial.println(this->target*255*LED_BRIGHTNESS_FACTOR);
-    analogWrite(this->pin, this->target*255*LED_BRIGHTNESS_FACTOR);
+    Serial.println(this->target*255);
+    analogWrite(this->pin, this->target*255);
 }
