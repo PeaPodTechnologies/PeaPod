@@ -6,11 +6,21 @@ As of May 31st, any false or absent entries are as a result of design and/or pro
 
 For a 4x3 extended topology with two control modules:
 \begin{itemize}
-    \item 2x Automation (\ref{tab:automation_components}, \ref{tab:automation_parts})
-    \item 12x Housing Shell (\ref{tab:housing_shell_parts}, \ref{tab:housing_shell_fabrication})
-    \item 12x min. Grow Tray (\ref{tab:housing_growtray_parts}, \ref{tab:housing_growtray_fabrication})
-    \item 12x min. Lighting Tray(\ref{tab:housing_lightingtray_parts}, \ref{tab:housing_lightingtray_fabrication})
-    \item 
+    \item 2x Control Module, each comprises:
+    \begin{itemize}
+        \item 1x Automation (Tables \ref{tab:automation_parts}, \ref{tab:automation_components})
+        \item 1x Aeroponics Supply (Tables \ref{tab:aeroponics_supply_components}, \ref{tab:aeroponics_supply_parts})
+    \end{itemize}
+    \item 12x Housing, each comprises:
+    \begin{itemize}
+        \item 1x Housing Shell (Tables \ref{tab:housing_shell_parts}, \ref{tab:housing_shell_fabrication})
+        \item 1x Grow Tray, each with:
+        \begin{itemize}
+            \item 1x Grow Tray Frame (Tables \ref{tab:housing_growtray_parts}, \ref{tab:housing_growtray_fabrication})
+            \item 1x Aeroponics Watering System (Tables \ref{tab:aeroponics_watering_parts})
+        \end{itemize}
+        \item 1x Lighting Tray (Tables \ref{tab:housing_lightingtray_parts}, \ref{tab:housing_lightingtray_fabrication})
+    \end{itemize}
 \end{itemize}
 
 \clearpage
@@ -18,34 +28,34 @@ For a 4x3 extended topology with two control modules:
 \textbf{Automation}
 \begin{table}[!ht]
     \centering
-    \begin{tabular}{|l|l|l|c|}
-    \hline
-        Part Number         & Manufacturer              & Description                           & Quantity  \\ \hline
-        A000005             & Arduino                   & Arduino Nano ATMega328                & 1         \\ \hline
-        S404GSEJ6-U3000-3   & Delkin Devices, Inc.      & 4GB MicroSD                           & 1         \\ \hline
-        61304021121         & Würth Elektronik          & Male Header Pins 40POS 2.54mm         & 1         \\ \hline
-        SC0510              & Raspberry Pi              & Raspberry Pi Zero 2 W                 & 1         \\ \hline
-        DMN2005K-7          & Diodes Incorporated       & MOSFET N-CH 20V 300mA SOT23-3         & 2         \\ \hline
-        RC0603FR-0710KL     & YAGEO                     & RES 10K OHM 1/10W 0603                & 5         \\ \hline
-        4484                & Adafruit Industries LLC   & 1.3" TFT Screen                     & 1         \\ \hline
-        5055670271          & Molex                     & Molex Micro-Lock PLUS 2pos 1.25mm     & 2         \\ \hline
-        5055670471          & Molex                     & Molex Micro-Lock PLUS 4pos 1.25mm     & 5         \\ \hline
-        5055670871          & Molex                     & Molex Micro-Lock PLUS 8pos 1.25mm     & 3         \\ \hline
-        5055670681          & Molex                     & Molex Micro-Lock PLUS 6pos 1.25mm     & 3         \\ \hline
-    \end{tabular}
-    \caption{Automation system electronic components. One per control module.}
-    \label{tab:automation_components}
-\end{table}
-
-\begin{table}[!ht]
-    \centering
     \begin{tabular}{|l|l|c|l|l|}
     \hline
         Part            & Description                       & Quantity  & Supplier  & Part Number  \\ \hline
         Motherboard PCB & 2 Layers, HASL Finish (Lead-Free) & 1         & JLCPCB    & -                     \\ \hline
     \end{tabular}
-    \caption{Automation subsystem parts. One per control module.}
+    \caption{Automation subsystem parts.}
     \label{tab:automation_parts}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|c|}
+    \hline
+        Part Number         & Manufacturer              & Description                   & Quantity  \\ \hline
+        A000005             & Arduino                   & Arduino Nano ATMega328        & 1         \\ \hline
+        S404GSEJ6-U3000-3   & Delkin Devices, Inc.      & 4GB MicroSD                   & 1         \\ \hline
+        61304021121         & Würth Elektronik          & Male Header Pins 40POS        & 1         \\ \hline
+        SC0510              & Raspberry Pi              & Raspberry Pi Zero 2 W         & 1         \\ \hline
+        DMN2005K-7          & Diodes Incorporated       & MOSFET N-CH 20V 300mA         & 2         \\ \hline
+        RC0603FR-0710KL     & YAGEO                     & Res 10K Ohm 1/10W             & 5         \\ \hline
+        4484                & Adafruit Industries LLC   & 1.3" TFT Screen               & 1         \\ \hline
+        5055670271          & Molex                     & Molex Micro-Lock PLUS 2pos    & 2         \\ \hline
+        5055670471          & Molex                     & Molex Micro-Lock PLUS 4pos    & 5         \\ \hline
+        5055670871          & Molex                     & Molex Micro-Lock PLUS 8pos    & 3         \\ \hline
+        5055670681          & Molex                     & Molex Micro-Lock PLUS 6pos    & 3         \\ \hline
+    \end{tabular}
+    \caption{Automation system electronic components.}
+    \label{tab:automation_components}
 \end{table}
 
 \clearpage
@@ -256,17 +266,6 @@ All parts are rated for over 100PSI.
 \uline{Dosage Pump}
 \begin{table}[!ht]
     \centering
-    \begin{tabular}{|c|l|l|l|c|}
-    \hline
-        Index   & Part Number   & Manufacturer  & Description               & Quantity  \\ \hline
-        1       & 918           & Adafruit      & 12V Geared Stepper Motor  & 1         \\ \hline
-    \end{tabular}
-    \caption{Dosage pump electronic components.}
-    \label{tab:aeroponics_dosagepump_components}
-\end{table}
-
-\begin{table}[!ht]
-    \centering
     \begin{tabular}{|l|l|c|l|l|}
     \hline
         Part                & Description                       & Quantity  & Supplier      & Part Number   \\ \hline
@@ -294,10 +293,66 @@ All parts are rated for over 100PSI.
     \label{tab:aeroponics_dosagepump_fabrication}
 \end{table}
 
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|l|l|l|c|}
+    \hline
+        Index   & Part Number   & Manufacturer  & Description               & Quantity  \\ \hline
+        1       & 918           & Adafruit      & 12V Geared Stepper Motor  & 1         \\ \hline
+    \end{tabular}
+    \caption{Dosage pump electronic components.}
+    \label{tab:aeroponics_dosagepump_components}
+\end{table}
+
 \clearpage
 
-\textbf{Leaf-Zone Thermoregulation}\\
+\textbf{Thermoregulation}\\
+\uline{Leaf-Zone Heat Pump}\\
+\textit{Incomplete.}
 
+\uline{Root-Zone Heat Pump}\\
+\textit{Incomplete.}
+
+\uline{Thermoelectric Driver}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|c|l|l|}
+    \hline
+        Part                        & Description                       & Quantity  & Supplier  & Part Number  \\ \hline
+        Thermoelectric Driver PCB   & 2 Layers, HASL Finish (Lead-Free) & 1         & JLCPCB    & -                     \\ \hline
+    \end{tabular}
+    \caption{Thermoelectric driver parts.}
+    \label{tab:automation_parts}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|l|l|l|c|}
+    \hline
+        Index   & Part Number       & Manufacturer              & Description                   & Quantity  \\ \hline
+        1       & 2N6388G           & onsemi                    & NPN Darlington 80V 10A        & 1         \\ \hline
+        2       & LM324N            & Texas Instruments         & OPAMP 4-circuit               & 1         \\ \hline
+        3       & 0436450200        & Molex                     & Molex Micro-Fit 2pos          & 1         \\ \hline
+        4       & 0436500201        & Molex                     & Molex Micro-Fit 2pos          & 1         \\ \hline
+        5       & 0462355002        & Molex                     & 20-24AWG Crimp                & 2         \\ \hline
+        6       & G5LE-14 DC3       & Omron Electronics Inc     & Relay SPDT 10A 3V             & 2         \\ \hline
+        7       & MMBT2222A-7-F     & Diodes Incorporated       & NPN 40V 0.6A                  & 4         \\ \hline
+        8       & 5055670681        & Molex                     & Molex Micro-Lock PLUS 6pos    & 1         \\ \hline
+        9       & KLDX-0202-A-LT    & Kycon, Inc.               & Barrel Jack                   & 1         \\ \hline
+        10      & KLDX-PA-0202-A-LT & Kycon, Inc.               & Barrel Jack                   & 1         \\ \hline
+        11      & RC0402JR-0710KL   & YAGEO                     & Res 10k Ohm 5\% 1/16W         & 5         \\ \hline
+        12      & CL05A104KA5NNNC   & Samsung Electro-Mechanics & Cap Cer 0.1uF 25V X5R         & 1         \\ \hline
+        13      & RC0402JR-071KL    & YAGEO                     & Res 1k Ohm 5\% 1/16W          & 4         \\ \hline
+        14      & RC0402FR-071M6L   & YAGEO                     & Res 1.6M Ohm 1\% 1/16W        & 1         \\ \hline
+        15      & RNCP0805FTD20R0   & Stackpole Electronics Inc & Res 20 Ohm 1\% 1/4W           & 2         \\ \hline
+        16      & RC0402FR-07100KL  & YAGEO                     & Res 100k Ohm 1\% 1/16W        & 1         \\ \hline
+        17      & RC0402FR-07200KL  & YAGEO                     & Res 200k Ohm 1\% 1/16W        & 1         \\ \hline
+    \end{tabular}
+    \caption{Thermoelectric driver electronic components.}
+    \label{tab:airthermoregulation_driver_components}
+\end{table}
+
+\clearpage
 
 \textbf{Humidification}\\
 
@@ -323,7 +378,7 @@ All parts are rated for over 100PSI.
 
 \textbf{Consumable Inputs}
 \begin{itemize}
-    \item \textit{Nutrient/pH Adjusment Solutions}: pouches
+    \item \textit{Nutrient/pH Adjusment Solutions}: pouches, specific compound makeup is variable to suit mission requirements
     \item \textit{Dehumidification Cartridge}: recharged
 \end{itemize}
 
