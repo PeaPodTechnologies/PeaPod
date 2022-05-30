@@ -1,0 +1,5 @@
+Part              ,Quantity ,Materials ,Materials Unit Cost (CAD) ,Process     ,Time (min) ,Reference
+Pump Body Lower   ,1        ,PETG      ,TBD                       ,3D Printing ,TBD        ,../fabrication/dosagepump_body_lower.stl
+Pump Body Upper   ,1        ,PETG      ,TBD                       ,3D Printing ,TBD        ,../fabrication/dosagepump_body_upper.stl
+Pump Roller Lower ,1        ,PETG      ,TBD                       ,3D Printing ,TBD        ,../fabrication/dosagepump_roller_lower.stl
+Pump Roller Upper ,1        ,PETG      ,TBD                       ,3D Printing ,TBD        ,../fabrication/dosagepump_roller_upper.stl
