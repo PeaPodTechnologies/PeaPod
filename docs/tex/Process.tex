@@ -33,7 +33,7 @@
 \begin{enumerate}
     \item Connect supply inputs:
     \begin{itemize}
-        \item \textit{Power}: 120V 60Hz AC (see \ref{sec:automation});
+        \item \textit{Power}: 120V 60Hz AC (see \ref{sec:automation})
         \item \textit{Network}: ethernet or wireless, optional (see \ref{sec:automation})
         \item \textit{Water}: reverse-osmosis, ambient (see \ref{sec:aeroponics})
     \end{itemize}
@@ -57,23 +57,23 @@
 \subsubsection{Operation}
 \label{sec:process_operation}
 
-\textbf{Sense, Plan, Act} represent the three simultaneous automatic processes of the program's execution (see \ref{sec:automation}).
+\textbf{Sense, Plan, Act} represents the three simultaneous automatic processes of the program's execution (see \ref{sec:automation}).
 
-\textbf{Sense}:
-Environment data, diagnostic information, and timelapse photos are captured and stored at regular intervals;
-
-\textbf{Plan}:\\
-\textit{Control Systems}: Actuator controls are calculated from sensor readings and program targets.\\
-\textit{Actuated Instructions}: Actuator controls are derived from program instructions.
-
-\textbf{Act}:
-Subsystem actuators are controlled according to plan. Crew is notified to refill consumable inputs when low, change consumable inputs on program target change, and on any subsystem failure (see \ref{sec:process_maintenance}), as well as when to harvest and on End of Program (EoP).
+\begin{itemize}
+    \item \textbf{Sense}: Environment data, diagnostic information, and timelapse photos are captured and stored at regular intervals.
+    \item \textbf{Plan}:
+    \begin{itemize}
+        \item \textit{Control Systems}: Actuator controls are calculated from sensor readings and program targets.
+        \item \textit{Actuated Instructions}: Actuator controls are derived from program instructions.
+    \end{itemize}
+    \item \textbf{Act}: Subsystem actuators are controlled according to plan. Crew is notified to refill consumable inputs when low, change consumable inputs on program target change, and on any subsystem failure (see \ref{sec:process_maintenance}), as well as when to harvest and on End of Program (EoP).
+\end{itemize}
 
 \clearpage
 
 \textbf{Harvest and/or EoP}:
 \begin{enumerate}
-    \item All air is exhausted (automatic, see \ref{sec:gas});
+    \item Exhaust all air (automatic, see \ref{sec:gas});
     \item Flush aeroponics system with pure water (automatic, see \ref{sec:aeroponics});
     \item Run UV disinfection (automatic, see \ref{sec:lighting});
     \item Unlock and open environment;

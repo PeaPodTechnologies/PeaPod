@@ -13,8 +13,8 @@
 \begin{enumerate}
     \item \textit{Process}:
     \begin{enumerate}
-        \item When humidity is too low (outside dead-zone), humidification is activated;
-        \item When humidity is too high (outside dead-zone), dehumidification is activated;
+        \item When humidity is too low (below dead-zone), humidification is activated;
+        \item When humidity is too high (above dead-zone), dehumidification is activated;
         \item When humidity is at target (within dead-zone), both systems are deactivated;
     \end{enumerate}
 \end{enumerate}
@@ -45,16 +45,16 @@
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water\footnote{RO water contains no minerals/particulate, and as such prevents the common problem of mesh clog/calcification.};
-    \item \textbf{Outputs}: Dry water vapour (\ref{sec:automation});
+    \item \textbf{Inputs}: Power, humidification on/off control signal (\ref{sec:automation}), RO water\footnote{RO water contains no minerals/particulate, and as such prevents the common problem of mesh clog/calcification.}
+    \item \textbf{Outputs}: Dry water vapour (\ref{sec:automation})
 \end{itemize}
 
 \textbf{Method}:
 \begin{enumerate}
     \item \textit{Setup}:
     \begin{enumerate}
-        \item Connect humidification control signal to control module;
-        \item Connect RO water line to water tank;
+        \item Connect humidification control signal to control module.
+        \item Connect RO water line to water tank.
     \end{enumerate}
     \item \textit{Testing}:
     \begin{itemize}
@@ -95,8 +95,8 @@
 
 \textbf{Function}:
 \begin{itemize}
-    \item \textbf{Inputs}: Humid air (high water vapour content), dehumidification on/off control signal, dry desiccant;
-    \item \textbf{Outputs}: Dry air (low water vapour content), saturated desiccant, desiccant saturation level signal;
+    \item \textbf{Inputs}: Humid air (high water vapour content), dehumidification on/off control signal, dry desiccant
+    \item \textbf{Outputs}: Dry air (low water vapour content), saturated desiccant, desiccant saturation level signal
 \end{itemize}
 
 \textbf{Method}:
@@ -108,10 +108,10 @@
     \end{enumerate}
     \item \textit{Testing}:
     \begin{itemize}
-        \item Desiccant removes moisture from air;
-        \item Desiccant indicates saturation as expected, which is sensed by computer;
-        \item Shutters operate as intended, and no dehumidification occurs when closed;
-        \item Maximum dehumidification rate exceeds total plant transpiration rate;
+        \item Desiccant removes moisture from air.
+        \item Desiccant indicates saturation as expected, which is sensed by computer.
+        \item Shutters operate as intended, and no dehumidification occurs when closed.
+        \item Maximum dehumidification rate exceeds total plant transpiration rate.
     \end{itemize}
     \item \textit{Process}:
     \begin{enumerate}
