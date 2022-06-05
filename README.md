@@ -9,9 +9,9 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 <!-- TODO: Build statuses? etc. -->
 
-Submitted to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge). _Update_: PeaPod has won Phase 1 and moved on to prototyping for Phase 2!
+Submitted to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/en/challenges/deep-space-food-challenge). _Update_: PeaPod has [won](https://impact.canada.ca/en/challenges/deep-space-food-challenge/semi-finalists) Phase 1 and moved on to prototyping for Phase 2!
 
-<a href="https://www.youtube.com/watch?v=2zWv9JC5G3w" target="_blank"><img src="assets/renders/backdrop.png" width=90% style="border: 5px solid #333"/></a>
+<a href="https://www.youtube.com/watch?v=2zWv9JC5G3w" target="_blank"><img src="docs/assets/renders/backdrop.png" width=90% style="border: 5px solid #333"/></a>
 
 ***
 
@@ -24,7 +24,6 @@ Submitted to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/e
 - [Contribution](#contribution)
   - [New Issue](#new-issue)
   - [Existing Issues](#existing-issues)
-  - [Roadmap](#roadmap)
 - [Acknowledgements](#acknowledgements)
 
 <!-- include some visuals, i.e. a 3D GIF of the CAD, maybe a flowchart/diagram -->
@@ -33,11 +32,11 @@ Submitted to the [NASA/CSA Deep Space Food Challenge](https://impact.canada.ca/e
 
 ## Background
 
-See our [requirements document](https://github.com/PeaPodTechnologies/PeaPod/blob/staging/docs/design/requirements/Requirements.pdf).
+See our [requirements document](https://github.com/PeaPodTechnologies/PeaPod/blob/staging/docs/requirements/Requirements.pdf).
 
 ### Features
 
-See our [solution overview](https://github.com/PeaPodTechnologies/PeaPod/blob/staging/docs/design/solutionoverview/SolutionOverview.pdf).
+See our [progress report](https://github.com/PeaPodTechnologies/PeaPod/blob/staging/docs/RrogressReport.pdf).
 
 <!-- ### Innovations
 PeaPod is *not* a fancy container with a light stand. 
@@ -91,16 +90,11 @@ Check out our [open issues](https://github.com/PeaPodTechnologies/PeaPod/issues?
 <!-- ### Support -->
 <!-- issues page, discussion board/Discord? -->
 
-### Roadmap
-<!-- adapted from milestones/project boards -->
-
-> See our [projects](https://github.com/PeaPodTechnologies/PeaPod/projects).
-
 <br>
 
 ## Acknowledgements
 
 Sincere thanks to the following individuals and groups:
-- University of Toronto Agritech [members](https://github.com/orgs/UofTAgritech/people) (for contribution)
 - MIT Media Lab's Open Agriculture Initiative (for inspiration)
 - The Open Source community
+- Deep Space Food Challenge administrators and participants
