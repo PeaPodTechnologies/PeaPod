@@ -5,9 +5,11 @@
 \usepackage{subcaption} % Subfigures
 \usepackage{geometry} % Page layout
 \usepackage{multicol} % Columned pages
+\usepackage{multirow}
 \usepackage{array,etoolbox}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
+\usepackage{tabularx}
 \usepackage[toc,page]{appendix}
 \setlist{noitemsep}
 
@@ -17,7 +19,7 @@
 
 % Headers
 \pagestyle{fancy}
-\lhead{PeaPod - Testing Plan}
+\lhead{PeaPod - Testing Plan \& HACCP Plan}
 \rhead{PeaPod Technologies Inc.}
 
 \begin{document}
@@ -26,7 +28,7 @@
     \begin{center}
         \vspace*{1.2cm}
 
-        \textbf{\large{PeaPod - Testing Plan}}
+        \textbf{\large{PeaPod - Testing Plan and\\Hazard Analysis and Critical Control Points (HACCP) Plan}}
 
         \vspace{0.5cm}
 
@@ -36,9 +38,9 @@
         \input{../tex/Namecard.tex}
         \vspace{.75cm}
 
-        Revision 0.1\\
+        Revision 1.0\\
         PeaPod Technologies Inc.\\
-        January 9th, 2022
+        May 31st, 2022
 
     \end{center}
 \end{titlepage}
@@ -46,13 +48,24 @@
 \thispagestyle{plain}
 
 \tableofcontents
-\newpage
+\clearpage
 
-\input{../tex/TestingProcedure.tex}
+\input{../tex/TestingPlan.tex}
+
+\clearpage
 
 \input{../tex/HACCP.tex}
 
-\newpage
+\clearpage
+
+\section{Feedback}
+% Is there any feedback you would like to share with the Challenge Team? Do you have specific requests for topics, experts or information you would like to see discussed in the Phase 2 workshops?
+
+No feedback is provided.
+
+% Maximum 5000 characters
+
+\clearpage
 
 % References
 \bibliographystyle{IEEEtran}
