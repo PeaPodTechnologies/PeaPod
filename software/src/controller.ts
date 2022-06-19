@@ -95,7 +95,7 @@ export default class MicroController implements Controller {
 
   serial: SerialPort;
   parser: ReadlineParser;
-  timeout?: NodeJS.Timeout;
+  private timeout?: NodeJS.Timeout;
 
   constructor(readonly serialport: string) {
 
@@ -218,7 +218,7 @@ export default class MicroController implements Controller {
 */
 export class SimulatedController implements Controller {
 
-  intervals: NodeJS.Timeout[] = [];
+  private intervals: NodeJS.Timeout[] = [];
 
   constructor(readonly parameters: SimulatorConfig) { }
 
