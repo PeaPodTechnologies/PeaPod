@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Main software for PeaPod.",
   "main": "index.js",
   "directories": {

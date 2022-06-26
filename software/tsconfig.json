@@ -8,6 +8,7 @@
     "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "declaration": true,
+    "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
     // No outDir: keep index.js at package root, only the binary gets published
   },
