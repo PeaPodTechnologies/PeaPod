@@ -2,7 +2,8 @@ import chalk from 'chalk';
 import { ReadlineParser, SerialPort } from 'serialport';
 import { ControllerInstructionsError } from './errors';
 import * as Spinner from './ui';
-import { gpioUnexport, gpioWrite, sleep, updateMicrocontroller } from './utils';
+import { sleep, updateMicrocontroller } from './utils';
+import { Gpio } from 'onoff';
 
 // CONSTANTS
 
@@ -22,9 +23,9 @@ const CONTROLLER_REVISION = 0;
 const SERIAL_TIMEOUT_SECONDS = 10;
 
 /** 
- * Linux `sysfs` GPIO pin attached to the active-low reset pin on the microcontroller.
+ * GPIO pin attached to the reset grounding circuit
  */
-const RESET_PIN = 5;
+ const RESET_PIN = 26;
 
 // TYPES
 
@@ -96,8 +97,11 @@ export default class MicroController implements Controller {
   serial: SerialPort;
   parser: ReadlineParser;
   private timeout?: NodeJS.Timeout;
+  private resetpin: Gpio;
 
   constructor(readonly serialport: string) {
+    // Reset pin GPIO interface
+    this.resetpin = new Gpio(RESET_PIN, 'out');
 
     // Create the serial port interface
     this.serial = new SerialPort({
@@ -116,21 +120,8 @@ export default class MicroController implements Controller {
   start(onMessage: (msg: ControllerMessage) => void): Promise<void> {
     // Explicit promise construction so we can resolve only on valid comms AND revision check
     return new Promise<void>(async (res, rej) => {
-      // Reset the microcontroller
+      // Reset the microcontroller (opens the serial port)
       await this.reset();
-
-      // Open the serial port
-      await new Promise<void>((reso, reje) => {
-        Spinner.start('Establishing serial communications with the microcontroller...');
-        this.serial.open(err => {
-          if (err) {
-            reje(err);
-          } else {
-            Spinner.succeed('Microcontroller serial communications established!');
-            reso();
-          }
-        });
-      });
 
       Spinner.start('Awaiting microcontroller software revision number...');
       this.resetTimeout();
@@ -185,6 +176,7 @@ export default class MicroController implements Controller {
   private resetTimeout(timeoutSeconds: number = SERIAL_TIMEOUT_SECONDS): void {
     this.clearTimeout();
     this.timeout = setTimeout(() => {
+      Spinner.fail(`Microcontroller serial communications timed out after ${ timeoutSeconds } seconds.`);
       this.reset();
     }, timeoutSeconds*1000);
   }
@@ -198,18 +190,36 @@ export default class MicroController implements Controller {
 
   stop(): void {
     this.clearTimeout();
-    this.serial.close();
-    this.reset();
+    if (this.serial.isOpen) this.serial.close();
   }
 
   /**
-   * Resets the microcontroller (active-low).
+   * Resets the microcontroller by closing and re-opening serial.
    */
   private async reset(): Promise<void> {
-    gpioWrite(RESET_PIN, 0);
-    await sleep(10);
-    gpioWrite(RESET_PIN, 1);
-    gpioUnexport(RESET_PIN);
+    // Stop and reset
+    this.stop();
+    this.resetpin.writeSync(1);
+
+    // Wait, then stop resetting
+    await sleep(1000);
+    this.resetpin.writeSync(0);
+
+    // (Re-)open serial
+    await new Promise<void>((reso, reje) => {
+      Spinner.start('Establishing serial communications with the microcontroller...');
+      this.serial.open(err => {
+        if (err) {
+          reje(err);
+        } else {
+          Spinner.succeed('Microcontroller serial communications established!');
+          reso();
+        }
+      });
+    });
+
+    // Restart timeout
+    this.resetTimeout();
   }
 }
 

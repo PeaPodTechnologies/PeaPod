@@ -17,7 +17,6 @@ Designed as both a hassle-free food production system and a research tool for pr
     - [Setting Up Raspberry Pi](#setting-up-raspberry-pi)
 - [Development](#development)
     - [Arduino Test Suite](#arduino-test-suite)
-    - [Raspberry Pi Serial Testing](#raspberry-pi-serial-testing)
     - [Build from Source](#build-from-source)
 ***
 
@@ -35,7 +34,7 @@ The following are performed on a computer:
 
 1. Format a microSD card (>=4GB) with a single FAT partition.
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
-3. Flash the SD card with a *Raspberry Pi OS Lite* image.
+3. Flash the SD card with a *Raspberry Pi OS Lite (64-bit)* image.
 
 > Note: In Future, a custom PeaPod Raspberry Pi OS Lite image will be released with steps 5, 6, and 12 already complete.
 
@@ -46,7 +45,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 5. Login with the default username (`pi`) and password (`raspberry`).
 6. Execute `sudo raspi-config` and perform these steps to setup the Pi:
    1. *System Options > Wireless Lan* - Setup WiFi and connect to the Internet
-   2. *System Options > Hostname* - Set a unique host name (`e.g. john-peapod`)
+   2. *System Options > Hostname* - Set a unique hostname (`e.g. peapod`)
    3. *System Options > Boot/Auto Login* - Select `Console Autologin`
    4. *Interface Options > SSH* - `Enable` SSH Server
    5. *Interface Options > Serial Port* - `Disable` serial login shell, but `Enable` the serial port hardware
@@ -57,7 +56,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
    10. Optional: *Advanced Options > Expand Filesystem*
    11. Reboot to save: `sudo reboot` 
 
-> You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@peapod.local`, or with VS Code)
+> You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@{hostname}.local` with your chosen hostname, or with VS Code)
 
 > Note: In Future, steps 7-11 will be performed at runtime.
 7. Update Packages:
@@ -65,21 +64,10 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
      2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt-get install -y nodejs npm avrdude python3-venv` (could take a while)
      3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
 
-<!-- 8. Install and configure the Arduino CLI:
-    1. Install with `curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh`. Successful output ends with something like:
-      ```
-      arduino-cli  Version: 0.21.0 Commit: 10107d24 Date: 2022-02-08T15:05:43Z installed successfully in /home/pi/bin
-      ```
-    2. Open `nano ~/.bashrc` and add this line to the bottom: `export PATH=$PATH:/home/pi/bin` (*Ctrl-O* to save, *Ctrl-X* to exit)
-    3. Reboot to reset the path: `sudo reboot`
-    4. Perform initial configuration: `arduino-cli config init`
-    5. Update the list of cores: `arduino-cli core update-index`
-    6. Install the AVR cores (incl. Arduino Nano/ATMega328P): `arduino-cli core install arduino:avr` -->
-
 8. Install PlatformIO Core with `python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
 
 9. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
-   1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/software/microcontroller/avrdude_gpio.conf`, then modify your copy with `nano ~/software/microcontroller/avrdude_gpio.conf`. Copy the following to the end of the file:
+   1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
 
        ```
        # Raspberry Pi GPIO configuration for avrdude.
@@ -160,7 +148,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
        avrdude done.  Thank you.
        ```
 
-10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -d ~/software/microcontroller/ --target upload`
+10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -d ~/microcontroller/ --target upload`
 
 11. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
     1.  Open the `sudoers` file: `sudo visudo`
@@ -170,11 +158,11 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
         
         (*Ctrl-O* to save, *Ctrl-X* to exit; *avrdude* can be located with `whereis avrdude`)
 
-12. Install the *UV4L* camera library:
+<!-- 12. Install the *UV4L* camera library:
     1.  `curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -`
     2.  Add the package listings: `echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list`
     3.  Update packages: `sudo apt-get update`
-    4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6`
+    4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6` -->
 
 13. Populate a `.env` file with Firebase and Google and/or GitHub auth keys (a template is provided as `.env.template`), as well as the field `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART).
 
@@ -185,29 +173,14 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 ### Arduino Test Suite
 
-To run the PlatformIO Arduino test suite: `~/.platformio/penv/bin/platformio test -d ~/software/microcontroller/`
-
-### Raspberry Pi Serial Testing
-
-To test the GPIO serial port (`/dev/ttyS0`), connect GPIO pins 8 and 10 (TX and RX) and execute the following:
-1. Install the Python package manager *pip*: `sudo apt-get install pip`
-2. Install the Serial package *pyserial*: `pip install pyserial`
-3. Execute the test script: `python ~/PeaPod/software/tests/serialTest.py`
-
-Correct output should look like:
-
-```
-Serial port '/dev/ttyS0' ready for test:
-Sent 20 bytes: 'Testing Raspberry Pi GPIO serial port ...'
-Received 20 bytes: 'Testing Raspberry Pi GPIO serial port ...'
-Port '/dev/ttyS0' is is setup correctly!
-```
+To run the PlatformIO test suite: `~/.platformio/penv/bin/platformio test -d ~/microcontroller/`
 
 ### Build from Source
 
 1. Install TypeScript language support and compiler, as well as a Node build tool: `sudo npm install -g typescript`
-2. Clone source
-3. Navigate to `software/` folder
-4. Build the `serialport` package from source: `sudo npm install serialport --unsafe-perm --build-from-source`
-5. Install all other Node dependencies: `npm i`
-6. Compile the source with `tsc` and execute with `node .`
+2. Clone this source, copy contents of `software/` (only the essentials: `index.ts`, `package.json`, `tsconfig.json`, `src/`, and `microcontroller/`)to home folder `~/`
+3. Build the `serialport` package from source: `sudo npm install serialport --unsafe-perm --build-from-source`
+4. Install all other Node dependencies: `npm i`
+5. Compile: `tsc`
+6. Populate the `.env` file (see `.env.template`)
+7. Execute: `node .`

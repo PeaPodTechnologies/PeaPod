@@ -16,9 +16,3 @@ export class EnvFieldError extends Error {
     super(`.env file is missing the following fields necessary for ${ mode } functionality: ${ missingFields.join(", ") }`);
   }
 };
-
-export class GPIOError extends Error {
-  constructor(operation: string, pin: number, value?: string | number) {
-    super(`GPIO '${ operation }' operation failed (pin ${ pin }${ value === undefined ? '' : `, value '${ value }` }')`);
-  }
-};

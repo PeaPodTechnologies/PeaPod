@@ -47,7 +47,7 @@ export default class PeaPod {
     this.controller = new MicroController(ENV_PEAPOD.serialport);
 
     // CREATE PUBLISHER
-    Spinner.info(`Running ${ chalk.green('PeaPod') } in ${ pm } mode.`)
+    Spinner.info(`Running ${ chalk.green('PeaPod') } in ${ pm } mode.`);
     switch (pm) {
       
       case PublishingMode.ONLINE:
@@ -79,19 +79,19 @@ export default class PeaPod {
           // Accumulate data into batches
           batch[msg.data.label].push({
             timestamp: Date.now(),
-            value: msg.data.value
+            value: msg.data.value,
           });
           break;
         case "revision":
           this.controller.write(instructions);
           break;
         default:
-          Spinner.log(`[${ chalk.blueBright('CONTROLLER') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`)
+          Spinner.log(`[${ chalk.blueBright('CONTROLLER') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`);
       }
     });
 
     // INITIALIZE PUBLISHER
-    let {projectid, projectname, run} = await this.publisher.start(config => {
+    let { projectid, projectname, run } = await this.publisher.start(config => {
       // Hot-swap programs
       // TODO: This
       Spinner.log(`[${ chalk.yellow('PUBLISHER') } | CONFIG] - ${ config }`);

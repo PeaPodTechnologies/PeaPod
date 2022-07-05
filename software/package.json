@@ -38,10 +38,11 @@
     "firebase": "^9.3.0",
     "jsonwebtoken": "^8.5.1",
     "mqtt": "^4.2.8",
+    "onoff": "^6.0.3",
     "ora": "^5.3.0",
     "pi-camera": "^1.6.0",
     "rxjs": "^6.6.3",
-    "serialport": "^10.3.0",
+    "serialport": "^10.4.0",
     "uuid": "^8.3.2",
     "wrtc": "^0.4.7",
     "yargs": "^16.2.0"

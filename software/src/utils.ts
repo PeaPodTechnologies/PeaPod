@@ -2,7 +2,6 @@ import * as dns from 'dns';
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import axios from 'axios';
 import { spawn } from 'child_process';
-import { GPIOError } from './errors';
 
 /**
  * Checks the internet connectivity.
@@ -93,76 +92,4 @@ export function execute(command: string, failureCodes: number[] = []): Promise<s
       res(log);
     });
   });
-}
-
-/**
- * Exports a pin (if it is not already)
- * @param pin The GPIO pin to export.
- */
-export function gpioExport(pin: number): void {
-  if (!existsSync(`/sys/class/gpio/gpio${ pin }/`)) {
-    try{
-      execute(`echo ${ pin } > /sys/class/gpio/export`);
-    } catch (err) {
-      throw new GPIOError('export', pin);
-    }
-  }
-}
-
-/**
- * Unexports a pin (if it has been previously exported)
- * @param pin The GPIO pin to unexport.
- */
-export function gpioUnexport(pin: number): void {
-  if (existsSync(`/sys/class/gpio/gpio${ pin }/`)) {
-    try {
-      execute(`echo ${ pin } > /sys/class/gpio/unexport`);
-    } catch (err) {
-      throw new GPIOError('unexport', pin);
-    }
-  }
-}
-
-/**
- * Exports and sets the direction (output) of a pin, and writes either 1 or 0 to it.
- * Does NOT unexport the pin.
- * @param pin The GPIO pin to write to.
- * @param value 1 or 0.
- */
-export function gpioWrite(pin: number, value: 0 | 1): void {
-  gpioExport(pin);
-  try {
-    writeFileSync(`/sys/class/gpio/gpio${ pin }/direction`, 'out');
-  } catch (err) {
-    throw new GPIOError('direction', pin, 'out');
-  }
-  try {
-    writeFileSync(`/sys/class/gpio/gpio${ pin }/value`, String(value));
-  } catch (err) {
-    throw new GPIOError('write', pin, value);
-  }
-}
-
-/**
- * Exports and sets the direction (input) of a pin, reads from it, and returns the value.
- * Does NOT unexport the pin.
- * @param pin The GPIO pin to read from.
- * @param value 
- */
-export function gpioRead(pin: number): number {
-  gpioExport(pin);
-  try {
-    writeFileSync(`/sys/class/gpio/gpio${ pin }/direction`, 'in');
-  } catch (err) {
-    throw new GPIOError('direction', pin, 'in');
-  }
-  let raw: string;
-  try {
-    raw = readFileSync(`/sys/class/gpio/gpio${ pin }/value`).toString();
-  } catch (err) {
-    throw new GPIOError('read', pin);
-  }
-  const value: number = Number(raw);
-  if (isNaN(value)) throw new GPIOError('read', pin);
-  return value;
 }
