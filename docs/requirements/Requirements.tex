@@ -8,6 +8,7 @@
 \usepackage{array,etoolbox}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
+\usepackage[table]{xcolor}
 \usepackage[toc,page]{appendix}
 
 % Page layout (margins, size, line spacing)
@@ -42,9 +43,9 @@
         \input{../tex/Namecard.tex}
         \vspace{.75cm}
 
-        Revision 0.9\\
+        Revision 1.0\\
         PeaPod Technologies Inc.\\
-        July 8th, 2022
+        July 12th, 2022
 
     \end{center}
 \end{titlepage}
@@ -169,45 +170,45 @@ The following are the overall challenge requirements compiled from DSFC Applican
 % High-Level
 \begin{multicols}{2}[\subsubsection{High-Level}\label{sec:hlos}]
     \begin{enumerate}[label=HL\arabic*., ref=HL\arabic*]
-        \item \label{hl:output} Food Output Suitability                                 \hfill (\ref{s:1}, \ref{r:1}, \ref{r:1a}, \ref{r:1c}, \ref{r:1d}, \ref{r:2})
-        \item \label{hl:environment} Environment Control, Automation, and Optimization  \hfill (\ref{s:2}, \ref{r:1b}, \ref{r:1d}, \ref{r:2}, \ref{r:3}, \ref{r:4})
-        \item \label{hl:outputsafety} Output Safety                                     \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1b}, \ref{r:2})
-        \item \label{hl:efficiency} Time and Resource Efficiency                        \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1d}, \ref{r:2}, \ref{r:3})
-        \item \label{hl:safety} Process Safety, Stability, Reliability                  \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1b})
-        \item \label{hl:feasibility} Feasibility                                        \hfill (\ref{s:2}, \ref{r:2}, \ref{r:5})
+        \item \label{hl:output} Food Output Safety, Suitability                         \\      (\ref{s:1}, \ref{s:2}, \ref{r:1}, \ref{r:1a}-\ref{r:1d}, \ref{r:2})
+        \item \label{hl:process} Process Safety, Stability, Reliability                 \\      (\ref{s:1}, \ref{s:2}, \ref{r:1b}) \\
+        \item \label{hl:environment} Environment Control, Automation, and Optimization  \hfill  (\ref{s:2}, \ref{r:1b}, \ref{r:1d}, \ref{r:2}, \ref{r:3}, \ref{r:4})
+        \item \label{hl:efficiency} Time and Resource Efficiency                        \\      (\ref{s:1}, \ref{s:2}, \ref{r:1d}, \ref{r:2}, \ref{r:3})
+        \item \label{hl:feasibility} Feasibility                                        \hfill  (\ref{s:2}, \ref{r:2}, \ref{r:5})
     \end{enumerate}
 \end{multicols}
 
 % Low-Level
 \begin{multicols}{2}[\subsubsection{Low-Level}\label{sec:llos}]
     \begin{enumerate}[label=LL\arabic*., ref=LL\arabic*]
-        \item \label{ll:output_variety} Output Food Variety                     \hfill (\ref{hl:output})
-        \item \label{ll:output_palatability} Output Food Palatability           \hfill (\ref{hl:output})
-        \item \label{ll:output_nutrients} Nutrient Output                       \hfill (\ref{hl:output}, \ref{hl:efficiency})
-        \item \label{ll:output_energy} Caloric Output                           \hfill (\ref{hl:output}, \ref{hl:efficiency})
-        \item \label{ll:control_airtemp} Leaf-Zone Thermoregulation             \hfill (\ref{hl:environment}, \ref{hl:efficiency})
-        \item \label{ll:control_airhum} Leaf-Zone Humidity Control              \hfill (\ref{hl:environment})
-        \item \label{ll:control_gas} Gas Concentration Control                  \hfill (\ref{hl:environment})
-        \item \label{ll:control_light} Lighting Control                         \hfill (\ref{hl:environment}, \ref{hl:efficiency})
-        \item \label{ll:insulateisolate} Insulation, Isolation                  \hfill (\ref{hl:environment}, \ref{hl:outputsafety}, \ref{hl:efficiency})
-        \item \label{ll:control_aircirculation} Air Circulation Control         \hfill (\ref{hl:environment}, \ref{hl:outputsafety})
-        \item \label{ll:control_nutrientsolution} Nutrient Solution Control     \hfill (\ref{hl:environment})
-        \item \label{ll:control_roottemp} Root-Zone Thermoregulation            \hfill (\ref{hl:environment})
-        \item \label{ll:germinationsuccess} Germination Success                 \hfill (\ref{hl:environment}, \ref{hl:efficiency}, \ref{hl:safety})
-        \item \label{ll:automation} High Degree of Automation                   \hfill (\ref{hl:outputsafety}, \ref{hl:efficiency})
-        \item \label{ll:efficiency_energy} Energy Efficiency                    \hfill (\ref{hl:efficiency})
-        \item \label{ll:efficiency_water} Water Usage                           \hfill (\ref{hl:efficiency})
-        \item \label{ll:time_germination} Germination Time                      \hfill (\ref{hl:efficiency})
-        \item \label{ll:time_growth} Growth Time                                \hfill (\ref{hl:efficiency})
-        \item \label{ll:time_harvest} Time-To-Harvest/-Reharvest                \hfill (\ref{hl:efficiency})
-        \item \label{ll:crosscontamination} Potential for Cross-Contamination   \hfill (\ref{hl:outputsafety})
-        \item \label{ll:safety_process} Environmental, Process Safety           \hfill (\ref{hl:safety})
-        \item \label{ll:output_safety} Output Consumption Safety                \hfill (\ref{hl:output}, \ref{hl:safety})
-        \item \label{ll:reliability} Reliability                                \hfill (\ref{hl:safety})
-        \item \label{ll:stability_input} Input Stability                        \hfill (\ref{hl:safety})
-        \item \label{ll:stability_output} Output Shelf Life                     \hfill (\ref{hl:safety})
-        \item \label{ll:cost} Cost                                              \hfill (\ref{hl:feasibility})
-        \item \label{ll:size} Size                                              \hfill (\ref{hl:feasibility})
+        \item \label{ll:output_variety} Food Output Variety                 \hfill (\ref{hl:output})
+        \item \label{ll:output_palatability} Food Output Palatability       \hfill (\ref{hl:output})
+        \item \label{ll:output_nutrients} Nutrient Output                   \hfill (\ref{hl:output}, \ref{hl:efficiency})
+        \item \label{ll:output_energy} Caloric Output                       \hfill (\ref{hl:output}, \ref{hl:efficiency})
+        \item \label{ll:output_pathogen} Food Output Pathogenic Safety      \hfill (\ref{hl:output})
+        \item \label{ll:output_chemical} Food Output Chemical Safety        \hfill (\ref{hl:output})
+        \item \label{ll:control_airtemp} Leaf-Zone Thermoregulation         \hfill (\ref{hl:environment}, \ref{hl:efficiency})
+        \item \label{ll:control_airhum} Leaf-Zone Humidity Control          \hfill (\ref{hl:environment})
+        \item \label{ll:control_gas} Gas Concentration Control              \hfill (\ref{hl:environment})
+        \item \label{ll:control_light} Lighting Control                     \hfill (\ref{hl:environment}, \ref{hl:efficiency})
+        \item \label{ll:insulateisolate} Insulation, Isolation              \hfill (\ref{hl:environment}, \ref{hl:output}, \ref{hl:efficiency})
+        \item \label{ll:control_aircirculation} Air Circulation Control     \hfill (\ref{hl:environment}, \ref{hl:output})
+        \item \label{ll:control_nutrientsolution} Nutrient Solution Control \hfill (\ref{hl:environment})
+        \item \label{ll:control_roottemp} Root-Zone Thermoregulation        \hfill (\ref{hl:environment})
+        \item \label{ll:success} Growth Success                             \hfill (\ref{hl:environment}, \ref{hl:efficiency}, \ref{hl:process})
+        \item \label{ll:automation} Automation                              \hfill (\ref{hl:output}, \ref{hl:efficiency})
+        \item \label{ll:efficiency_energy} Energy Efficiency                \hfill (\ref{hl:efficiency})
+        \item \label{ll:efficiency_water} Water Usage                       \hfill (\ref{hl:efficiency})
+        \item \label{ll:time_growth} Growth Time                            \hfill (\ref{hl:efficiency})
+        \item \label{ll:time} Time-To-Harvest                               \hfill (\ref{hl:efficiency})
+        % By-Product, Process Safety: Pathogenic, Chemical,
+        \item \label{ll:safety_pathogen} Pathogenic Hazard Safety           \hfill (\ref{hl:output}, \ref{hl:process})
+        \item \label{ll:safety_chemical} Chemical Hazard                    \hfill (\ref{hl:output}, \ref{hl:process})
+        \item \label{ll:reliability} Reliability                            \hfill (\ref{hl:process})
+        \item \label{ll:stability_input} Input Stability                    \hfill (\ref{hl:process})
+        \item \label{ll:stability_output} Output Shelf Life                 \hfill (\ref{hl:process})
+        \item \label{ll:cost} Cost                                          \hfill (\ref{hl:feasibility})
+        \item \label{ll:size} Size                                          \hfill (\ref{hl:feasibility})
     \end{enumerate}
 \end{multicols}
 
@@ -267,34 +268,37 @@ The following are the overall challenge requirements compiled from DSFC Applican
 \begin{tabular}{| @{\makebox[2.4em][c]{\metricrow}} | p{9.45cm} | p{5.1cm} |} 
     \hline
     \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}
-    {\textbf{Metric}}                                                                                                           & \textbf{Units}        \\ \hline
-    Nutrient Sol'n Temp. Control Range          \mlabel{m:solutiontemp_range}           \hfill (\ref{ll:control_roottemp})      & min, max °C           \\ \hline
-    Nutrient Sol'n Temp. Control Rate           \mlabel{m:solutiontemp_rate}            \hfill (\ref{ll:control_roottemp})      & °C/sec at each °C     \\ \hline
-    Nutrient Sol'n Temp Control Stability       \mlabel{m:solutiontemp_stability}       \hfill (\ref{ll:control_roottemp})      & $\pm$°C at each °C    \\ \hline
-    Germination Success Rate                    \mlabel{m:germinationsuccess}           \hfill (\ref{ll:germinationsuccess})    & \%                    \\ \hline
-    Time Requirement - Maintenance              \mlabel{m:time_maintenance}             \hfill (\ref{ll:automation})            & hrs/week              \\ \hline
-    Time Requirement - Setup                    \mlabel{m:time_setup}                   \hfill (\ref{ll:automation})            & hrs                   \\ \hline
-    Energy Efficiency - Power vs. kCal          \mlabel{m:efficiency_energy}            \hfill (\ref{ll:efficiency_energy})     & \%                    \\ \hline
-    Necessary Water Waste per Day               \mlabel{m:efficiency_water}             \hfill (\ref{ll:efficiency_water})      & L/day                 \\ \hline
-    Initial Water Requirement                   \mlabel{m:water_initial}                \hfill (\ref{ll:efficiency_water})      & L                     \\ \hline
-    Reharvest Period - Fruiting Plants          \mlabel{m:time_reharvest}               \hfill (\ref{ll:time_harvest})          & days (each plant)     \\ \hline
-    Germination Time                            \mlabel{m:time_germination}             \hfill (\ref{ll:time_germination})      & days (each plant)     \\ \hline
-    Time to Harvest                             \mlabel{m:time_harvest}                 \hfill (\ref{ll:time_growth})           & days (each plant)     \\ \hline
-    Potential for Contamination - Germination   \mlabel{m:contamination_germination}    \hfill (\ref{ll:crosscontamination})    & \% (each event)       \\ \hline 
-    Potential for Contamination - Planting      \mlabel{m:contamination_planting}       \hfill (\ref{ll:crosscontamination})    & \% (each event)       \\ \hline
-    Potential for Contamination - Harvest       \mlabel{m:contamination_harvest}        \hfill (\ref{ll:crosscontamination})    & \% (each event)       \\ \hline
-    Use of Hazardous Compounds                  \mlabel{m:hazards_compounds}            \hfill (\ref{ll:safety_process})        & Y/N                   \\ \hline
-    Cleaning Hazards                            \mlabel{m:hazards_cleaning}             \hfill (\ref{ll:safety_process})        & Y/N                   \\ \hline
-    Physical, Chemical, Bio Hazards             \mlabel{m:hazards_other}                \hfill (\ref{ll:safety_process})        & Y/N                   \\ \hline
-    Consumption Safety                          \mlabel{m:safety_consumption}           \hfill (\ref{ll:output_safety})         & \%                    \\ \hline
-    Loss of Functionality Over 3 Years          \mlabel{m:longevity}                    \hfill (\ref{ll:reliability})           & \%                    \\ \hline
-    Input Lifetime while Safe, Useful           \mlabel{m:shelflife_input}              \hfill (\ref{ll:stability_input})       & Days                  \\ \hline
-    Output Shelf Life while Safe, Quality       \mlabel{m:shelflife_output}             \hfill (\ref{ll:stability_output})      & Days                  \\ \hline
-    Cost                                        \mlabel{m:cost}                         \hfill (\ref{ll:cost})                  & CAD                   \\ \hline
-    Outer Dimensions                            \mlabel{m:dimensions}                   \hfill (\ref{ll:size})                  & m (W, D, H)           \\ \hline
-    Outer Volume                                \mlabel{m:volume}                       \hfill (\ref{ll:size})                  & m${}^3$               \\ \hline
-    Power Consumption                           \mlabel{m:power}                        \hfill (\ref{ll:size})                  & W                     \\ \hline
-    Mass                                        \mlabel{m:mass}                         \hfill (\ref{ll:size})                  & kg                    \\ \hline
+    {\textbf{Metric}}                                                                                                               & \textbf{Units}        \\ \hline
+    Nutrient Sol'n Temp. Control Range          \mlabel{m:solutiontemp_range}           \hfill (\ref{ll:control_roottemp})          & min, max °C           \\ \hline
+    Nutrient Sol'n Temp. Control Rate           \mlabel{m:solutiontemp_rate}            \hfill (\ref{ll:control_roottemp})          & °C/sec at each °C     \\ \hline
+    Nutrient Sol'n Temp Control Stability       \mlabel{m:solutiontemp_stability}       \hfill (\ref{ll:control_roottemp})          & $\pm$°C at each °C    \\ \hline
+    Germination Success Rate                    \mlabel{m:germinationsuccess}           \hfill (\ref{ll:success})                   & \%                    \\ \hline
+    Time Requirement - Maintenance              \mlabel{m:time_maintenance}             \hfill (\ref{ll:automation})                & hrs/week              \\ \hline
+    Time Requirement - Setup                    \mlabel{m:time_setup}                   \hfill (\ref{ll:automation})                & hrs                   \\ \hline
+    Energy Efficiency - Power vs. kCal          \mlabel{m:efficiency_energy}            \hfill (\ref{ll:efficiency_energy})         & \%                    \\ \hline
+    Necessary Water Waste per Day               \mlabel{m:efficiency_water}             \hfill (\ref{ll:efficiency_water})          & L/day                 \\ \hline
+    Initial Water Requirement                   \mlabel{m:water_initial}                \hfill (\ref{ll:efficiency_water})          & L                     \\ \hline
+    Reharvest Period - Fruiting Plants          \mlabel{m:time_reharvest}               \hfill (\ref{ll:time})                      & days (each plant)     \\ \hline
+    Germination Time                            \mlabel{m:time}                         \hfill (\ref{ll:time})                      & days (each plant)     \\ \hline
+    Time to Harvest                             \mlabel{m:time}                         \hfill (\ref{ll:time_growth})               & days (each plant)     \\ \hline
+    Chemical Hazard - System Materials          \mlabel{m:hazard_chemical_materials}    \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    Chemical Hazard - System Inputs             \mlabel{m:hazard_chemical_inputs}       \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    Chemical Hazard - System By-Products        \mlabel{m:hazard_chemical_byproducts}   \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    Chemical Hazard - Food Outputs              \mlabel{m:hazard_chemical_outputs}      \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    Chemical Hazard - Process                   \mlabel{m:hazard_chemical_process}      \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    Pathogen Hazard - System Materials          \mlabel{m:hazard_pathogen_materials}    \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    Pathogen Hazard - System Inputs             \mlabel{m:hazard_pathogen_inputs}       \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    Pathogen Hazard - System By-Products        \mlabel{m:hazard_pathogen_byproducts}   \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    Pathogen Hazard - Food Outputs              \mlabel{m:hazard_pathogen_outputs}      \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    Pathogen Hazard - Process                   \mlabel{m:hazard_pathogen_process}      \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    Loss of Functionality Over 3 Years          \mlabel{m:longevity}                    \hfill (\ref{ll:reliability})               & \%                    \\ \hline
+    Input Lifetime while Safe, Useful           \mlabel{m:shelflife_input}              \hfill (\ref{ll:stability_input})           & Days                  \\ \hline
+    Output Shelf Life while Safe, Quality       \mlabel{m:shelflife_output}             \hfill (\ref{ll:stability_output})          & Days                  \\ \hline
+    Cost                                        \mlabel{m:cost}                         \hfill (\ref{ll:cost})                      & CAD                   \\ \hline
+    Outer Dimensions                            \mlabel{m:dimensions}                   \hfill (\ref{ll:size})                      & m (W, D, H)           \\ \hline
+    Outer Volume                                \mlabel{m:volume}                       \hfill (\ref{ll:size})                      & m${}^3$               \\ \hline
+    Power Consumption                           \mlabel{m:power}                        \hfill (\ref{ll:size})                      & W                     \\ \hline
+    Mass                                        \mlabel{m:mass}                         \hfill (\ref{ll:size})                      & kg                    \\ \hline
 \end{tabular}
 
 \subsection{Constraints}
@@ -302,40 +306,48 @@ The following are the overall challenge requirements compiled from DSFC Applican
 
 \begin{tabular}{|l|p{14.35cm}|}
     \hline
-    \textbf{Metric}                 & \textbf{Constraint                                                \hfill Justification}                                   \\ \hline
-    \mref{m:palatability}           & $\ge$ 6.0/9.0 Hedonic                                             \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
-    \mref{m:nutrient_protein}       & $\approx$ 0.27g                                                   \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_proteincal}    & $\le$11.67\% TDEI                                                 \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_carbs}         & 50-55\% TDEI                                                      \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_fats}          & 25-35\% TDEI                                                      \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_om6fats}       & $\approx$14g                                                      \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_om3fats}       & 1.1-1.6g                                                          \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_satfats}       & <7\% TDEI                                                         \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_transfats}     & <1\% TDEI                                                         \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_cholesterol}   & <300mg                                                            \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:nutrient_fiber}         & 21-38g                                                            \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
-    \mref{m:airtemp_range}          & Min < 15°C, Max > 30°C                                            \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
-    \mref{m:airhum_range}           & Min < 20 \%RH, Max > 90 \%RH                                      \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
-    \mref{m:co2_range}              & >1000ppm ($\approx$600 above ambient)                             \hfill (\ref{sc:5})                                     \\ \hline
-    \mref{m:light_waverange}        & Min < 300nm\footnotemark[6] (UV), Max > 800nm (IR)                \hfill (\ref{sc:5}, \ref{sc:7}) \cite{uvc-disinfection} \\ \hline % TODO: Source? Disinfection?
-    \mref{m:light_parmatch}         & $\ge$ 95\% match                                                  \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
-    \mref{m:lightintensity_range}   & Min = 0, Max $\ge$ typical horticulture                           \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
-    \mref{m:circulation_range}      & Min = 0 m${}^3$/min, Max $\ge$ 2 m${}^3$/min                      \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline
-    \mref{m:solutionrate_range}     & Min = 0, Max $\ge$ max plant requirement                          \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
-    \mref{m:solutiontemp_range}     & Min < 10°C, Max > 25°C                                            \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
-    \mref{m:nutrient_range}         & Min = 0, Max $\ge$ max plant requirement                          \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
-    \mref{m:time_maintenance}       & 0.5 hrs/week                                                      \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:efficiency_water}       & $\le$4L/day                                                       \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:water_initial}          & $\le$80L                                                          \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:longevity}              & $\le$10\%                                                         \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
-    \mref{m:shelflife_input}        & $\ge$3 years (1095 days)                                          \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
-    \mref{m:shelflife_output}       & $\ge$3 days                                                       \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:dimensions}             & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m  \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
-    \mref{m:volume}                 & $\le$ 2 m${}^3$                                                   \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
-    \mref{m:power}                  & Avg. <1500W; Peak < 3000W                                         \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
+    \textbf{Metric}                     & \textbf{Constraint                                                \hfill Justification}                                   \\ \hline
+    \mref{m:palatability}               & $\ge$ 6.0/9.0 Hedonic                                             \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
+    \mref{m:nutrient_protein}           & $\approx$ 0.27g                                                   \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_proteincal}        & $\le$11.67\% TDEI                                                 \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_carbs}             & 50-55\% TDEI                                                      \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_fats}              & 25-35\% TDEI                                                      \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_om6fats}           & $\approx$14g                                                      \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_om3fats}           & 1.1-1.6g                                                          \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_satfats}           & <7\% TDEI                                                         \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_transfats}         & <1\% TDEI                                                         \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_cholesterol}       & <300mg                                                            \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:nutrient_fiber}             & 21-38g                                                            \hfill \cite{applicantguide,dsfc-phase2,nutrition}      \\ \hline
+    \mref{m:airtemp_range}              & Min < 15°C, Max > 30°C                                            \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
+    \mref{m:airhum_range}               & Min < 20 \%RH, Max > 90 \%RH                                      \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
+    \mref{m:co2_range}                  & >1000ppm ($\approx$600 above ambient)                             \hfill (\ref{sc:5})                                     \\ \hline
+    \mref{m:light_waverange}            & Min < 300nm (UV), Max > 700nm (IR)                                \hfill (\ref{sc:5}, \ref{sc:7}) \cite{uvc-disinfection} \\ \hline % TODO: Source? Disinfection?
+    \mref{m:light_parmatch}             & $\ge$ 95\% match                                                  \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
+    \mref{m:lightintensity_range}       & Min = 0, Max $\ge$ typical horticulture                           \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
+    \mref{m:circulation_range}          & Min = 0 m${}^3$/min, Max $\ge$ 2 m${}^3$/min                      \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline
+    \mref{m:solutionrate_range}         & Min = 0, Max $\ge$ max plant requirement                          \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
+    \mref{m:solutiontemp_range}         & Min < 10°C, Max > 25°C                                            \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
+    \mref{m:nutrient_range}             & Min = 0, Max $\ge$ max plant requirement                          \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
+    \mref{m:time_maintenance}           & 0.5 hrs/week                                                      \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:efficiency_water}           & $\le$4L/day                                                       \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:water_initial}              & $\le$80L                                                          \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_chemical_materials}  & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_chemical_inputs}     & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_chemical_byproducts} & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_chemical_outputs}    & Controlled                                                        \hfill (\ref{r:1b}), \cite{dsfc-phase2}                 \\ \hline
+    \mref{m:hazard_chemical_process}    & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_pathogen_materials}  & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_pathogen_inputs}     & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_pathogen_byproducts} & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazard_pathogen_outputs}    & Controlled                                                        \hfill (\ref{r:1b}), \cite{dsfc-phase2}                 \\ \hline
+    \mref{m:hazard_pathogen_process}    & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:longevity}                  & $\le$10\%                                                         \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
+    \mref{m:shelflife_input}            & $\ge$3 years (1095 days)                                          \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
+    \mref{m:shelflife_output}           & $\ge$3 days                                                       \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:dimensions}                 & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m  \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
+    \mref{m:volume}                     & $\le$ 2 m${}^3$                                                   \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
+    \mref{m:power}                      & Avg. <1500W; Peak < 3000W                                         \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
 \end{tabular}
-\vfill
-\footnotetext[6]{Also for disinfection purposes.}
 
 \subsection{Criteria}
 \label{sec:criteria}
@@ -368,15 +380,8 @@ The following are the overall challenge requirements compiled from DSFC Applican
     \mref{m:time_setup}                 & Should Minimize           \hfill (\ref{s:1})                          \\ \hline
     \mref{m:efficiency_energy}          & Should Maximize           \hfill (\ref{r:3})                          \\ \hline
     \mref{m:time_reharvest}             & Should Minimize           \hfill (\ref{r:1b}, \ref{r:3})              \\ \hline
-    \mref{m:time_germination}           & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:time_harvest}               & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:contamination_germination}  & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:contamination_planting}     & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:contamination_harvest}      & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:hazards_compounds}          & Should Avoid, Mitigate    \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:hazards_cleaning}           & Should Avoid, Mitigate    \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:hazards_other}              & Should Avoid, Mitigate    \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:safety_consumption}         & Should Avoid, Mitigate    \hfill (\ref{r:1b})                         \\ \hline
+    \mref{m:time}                       & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
+    \mref{m:time}                       & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
     \mref{m:cost}                       & Could Minimize            \hfill (\ref{s:2})                          \\ \hline
     \mref{m:mass}                       & Should Minimize           \hfill (\ref{r:3})                          \\ \hline
 \end{tabular}

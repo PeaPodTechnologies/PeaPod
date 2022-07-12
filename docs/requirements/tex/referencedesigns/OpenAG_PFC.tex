@@ -54,3 +54,39 @@ However, the array of sensors and actuators included in the design (See \ref{fig
 
 \textbf{Objectives Not Considered}: \ref{ll:output_energy}, \ref{ll:insulateisolate}, \ref{ll:germinationsuccess}, \ref{ll:efficiency_energy}, \ref{ll:efficiency_water}, \ref{ll:time_germination}, \ref{ll:time_growth}, \ref{ll:time_harvest}, \ref{ll:crosscontamination}
 
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{|l|l|c|}
+        \hline
+        \textbf{Metric}                     & \textbf{Value}    & \textbf{Met?}         \\ \hline
+        \mref{m:palatability}               & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline
+        \mref{m:airtemp_range}              & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline % TODO: Source?
+        \mref{m:airhum_range}               & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline % TODO: Source?
+        \mref{m:co2_range}                  & N/A (Presumed N)  & \cellcolor{red} N     \\ \hline
+        \mref{m:light_waverange}            & 448-710nm         & \cellcolor{red} N     \\ \hline % TODO: Source? Disinfection?
+        \mref{m:light_parmatch}             & 100\%             & \cellcolor{green} Y   \\ \hline % TODO: Source?
+        \mref{m:lightintensity_range}       & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline % TODO: Source?
+        \mref{m:circulation_range}          & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline
+        \mref{m:solutionrate_range}         & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline % TODO: Source?
+        \mref{m:solutiontemp_range}         & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline % TODO: Source?
+        \mref{m:nutrient_range}             & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline % TODO: Source?
+        \mref{m:time_maintenance}           & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline
+        \mref{m:efficiency_water}           & N/A (Presumed N)  & \cellcolor{red} N     \\ \hline
+        \mref{m:water_initial}              & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline
+        \mref{m:hazard_chemical_materials}  & Y                 & \cellcolor{green} Y   \\ \hline
+        \mref{m:hazard_chemical_inputs}     & Y                 & \cellcolor{green} Y   \\ \hline
+        \mref{m:hazard_chemical_byproducts} & N                 & \cellcolor{red} N     \\ \hline
+        \mref{m:hazard_chemical_outputs}    & N                 & \cellcolor{red} N     \\ \hline
+        \mref{m:hazard_chemical_process}    & Y                 & \cellcolor{green} Y   \\ \hline
+        \mref{m:hazard_pathogen_materials}  & N                 & \cellcolor{red} N     \\ \hline
+        \mref{m:hazard_pathogen_inputs}     & N                 & \cellcolor{red} N     \\ \hline
+        \mref{m:hazard_pathogen_byproducts} & N                 & \cellcolor{red} N     \\ \hline
+        \mref{m:hazard_pathogen_outputs}    & N                 & \cellcolor{red} N     \\ \hline
+        \mref{m:hazard_pathogen_process}    & N                 & \cellcolor{red} N     \\ \hline
+        \mref{m:shelflife_output}           & N/A (Presumed N)  & \cellcolor{red} N     \\ \hline
+        \mref{m:dimensions}                 & Y                 & \cellcolor{green} Y   \\ \hline % TODO: Dimensions?
+        \mref{m:volume}                     & Y                 & \cellcolor{green} Y   \\ \hline % TODO: Volume?
+        \mref{m:power}                      & N/A (Presumed Y)  & \cellcolor{red} N     \\ \hline
+    \end{tabular}
+    \caption{Constraint Assessment: 6/40 (15\%) met.\\Metrics without values omitted for concision.}
+\end{figure}
