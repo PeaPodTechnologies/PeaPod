@@ -5,8 +5,9 @@
 
 #include <utils/base.h>
 #include <actuators/actuator.h>
+#include <actuators/pwm.h>
 
-class LED : public Actuator {
+class LED : public PWM {
   public:
     typedef enum {
       LEDCOLOR_BLUE,
@@ -23,12 +24,6 @@ class LED : public Actuator {
      */
     LED(uint8_t pin, led_color_t color);
   private:
-    errorlevel_t initialize(void) override;
-    errorlevel_t set(float target) override;
-
-    // PWM output pin.
-    uint8_t pin;
-
     // LED color.
     led_color_t color;
 };

@@ -148,7 +148,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
        avrdude done.  Thank you.
        ```
 
-10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -d ~/microcontroller/ --target upload`
+10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -e peapod -d ~/microcontroller/ --target upload`
 
 11. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
     1.  Open the `sudoers` file: `sudo visudo`
@@ -173,7 +173,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 ### Arduino Test Suite
 
-To run the PlatformIO test suite: `~/.platformio/penv/bin/platformio test -d ~/microcontroller/`
+To run the PlatformIO test suite: `~/.platformio/penv/bin/platformio test -e peapod -d ~/microcontroller/`
 
 ### Build from Source
 
@@ -183,4 +183,5 @@ To run the PlatformIO test suite: `~/.platformio/penv/bin/platformio test -d ~/m
 4. Install all other Node dependencies: `npm i`
 5. Compile: `tsc`
 6. Populate the `.env` file (see `.env.template`)
-7. Execute: `node .`
+7. Compile and upload microcontroller software: `~/.platformio/penv/bin/platformio run -e peapod -d ~/microcontroller/ --target upload`
+8. Execute: `node .`
