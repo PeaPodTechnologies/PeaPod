@@ -9,6 +9,7 @@ typedef enum actuatorid_t {
   ACTUATOR_LED,
   ACTUATOR_SUPPLY,
   ACTUATOR_SOLENOID,
+  ACTUATOR_TEC
 } actuatorid_t;
 
 // All actuator state info

@@ -4,10 +4,6 @@
 
 #include <Arduino.h>
 
-#if ENABLE_WATCHDOG
-  #include <avr/wdt.h>
-#endif
-
 #include <utils/instructions.h>
 #include <utils/jsonmessenger.h>
 #include <sensors/sensor.h>
@@ -53,7 +49,7 @@ void setup(void) {
 
   // Enable the watchdog timer
   #if ENABLE_WATCHDOG
-    wdt_enable(WDTO_1S);
+    wdt_enable(WDTO);
   #endif
   digitalWrite(PIN_STATUS, HIGH);
 }
@@ -90,7 +86,7 @@ void loop(void) {
   }
 
   #if ENABLE_WATCHDOG
-    wdt_enable(WDTO_1S);
+    wdt_enable(WDTO);
   #endif
 }
 

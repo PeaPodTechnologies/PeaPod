@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <wdt.h>
 
 #include <sensors/sensor.h>
 #include <sensors/sht31.h>
@@ -17,6 +18,10 @@
 #define NUM_ACTUATORS 7
 #define REVISION      0
 #define BAUDRATE      115200
+#if ENABLE_WATCHDOG
+  #include <avr/wdt.h>
+  #define WDTO        WDTO_1S
+#endif
 
 // Pins
 #define PIN_STATUS    13
