@@ -2,8 +2,8 @@
 import chalk from 'chalk';
 import * as inquirer from 'inquirer';
 
-import { checkInternet } from './src/utils';
-import * as Spinner from './src/ui';
+import { checkInternet, sleep } from './src/utils';
+import { Spinner } from './src/ui';
 import { PublishingMode } from './src/publisher';
 import PeaPod from './src/peapod';
 
@@ -35,6 +35,11 @@ async function main(): Promise<void> {
   ])).pm;
 
   let peapod: PeaPod = new PeaPod(publishingmode);
+
+  let idleInterval = await peapod.idle();
+
+  // Temporary; replace with main menu
+  await sleep(10000);
 
   peapod.start();
 }

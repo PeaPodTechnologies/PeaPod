@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { ReadlineParser, SerialPort } from 'serialport';
 import { ControllerInstructionsError } from './errors';
-import * as Spinner from './ui';
+import { Spinner } from './ui';
 import { sleep, updateMicrocontroller } from './utils';
 import { Gpio } from 'onoff';
 
@@ -118,6 +118,10 @@ export default class MicroController implements Controller {
   }
 
   start(onMessage: (msg: ControllerMessage) => void): Promise<void> {
+    this.clearTimeout();
+    // Reset listeners
+    this.parser.removeAllListeners('data');
+
     // Explicit promise construction so we can resolve only on valid comms AND revision check
     return new Promise<void>(async (res, rej) => {
       // Reset the microcontroller (opens the serial port)
@@ -143,7 +147,7 @@ export default class MicroController implements Controller {
           case 'revision':
             // Software update
             if(msg.data === CONTROLLER_REVISION) {
-              Spinner.succeed('Microcontroller software up to date!');
+              Spinner.succeed(`Microcontroller software up to date! Got ${msg.data}`);
               res();  //Successful start sequence
             } else {
               Spinner.fail(`Microcontroller software out of date! Got ${msg.data}, expected ${CONTROLLER_REVISION}.`);
@@ -191,6 +195,8 @@ export default class MicroController implements Controller {
   stop(): void {
     this.clearTimeout();
     if (this.serial.isOpen) this.serial.close();
+    // Stop listening for data
+    this.parser.removeAllListeners('data');
   }
 
   /**

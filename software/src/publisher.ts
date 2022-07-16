@@ -12,7 +12,7 @@ import { getFirestore, doc, setDoc, collection, getDocs, query, where, DocumentR
 import { getAuth } from 'firebase/auth';
 
 import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflow';
-import * as Spinner from './ui';
+import { Spinner } from './ui';
 import { fetchServerCert } from './utils';
 import { ControllerInstructions } from './controller';
 
@@ -31,6 +31,13 @@ type DataPoint = {
  */
 export type DataBatch = {
   [key: string]: DataPoint[],
+};
+
+/**
+ * Set of datapoints for display
+ */
+ export type DataSet = {
+  [key: string]: number,
 };
 
 /**

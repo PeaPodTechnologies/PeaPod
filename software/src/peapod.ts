@@ -1,4 +1,4 @@
-import * as Spinner from './ui';
+import { Screen, Spinner } from './ui';
 import chalk from 'chalk';
 
 import { initializeApp, getApps } from 'firebase/app';
@@ -6,7 +6,8 @@ import { getAuth } from 'firebase/auth';
 
 import { loadPeaPodEnv, loadAuthEnv, loadFirebaseEnv, loadIoTEnv } from './env';
 import MicroController, { ControllerInstructions, Controller } from './controller';
-import OnlinePublisher, { DataBatch, Publisher, OfflinePublisher, PublishingMode } from './publisher';
+import OnlinePublisher, { DataBatch, DataSet, Publisher, OfflinePublisher, PublishingMode } from './publisher';
+import { sleep } from './utils';
 
 // CONSTANTS
 
@@ -14,6 +15,11 @@ import OnlinePublisher, { DataBatch, Publisher, OfflinePublisher, PublishingMode
  * Seconds between data publications.
  */
 const BATCH_PUBLISH_INTERVAL = 5;
+
+/**
+ * Milliseconds between refresh during idle.
+ */
+const IDLE_INTERVAL = 100;
 
 // GLOBAL VARIABLES
  
@@ -31,6 +37,11 @@ let batchInterval: NodeJS.Timer;
  * Latest controller instruction set.
  */
 let instructions: ControllerInstructions = {};
+
+/**
+ * 
+ */
+let data: DataSet = {};
 
 /**
  * Main driver class.
@@ -67,6 +78,43 @@ export default class PeaPod {
     }
   }
 
+  async idle(): Promise<NodeJS.Timer> {
+    await this.controller.start(msg => {
+      switch (msg.type) {
+        case "data":
+          data[msg.data.label] = msg.data.value;
+          Screen.setData(data);
+          Screen.render();
+          break;
+        case "revision":
+          this.controller.write(instructions);
+          break;
+        default:
+          // TODO: Console box?
+          Spinner.log(`[${ chalk.blueBright('CONTROLLER') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`);
+      }
+    });
+
+    // Angle to "wheel" the lights
+    let angle = 0;
+
+    const idleInterval = setInterval(() => {
+      instructions = {
+        "led_blue": Math.sin(angle)/2+0.5,
+        "led_cool": Math.sin(angle + 2*Math.PI/5)/2+0.5,
+        "led_warm": Math.sin(angle + 4*Math.PI/5)/2+0.5,
+        "led_red": Math.sin(angle + 6*Math.PI/5)/2+0.5,
+        "led_far": Math.sin(angle + 8*Math.PI/5)/2+0.5,
+      };
+      this.controller.write(instructions);
+
+      // One revolution every 5 seconds
+      angle += 2*Math.PI/(5000/IDLE_INTERVAL);
+      angle -= angle > 2*Math.PI ? 2*Math.PI : 0;
+    }, IDLE_INTERVAL);
+    return idleInterval;
+  }
+
   async start(): Promise<void> {
     // INITIALIZE CONTROLLER
     await this.controller.start(msg => {
@@ -89,6 +137,9 @@ export default class PeaPod {
           Spinner.log(`[${ chalk.blueBright('CONTROLLER') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`);
       }
     });
+
+    // Wait for all POST messages
+    await sleep(1000);
 
     // INITIALIZE PUBLISHER
     let { projectid, projectname, run } = await this.publisher.start(config => {
