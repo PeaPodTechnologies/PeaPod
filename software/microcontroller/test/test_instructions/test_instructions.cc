@@ -36,39 +36,39 @@ static const InstructionActuatorMatrix matrix = {
 };
 
 void test_non_json(void) {
-  uint8_t result = handleInstructions("hello world", &matrix);
+  uint8_t result = InstructionHandler::handleSet("hello world", &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_FATAL, result);
 }
 
 void test_incomplete_json(void) {
-  uint8_t result = handleInstructions("{\"incomplete", &matrix);
+  uint8_t result = InstructionHandler::handleSet("{\"incomplete", &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_FATAL, result);
 }
 
 void test_invalid_target(void) {
-  uint8_t result = handleInstructions("{\"incomplete\":abc", &matrix);
+  uint8_t result = InstructionHandler::handleSet("{\"incomplete\":abc", &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_FATAL, result);
 }
 
 void test_bad_instruction(void) {
-  uint8_t result = handleInstructions("{\"C\":0}", &matrix);
+  uint8_t result = InstructionHandler::handleSet("{\"C\":0}", &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_WARNING, result);
 }
 
 void test_empty_instruction_set(void) {
-  uint8_t result = handleInstructions("{}"), &matrix);
+  uint8_t result = InstructionHandler::handleSet("{}"), &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_NONE, result);
 }
 
 void test_one_instruction(void) {
-  uint8_t result = handleInstructions("{\"A\":1.3}", &matrix);
+  uint8_t result = InstructionHandler::handleSet("{\"A\":1.3}", &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_NONE, result);
   float target = actuatorA.update()->lasttarget;
   TEST_ASSERT_EQUAL_FLOAT(1.3, target);
 }
 
 void test_multiple_instructions(void) {
-  uint8_t result = handleInstructions("{\"A\":2.4,\"B\":4.3}", &matrix);
+  uint8_t result = InstructionHandler::handleSet("{\"A\":2.4,\"B\":4.3}", &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_NONE, result);
   float target = actuatorA.update()->lasttarget;
   TEST_ASSERT_EQUAL_FLOAT(2.4, target);

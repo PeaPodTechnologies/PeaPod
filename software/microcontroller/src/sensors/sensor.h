@@ -10,6 +10,9 @@ typedef enum sensorid_t {
   SENSOR_NULL,
   SENSOR_SHT31,
   SENSOR_K30,
+  SENSOR_GE_2158,
+  SENSOR_YF_B1,
+  SENSOR_SEN0257,
 } sensorid_t;
 
 // Single datapoint

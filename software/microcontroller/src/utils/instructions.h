@@ -18,20 +18,29 @@ typedef struct InstructionActuatorMatrix {
   const char** instructions;
 } InstructionActuatorMatrix;
 
-/**
- * Handles incoming instruction set according to an instruction-actuator matrix
- * @param instructionSet JSON-formatted instruction set
- * @param matrix Instruction-actuator matrix
- * @return Error level - `ERR_FATAL`: invalid instruction set formatting; `ERR_WARNING`: one or more instruction labels were unknown
- */
-errorlevel_t handleInstructions(String instructionSet, const InstructionActuatorMatrix* matrix);
+namespace InstructionHandler {
+  /**
+   * Checks a non-empty instruction set for formatting validity
+   * @param instructionSet JSON-formatted instruction set
+   * @return Validity
+   */
+  bool isValidSet(String instructionSet);
 
-/**
- * Handles incoming instruction label-target pair.
- * @param instruction Label-target pair (i.e. `"\"actuator_label\":value_float"`)
- * @param matrix Instruction-actuator matrix
- * @return Error level - `ERR_FATAL`: invalid instruction formatting; `ERR_WARNING`: instruction label was unknown
- */
-errorlevel_t handleInstruction(String instruction, const InstructionActuatorMatrix* matrix);
+  /**
+   * Handles incoming instruction set according to an instruction-actuator matrix
+   * @param instructionSet JSON-formatted instruction set
+   * @param matrix Instruction-actuator matrix
+   * @return Error level - `ERR_FATAL`: invalid instruction set formatting; `ERR_WARNING`: one or more instruction labels were unknown
+   */
+  errorlevel_t handleSet(String instructionSet, const InstructionActuatorMatrix* matrix);
+
+  /**
+   * Handles incoming instruction label-target pair.
+   * @param instruction Label-target pair (i.e. `"\"actuator_label\":value_float"`)
+   * @param matrix Instruction-actuator matrix
+   * @return Error level - `ERR_FATAL`: invalid instruction formatting; `ERR_WARNING`: instruction label was unknown
+   */
+  errorlevel_t handleInstruction(String instruction, const InstructionActuatorMatrix* matrix);
+}
 
 #endif

@@ -1,9 +1,10 @@
 #include <Arduino.h>
-#include <wdt.h>
 
 #include <sensors/sensor.h>
 #include <sensors/sht31.h>
 #include <sensors/k30.h>
+#include <sensors/yf_b1.h>
+#include <sensors/sen0257.h>
 #include <actuators/actuator.h>
 #include <actuators/led.h>
 #include <actuators/supply.h>
@@ -14,7 +15,7 @@
 #define ENABLE_WATCHDOG false
 
 // Constants
-#define NUM_SENSORS   2
+#define NUM_SENSORS   4
 #define NUM_ACTUATORS 7
 #define REVISION      0
 #define BAUDRATE      115200
@@ -32,14 +33,20 @@
 #define PIN_LEDFAR    10
 #define PIN_SUPPLY    8
 #define PIN_SOLENOID  7
+#define PIN_YF_B1     2
+#define PIN_SEN0257   A0
 
 // Sensors
 SHT31 sht31 = SHT31();
 K30 k30 = K30();
+YF_B1 yf_b1 = YF_B1(PIN_YF_B1);
+SEN0257 sen0257 = SEN0257(PIN_SEN0257);
 
 Sensor* sensors[NUM_SENSORS] = {
   &sht31,
   &k30,
+  &yf_b1,
+  &sen0257,
 };
 
 // Actuators

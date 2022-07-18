@@ -41,6 +41,7 @@ async function main(): Promise<void> {
   // Temporary; replace with main menu
   await sleep(10000);
 
+  clearInterval(idleInterval);
   peapod.start();
 }
 
