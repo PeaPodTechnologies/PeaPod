@@ -13,7 +13,9 @@ class TestActuator : public Actuator {
     errorlevel_t set(float target) override;
 };
 
-TestActuator::TestActuator(void) : Actuator(0) { }
+const char* const id = "Test Actuator";
+
+TestActuator::TestActuator(void) : Actuator(&id, 0) { }
 
 errorlevel_t TestActuator::initialize(void) {
   return ERR_NONE;
@@ -56,7 +58,7 @@ void test_bad_instruction(void) {
 }
 
 void test_empty_instruction_set(void) {
-  uint8_t result = InstructionHandler::handleSet("{}"), &matrix);
+  uint8_t result = InstructionHandler::handleSet("{}", &matrix);
   TEST_ASSERT_EQUAL_UINT8(ERR_NONE, result);
 }
 
