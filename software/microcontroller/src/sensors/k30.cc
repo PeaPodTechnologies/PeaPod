@@ -1,3 +1,5 @@
+// HEADERS
+
 #include <sensors/k30.h>
 
 #include <Arduino.h>
@@ -6,17 +8,11 @@
 #include <utils/base.h>
 #include <sensors/sensor.h>
 
-// Data setup
-static const char* labels[1] = { "co2_ppm" };
-static const SensorDataSetup datasetup = {
-  .numdata = 1,
-  .labels = labels
-};
+// CONSTRUCTOR
 
-K30::K30(TwoWire* wire, uint8_t address) : Sensor(SENSOR_K30, &datasetup, K30_DELTA) {
-  this->wire = wire;
-  this->address = address;
-}
+K30::K30(TwoWire* wire, uint8_t address) : Sensor(&id, &datasetup, K30_DELTA), address(address), wire(wire) { }
+
+// PUBLIC METHODS
 
 errorlevel_t K30::initialize(void) {
   wire->begin();

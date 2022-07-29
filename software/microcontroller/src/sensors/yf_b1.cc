@@ -1,31 +1,22 @@
-#include <sensors/yf_b1.h>
+// HEADERS
 
-#include <math.h>
+#include <sensors/yf_b1.h>
 
 #include <Arduino.h>
 
 #include <utils/base.h>
 #include <sensors/sensor.h>
 
-// Data setup
-static const char* labels[1] = { "water_flow_rate" };
-static const SensorDataSetup datasetup = {
-  .numdata = 1,
-  .labels = labels
-};
+// CONSTRUCTOR
 
-void flow(void);
+YF_B1::YF_B1(const uint8_t pin) : Sensor(&id, &datasetup, YF_B1_DELTA), InterruptHandler(&(this->pin)), pin(pin) { }
 
-volatile uint32_t flow_count;
-unsigned long last_count;
-
-YF_B1::YF_B1(uint8_t pin) : Sensor(SENSOR_YF_B1, &datasetup, YF_B1_DELTA) {
-  this->pin = pin;
-}
+// PUBLIC METHODS
 
 errorlevel_t YF_B1::initialize(void) {
   pinMode(this->pin, INPUT);
-  attachInterrupt(digitalPinToInterrupt(this->pin), flow, RISING);
+  // Attach rising-edge interrupt to our digital pin, triggers flow()
+  attachInstanceInterrupt(RISING);
   return ERR_NONE;
 }
 
@@ -42,6 +33,6 @@ errorlevel_t YF_B1::read(float* data, uint8_t numdata) {
   return ERR_NONE;
 }
 
-void flow(void) {
-  flow_count++;
+void YF_B1::handleInterrupt(void) {
+  this->flow_count++;
 }

@@ -1,19 +1,13 @@
 #ifndef PEAPOD_SENSORS_SENSOR_H_
 #define PEAPOD_SENSORS_SENSOR_H_
 
+// HEADERS
+
 #include <Arduino.h>
 
 #include <utils/base.h>
 
-// Sensor identifiers
-typedef enum sensorid_t {
-  SENSOR_NULL,
-  SENSOR_SHT31,
-  SENSOR_K30,
-  SENSOR_GE_2158,
-  SENSOR_YF_B1,
-  SENSOR_SEN0257,
-} sensorid_t;
+// DECLARATIONS
 
 // Single datapoint
 typedef struct DataPoint {
@@ -47,18 +41,19 @@ typedef struct SensorDataSetup {
   const uint8_t numdata;
 
   // Array of string literals corresponding to the labels for each dataset
-  const char** labels;
+  const char* const* labels;
 } SensorDataSetup;
+
+// CLASS
 
 class Sensor {
   public:
     /**
      * Sensor interface constructor.
-     * @param sensor Identifier
      * @param setup Pointer to datasets setup
      * @param delta Minimum delay (in milliseconds) between sensor read attempts
      */
-    Sensor(sensorid_t sensorid, const SensorDataSetup* setup, uint32_t delta);
+    Sensor(const char* const* id, const SensorDataSetup* setup, uint32_t delta);
     
     /** Wrapper function for `initialize()`. Sets debug state to indicate initialization success or failure.
      * @return Pointer to sensor state
@@ -74,8 +69,8 @@ class Sensor {
     // @return Pointer to sensor state
     SensorState* getState(void);
 
-    // @return Sensor identifier
-    sensorid_t getID(void);
+    // @return String representation
+    String toString(void);
 
   protected:
     /** 
@@ -95,15 +90,15 @@ class Sensor {
   private:
     // Stores all the latest state data for this sensor.
     SensorState state;
-  
-    // Sensor identifier
-    sensorid_t sensorid;
 
     // Minimum delay (in milliseconds) between sensor read attempts
-    uint32_t delta;
+    const uint32_t delta;
 
     // Last read attempt (milliseconds since program start) - NOT THE SAME AS `state.timestamp`, an unsuccessful read attempt will still update `lastread`.
     uint32_t lastread;
+
+    // Sensor ID
+    const char* const* _id;
 };
 
 #endif

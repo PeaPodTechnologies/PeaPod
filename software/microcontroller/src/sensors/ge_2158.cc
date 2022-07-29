@@ -1,3 +1,5 @@
+// HEADERS
+
 #include <sensors/ge_2158.h>
 
 #include <math.h>
@@ -7,16 +9,11 @@
 #include <utils/base.h>
 #include <sensors/sensor.h>
 
-// Data setup
-static const char* labels[1] = { "water_temperature" };
-static const SensorDataSetup datasetup = {
-  .numdata = 1,
-  .labels = labels
-};
+// CONSTRUCTOR
 
-GE_2158::GE_2158(uint8_t pin) : Sensor(SENSOR_GE_2158, &datasetup, GE_2158_DELTA) {
-  this->pin = pin;
-}
+GE_2158::GE_2158(const uint8_t pin) : Sensor(&id, &datasetup, GE_2158_DELTA), pin(pin) { }
+
+// PUBLIC METHODS
 
 errorlevel_t GE_2158::initialize(void) {
   pinMode(this->pin, INPUT);

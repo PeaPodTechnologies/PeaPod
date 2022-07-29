@@ -1,16 +1,13 @@
 #ifndef PEAPOD_ACTUATORS_ACTUATOR_H_
 #define PEAPOD_ACTUATORS_ACTUATOR_H_
 
+// HEADERS
+
+#include <Arduino.h>
+
 #include <utils/base.h>
 
-// Actuator identifiers
-typedef enum actuatorid_t {
-  ACTUATOR_NULL,
-  ACTUATOR_LED,
-  ACTUATOR_SUPPLY,
-  ACTUATOR_SOLENOID,
-  ACTUATOR_TEC
-} actuatorid_t;
+// DECLARATIONS
 
 // All actuator state info
 typedef struct ActuatorState {
@@ -24,13 +21,14 @@ typedef struct ActuatorState {
   float lasttarget;
 } ActuatorState;
 
+// CLASS
+
 class Actuator {
   public:
     /**
-     * @param actuatorid Identifier
      * @param failtarget Target that the actuator should be set to in case of failure
      */
-    Actuator(actuatorid_t actuatorid, float failtarget);
+    Actuator(const char* const* id, float failtarget);
 
     /**
      * Wrapper function for `set()`. Checks debug state (initialized).
@@ -47,11 +45,11 @@ class Actuator {
     // @return Pointer to actuator state
     ActuatorState* getState(void);
 
-    // @return Actuator identifier
-    actuatorid_t getID(void);
-
     // @param target Actuator target
     void setTarget(float target);
+
+    // @return String representation of this actuator
+    String toString(void);
 
   protected:
     /**
@@ -68,11 +66,11 @@ class Actuator {
     virtual errorlevel_t set(float target) = 0;
 
   private:
+    // Actuator ID
+    const char* const* _id;
+
     // Stores all the latest state data for this actuator.
     ActuatorState state;
-
-    // Actuator identifier
-    actuatorid_t actuatorid;
 
     // Failsafe target
     float failtarget;

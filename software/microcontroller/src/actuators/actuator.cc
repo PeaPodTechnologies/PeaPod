@@ -1,17 +1,22 @@
+// HEADERS
+
 #include <actuators/actuator.h>
 
 #include <Arduino.h>
 
 #include <utils/base.h>
 
-Actuator::Actuator(actuatorid_t actuatorid, float failtarget) {
-  this->actuatorid = actuatorid;
+// CONSTRUCTOR
+
+Actuator::Actuator(const char* const* id, float failtarget) : _id(id), failtarget(failtarget) {
   state.error = ERR_NONE;
   state.debug = DS_DISABLED;
 
   // Default start target
-  target = this->failtarget = failtarget;
+  target = failtarget;
 }
+
+// PUBLIC METHODS
 
 ActuatorState* Actuator::begin(void) {
   state.error = initialize();
@@ -66,10 +71,10 @@ ActuatorState* Actuator::getState(void) {
   return &state;
 }
 
-actuatorid_t Actuator::getID(void) {
-  return actuatorid;
-}
-
 void Actuator::setTarget(float target) {
   this->target = target;
+}
+
+String Actuator::toString(void) {
+  return String((const char*)(this->_id));
 }

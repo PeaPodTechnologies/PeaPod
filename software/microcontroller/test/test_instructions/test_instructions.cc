@@ -13,7 +13,7 @@ class TestActuator : public Actuator {
     errorlevel_t set(float target) override;
 };
 
-TestActuator::TestActuator(void) : Actuator(ACTUATOR_NULL, 0) { }
+TestActuator::TestActuator(void) : Actuator(0) { }
 
 errorlevel_t TestActuator::initialize(void) {
   return ERR_NONE;

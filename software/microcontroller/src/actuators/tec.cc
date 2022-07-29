@@ -1,3 +1,5 @@
+// HEADERS
+
 #include <actuators/tec.h>
 
 #include <Arduino.h>
@@ -5,11 +7,11 @@
 #include <utils/base.h>
 #include <actuators/actuator.h>
 
-TEC::TEC(uint8_t powerpin, uint8_t relayApin, uint8_t relayBpin) : Actuator(ACTUATOR_TEC, 0) {
-  this->power = powerpin;
-  this->relayA = relayApin;
-  this->relayB = relayBpin;
-}
+// CONSTRUCTOR
+
+TEC::TEC(uint8_t powerpin, uint8_t relayApin, uint8_t relayBpin) : Actuator(&id, 0), power(powerpin), relayA(relayApin), relayB(relayBpin) { }
+
+// PUBLIC METHODS
 
 errorlevel_t TEC::initialize(void) {
   pinMode(this->power, OUTPUT);

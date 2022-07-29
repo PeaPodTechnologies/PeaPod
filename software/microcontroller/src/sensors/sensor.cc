@@ -1,3 +1,5 @@
+// HEADERS
+
 #include <sensors/sensor.h>
 
 #include <stdlib.h>
@@ -6,10 +8,9 @@
 
 #include <utils/base.h>
 
-Sensor::Sensor(sensorid_t sensorid, const SensorDataSetup* setup, uint32_t delta) {
-  this->sensorid = sensorid;
-  this->delta = delta;
+// CONSTRUCTOR
 
+Sensor::Sensor(const char* const* id, const SensorDataSetup* setup, uint32_t delta) : delta(delta), _id(id) {
   // Initial error and debug states
   state.error = ERR_NONE;
   state.debug = DS_DISABLED;
@@ -22,6 +23,8 @@ Sensor::Sensor(sensorid_t sensorid, const SensorDataSetup* setup, uint32_t delta
     state.data[i].label = setup->labels[i];
   }
 }
+
+// PUBLIC METHODS
 
 SensorState* Sensor::begin(void) {
   state.error = initialize();
@@ -84,6 +87,13 @@ SensorState* Sensor::getState(void) {
   return &state;
 }
 
-sensorid_t Sensor::getID(void) {
-  return sensorid;
+String Sensor::toString(void) {
+  String s = String((const char*)(this->_id)) + " (";
+  for (int i = 0; i < state.numdata; i++) {
+    s += state.data[i].label;
+    if (i < state.numdata - 1) {
+      s += ", ";
+    }
+  }
+  return s + ")";
 }

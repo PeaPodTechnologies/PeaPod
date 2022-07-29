@@ -1,3 +1,5 @@
+// HEADERS
+
 #include <sensors/sht31.h>
 
 #include <Arduino.h>
@@ -6,21 +8,13 @@
 #include <utils/base.h>
 #include <sensors/sensor.h>
 
-static uint8_t crc8(const uint8_t *data, int len);
+// DECLARATIONS
 
-// Data setup
-static const char* labels[2] = { "air_temperature", "air_humidity" };
-static const SensorDataSetup datasetup = {
-  .numdata = 2,
-  .labels = labels
-};
+static uint8_t crc8(const uint8_t *data, int len);
 
 // CONSTRUCTOR
 
-SHT31::SHT31(TwoWire *wire, uint8_t address) : Sensor(SENSOR_SHT31, &datasetup, SHT31_DELTA) {
-  this->wire = wire;
-  this->address = address;
-}
+SHT31::SHT31(TwoWire *wire, uint8_t address) : Sensor(&id, &datasetup, SHT31_DELTA), address(address), wire(wire) { }
 
 // PUBLIC METHODS
 
@@ -70,7 +64,7 @@ errorlevel_t SHT31::read(float* data, uint8_t numdata) {
   return ERR_NONE;
 }
 
-// UTILITY FUNCTIONS
+// HELPER FUNCTIONS
 
 void SHT31::writeCommand(uint16_t cmd) {
   wire->beginTransmission(address);

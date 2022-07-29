@@ -76,17 +76,17 @@ void loop(void) {
       }
     } // else do nothing
   } else if (sstate->error == ERR_WARNING) {
-    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to read from sensor " + String(sensors[sensor]->getID()) + " (non-fatal)."));
+    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to read from sensor " + sensors[sensor]->toString() + " (non-fatal)."));
   } else if (sstate->error == ERR_FATAL) {
-    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to read from sensor " + String(sensors[sensor]->getID()) + " (FATAL, SENSOR DISABLED!)."));
+    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to read from sensor " + sensors[sensor]->toString() + " (FATAL, SENSOR DISABLED!)."));
   }
 
   // Update actuator
   ActuatorState* astate = actuators[actuator]->update();
   if (astate->error == ERR_WARNING) {
-    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to update actuator " + String(actuators[actuator]->getID()) + " (non-fatal)."));
+    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to update actuator " + actuators[actuator]->toString() + " (non-fatal)."));
   } else if (astate->error == ERR_FATAL) {
-    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to update actuator " + String(actuators[actuator]->getID()) + " (FATAL, ACTUATOR DISABLED!)."));
+    JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to update actuator " + actuators[actuator]->toString() + " (FATAL, ACTUATOR DISABLED!)."));
   }
 
   // Increment
@@ -104,9 +104,9 @@ bool post(void) {
     SensorState* state = sensors[i]->begin();
     bool latest = (state->debug >= DS_INITIALIZED && state->error == ERR_NONE);
     if (latest) {
-      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Sensor " + String(sensors[i]->getID()) + " initialized successfully."));
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Sensor " + sensors[i]->toString() + " initialized successfully."));
     } else {
-      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Failed to initialize sensor " + String(sensors[i]->getID()) + ". Check wiring."));
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_ERROR, String("Failed to initialize sensor " + sensors[i]->toString() + ". Check wiring."));
     }
     success &= latest;
   }
@@ -114,9 +114,9 @@ bool post(void) {
     ActuatorState* state = actuators[i]->begin();
     bool latest = (state->debug >= DS_INITIALIZED && state->error == ERR_NONE);
     if (latest) {
-      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Actuator " + String(actuators[i]->getID()) + " initialized successfully."));
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Actuator " + actuators[i]->toString() + " initialized successfully."));
     } else {
-      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to initialize actuator " + String(actuators[i]->getID()) + ". Check wiring."));
+      JSONMessenger::sendMessage(JSONMessenger::MESSAGE_DEBUG, String("Failed to initialize actuator " + actuators[i]->toString() + ". Check wiring."));
     }
     success &= latest;
   }

@@ -1,3 +1,5 @@
+// HEADERS
+
 #include <sensors/sen0257.h>
 
 #include <Arduino.h>
@@ -5,16 +7,11 @@
 #include <utils/base.h>
 #include <sensors/sensor.h>
 
-// Data setup
-static const char* labels[1] = { "water_pressure" };
-static const SensorDataSetup datasetup = {
-  .numdata = 1,
-  .labels = labels
-};
+// CONSTRUCTOR
 
-SEN0257::SEN0257(uint8_t pin) : Sensor(SENSOR_SEN0257, &datasetup, SEN0257_DELTA) {
-  this->pin = pin;
-}
+SEN0257::SEN0257(const uint8_t pin) : Sensor(&id, &datasetup, SEN0257_DELTA), pin(pin) { }
+
+// PUBLIC METHODS
 
 errorlevel_t SEN0257::initialize(void) {
   pinMode(this->pin, INPUT);

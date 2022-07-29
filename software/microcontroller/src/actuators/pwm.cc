@@ -1,3 +1,5 @@
+// HEADERS
+
 #include <actuators/pwm.h>
 
 #include <Arduino.h>
@@ -5,9 +7,11 @@
 #include <utils/base.h>
 #include <actuators/actuator.h>
 
-PWM::PWM(uint8_t pin, actuatorid_t actuatorid) : Actuator(actuatorid, 0) {
-  this->pin = pin;
-}
+// CONSTRUCTOR
+
+PWM::PWM(const char* const* id, const uint8_t pin) : Actuator(id, 0), pin(pin) { }
+
+// PUBLIC METHODS
 
 errorlevel_t PWM::initialize(void) {
   pinMode(this->pin, OUTPUT);
