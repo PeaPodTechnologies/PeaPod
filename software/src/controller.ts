@@ -15,7 +15,7 @@ const BAUDRATE = 115200;
 /**
  * Microcontroller software revision matching this software.
  */
-const CONTROLLER_REVISION = 0;
+export const CONTROLLER_REVISION = 0;
 
 /**
  * Seconds to wait between messages before timing out.

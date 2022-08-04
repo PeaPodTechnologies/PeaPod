@@ -15,6 +15,7 @@ import { DeviceFlowUI, DeviceFlowUIOptions } from '@peapodtech/firebasedeviceflo
 import { Spinner } from './ui';
 import { fetchServerCert } from './utils';
 import { ControllerInstructions } from './controller';
+import { EnvironmentSchedule } from './peapod';
 
 // TYPES
 
@@ -65,9 +66,12 @@ export type PubSubCommand = {
 };
 
 /**
- * Message FROM the publisher (config). WIP.
+ * Message FROM the publisher (config).
  */
-export type PubSubConfig = string;
+export type PubSubConfig = {
+  type: 'schedule',
+  data: EnvironmentSchedule,
+};
 
 /**
  * Types of publishers.
@@ -101,7 +105,7 @@ export type IoTConfig = {
  * Base type for any publisher.
  */
 export type Publisher = {
-  start(onConfig?: (message: PubSubConfig)=>void, onCommand?: (message: PubSubCommand)=>void) : Promise<{projectid: string, projectname?: string, run: string}>,
+  start(onConfig: (message: PubSubConfig)=>void, onCommand: (message: PubSubCommand)=>void) : Promise<{projectid: string, projectname?: string, run: string}>,
   stop(): void,
   publish(msg: PubSubMessage): void,
 }
@@ -339,7 +343,7 @@ export default class PubSubPublisher implements Publisher {
  * Publishes data batches to local JSON files.
  */
 export class OfflinePublisher implements Publisher {
-  async start() {
+  async start(onConfig: (message: PubSubConfig) => void, onCommand: (message: PubSubCommand) => void) {
     let config = { projectid: 'testproject', run: 'testrun-'+uuid() };
     Spinner.info(`Logging data to ${ chalk.bold('projects/'+config.projectid+'/runs/'+config.run+'/') }`);
     return config;

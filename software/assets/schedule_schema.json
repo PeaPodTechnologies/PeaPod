@@ -1,0 +1,43 @@
+// All timestamps in ms since program start
+// All durations in ms
+{
+  "id": "{projectid}-program-{uuid}",
+  "name": "A short description of the program, including parameter values, duration, etc.",
+  "revision": 0,  //Software revision
+  "parameters": {
+    "{parametername}": [ // Schedule is loaded in phase by phase
+      {
+        "type": "piecewise", // Step through values until end
+        "end": 10000,
+        "values": [
+          {
+            "value": 23.4,
+            "timestamp": 0
+          },
+          {
+            "value": 24.6,
+            "timestamp": 123456
+          },
+          // More values...
+        ]
+      },
+      {
+        "type": "periodic", // Step through values until end
+        "period": 10000,
+        "end": 1234567,
+        "values": [
+          {
+            "value": 23.4,
+            "duration": 1000
+          },
+          {
+            "value": 24.6,
+            "duration": 1000
+          },
+          // More values...
+        ]
+      }
+      // More phases...
+    ]
+  }
+}
