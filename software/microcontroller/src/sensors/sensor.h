@@ -45,7 +45,7 @@ typedef struct SensorDataSetup {
 } SensorDataSetup;
 
 // CLASS
-
+// Abstract base class for all sensor interfaces
 class Sensor {
   public:
     /**
@@ -71,6 +71,8 @@ class Sensor {
 
     // @return String representation
     String toString(void);
+
+    String getID(void);
 
   protected:
     /** 

@@ -51,6 +51,8 @@ class Actuator {
     // @return String representation of this actuator
     String toString(void);
 
+    String getID(void);
+
   protected:
     /**
      * Initializes actuator. To be implemented by the child class.

@@ -14,7 +14,7 @@ YF_B1::YF_B1(const uint8_t pin) : Sensor(&id, &datasetup, YF_B1_DELTA), Interrup
 // PUBLIC METHODS
 
 errorlevel_t YF_B1::initialize(void) {
-  pinMode(this->pin, INPUT);
+  pinMode(pin, INPUT);
   // Attach rising-edge interrupt to our digital pin, triggers flow()
   attachInstanceInterrupt(RISING);
   return ERR_NONE;
@@ -34,5 +34,5 @@ errorlevel_t YF_B1::read(float* data, uint8_t numdata) {
 }
 
 void YF_B1::handleInterrupt(void) {
-  this->flow_count++;
+  flow_count++;
 }

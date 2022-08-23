@@ -16,12 +16,12 @@ GE_2158::GE_2158(const uint8_t pin) : Sensor(&id, &datasetup, GE_2158_DELTA), pi
 // PUBLIC METHODS
 
 errorlevel_t GE_2158::initialize(void) {
-  pinMode(this->pin, INPUT);
+  pinMode(pin, INPUT);
   return ERR_NONE;
 }
 
 errorlevel_t GE_2158::read(float* data, uint8_t numdata) {
-  uint16_t read = analogRead(this->pin);
+  uint16_t read = analogRead(pin);
   float v = read * GE_2158_V / 1023;
   float temp = (log((v * GE_2158_R) / (GE_2158_V - v) - GE_2158_C) - GE_2158_B) / GE_2158_A;
 

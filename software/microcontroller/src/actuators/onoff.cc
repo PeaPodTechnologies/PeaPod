@@ -14,12 +14,12 @@ OnOff::OnOff(const char* const* id, const uint8_t pin) : Actuator(id, 0), pin(pi
 // PUBLIC METHODS
 
 errorlevel_t OnOff::initialize(void) {
-  pinMode(this->pin, OUTPUT);
+  pinMode(pin, OUTPUT);
   return ERR_NONE;
 }
 
 errorlevel_t OnOff::set(float target) {
   // Round to 0 or 1
-  digitalWrite(this->pin, target >= 0.5 ? 1 : 0);
+  digitalWrite(pin, target >= 0.5 ? 1 : 0);
   return ERR_NONE;
 }

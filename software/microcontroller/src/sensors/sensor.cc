@@ -88,7 +88,7 @@ SensorState* Sensor::getState(void) {
 }
 
 String Sensor::toString(void) {
-  String s = String((const char*)(this->_id)) + " (";
+  String s = String((const char*)(_id)) + " (";
   for (int i = 0; i < state.numdata; i++) {
     s += state.data[i].label;
     if (i < state.numdata - 1) {
@@ -96,4 +96,8 @@ String Sensor::toString(void) {
     }
   }
   return s + ")";
+}
+
+String Sensor::getID(void) {
+  return String((const char*)_id);
 }

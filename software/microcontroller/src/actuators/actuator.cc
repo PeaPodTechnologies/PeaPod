@@ -76,5 +76,9 @@ void Actuator::setTarget(float target) {
 }
 
 String Actuator::toString(void) {
-  return String((const char*)(this->_id));
+  return String((const char*)_id);
+}
+
+String Actuator::getID(void) {
+  return String((const char*)_id);
 }

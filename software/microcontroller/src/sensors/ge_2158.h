@@ -16,6 +16,7 @@
 #define GE_2158_R     3000      // Series resistor
 
 // Equation: T(v) = (ln((v * GE_2158_R) / (GE_2158_V - v) - GE_2158_C) - GE_2158_B) / GE_2158_A
+// Fit to data tables found in manufacturer datasheet
 #define GE_2158_A     -0.055481 // A parameter
 #define GE_2158_B     9.30108   // B parameter
 #define GE_2158_C     122.933   // C parameter

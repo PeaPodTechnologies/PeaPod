@@ -8,6 +8,7 @@ import { loadPeaPodEnv, loadAuthEnv, loadFirebaseEnv, loadIoTEnv } from './env';
 import MicroController, { ControllerInstructions, Controller, CONTROLLER_REVISION } from './controller';
 import OnlinePublisher, { DataBatch, DataSet, Publisher, OfflinePublisher, PublishingMode } from './publisher';
 import { sleep } from './utils';
+import { ControlSystem } from './controlsystem';
 
 // CONSTANTS
 
@@ -25,40 +26,6 @@ const REFRESH_INTERVAL = 1000;
  * Period of the idle loop.
  */
 const IDLE_PERIOD = 5000;
-
-// GLOBAL VARIABLES
- 
-/**
- * Batch of data to be published.
- */
-let batch: DataBatch = { };
- 
-/**
- * JS interval to trigger batch publishing.
- */
-let batchInterval: NodeJS.Timer;
-
-/**
- * Currently loaded schedule.
- */
-let schedule: EnvironmentSchedule;
-
-/** 
- * Current environment schedule targets.
- */
-let targets: EnvironmentTargets = {};
- 
-/** 
- * Latest controller instruction set.
- */
-let instructions: ControllerInstructions = {};
-
-/**
- * 
- */
-let data: DataSet = {};
-
-let controlSystems: {[key: string]: ControlSystem}
 
 // DECLARATIONS
 
@@ -94,12 +61,65 @@ type EnvironmentTargetPhase = {
 
 /**
  * Main driver class.
+ * 
+ * LINGO LESSON:
+ * > Derived from the Solution Overview/Progress Report
+ * 
+ * VARIABLE = A **MEASURABLE** environment state variable, both feedback-driven and not. E.g. "air-temperature", "air-humidity", "co2-ppm", 
+ * PARAMETER = A **CONTROLLABLE** environment state variable, both feedback-driven and not. E.g. "air-temperature", "lighting_750nm", "dosage_pump1"
+ * 
+ * INSTRUCTION
+ * SCHEDULE  = . See `../assets/schedule_schema.json`
+ * TARGETS = Desired state for each parameter. PeaPod scheduler state variables. Modified
+ * RUN
  */
 export default class PeaPod {
-
+  // INTERFACES
   controller: Controller;
   publisher: Publisher;
+
+  // SCHEDULER FIELDS
+
+  /**
+   * Currently loaded schedule.
+   */
+  private schedule?: EnvironmentSchedule;
+
+  /**
+   * Start time of the last run.
+   */
   private startTime: number = 0;
+
+  /** 
+   * Current environment schedule targets.
+   */
+  private targets: EnvironmentTargets = { };
+
+  /**
+   * Latest controller data for each variable
+   */
+  private data: DataSet = { };
+
+  // CONTROLLER FIELDS
+
+  private controlSystems?: {[key: string]: ControlSystem};
+
+  /** 
+   * Latest controller instruction set.
+   */
+   private instructions: ControllerInstructions = { };
+
+  // PUBLISHER FIELDS
+
+  /**
+   * Batch of data to be published.
+   */
+  private batch: DataBatch = { };
+  
+  /**
+   * JS interval to trigger batch publishing.
+   */
+  private batchInterval?: NodeJS.Timer;
 
   constructor(pm: PublishingMode) {
     const ENV_PEAPOD = loadPeaPodEnv();
@@ -178,6 +198,10 @@ export default class PeaPod {
             timestamp: Date.now(),
             value: msg.data.value,
           });
+          // Set actuator values
+          if (controlSystems[msg.data.label] !== undefined) {
+            controlSystems[msg.data.label].setValue(msg.data.value);
+          }
           break;
         case "revision":
           this.controller.write(instructions);
@@ -198,12 +222,14 @@ export default class PeaPod {
           Spinner.log(`[${ chalk.yellow('PUBLISHER') } | SCHEDULE] - ${ JSON.stringify(config.data.name) }`);
 
           if (config.data.revision != CONTROLLER_REVISION) {
-            Spinner.fail(`Failed to load schedule '${config.data.name}', software version mismatch (Expected ${CONTROLLER_REVISION}, got ${config.data.revision}).`);
+            Spinner.fail(`Failed to load schedule '${config.data.name}' (${config.data.id}), software version mismatch (Expected ${CONTROLLER_REVISION}, got ${config.data.revision}).`);
             break;
           }
 
+          Spinner.succeed(`Successfully loaded schedule '${config.data.name}' (${config.data.id}).`);
+
           // Save new schedule
-          schedule = config.data;
+          this.schedule = config.data;
 
           break;
         default:
@@ -226,9 +252,9 @@ export default class PeaPod {
     this.startTime = Date.now();
 
     // Start schedule phase 0
-    
-    for (const parameter of Object.keys(schedule.parameters)) {
-      this.startPhase(schedule, parameter);
+    let phasePromises = [];
+    for (const parameter of Object.keys(this.schedule.parameters)) {
+      phasePromises.push(this.startPhase(schedule, parameter));
     }
 
     // Reset
@@ -251,17 +277,36 @@ export default class PeaPod {
         return;
       }
       
-      Spinner.log(`[${ chalk.magenta('PUBLISH') }] - Batch of ${ Object.values(batch).reduce((sum, entry) => { return sum+entry.length }, 0) } datapoints published.`);
+      Spinner.log(`[${ chalk.magenta('PUBLISH') }] - Batch of ${ Object.values(batch).reduce((sum, entry) => (sum+entry.length), 0) } datapoints published.`);
       
       // Reset batch to empty
       batch = { };
     }, BATCH_PUBLISH_INTERVAL*1000);
 
-    refreshInterval = set
+    // Refresh control system values and targets, update actuator instructions, send new instructions
+    const refreshInterval = setInterval(()=>{
+      let instruction: ControllerInstructions = {};
+      for (const parameter of Object.keys(targets)) {
+        const cs = controlSystems[parameter];
+        cs.setTarget(targets[parameter]);
+        instruction[cs.actuator] = cs.refresh();
+      }
+      this.controller.write(instruction);
+    }, REFRESH_INTERVAL);
+
+    // When all phases for all parameters are complete, clear refresh interval, send "off" instruction, resolve this promise
+    return Promise.all(phasePromises).then(()=>{
+      clearInterval(refreshInterval);
+      let off: ControllerInstructions = {};
+      for (const parameter of Object.keys(targets)) {
+        off[controlSystems[parameter].actuator] = 0;
+      }
+      this.controller.write(off);
+    })
   }
 
   /**
-   * Start the schedule for a single parameter. Runs recursively until all phases are executed.
+   * Start the schedule for a single parameter. Runs recursively until all phases are executed. Sets targets.
    * @param schedule Environment schedule
    * @param parameter Parameter to start
    * @param n Phase to start at
