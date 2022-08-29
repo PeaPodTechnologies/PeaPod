@@ -5,8 +5,18 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 import { loadPeaPodEnv, loadAuthEnv, loadFirebaseEnv, loadIoTEnv } from './env';
-import MicroController, { ControllerInstructions, Controller, CONTROLLER_REVISION } from './controller';
-import OnlinePublisher, { DataBatch, DataSet, Publisher, OfflinePublisher, PublishingMode } from './publisher';
+import MicroController, {
+	ControllerInstructions,
+	Controller,
+	CONTROLLER_REVISION
+} from './controller';
+import OnlinePublisher, {
+	DataBatch,
+	DataSet,
+	Publisher,
+	OfflinePublisher,
+	PublishingMode
+} from './publisher';
 import { sleep } from './utils';
 import { ControlSystem } from './controlsystem';
 
@@ -30,347 +40,397 @@ const IDLE_PERIOD = 5000;
 // DECLARATIONS
 
 export type EnvironmentSchedule = {
-  id: string,
-  name: string,
-  revision: number,
-  parameters: {
-    [key: string]: EnvironmentTargetPhase[]
-  }
+	id: string;
+	name: string;
+	revision: number;
+	parameters: {
+		[key: string]: EnvironmentTargetPhase[];
+	};
 };
 
 type EnvironmentTargets = {
-  [key: string]: number
+	[key: string]: number;
 };
 
-type EnvironmentTargetPhase = {
-  type: 'piecewise',
-  end: number,
-  values: {
-    value: number,
-    timestamp: number,
-  }[]
-} | {
-  type: 'periodic',
-  period: number,
-  end: number,
-  values: {
-    value: number,
-    duration: number,
-  }[]
-};
+type EnvironmentTargetPhase =
+	| {
+			type: 'piecewise';
+			end: number;
+			values: {
+				value: number;
+				timestamp: number;
+			}[];
+	  }
+	| {
+			type: 'periodic';
+			period: number;
+			end: number;
+			values: {
+				value: number;
+				duration: number;
+			}[];
+	  };
 
 /**
  * Main driver class.
- * 
+ *
  * LINGO LESSON:
  * > Derived from the Solution Overview/Progress Report
- * 
- * VARIABLE = A **MEASURABLE** environment state variable, both feedback-driven and not. E.g. "air-temperature", "air-humidity", "co2-ppm", 
+ *
+ * VARIABLE = A **MEASURABLE** environment state variable, both feedback-driven and not. E.g. "air-temperature", "air-humidity", "co2-ppm",
  * PARAMETER = A **CONTROLLABLE** environment state variable, both feedback-driven and not. E.g. "air-temperature", "lighting_750nm", "dosage_pump1"
- * 
+ *
  * INSTRUCTION
  * SCHEDULE  = . See `../assets/schedule_schema.json`
  * TARGETS = Desired state for each parameter. PeaPod scheduler state variables. Modified
  * RUN
  */
 export default class PeaPod {
-  // INTERFACES
-  controller: Controller;
-  publisher: Publisher;
+	// INTERFACES
+	controller: Controller;
+	publisher: Publisher;
 
-  // SCHEDULER FIELDS
+	// SCHEDULER FIELDS
 
-  /**
-   * Currently loaded schedule.
-   */
-  private schedule?: EnvironmentSchedule;
+	/**
+	 * Currently loaded schedule.
+	 */
+	private schedule?: EnvironmentSchedule;
 
-  /**
-   * Start time of the last run.
-   */
-  private startTime: number = 0;
+	/**
+	 * Start time of the last run.
+	 */
+	private startTime: number = 0;
 
-  /** 
-   * Current environment schedule targets.
-   */
-  private targets: EnvironmentTargets = { };
+	/**
+	 * Current environment schedule targets.
+	 */
+	private targets: EnvironmentTargets = {};
 
-  /**
-   * Latest controller data for each variable
-   */
-  private data: DataSet = { };
+	/**
+	 * Latest controller data for each variable
+	 */
+	private data: DataSet = {};
 
-  // CONTROLLER FIELDS
+	// CONTROLLER FIELDS
 
-  private controlSystems?: {[key: string]: ControlSystem};
+	private controlSystems?: { [key: string]: ControlSystem };
 
-  /** 
-   * Latest controller instruction set.
-   */
-   private instructions: ControllerInstructions = { };
+	/**
+	 * Latest controller instruction set.
+	 */
+	private instructions: ControllerInstructions = {};
 
-  // PUBLISHER FIELDS
+	// PUBLISHER FIELDS
 
-  /**
-   * Batch of data to be published.
-   */
-  private batch: DataBatch = { };
-  
-  /**
-   * JS interval to trigger batch publishing.
-   */
-  private batchInterval?: NodeJS.Timer;
+	/**
+	 * Batch of data to be published.
+	 */
+	private batch: DataBatch = {};
 
-  constructor(pm: PublishingMode) {
-    const ENV_PEAPOD = loadPeaPodEnv();
+	/**
+	 * JS interval to trigger batch publishing.
+	 */
+	private batchInterval?: NodeJS.Timer;
 
-    // CREATE CONTROLLER
-    this.controller = new MicroController(ENV_PEAPOD.serialport);
+	constructor(pm: PublishingMode) {
+		const ENV_PEAPOD = loadPeaPodEnv();
 
-    // CREATE PUBLISHER
-    Spinner.info(`Running ${ chalk.green('PeaPod') } in ${ pm } mode.`);
-    switch (pm) {
-      
-      case PublishingMode.ONLINE:
-        initializeApp(loadFirebaseEnv());
-        if (getApps().length === 0) {
-          throw new Error("Failed to initialize Firebase app! Check .env fields.");
-        } else {
-          Spinner.succeed(`Initialized Firebase app!`);
-        }
-        this.publisher = new OnlinePublisher(loadIoTEnv(), loadAuthEnv());
-        break;
+		// CREATE CONTROLLER
+		this.controller = new MicroController(ENV_PEAPOD.serialport);
 
-      case PublishingMode.OFFLINE:
-      default:
-        this.publisher = new OfflinePublisher();
-        break;
-    }
-  }
+		// CREATE PUBLISHER
+		Spinner.info(`Running ${chalk.green('PeaPod')} in ${pm} mode.`);
+		switch (pm) {
+			case PublishingMode.ONLINE:
+				initializeApp(loadFirebaseEnv());
+				if (getApps().length === 0) {
+					throw new Error('Failed to initialize Firebase app! Check .env fields.');
+				} else {
+					Spinner.succeed(`Initialized Firebase app!`);
+				}
+				this.publisher = new OnlinePublisher(loadIoTEnv(), loadAuthEnv());
+				break;
 
-  async idle(): Promise<NodeJS.Timer> {
-    await this.controller.start(msg => {
-      switch (msg.type) {
-        case "data":
-          data[msg.data.label] = msg.data.value;
-          Screen.setData(data);
-          Screen.render();
-          break;
-        case "revision":
-          this.controller.write(instructions);
-          break;
-        default:
-          // TODO: Console box?
-          Spinner.log(`[${ chalk.blueBright('CONTROLLER') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`);
-      }
-    });
+			case PublishingMode.OFFLINE:
+			default:
+				this.publisher = new OfflinePublisher();
+				break;
+		}
+	}
 
-    // Angle to "wheel" the lights
-    let angle = 0;
+	async idle(): Promise<NodeJS.Timer> {
+		await this.controller.start(msg => {
+			switch (msg.type) {
+				case 'data':
+					this.data[msg.data.label] = msg.data.value;
+					Screen.setData(this.data);
+					Screen.render();
+					break;
+				case 'revision':
+					this.controller.write(instructions);
+					break;
+				default:
+					// TODO: Console box?
+					Spinner.log(
+						`[${chalk.blueBright('CONTROLLER')} | ${msg.type.toUpperCase()}] - ${JSON.stringify(
+							msg.data
+						)}`
+					);
+			}
+		});
 
-    const idleInterval = setInterval(() => {
-      const idleInstructions = {
-        "led_blue": Math.sin(angle                  ) / 2 + 0.5,
-        "led_cool": Math.sin(angle + 2 * Math.PI / 5) / 2 + 0.5,
-        "led_warm": Math.sin(angle + 4 * Math.PI / 5) / 2 + 0.5,
-        "led_red":  Math.sin(angle + 6 * Math.PI / 5) / 2 + 0.5,
-        "led_far":  Math.sin(angle + 8 * Math.PI / 5) / 2 + 0.5,
-      };
-      this.controller.write(idleInstructions);
+		// Angle to "wheel" the lights
+		let angle = 0;
 
-      angle += (2 * Math.PI) / (IDLE_PERIOD / REFRESH_INTERVAL);
-      angle -= (angle > 2 * Math.PI) ? (2 * Math.PI) : 0;
-    }, REFRESH_INTERVAL);
-    return idleInterval;
-  }
+		const idleInterval = setInterval(() => {
+			const idleInstructions = {
+				led_blue: Math.sin(angle) / 2 + 0.5,
+				led_cool: Math.sin(angle + (2 * Math.PI) / 5) / 2 + 0.5,
+				led_warm: Math.sin(angle + (4 * Math.PI) / 5) / 2 + 0.5,
+				led_red: Math.sin(angle + (6 * Math.PI) / 5) / 2 + 0.5,
+				led_far: Math.sin(angle + (8 * Math.PI) / 5) / 2 + 0.5
+			};
+			this.controller.write(idleInstructions);
 
-  async start(): Promise<void> {
-    // INITIALIZE CONTROLLER
-    await this.controller.start(msg => {
-      // Handle different message types
-      // TODO: Handle error, etc. types
-      switch (msg.type) {
-        case "data":
-          // Initialize batch array
-          if (batch[msg.data.label] === undefined) batch[msg.data.label] = [];
-          // Accumulate data into batches
-          batch[msg.data.label].push({
-            timestamp: Date.now(),
-            value: msg.data.value,
-          });
-          // Set actuator values
-          if (controlSystems[msg.data.label] !== undefined) {
-            controlSystems[msg.data.label].setValue(msg.data.value);
-          }
-          break;
-        case "revision":
-          this.controller.write(instructions);
-          break;
-        default:
-          Spinner.log(`[${ chalk.blueBright('CONTROLLER') } | ${ msg.type.toUpperCase() }] - ${ JSON.stringify(msg.data) }`);
-      }
-    });
+			angle += (2 * Math.PI) / (IDLE_PERIOD / REFRESH_INTERVAL);
+			angle -= angle > 2 * Math.PI ? 2 * Math.PI : 0;
+		}, REFRESH_INTERVAL);
+		return idleInterval;
+	}
 
-    // Wait for all POST messages
-    await sleep(1000);
+	async start(): Promise<void> {
+		// INITIALIZE CONTROLLER
+		await this.controller.start(msg => {
+			// Handle different message types
+			// TODO: Handle error, etc. types
+			switch (msg.type) {
+				case 'data':
+					// Initialize batch array
+					if (batch[msg.data.label] === undefined) batch[msg.data.label] = [];
+					// Accumulate data into batches
+					batch[msg.data.label].push({
+						timestamp: Date.now(),
+						value: msg.data.value
+					});
+					// Set actuator values
+					if (controlSystems[msg.data.label] !== undefined) {
+						controlSystems[msg.data.label].setValue(msg.data.value);
+					}
+					break;
+				case 'revision':
+					this.controller.write(instructions);
+					break;
+				default:
+					Spinner.log(
+						`[${chalk.blueBright('CONTROLLER')} | ${msg.type.toUpperCase()}] - ${JSON.stringify(
+							msg.data
+						)}`
+					);
+			}
+		});
 
-    // INITIALIZE PUBLISHER
-    let { projectid, projectname, run } = await this.publisher.start(config => {
-      Spinner.log(`[${ chalk.yellow('PUBLISHER') } | SCHEDULE] - ${ config }`);
-      switch (config.type) {
-        case 'schedule':
-          Spinner.log(`[${ chalk.yellow('PUBLISHER') } | SCHEDULE] - ${ JSON.stringify(config.data.name) }`);
+		// Wait for all POST messages
+		await sleep(1000);
 
-          if (config.data.revision != CONTROLLER_REVISION) {
-            Spinner.fail(`Failed to load schedule '${config.data.name}' (${config.data.id}), software version mismatch (Expected ${CONTROLLER_REVISION}, got ${config.data.revision}).`);
-            break;
-          }
+		// INITIALIZE PUBLISHER
+		let { projectid, projectname, run } = await this.publisher.start(
+			config => {
+				Spinner.log(`[${chalk.yellow('PUBLISHER')} | SCHEDULE] - ${config}`);
+				switch (config.type) {
+					case 'schedule':
+						Spinner.log(
+							`[${chalk.yellow('PUBLISHER')} | SCHEDULE] - ${JSON.stringify(config.data.name)}`
+						);
 
-          Spinner.succeed(`Successfully loaded schedule '${config.data.name}' (${config.data.id}).`);
+						if (config.data.revision != CONTROLLER_REVISION) {
+							Spinner.fail(
+								`Failed to load schedule '${config.data.name}' (${config.data.id}), software version mismatch (Expected ${CONTROLLER_REVISION}, got ${config.data.revision}).`
+							);
+							break;
+						}
 
-          // Save new schedule
-          this.schedule = config.data;
+						Spinner.succeed(
+							`Successfully loaded schedule '${config.data.name}' (${config.data.id}).`
+						);
 
-          break;
-        default:
-          Spinner.log(`[${ chalk.yellow('PUBLISHER') } | CONFIG] - ${ JSON.stringify(config.data) }`);
-      }
-    }, command => {
-      switch (command.type) {
-        case 'instructions':
-          Spinner.log(`[${ chalk.yellow('PUBLISHER') } | INSTRUCTIONS] - ${ JSON.stringify(command.data) }`);
-          this.controller.write(command.data);
-          break;
-        default:
-          Spinner.log(`[${ chalk.yellow('PUBLISHER') } | COMMAND] - ${ JSON.stringify(command) }`);
-      }
-    });
+						// Save new schedule
+						this.schedule = config.data;
 
-    // START
-    Spinner.log(`${ chalk.green('PeaPod') } start - Project ${ chalk.bold(projectname ?? projectid) }, Run ${ chalk.bold(run) }`);
+						break;
+					default:
+						Spinner.log(`[${chalk.yellow('PUBLISHER')} | CONFIG] - ${JSON.stringify(config.data)}`);
+				}
+			},
+			command => {
+				switch (command.type) {
+					case 'instructions':
+						Spinner.log(
+							`[${chalk.yellow('PUBLISHER')} | INSTRUCTIONS] - ${JSON.stringify(command.data)}`
+						);
+						this.controller.write(command.data);
+						break;
+					default:
+						Spinner.log(`[${chalk.yellow('PUBLISHER')} | COMMAND] - ${JSON.stringify(command)}`);
+				}
+			}
+		);
 
-    this.startTime = Date.now();
+		// START
+		Spinner.log(
+			`${chalk.green('PeaPod')} start - Project ${chalk.bold(
+				projectname ?? projectid
+			)}, Run ${chalk.bold(run)}`
+		);
 
-    // Start schedule phase 0
-    let phasePromises = [];
-    for (const parameter of Object.keys(this.schedule.parameters)) {
-      phasePromises.push(this.startPhase(schedule, parameter));
-    }
+		this.startTime = Date.now();
 
-    // Reset
-    batch = { };
+		// Start schedule phase 0
+		let phasePromises = [];
+		for (const parameter of Object.keys(this.schedule.parameters)) {
+			phasePromises.push(this.startPhase(schedule, parameter));
+		}
 
-    batchInterval = setInterval(() => {
-      // Publish entire batch
-      try {
-        this.publisher.publish({
-          type: 'data',
-          metadata: {
-            owner: (getApps().length ? (getAuth().currentUser?.uid ?? 'user') : 'user'),
-            project: projectid,
-            run
-          },
-          data: batch
-        });
-      } catch {
-        Spinner.fail('Batch publish failed, will retry...');
-        return;
-      }
-      
-      Spinner.log(`[${ chalk.magenta('PUBLISH') }] - Batch of ${ Object.values(batch).reduce((sum, entry) => (sum+entry.length), 0) } datapoints published.`);
-      
-      // Reset batch to empty
-      batch = { };
-    }, BATCH_PUBLISH_INTERVAL*1000);
+		// Reset
+		batch = {};
 
-    // Refresh control system values and targets, update actuator instructions, send new instructions
-    const refreshInterval = setInterval(()=>{
-      let instruction: ControllerInstructions = {};
-      for (const parameter of Object.keys(targets)) {
-        const cs = controlSystems[parameter];
-        cs.setTarget(targets[parameter]);
-        instruction[cs.actuator] = cs.refresh();
-      }
-      this.controller.write(instruction);
-    }, REFRESH_INTERVAL);
+		batchInterval = setInterval(() => {
+			// Publish entire batch
+			try {
+				this.publisher.publish({
+					type: 'data',
+					metadata: {
+						owner: getApps().length ? getAuth().currentUser?.uid ?? 'user' : 'user',
+						project: projectid,
+						run
+					},
+					data: batch
+				});
+			} catch {
+				Spinner.fail('Batch publish failed, will retry...');
+				return;
+			}
 
-    // When all phases for all parameters are complete, clear refresh interval, send "off" instruction, resolve this promise
-    return Promise.all(phasePromises).then(()=>{
-      clearInterval(refreshInterval);
-      let off: ControllerInstructions = {};
-      for (const parameter of Object.keys(targets)) {
-        off[controlSystems[parameter].actuator] = 0;
-      }
-      this.controller.write(off);
-    })
-  }
+			Spinner.log(
+				`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce(
+					(sum, entry) => sum + entry.length,
+					0
+				)} datapoints published.`
+			);
 
-  /**
-   * Start the schedule for a single parameter. Runs recursively until all phases are executed. Sets targets.
-   * @param schedule Environment schedule
-   * @param parameter Parameter to start
-   * @param n Phase to start at
-   */
-  private startPhase(schedule: EnvironmentSchedule, parameter: string, n: number = 0): Promise<void> {
-    return new Promise(res => {
-      // Break once we've reached the end
-      if(n >= schedule.parameters[parameter].length) {
-        res();
-        return;
-      }
+			// Reset batch to empty
+			batch = {};
+		}, BATCH_PUBLISH_INTERVAL * 1000);
 
-      const phase = schedule.parameters[parameter][n];
+		// Refresh control system values and targets, update actuator instructions, send new instructions
+		const refreshInterval = setInterval(() => {
+			let instruction: ControllerInstructions = {};
+			for (const parameter of Object.keys(targets)) {
+				const cs = controlSystems[parameter];
+				cs.setTarget(targets[parameter]);
+				instruction[cs.actuator] = cs.refresh();
+			}
+			this.controller.write(instruction);
+		}, REFRESH_INTERVAL);
 
-      let timeouts: NodeJS.Timeout[] = [];
-      let intervals: NodeJS.Timer[] = [];
+		// When all phases for all parameters are complete, clear refresh interval, send "off" instruction, resolve this promise
+		return Promise.all(phasePromises).then(() => {
+			clearInterval(refreshInterval);
+			let off: ControllerInstructions = {};
+			for (const parameter of Object.keys(targets)) {
+				off[controlSystems[parameter].actuator] = 0;
+			}
+			this.controller.write(off);
+		});
+	}
 
-      // Extract all targets
-      switch (phase.type) {
-        case 'piecewise':
-          // Trigger each piecewise expression at its timestamp
-          for (const value of phase.values) {
-            let t = setTimeout(() => {
-              // Assign value
-              targets[parameter] = value.value;
-              // Remove this timeout if/when it self-clears
-              timeouts.splice(timeouts.findIndex(v => v == t), 1);
-            }, value.timestamp - (Date.now() - this.startTime));
-            timeouts.push(t);
-          }
-          break;
-        case 'periodic':
-          // Retrigger each value at a fixed period, with duration offset
-          let durationSum = 0;
-          phase.values.forEach((value, i) => {
-            // Await duration offset
-            let t = setTimeout(() => {
-              // Start the interval
-              intervals.push(setInterval(() => {
-                // Assign value
-                targets[parameter] = value.value;
-              }, phase.period));
-              // Remove this timeout if/when it self-clears
-              timeouts.splice(timeouts.findIndex(v => v == t), 1);
-              // First expression? Trigger now.
-              // Else: Timeout for the sum of all previous expressions' durations, minus the elapsed time in this phase
-            }, i > 0 ? durationSum - (Date.now() - (n > 0 ? schedule.parameters[parameter][n-1].end : this.startTime)) : 0);
-            durationSum += value.duration;
-            timeouts.push(t);
-          });
-          break;
-      }
+	/**
+	 * Start the schedule for a single parameter. Runs recursively until all phases are executed. Sets targets.
+	 * @param schedule Environment schedule
+	 * @param parameter Parameter to start
+	 * @param n Phase to start at
+	 */
+	private startPhase(
+		schedule: EnvironmentSchedule,
+		parameter: string,
+		n: number = 0
+	): Promise<void> {
+		return new Promise(res => {
+			// Break once we've reached the end
+			if (n >= schedule.parameters[parameter].length) {
+				res();
+				return;
+			}
 
-      // End this phase once Date.now() - startTime > end, and start the next phase, waiting for its completion
-      setTimeout(() => {
-        // Clear all outstanding timeouts and intervals
-        for (const interval of intervals) {
-          clearInterval(interval);
-        }
-        for (const timeout of timeouts) {
-          clearTimeout(timeout);
-        }
-        this.startPhase(schedule, parameter, n+1).then(() => { res(); });
-      }, phase.end - (Date.now() - this.startTime));
-    });
-  }
+			const phase = schedule.parameters[parameter][n];
+
+			let timeouts: NodeJS.Timeout[] = [];
+			let intervals: NodeJS.Timer[] = [];
+
+			// Extract all targets
+			switch (phase.type) {
+				case 'piecewise':
+					// Trigger each piecewise expression at its timestamp
+					for (const value of phase.values) {
+						let t = setTimeout(() => {
+							// Assign value
+							targets[parameter] = value.value;
+							// Remove this timeout if/when it self-clears
+							timeouts.splice(
+								timeouts.findIndex(v => v == t),
+								1
+							);
+						}, value.timestamp - (Date.now() - this.startTime));
+						timeouts.push(t);
+					}
+					break;
+				case 'periodic':
+					// Retrigger each value at a fixed period, with duration offset
+					let durationSum = 0;
+					phase.values.forEach((value, i) => {
+						// Await duration offset
+						let t = setTimeout(
+							() => {
+								// Start the interval
+								intervals.push(
+									setInterval(() => {
+										// Assign value
+										targets[parameter] = value.value;
+									}, phase.period)
+								);
+								// Remove this timeout if/when it self-clears
+								timeouts.splice(
+									timeouts.findIndex(v => v == t),
+									1
+								);
+								// First expression? Trigger now.
+								// Else: Timeout for the sum of all previous expressions' durations, minus the elapsed time in this phase
+							},
+							i > 0
+								? durationSum -
+										(Date.now() -
+											(n > 0 ? schedule.parameters[parameter][n - 1].end : this.startTime))
+								: 0
+						);
+						durationSum += value.duration;
+						timeouts.push(t);
+					});
+					break;
+			}
+
+			// End this phase once Date.now() - startTime > end, and start the next phase, waiting for its completion
+			setTimeout(() => {
+				// Clear all outstanding timeouts and intervals
+				for (const interval of intervals) {
+					clearInterval(interval);
+				}
+				for (const timeout of timeouts) {
+					clearTimeout(timeout);
+				}
+				this.startPhase(schedule, parameter, n + 1).then(() => {
+					res();
+				});
+			}, phase.end - (Date.now() - this.startTime));
+		});
+	}
 }
