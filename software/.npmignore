@@ -1,16 +1,35 @@
-node_modules/
-tsconfig.json
-
+# TypeScript files (keep type files)
 *.ts
 !*.d.ts
+tsconfig.json
 
+# Aux files
 .git/
-.gitignore
+**/.gitignore
 .gitattributes
 .npmignore
 package-lock.json
 
+# Unpublishables
 .env
+.env.template
 *.pem
 deviceInfo.json
 projects/
+
+# Test Scripts
+tests/
+*.test.js
+*.test.js.map
+*.test.d.ts
+*.test.ts
+jest.config.js
+
+# Arduino Binaries
+*.elf
+*.hex
+*.eep
+*.bin
+*.oo
+**/.vscode/
+**/.pio/

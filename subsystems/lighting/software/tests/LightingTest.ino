@@ -1,4 +1,4 @@
-#include "LED.h"
+#include "led.h"
 #include "Actuator.h"
 
 #define NUM_ACTUATORS 5
@@ -27,7 +27,7 @@ void setup(){
     while(!Serial);
 
     bool success = true;
-    for(int i = 0; i < NUM_ACTUATORS; i++){
+    for(int i = 0; i < NUM_ACTUATORS; ++i){
         bool latest = actuators[i]->begin();
         success &= latest;
         if(!latest){
@@ -73,7 +73,7 @@ bool handleInstruction(String in){
         float value = in.substring(split+1).toFloat();
 
         //INSTRUCTION HANDLING IF BLOCKS - EACH RETURNS TRUE
-        for(int i = 0; i < NUM_ACTUATORS; i++){
+        for(int i = 0; i < NUM_ACTUATORS; ++i){
             if(var.equals(actuators[i]->evname)){
                 Serial.print("{\"type\":\"debug\",\"msg\":\"Actuator '");
                 Serial.print(actuators[i]->name);
