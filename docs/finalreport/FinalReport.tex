@@ -49,57 +49,187 @@
 \tableofcontents
 \newpage
 
-\section{Summary}
+\section{Technology Description and Progress}
 % How does it work?
 % What is novel, sustainable, and innovative?
 % What foods does it create?
 % How are you minimizing inputs and maximizing outputs?
 
+% With a focus on progress or changes made during Phase 2 of the challenge, describe what the food production technology is, what it does, how it functions, and how the crew will interact with it. Include descriptions of major hardware components and processes. (limit 4000 characters).
+
 \input{../tex/Process.tex}
 
-\section{Inputs}
+\section{Adherence to Constraints}
 
-\section{Outputs}
+\subsection{Volume}
+% 100chars
 
-\input{../tex/TestingPlan.tex}
+\textbf{Constraint}: \textit{Fits through 1.07m x 1.90m doorway; W < 1.820m, D < 2.438m, H < 2.591m; V<= 2m${}^3$}
+
+\textbf{Standard Expanded PeaPod}: 4x3x1 units (0.5m on all sides) + control module = 2m wide x 1.7m tall x .5m deep = 1.5m${}^3$ (< 2)
+
+With width treated as depth for the purposes of the considerations of the "room size" constraint, the Standard meets this constraint.
+
+\subsection{Power}
+% 1000chars
+
+\textbf{Constraint}: \textit{Avg < 1500 W, Peak < 3000 W}
+
+% For calculations and justification, see preliminary calculations Appendix \ref{app:power}.
+
+\textbf{Total Power Consumption}: 1,284W
+
+\subsection{Water Consumption}
+% limit 1000 characters
+% CNet = (Initial water input + water added over time + water used for cleaning – condensed/ transpired water provided back to crew)
+
+\textbf{Unconstrained}
+
+% For calculations and justification, see preliminary calculations Appendix \ref{app:water}.
+
+\textit{Humidification}: CNet = \textbf{500mL initial + 50mL per hour}
+
+\textit{Aeroponics}: CNet = \textbf{1.25L primed + 1.2L per hour}.
+
+\subsection{Mass}
+% limit 1000chars
+
+% For part breakdown, calculations, and justification, see preliminary calculations Appendix \ref{app:mass}.
+
+Total: \textbf{70kg}
+
+\subsection{Data Connection}
+% limit 1000 characters
+
+% \textit{Automation}: All of PeaPod's operation is automated, save for a select few setup, maintenance, and harvest tasks. This is controlled by a central computer, which uses a "program" to enact the desired environment at each point in time throughout the plant life cycle. 
+\textit{Remote Control}: The program may be changed \uline{instantaneously} as an \textbf{appended instruction set} with immediate effect.
+% \textit{Feedback}: The feedback sensors provide the computer with information that will influence the control it exerts. For example, if the program indicates the leaf zone temperature should be set to 22 degrees C, the computer would apply greater power to the heater if the current temperature was 18 degrees C as opposed to 21 degrees C. This forms a control loop for each parameter, relying on one of many control functions (bang-bang, PID, etc.).
+
+\textit{Data Presentation}: Plant and environment data can be viewed with \uline{live updates and video feed}.
+
+\subsection{Crew Time}
+
+\textbf{Constraint}: \textit{4 hrs/week}
+
+For calculations and justification, see preliminary calculations Appendix.
+
+Total setup process time (2 trays per unit, 12 units, 1 CM): \textbf{17.5 hours} (\textit{one person}) or \textbf{4.5 hours} (\textit{crew of 4})
+
+Total maintenance time per week: \textbf{1-2 hours} (depending on program)
+
+\subsection{Operational Constraints} 
+
+\textbf{Constraint}: \textit{Terrestrial: gravity (9.81 m/s${}^2$), ambient atmospheric pressure (101,325 Pa), ambient atmospheric temperature (22 °C), ambient atmospheric humidity (50 \%RH)}
+
+Design operates in terrestrial conditions.
+
+Ambient pressure: tank, bladder, and nozzle are designed to produce indicated outputs at standard air pressure
+Ambient temperature and humidity: less concern, housing is sealed and insulated
+
+\section{Design Approach and Innovation}
+% With a focus on the progress or changes made during Phase 2 of the challenge, outline how the design approaches the problem of food production technology for spaceflight in a novel of innovative manner. (limit 2000 characters)
+% More specifically:
+% How is your food production technology different from the currently available technology used for food production?
+% What are the innovative or novel elements of your food production technology?
+
+\section{Scientific and Technical Merit}
+% With a focus on the progress or changes made during Phase 2 of the challenge, explain how your proposed food production technology demonstrates scientific and technical merit. (limit 4000 characters)
+% More specifically:
+% Outline your objectives, approaches, and plans you created for developing and verifying the food production technology.
+% Please describe your scientific and technical methodology.
+
+\section{Feasibility of Design}
+% With a focus on the progress or changes made during Phase 2 of the Challenge, please describe how your technical approach is technically and realistically feasible for use in future space missions (limit 4000 characters).
+% More specifically:
+% Describe how the related operation processes and procedures are technically and realistically feasible, including (but not limited to):
+% Food production
+% Food handling
+% Maintenance
+% Repair
+% What alterations would need to be made to make your food production technology feasible in a space flight environment?
+% Ensure the emphasis is on future space missions.
+
+% Are there any risks that your food production technology may pose in future space missions, and what are your proposed solutions to mitigate these risks? (limit 2000 characters)
+
+\section{Terrestrial Potential}
+% With a focus on the progress or changes made during Phase 2 of the challenge, please outline how the food production technology has the potential to improve terrestrial food production. (limit 10000 characters)
+% This may include but is not limited to: Improved cost-benefit, quality and shelf-life of food for harsh and isolated environments, greater and improved food production for food deserts in mild environments and urban centers, new rapid-deployment technologies for humanitarian responses to disasters, and energy used in an efficient way and/or improved process control using e.g. machine learning
 
 \section{Results}
 
-\subsection{Acceptability}
-% Are people willing to eat output? Incl. appearance, aroma, flavor, and texture
-% Specific preparation and/or incorporation of output (formulation) for tasting
+\subsection{Acceptability of Process}
+% Teams must demonstrate the operations processes and procedures, including (but not limited to):
+% Operational footprint (i.e., how much space is needed for the solution and its related processes?)
+% Food production technology set up
+% Food production cycle, including steps to produce food products
+% Food handling, processing procedures and collection of food products
+% Shutdown, cleaning, maintenance, repair and/or stowage procedure(s)
+% An estimate of the overall crew time to operate and maintain the technology
+%  (limit 10000 characters):
 
-% Suggestion: Double-blind volunteer study?
+\subsection{Acceptability of Product}
+% Please provide an assessment (using industry standards and existing research) that the food outputs of their technology are likely to meet the acceptability target/rating described. This assessment should include the palatability of the food product (appearance, aroma, texture and flavour) (limit 6000 characters).
 
-\subsection{Safety of Process}
-% SPECIFICALLY food production area
-% Chemical hazards - Toxins, heavy metals (As, Cd, Hg, Pb, etc.)
-% Biohazards - total aerobic plate count, ATP testing of food contact surfaces
-% TODO: What do those^ mean? How do we test them?
+\section{Safety}
 
-\subsection{Safety of Outputs}
-% SPECIFICALLY food outputs
-% Biohazards - total aerobic count, specific pathogens (enterobacteriaceae, salmonella, yeasts, molds, E. coli, Listeria, etc.)
-
-\subsection{Resource Outputs}
-% Nutritional analysis - macro- and micro-nutrients
-
-\subsection{Reliability and Stability of Outputs}
-% Biohazards - total aerobic plate count, enterobacteriaceae, yeasts, molds
+\input{../tex/TestingPlan.tex}
 
 \input{../tex/HACCP.tex}
 
+% \input{../tex/Materials.tex}
+
+% Please outline any operational risks for the technology, and your potential mitigation strategy. (limit 4000 characters)
+% More specifically, please outline the following environmental & process safety requirements:
+% Avoidance of hazardous compounds or materials used or produced (e.g., microbes, off-gassing, toxic components)
+% Avoidance of hazards associated with cleaning this technology prior to and/or after use
+% Avoidance of physical, chemical, or biological hazards associated with the hardware or the process
+% Clear mitigation strategies to address the aforementioned risks
+
+\section{Inputs and Outputs}
+% With a focus on the progress or changes made during Phase 2 of the challenge, please describe the inputs and their amounts needed for your food production technology (limit 6000 characters).
+
+% Inputs could include:
+% Chemicals (e.g., nutrients, acid, base, disinfection)
+% Water (RO, tap etc.)
+% Energy
+% Cleaning supplies
+% CO2 or other gases
+% Other materials that enter the system
+% NOTE: Unlike in Phase 1, it is no longer acceptable to estimate the quantities of your inputs based on reasonable literature values. Instead, Teams must provide data generated from direct measurement of their system, or calculations based on known system metrics (i.e. the basis for calculations must be gathered from the prototype itself, and not hypothetical).
+
+% With a focus on the progress made during Phase 2 of the challenge, describe the outputs of your food production technology system. (limit 3000 Characters)
+
+% Outputs could include:
+% Food products
+% Waste (wastewater, inedible biomass, cleaning wipes, testing material etc.)
+% Heat (latent and sensible)
+% Other useable or unusable product exiting the system, including liquid and gaseous process flows (e.g., water vapor, low-molecular weight organic and inorganic compounds, water, oils, etc.)
+
+% With a focus on the progress made during Phase 2 of the challenge, please outline the net water consumption of your food production technology (limit 4000 characters).
+
+% Note: As your team’s net water consumption is previously captured, you may copy and paste your response from the constraint section above.
+
+% With a focus on the progress or changes made during Phase 2 of the challenge, describe how the food production technology achieves the greatest amount of food output in relation to the quantity of inputs and quantity of waste output (limit 4000 characters)
+
+\section{Reliability and Stability}
+% Reliability: Operational cycle time (i.e., amount of time for one production cycle) (limit 2000 characters)
+
+% Reliability: System lifespan (i.e., how many cycles can the system perform before requiring replacement parts?) (limit 2000 characters)
+
+% Reliability: Overview of maintenance/repair as well as cleaning processes and procedures, including (but not limited to): (limit 8000 characters)
+% What the processes and procedures look like
+% Maintenance schedule (i.e., how often will it need maintenance and/or cleaned?)
+% Which component(s)/element(s) require cleaning 
+% Amount of time required to perform the system cleaning and maintenance
+% What is needed to fully clean the system (e.g., water, chemicals)
+% Which component(s)/element(s) require maintenance or replacement (i.e., what components will need to be replaced, and when?)
+% Critical spare parts for a three-year mission and longevity of those spare parts
+% Estimated additional mass needed for replacement parts and cleaning materials
+% Estimated total time needed per month, per 6 months, and per year for maintenance and cleaning
+
+% Stability: Demonstrate the stability of both the input products used and food product outputs and provide rationalization of the estimated time the inputs and outputs will be fit for use and/or consumption (i.e., shelf-life). (limit 8000 characters)
+
 \input{../tex/Materials.tex}
-
-\subsection{Demonstration and Testing Materials}
-
-\section{Terrestrial Application}
-% Preliminary concrete step-by-step plan on how the tech could improve terrestrial food production
-% Identify gaps/deficient areas in existing processes, and explain how this system would fill
-% Incl. summary of the problem and how we solve it, list of potential engagements with communities (local and otherwise), co-creation strategy (?) for a future implementation
-
-\section{Scaling Potential}
-% Main steps for building the full-scale technology (for phase 3)
 
 \newpage
 
