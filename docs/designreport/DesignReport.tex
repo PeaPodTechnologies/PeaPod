@@ -39,9 +39,9 @@
         \input{../tex/Namecard.tex}
         \vspace{.75cm}
 
-        Revision 1.0\\
+        Revision 1.1\\
         PeaPod Technologies Inc.\\
-        July 30th, 2021
+        January 31st, 2023
 
     \end{center}
 \end{titlepage}
@@ -110,11 +110,11 @@ PeaPod's control systems are made of environmental controls (feedback loops with
 
 \textbf{Prompt}: \textit{Please describe the basic operations concept of the food production technology. In your response, describe assumptions required of operation. You can also include, for example, details about whether a sterile/aseptic environment is needed, if special steps are required between production cycles, or if fluids or materials must be removed or added to prime/inoculate a system.}
 
-Once PeaPod has been assembled, the first step is manual sterilization to prevent microbial growth at high growth environment humidities. Any plant- and food-safe means may be employed (i.e. UV).
+Once PeaPod has been assembled, the first step is manual sterilization to prevent microbial growth at high growth environment humidities. Any plant- and food-safe means may be employed (i.e. UV, wipe-down with disinfectant followed by distilled water).
 
-Next is the hookup of power, network, and reverse osmosis water inputs, as well as the filling of nutrient and pH adjustment solution containers.
+Next is the hookup of power, network, and water reservoir inputs, as well as the filling of the water reservoir (reverse osmosis, nutrient-rich and pH-balanced for crop choice).
 
-PeaPod's operation begins at planting. Seeds are removed from vacuum-sealed storage bags and placed in neoprene foam "pucks", which are moistened for germination and placed in grow cups. The front panel is then closed, sealing the internal environment.
+PeaPod's operation begins at planting. Seeds are removed from vacuum-sealed storage bags and distributed evenly on mesh media, which is then moistened for germination and placed in the grow tray. The front panel is then closed, sealing the internal environment. Once sprouted, plants may be harvested as microgreens or transplanted to neoprene pucks inside grow cups for further growth.
 
 The desired state of the growth environment is encoded via a standardized set of "environment parameters". The specific values of each parameter for each iteration are stored in a "program". The program is set prior to the start of plant growth, and consists of a set of \textbf{actions} (e.g. set red LEDs to 63\% power) and \textbf{control targets} (e.g. hold air temperature at 22°C) as time-series instructions from the start of planting to the point of harvest (or plant death, in the case of multiple-harvest plants) corresponding to the control systems.
 
@@ -129,34 +129,7 @@ When activated, PeaPod's control systems begin to enact the program. PeaPod will
 
 \textbf{Prompt}: \textit{This question seeks to establish an understanding of how your technology is different from other technologies that currently exist. Your description needs to be clear and well defined using simple language when detailing how your food production technology is novel, innovative and sustainable. Ensure to provide examples that will portray the novelty of your technology.}
 
-% Intro
-% Automated food growth is far from novel, with many systems already in place to provide consumers and corporations with bulk, labour-free produce at a low cost (i.e. vertical farming). 
-
-\textbf{Control Range and Parameter Independence}
-
-Unlike large-scale vertical farming, PeaPod’s isolation and parameter independence lets it simulate any climate. Wide LED spectrum can emit both near-infrared and near-ultraviolet light, important for creating hormonal responses and compounds in plants. Combined with insulation, humidification and dehumidification, and thermoelectric heating/cooling, PeaPod can generate extreme environments and even conditions on other planets (minus gravity and atmospheric changes). 
-
-These parameters are independent: e.g., lighting heat is countered by thermoregulation cooling. Also, inline nutrient and pH solution injection eliminates drawbacks of reservoir use by taking less space, less solution mixing time, and avoiding a control loop of nutrients/pH (while also being more accurate). 
-
-%These innovations allow PeaPod to grow virtually any plant. 
-
-\textbf{Form Factor and Extendability}
-
-The range of output environments is also possible because of the form factor of a single PeaPod unit. Warehouse-scale vertical farming cannot provide wide-spectrum control due to size---poor insulation and air circulation prohibits extreme temperatures. PeaPod solves this with a small, modular design that enables robust lighting, heating, and cooling systems at home and at scale.
-
-Space savings are a benefit of this feature, as the output of an entire farming or hydroponics setup (requiring a flat field or warehouse) can be spread through unused space (corners, under shelves/desks, etc.) via many small PeaPod setups. This means a large yield can be had without construction, zoning, labour, or any of the other issues accompanying large farming or hydroponic setups.
-
-\textbf{Optimization}
-
-Existing approaches to plant optimization are simple and ineffective, relying on a \textbf{fixed/unchanging} environment parameter set and only examining \textbf{final} plant metrics. This approach is severely limited, in that it does not account for changes over time.
-
-Instead, statistical model is used which takes into account the cumulative property of growth. By monitoring all environment and plant indicators, repeatable and controlled trials with scientific validity are able to be performed. PeaPod counters declining health/quality indicators in real time, and generates tailored programs that to maximize any metric and target further improvement.
-
-See the preliminary calculations Appendix \ref{app:optimization} for details.
-
-\textbf{Open-Source Design and Data}
-
-Since PeaPod is standard and open-source, units can be had in bulk and assembled by anybody. Public contribution to the project (both in design improvement and data) increases the reliability and safety of the solution. Collected data is, ideally, committed to the public, meaning anybody with a PeaPod can run the same iteration with the same program and species to boost scientific validity, or run a different program to expand PeaPod's knowledge base.
+\input{../tex/report/Innovation.tex}
 
 \uline{\textbf{2958 Characters} (42 under)}
 
@@ -306,61 +279,7 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 
 % 3000chars
 
-\textit{Footprint}:
-
-Due to PeaPod's modular construction, the footprint can vary. For a Standard Extended PeaPod, the footprint would be 2m x 0.5m, or about three standing refrigerators. When stowed, volume is reduced to 37\% of when assembled. Control module is packed pre-assembled.
-
-The following estimates are for a Standard Extended PeaPod.
-
-\textit{Setup Process}:
-
-\begin{enumerate}
-    \item Assemble housing - \textbf{2 hours}
-    \item Install control module(s):
-    \begin{enumerate}
-        \item Hook up water, power, and network inputs - \textbf{5 min}
-        \item Fill nutrient and pH adjustment solution containers - \textbf{10 min}
-        \item Mount CM to housing - \textbf{5 min}
-    \end{enumerate}
-    \item Assemble all trays - \textbf{1 hour},
-    \item For each tray, either:
-    \begin{enumerate}
-        \item Mount lighting boards and driver, daisy chain boards to driver, hook up power and signal to driver and CM - \textbf{10 min} per tray, \textbf{OR}
-        \item Mount aeroponic nozzle mount and arm, hook up water delivery line to nozzles and CM - \textbf{10 min} per tray
-    \end{enumerate}
-    \item UV sterilization - \textbf{20 min}
-    \item Prepare and plant seeds for desired crop output, seal growth environment - \textbf{30 min}
-    \item Enable primary power supply, and power on automation system, allow to perform self-test and calibrations - \textbf{10 min}
-    \item Open water input shutoff valve
-    \item Input program for required environments and activate - \textbf{5 min}
-\end{enumerate}
-
-Total setup process time (Standard: 2 trays per unit, 12 units, 1 CM): \textbf{8.5 hours} (\textit{one person}) or \textbf{2.5 hours} (\textit{crew of 4})
-
-\newpage
-
-\textit{Food Production Cycle}:
-
-\begin{enumerate}
-    \item Environment is maintained, and environment can be observed live at a computer terminal via sensor data and camera feed
-    \item Circulation fans enable automated pollination
-    \item Perform maintenance, including:
-    \begin{itemize}
-        \item Cleaning nozzle once a month - \textbf{10 min}
-        \item Swapping and recharging dehumidification cartridges when instructed - \textbf{5 min} (active time)
-        \item Refilling solution containers when instructed - \textbf{5 min}
-    \end{itemize}
-    \item Upon End-Of-Program (EOP) notification, the gas exchange system will conduct a "full equalization flush", bringing the internal environment in equilibrium with the surroundings. Users will harvest and store food products (or prepare and consume them immediately, varying time) - \textbf{15 min}
-    \item Upon End-Of-Life notification (may occur at the same time as EOP), the plant is scrapped (\textbf{15 min}), and new plants may be planted
-\end{enumerate}
-
-Total maintenance time per week: \textbf{1-2 hours} (depending on program)
-
-\textit{Process Evaluation}:
-
-Setup and maintenance processes are fully documented in a "User Manual", which includes both text instructions (with numerical specifications for different actions) as well as diagrams for reference. Notifications from computer refer users to specific subsections of the Manual for maintenance actions. All processes require no specific expertise, just the ability to operate basic hand tools and follow instructions.
-
-All interactions with the automation system (i.e. program upload, environment/camera monitoring) can be accomplished either via a touchscreen panel on the front of the control module or over the Internet.
+\input{../tex/report/AcceptabilityProcess.tex}
 
 \uline{\textbf{2765 Characters} (235 under)}
 
@@ -375,14 +294,7 @@ All interactions with the automation system (i.e. program upload, environment/ca
 
 % 3000chars
 
-There are several considerations when examining the acceptability of the products of our system:
-
-\begin{enumerate}
-    \item Produce is not only eaten fresh, but also forms the basis for an innumerable variety of combined and prepared foods (i.e. fresh tomatoes vs. tomato sauce);
-    \item When considering prepared derivatives of the food products, the quality of the preparation is a key factor in acceptability. As such, proper care in training and is to be taken;
-    \item The products formed by the system (and their properly prepared derivatives) are not exceptional or novel. They are the same plant-based foods grown, consumed, and \textbf{accepted} terrestrially, just grown in a more efficient and controlled way. As such, their acceptability is determined to be of \textbf{equal or greater value};
-    \item Plant-environment optimization can be targeted not only at nutritional value or efficiency, but also at acceptability. The feedback can be gathered either through crew Hedonic rating (i.e. tomatoes grown in environment ABC rate X in appearance, Y in aroma, etc.) or more sophisticated analysis (i.e. computer vision analysis of color/size/shape for appearance, tissue concentrations of various aroma/flavor compounds); %TODO: cite some times when this has been performed, i.e. MIT basil study
-\end{enumerate}
+\input{../tex/report/AcceptabilityProducts.tex}
 
 \uline{\textbf{1330 Characters} (1670 under)}
 
@@ -468,11 +380,7 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 
 % 3000chars
 
-\textit{Infrastructural Inputs}: Reverse osmosis water (constant supply at positive pressure from onboard RODI system), nutrient solutions (stored, one container each plus refill tanks), pH solutions (one container pH up, one container pH down, plus refill tanks, stored), power (onboard power, standard 120V AC 60Hz), network connection (onboard network, for remote control, live video/data transmission), plant seeds (stored in vacuum-sealed seed bank, selected for variety and acceptability), input air (HEPA filtered, carbon dioxide-rich)
-
-\textit{Process Inputs}: Plant species identifiers, environment program (for entire growth cycle, one per plant species), nutrient and pH-adjustment solution identifiers (compounds and molarities, i.e. solution A is 0.6M NaNO${}_3$)
-
-Common nutrient solutions target specific ions, including bioavailable nonmetals (nitrates/nitrites, ammonia/ammonium, phosphates, sulphates), metals (potassium, calcium, magnesium, iron) and other trace elements.
+\input{../tex/report/Inputs.tex}
 
 \uline{\textbf{755 Characters} (2245 under)}
 
@@ -485,9 +393,7 @@ Common nutrient solutions target specific ions, including bioavailable nonmetals
 
 % 3000chars
 
-\textit{Products}: Edible plant matter, recorded environment data, plant metric data, live video feed, time-lapse capture
-
-\textit{Byproducts}: Inedible plant matter (stems/roots/leaves/etc., waste), sensible heat (from thermoregulation pumping, managed by onboard heating/cooling), exhaust air (via HEPA filter, sterilized and dehumidified by onboard life support, oxygen-rich), minimal water vapour (as a result of higher air humidity, minimized by housing seal), latent heat (as a result of higher leaf zone temperature, minimized by insulation)
+\input{../tex/report/Outputs.tex}
 
 \uline{\textbf{535 Characters} (2465 under)}
 
@@ -608,51 +514,7 @@ Outputs will have a shelf life that is, in worst case, comparable to fresh produ
 
 % 3000chars
 
-% \textbf{Customer-facing Food Service} %OpenComment does this make sense? feels a little weak/unfounded - NV
-
-% A restaurant serving fresh produce needs either a local supplier or a substantial amount of outdoor space. Both of these are cost-prohibitive, and the latter is impossible in many urban situations. Local suppliers' high costs are the result of a few things:
-% \begin{itemize}
-%     \item Limited seasonal availability
-%     \item Frequent transport need
-%     \item High costs with little demand
-% \end{itemize}
-% PeaPod has the potential to reduce these barriers in a cyclic way. Partnerships between local suppliers and restaurants will provide these restaurants with space- and time-efficient PeaPod units with the purpose of generating both produce and data. The increase in produce will reduce the frequency at which suppliers need to make deliveries (reducing cost and spreading demand), while the data generated will let suppliers maximize output, quality, and longevity. Over time, this increases efficiency to the point where local suppliers can provide produce at a lower price, increasing the presence of fresh, local, produce in cities worldwide.
-
-% Another food service application of PeaPod is the globalization of otherwise endemic crops. For example, Wasabi is a difficult-to-grow Japanese crop that is near-impossible to grow overseas (save a few recent commercial developments). PeaPod units in restaurants solve this issue by re-creating the necessary precise conditions and eliminating barriers in skill and time that otherwise impact Wasabi's production and consumption overseas. And, of course, PeaPod's data collection capabilities can be harnessed by farmers to discover more safe, efficient, and adaptable methods of producing crops such as these.
-
-\textbf{Agriculture-as-a-Service}
-
-PeaPod’s modularity and ease of storage can turn unused city spaces to PeaPod farms. With fresh produce in local areas, PeaPod can be a direct food system to paying customers. A subscription service would provide patrons with fresh produce without a middle man. By eliminating transport, distribution, and grocery stores, PeaPod creates fresher, better produce for the general public at a lower cost.
-
-\textbf{Crowd-Sourced Research}
-
-PeaPod's automation is unique in the research space, allowing for autonomous, off-site research. Universities save costs related to space and energy usage by subsidizing PeaPods to individuals, schools, or even restaurants. Users receive sets of parameters to grow crops with, sending data back to the institution and using the produce at the cost of space and energy. The result is a massive dataset from identical conditions in different places, verified by comparison with devices conducting the same tests.
-
-This is an effective tool in climate change famine aid. By predicting conditions in at-risk areas, researchers can conduct tests ahead of time to determine what seeds, traits, and care parameters are most effective for certain conditions. This also informs development of seeds specialized for extreme climates, letting areas counteract food scarcity by having a variety of options prepared ahead of time.
-
-\textbf{De-centralized Production}
-
-Many crops are endemic to certain climates, making global transport necessary to for foreign markets. This reduces freshness, necessitates preservatives, and increases the carbon footprint of agriculture. By upscaling PeaPod technology to a farm scale, climate-bound crops can be produced anywhere. This creates regional farms of global variety, making it easier to have a local food diet.
-
-PeaPod's form factor makes it a viable tool for at-home production, either in cities or off-grid. With only a solar power source, water, and a compact supply of nutrient solutions, users can sustain crops even through winter without travelling for nutrients and supplies.
-
-% \textbf{Blockchain and "PlantCoin" Cryptocurrency Mining}
-
-% In the same way current cryptocurrencies reward nodes for validating all information on a blockchain, a PeaPod network would reward nodes (individual PeaPods) for validating data produced by other nodes. When tens or hundreds of units produce statistically similar results in independent trials using the same parameters, all units are rewarded for their contribution to the network. This process is commonly known as "mining". This allows consumers the option to operate a PeaPod as a passive source of income, with the unit paying for itself by both producing food and mining a "PlantCoin" cryptocurrency.
-
-% This also incentivizes the network to find critical points in the n-dimensional set of data that would otherwise not be checked. For example, few users would intentionally grow plants in drought conditions at this will produce subpar produce. But, by incentivizing users to fill sparse sections of data, we can generate information critical to developing crops for territories affected by climate change.
-
-%we love this idea but idt nasa cares
-
-\textbf{Food Infrastructure Micro-Loans}
-
-For many, finding fresh produce is a struggle whilst growing your own is prohibitively expensive \cite{foodsecurity}. Micro-loan platforms have attempted to solve this by letting donors fund an interest-free loan for technology/infrastructure which then pays the loan as a percentage of its surplus. 
-
-Unfortunately, these are only feasible for individuals in rural areas with arable land and climate.
-
-PeaPod brings this solution to low-income urban areas with a platform for donors to micro-loan PeaPod units and inputs. The user feeds themselves and sells surplus, while a percentage of sales go to the interest-free loan. Once paid, PeaPod continues to produce food while sales fund its operation. 
-
-This creates permanent, self-sustaining agricultural infrastructure that pays for itself as it grows, requiring little initial capital. This means entire farms throughout high density buildings generating yield with little lost space and almost no labour.
+\input{../tex/report/TerrestrialPotential.tex}
 
 \uline{\textbf{2987 Characters} (13 under)}
 

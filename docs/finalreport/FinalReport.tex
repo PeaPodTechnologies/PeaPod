@@ -5,6 +5,7 @@
 \usepackage{subcaption} % Subfigures
 \usepackage{geometry} % Page layout
 \usepackage{multicol} % Columned pages
+\usepackage{multirow}
 \usepackage{array,etoolbox}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
@@ -37,9 +38,9 @@
         \input{../tex/Namecard.tex}
         \vspace{.75cm}
 
-        Revision 0.1\\
+        Revision 0.2\\
         PeaPod Technologies Inc.\\
-        January 10th, 2022
+        January 31st, 2023
 
     \end{center}
 \end{titlepage}
@@ -132,6 +133,8 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 % How is your food production technology different from the currently available technology used for food production?
 % What are the innovative or novel elements of your food production technology?
 
+\input{../tex/report/Innovation.tex}
+
 \section{Scientific and Technical Merit}
 % With a focus on the progress or changes made during Phase 2 of the challenge, explain how your proposed food production technology demonstrates scientific and technical merit. (limit 4000 characters)
 % More specifically:
@@ -155,6 +158,8 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 % With a focus on the progress or changes made during Phase 2 of the challenge, please outline how the food production technology has the potential to improve terrestrial food production. (limit 10000 characters)
 % This may include but is not limited to: Improved cost-benefit, quality and shelf-life of food for harsh and isolated environments, greater and improved food production for food deserts in mild environments and urban centers, new rapid-deployment technologies for humanitarian responses to disasters, and energy used in an efficient way and/or improved process control using e.g. machine learning
 
+\input{../tex/report/TerrestrialPotential.tex}
+
 \section{Results}
 
 \subsection{Acceptability of Process}
@@ -167,8 +172,12 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 % An estimate of the overall crew time to operate and maintain the technology
 %  (limit 10000 characters):
 
+\input{../tex/report/AcceptabilityProcess.tex}
+
 \subsection{Acceptability of Product}
 % Please provide an assessment (using industry standards and existing research) that the food outputs of their technology are likely to meet the acceptability target/rating described. This assessment should include the palatability of the food product (appearance, aroma, texture and flavour) (limit 6000 characters).
+
+\input{../tex/report/AcceptabilityProducts.tex}
 
 \section{Safety}
 
@@ -197,6 +206,8 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 % Other materials that enter the system
 % NOTE: Unlike in Phase 1, it is no longer acceptable to estimate the quantities of your inputs based on reasonable literature values. Instead, Teams must provide data generated from direct measurement of their system, or calculations based on known system metrics (i.e. the basis for calculations must be gathered from the prototype itself, and not hypothetical).
 
+\input{../tex/report/Inputs.tex}
+
 % With a focus on the progress made during Phase 2 of the challenge, describe the outputs of your food production technology system. (limit 3000 Characters)
 
 % Outputs could include:
@@ -204,6 +215,8 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 % Waste (wastewater, inedible biomass, cleaning wipes, testing material etc.)
 % Heat (latent and sensible)
 % Other useable or unusable product exiting the system, including liquid and gaseous process flows (e.g., water vapor, low-molecular weight organic and inorganic compounds, water, oils, etc.)
+
+\input{../tex/report/Outputs.tex}
 
 % With a focus on the progress made during Phase 2 of the challenge, please outline the net water consumption of your food production technology (limit 4000 characters).
 
