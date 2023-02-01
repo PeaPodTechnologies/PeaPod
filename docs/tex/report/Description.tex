@@ -1,0 +1,20 @@
+PeaPod is an automated plant growth environment, made of control systems and an automation/monitoring system within a modular, cubic housing. It can generate any desired environment while collecting data on plant growth and improving yields.
+
+NOTE: For this submission, only the 4x3 unit \textbf{Standard Extended PeaPod} is in consideration. It has one control module, and eight of each tray (grow and lighting).
+
+PeaPod's control systems are made of environmental controls (feedback loops with sensors) and plant inputs (set-states):
+\begin{itemize}
+    \item\textit{Lighting}: LEDs, from near-ultraviolet to near-infrared. Dimmable drivers for precision spectrum and intensity control. Efficient, precise emission spectrum, low heat.
+    \item \textit{Aeroponics}: Reverse osmosis (RO) water is pressurized by a pump (with sensor for safety cutoff), brought to temperature, nutrient-dosed and pH-balanced by Venturi siphons with servo-actuated flow control, and forced through nozzles to generate mist. Runoff water is recycled. Water-efficient (98\% less than farming), nutrient-efficient (60\% less), no pH/nutrient "feedback" (common in reservoir-based hydroponics), increased root oxygenation \cite{aeroponics}.
+    \item \textit{Air Thermoregulation}: Leaf zone air temperature is regulated by a thermoelectric heat pump. Fans blow air over heat sinks connected to either face of a Peltier tile to circulate air and dissipate heat. A Proportionate-Integral-Derivative (PID) control system is informed by temperature sensors, and controls the direction and magnitude of the heat transfer. Low complexity, high safety/reliability, easy to automate (bidirectional, precisely dimmable, PID tuning).
+    \item \textit{Humidity Regulation}: Leaf zone humidity is regulated by a dead-zone bang-bang control system informed by humidity sensors.
+    \begin{itemize}
+        \item \textit{Humidification}: RO water is supplied to a tank with a fine mesh piezoelectric disc. A controllable driver circuit oscillates the disk, producing water vapour. Easy to automate.
+        \item \textit{Dehumidification}: A dry silica gel bead cartridge is covered by servo-actuated "shutters" to control dehumidification. Fans draw humid air through a HEPA filter into the desiccant and back into the growth environment. The beads change color to indicate water saturation. The crew is then notified to swap and "recharge" in a standard oven.
+    \end{itemize}
+    \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include an aluminum water block (vs internal heat sink and fan) and a single temperature sensor after the block for PID feedback in a flowing system.
+    \newpage
+    \item \textit{Gas Composition}: Oxygen and carbon dioxide levels are managed by gas exchange. Input and output ports allow fans to draw air into and out of the system. HEPA filters remove microbes and aerosols, and servo-actuated "shutters" prevent unintended exchange. Gas concentration sensors inform a bang-bang control system for port activation.
+\end{itemize}
+
+% Food products are optimized via plant metric analysis and machine learning. Two cameras (birds-eye and horizontal) provide data from which metrics of both plant health and yield quality are extracted. These, along with data collected on the environment, train a machine learning model to be a "digital representation" of the plant, treating environment and metrics as in/outputs to a "surrogate model". As more iterations of the plant species are grown, the dataset becomes generalized across environmental inputs/programs, and new ones can be selected via "gradient ascent" to target optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).

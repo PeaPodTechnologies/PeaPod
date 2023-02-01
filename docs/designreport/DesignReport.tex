@@ -54,17 +54,7 @@
 \section{Design Abstract}
 \textbf{Prompt}: \textit{Please provide a brief summary description of your proposed food production technology within a 1,500 character limit. The abstract may answer some of the following questions: What is your proposed solution? What is novel, sustainable, and innovative about your proposed solution? What types of food does your solution create? How are you minimizing inputs and maximizing food outputs?}
 
-PeaPod is a modular, automated plant growth environment and distributed research tool. It can generate any environment for any crop, while collecting plant growth data for optimization.
-
-The growth environment is adaptable to many plants and mission requirements. It consists of "unit cell" cubes that can be joined upwards and sideways to increase space. It is insulated with internally-reflective panels for efficiency \cite{insulation}.
-
-PeaPod uses automated control systems to generate desired environments. These are air thermoregulation, humidity control, LED lighting, and an aeroponics system. They are automated by an onboard computer and housed in a "control module" at the top of the unit. This lets power be "multiplied" for extended PeaPods by adding more control modules in a controller-follower topology.
-
-Plant growth cups and lighting platforms are built on modular "trays" mounted to the inside of the housing so the user can position plants and lights to accommodate any plant size.
-
-Throughout a growth cycle, all environment parameters and growth metrics are collected. This data trains a statistical ML model to represent the plant's phenology over time in the environment. The output function can then be optimized for yield mass, nutrient concentration, flavour, resource efficiency, or any other metric.
-
-Combining these into an accessible open-source design, PeaPod provides unrivalled versatility and reliability to food production systems both terrestrially and on long-duration space missions.
+\input{../tex/report/Abstract.tex}
 
 \uline{\textbf{1498 Characters} (2 under)}
 
@@ -80,26 +70,7 @@ Combining these into an accessible open-source design, PeaPod provides unrivalle
 
 \textbf{Prompt}: \textit{Please provide a more fulsome description of your food production technology. Your description needs to include information about what the technology is, what it does, how it functions, and how the crew will interact with it. Be sure to also provide any descriptions of major hardware components and processes in relation to your technology.}
 
-PeaPod is an automated plant growth environment, made of control systems and an automation/monitoring system within a modular, cubic housing. It can generate any desired environment while collecting data on plant growth and improving yields.
-
-NOTE: For this submission, only the 4x3 unit \textbf{Standard Extended PeaPod} is in consideration. It has one control module and one of each tray (grow and lighting) per unit.
-
-PeaPod's control systems are made of environmental controls (feedback loops with sensors) and plant inputs (set-states):
-\begin{itemize}
-    \item\textit{Lighting}: LEDs, from near-ultraviolet to near-infrared. Dimmable drivers for precision spectrum and intensity control. Efficient, precise emission spectrum, low heat.
-    \item \textit{Aeroponics}: Reverse osmosis (RO) water is pressurized by a pump (with sensor for safety cutoff), brought to temperature, nutrient-dosed and pH-balanced by Venturi siphons with servo-actuated flow control, and forced through nozzles to generate mist. Runoff water is recycled. Water-efficient (98\% less than farming), nutrient-efficient (60\% less), no pH/nutrient "feedback" (common in reservoir-based hydroponics), increased root oxygenation \cite{aeroponics}.
-    \item \textit{Air Thermoregulation}: Leaf zone air temperature is regulated by a thermoelectric heat pump. Fans blow air over heat sinks connected to either face of a Peltier tile to circulate air and dissipate heat. A Proportionate-Integral-Derivative (PID) control system is informed by temperature sensors, and controls the direction and magnitude of the heat transfer. Low complexity, high safety/reliability, easy to automate (bidirectional, precisely dimmable, PID tuning).
-    \item \textit{Humidity Regulation}: Leaf zone humidity is regulated by a dead-zone bang-bang control system informed by humidity sensors.
-    \begin{itemize}
-        \item \textit{Humidification}: RO water is supplied to a tank with a fine mesh piezoelectric disc. A controllable driver circuit oscillates the disk, producing water vapour. Easy to automate.
-        \item \textit{Dehumidification}: A dry silica gel bead cartridge is covered by servo-actuated "shutters" to control dehumidification. Fans draw humid air through a HEPA filter into the desiccant and back into the growth environment. The beads change color to indicate water saturation. The crew is then notified to swap and "recharge" in a standard oven.
-    \end{itemize}
-    \item \textit{Aeroponic Water Temperature}: Root zone air temperature is regulated in the same way as the leaf zone system. Exceptions include an aluminum water block (vs internal heat sink and fan) and a single temperature sensor after the block for PID feedback in a flowing system.
-    \newpage
-    \item \textit{Gas Composition}: Oxygen and carbon dioxide levels are managed by gas exchange. Input and output ports allow fans to draw air into and out of the system. HEPA filters remove microbes and aerosols, and servo-actuated "shutters" prevent unintended exchange. Gas concentration sensors inform a bang-bang control system for port activation.
-\end{itemize}
-
-% Food products are optimized via plant metric analysis and machine learning. Two cameras (birds-eye and horizontal) provide data from which metrics of both plant health and yield quality are extracted. These, along with data collected on the environment, train a machine learning model to be a "digital representation" of the plant, treating environment and metrics as in/outputs to a "surrogate model". As more iterations of the plant species are grown, the dataset becomes generalized across environmental inputs/programs, and new ones can be selected via "gradient ascent" to target optimization factors (i.e. yield mass, flavour, nutrient concentration, energy/water efficiency).
+\input{../tex/report/Description.tex}
 
 \uline{\textbf{2881 Characters} (119 under)}
 
@@ -110,15 +81,7 @@ PeaPod's control systems are made of environmental controls (feedback loops with
 
 \textbf{Prompt}: \textit{Please describe the basic operations concept of the food production technology. In your response, describe assumptions required of operation. You can also include, for example, details about whether a sterile/aseptic environment is needed, if special steps are required between production cycles, or if fluids or materials must be removed or added to prime/inoculate a system.}
 
-Once PeaPod has been assembled, the first step is manual sterilization to prevent microbial growth at high growth environment humidities. Any plant- and food-safe means may be employed (i.e. UV, wipe-down with disinfectant followed by distilled water).
-
-Next is the hookup of power, network, and water reservoir inputs, as well as the filling of the water reservoir (reverse osmosis, nutrient-rich and pH-balanced for crop choice).
-
-PeaPod's operation begins at planting. Seeds are removed from vacuum-sealed storage bags and distributed evenly on mesh media, which is then moistened for germination and placed in the grow tray. The front panel is then closed, sealing the internal environment. Once sprouted, plants may be harvested as microgreens or transplanted to neoprene pucks inside grow cups for further growth.
-
-The desired state of the growth environment is encoded via a standardized set of "environment parameters". The specific values of each parameter for each iteration are stored in a "program". The program is set prior to the start of plant growth, and consists of a set of \textbf{actions} (e.g. set red LEDs to 63\% power) and \textbf{control targets} (e.g. hold air temperature at 22°C) as time-series instructions from the start of planting to the point of harvest (or plant death, in the case of multiple-harvest plants) corresponding to the control systems.
-
-When activated, PeaPod's control systems begin to enact the program. PeaPod will notify crew of any required action, including refilling inputs, cleaning components, and harvesting, as well as "End-of-Program", when all inedible plant matter is disposed of. The process can then be repeated (starting at sterilization).
+\input{../tex/report/Operations.tex}
 
 \uline{\textbf{1479 Characters} (21 under)}
 
@@ -324,23 +287,7 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 
 % 3000chars
 
-Being a sustainable isolated unit, PeaPod requires little cleaning, limited to UV sterilization each time it is opened.
-
-PeaPod uses safe materials in its chassis, insulation and circuitry. 
-The main frame is constructed using aluminum. Although large quantities of aluminum in food are deemed dangerous, the lack of direct contact exposure of aluminum to the plants passes well below the toxicity limit \cite{aluminum}.
-The bracketing and mounts of PeaPod are constructed using PETG plastic which has been deemed “food-safe plastic” \cite{petg}.
-
-The foam insulation used in PeaPod is commonly used for housing and other common safe applications. 
-
-To avoid toxins in circuitry, lead-free soldering was used for all electronics. The dehumidification system uses silica gel, which is commonly found in food packets and is deemed “biodegradable and non-toxic” \cite{silica}.
-
-All voltages are sub 48V DC, avoiding any high-voltage risks. The voltage risk is also mitigated by short-circuit/overcurrent protection. 
-All pressures experienced by the aeroponics system stay below 100 PSI, avoiding dangers with high pressures. The dangers with pressures are also mitigated through the use of PTFE tape, fail-safe solenoids (which primarily stay closed) and a pressure sensor shutoff. 
-
-Materials selection eliminates the risk of off-gassing. The presence of microbes or other harmful pathogens are mitigated through the use of clean seeds, reverse osmosis water and pure nutrient/pH solutions, as well as "gas exchange equilibrium" and UV sterilization pre- and post-opening. HEPA filters on both gas exchange ports and the dehumidification cartridge (which is removed from the chamber) mitigate microbial and aerosol presence. Through a nutrient injection manifold, PeaPod also has the ability to administer custom solutions, such as anti-pathogenic compounds (fungicides, algicides).
-In addition, PeaPod provides plant nutrients directly without the use of nitrogen-fixing bacteria. The production process is fully automated, mitigating all risks associated with human error. 
-
-In the event of a malfunction, PeaPod also allows the user to override the program for the purposes of editing or shutting down the unit.
+\input{../tex/report/SafetyProcess.tex}
 
 \uline{\textbf{2213 Characters} (787 under)}
 
@@ -355,11 +302,7 @@ In the event of a malfunction, PeaPod also allows the user to override the progr
 
 % 3000chars
 
-PeaPod provides astronauts the ability to select and grow produce of their choosing. Before takeoff, the representatives responsible for selecting and scheduling food resources for the duration of the trip must create a stockpile of seeds that will provide ample food for the astronauts throughout their journey. The variety, quality, and acceptability of crop selection is the primary variable for repeated consumption.
-
-By maintaining optimal growth cycles, PeaPod ensures that the food produced is clean, varied, and fresh. However, program selection (especially those with chemical components, i.e. nutrient and pH solutions) also play a role, as these directly influence the composition of the food products.
-
-The selection of proper crops and solutions, along with proper harvesting and processing techniques (i.e. only harvesting edible bodies, cooking for long enough) and harvesting timing (mitigated by notification), are the only concerns when it comes to product safety.
+\input{../tex/report/SafetyProducts.tex}
 
 \uline{\textbf{982 Characters} (2018 under)}
 
@@ -406,13 +349,7 @@ The selection of proper crops and solutions, along with proper harvesting and pr
 
 % 1500chars
 
-\begin{itemize}
-    \item \textit{High Success Rates}: Complete automation and environmental control ensures high crop success rates and yield predictability.
-    \item \textit{Repeatability}: Once optimal conditions are found for a given crop species, they can be repeated ad infinitum.
-    \item \textit{Immediate Sensor Feedback and Response}: Immediate feedback from both environment sensors and plant metric analysis empowers the system to respond to unpredictable or otherwise uncontrolled factors (i.e. poor seed health, outside interference). Plant metric analysis can be used to diagnose program ineffectualities, accelerate optimization, and preventatively mitigate plant health decline.
-    \item \textit{Data Collection, Yield Optimization}: By collecting data via computer vision and post-harvest yield evaluation (GCMS, weighing, etc.) on the plant's response to the induced environment, the relationship between the species behaviour and the surrounding environment can be analyzed. Plant metrics include plant health indicators (chlorophyll concentrations/chlorosis, leaf count/size distribution/density, plant height/canopy dimensions leaf tip burn, leaf curl, wilting, etc.) and crop yield (edible matter net mass/percent mass of plant, total plant mass, chemical/nutritional composition, caloric measurement, etc.). Data is filtered/smoothed across time to account for noise. The relationship is then represented by a statistical/machine learning model via a method known as "surrogate modelling". The method for this analysis can be found in the preliminary calculations Appendix \ref{app:optimization}.
-    
-\end{itemize}
+\input{../tex/report/Optimization.tex}
 
 \uline{\textbf{1479 Characters} (21 under)}
 
@@ -471,14 +408,7 @@ Instead, this system caters to the more "human" aspects of food - palatability a
 % 3000chars
 
 %OpenComment pretty barebones, might need citations for material duration... feel free to add anything else that sells the reliability - NV
-By nature of its design, PeaPod will at least last three years at near 100\% functionality on minimal maintenance. This is achieved by self-monitoring component health, using easily-serviceable components, and providing smart notifications to the user when maintenance is needed.
-For one, PeaPod is designed to be assembled by a single user with readily available hand tools. This means it can be disassembled, cleaned, and put back together by one person in a non-restrictive amount of time.
-
-For another, the sensors used to monitor plant health and environment conditions allow PeaPod to perform self-diagnostics and notify the user when a part needs to be fixed or replaced. For example, if humidity readings fall despite power being applied to the humidification system, PeaPod will notify the user to check the humidification unit. If temperature readings fall despite power being applied to the thermoregulation system, PeaPod will notify the user to check the heating unit.
-
-This said, every component in PeaPod has an expected lifespan over three years. From the LEDs (rated for 5 years) to the nozzles and fittings (high-quality brass), replacement monitoring is only needed as a backup. A replacement for each "active" part used in the entire assembly (i.e. non-housing, all moving/electrical/water parts) should be kept on board.
-
-There are few moving parts, and no wear or lubrication required. The diaphragm pump is the most reliable and long-lasting pump variety \cite{diaphragm}. Fans are self-lubricating nylon. Solenoids and servos are rated for upwards of 5 years.
+\input{../tex/report/ReliabilityProcess.tex}
 
 \uline{\textbf{1341 Characters} (1659 under)}
 
@@ -498,9 +428,7 @@ There are few moving parts, and no wear or lubrication required. The diaphragm p
 
 % 1500chars
 
-PeaPod's input stability is maximized by a variety of design choices, the sum of which give them a shelf life above the three-year mark of a mission. Since the system doses nutrients automatically and at a high-degree of precision, nutrient solution can be stored at a much greater density than would be possible with manual mixing. This minimizes degradation and loss of quality while reducing the space needed to store the solutions. Solutions are also stored in insulated, opaque container that minimize fluctuations in temperature and light that could stimulate compound degradation.
-
-Outputs will have a shelf life that is, in worst case, comparable to fresh produce grown outdoors. More realistically, crops are expected to last longer as a result of a lack of pests, disease, and optimization of plant characteristics for ambient conditions, as well as eliminating time and transport between cultivation and consumption. Finally, PeaPod can let users grow crops on a rotation, providing a steady supply of fresh produce that will not need to be stored for particularly long periods of time, thus circumventing some of the restrictions posed by growing fresh crops.
+\input{../tex/report/Stability.tex}
 
 \uline{\textbf{1171 Characters} (329 under)}
 
@@ -552,11 +480,7 @@ Estimate:
 \subsection{Water Usage Estimate}
 \label{app:water}
 
-\textit{Humidification}: By using a mesh nebulizer to produce smaller and more consistent vapour, greater overall water consumption efficiency was achieved.
-
-\textit{Aeroponics}: Aeroponics by design uses far less water than traditional farming. In addition, higher quality nozzles with adjustable directionality allow for more of the water to be sprayed directly at the root zone and with better and more consistent droplet sizes for better uptake. Finally, by enclosing the root zone in a watertight container, no water escapes, and runoff water collected at the bottom of the container can be recycled. 5mL/sec/nozzle @80PSI x 2 nozzles per unit x 12 units x 10 seconds misting per hour
-
-In calculation, it is assumed that all aeroponic water is consumed, as all runoff water is recycled.
+\input{../tex/appendices/WaterUsage.tex}
 
 \subsection{Mass Estimate}
 \label{app:mass}
@@ -583,7 +507,7 @@ Output processing and storage: Processing will depend on the produce grown and d
 
 A common existing approach to plant optimization in academia is to have a simple neural network train on a dataset of \textbf{fixed/unchanging} environment parameters (input) and \textbf{final} plant metrics (output). This approach is severely limited, in that it does not account for changes over time. Environment parameters cannot be changed, and as such cannot target specific plant growth phases (i.e. specific lighting and nutrients for germination vs vegetation vs fruiting). In addition, the exclusion of plant metrics throughout the duration of plant growth means that a system has no way to respond to failing plant health, as it has no data for this.
 
-Instead, a statistical model is trained on an ordinary differential representation of plant behaviour and phenology, which takes into account the cumulative property of growth: A plant's current state is not \textit{immediately} related to it's surrounding environment (consider a "flash-freeze" step change), but instead a plant's state's rate of change (i.e growth rate and other processes) depend on both its previous instantaneous state and the current environment.
+Instead, a statistical model is trained on an ordinary differential representation of plant behaviour and phenology, which takes into account the cumulative property of growth: A plant's current state is not \textit{immediately} related to it's surrounding environment (consider a "flash-freeze" step change - the plant would not immediately die if nominal temperature was resumed), but instead a plant's state's rate of change (i.e growth rate and other processes) depend on both its internal state and the current environment state.
 
 Assume a plant's growth rate (or "state change") is related to its current internal state $\vec P \in \R^n$ (for $n$ plant metrics) and the environment conditions $\vec E \in \R^m$ (for $m$ environment parameters). Let these both be functions $\vec P (t),\vec E(t)$ defined at each point in time $t$, where $t=0$ indicates the time of planting. Assume that this relationship is constant for all members of a given species.
 

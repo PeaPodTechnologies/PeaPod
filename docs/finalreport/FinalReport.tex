@@ -58,7 +58,9 @@
 
 % With a focus on progress or changes made during Phase 2 of the challenge, describe what the food production technology is, what it does, how it functions, and how the crew will interact with it. Include descriptions of major hardware components and processes. (limit 4000 characters).
 
-\input{../tex/Process.tex}
+\input{../tex/report/Description.tex}
+
+\input{../tex/report/Operations.tex}
 
 \section{Adherence to Constraints}
 
@@ -67,18 +69,18 @@
 
 \textbf{Constraint}: \textit{Fits through 1.07m x 1.90m doorway; W < 1.820m, D < 2.438m, H < 2.591m; V<= 2m${}^3$}
 
-\textbf{Standard Expanded PeaPod}: 4x3x1 units (0.5m on all sides) + control module = 2m wide x 1.7m tall x .5m deep = 1.5m${}^3$ (< 2)
+\textbf{Standard Expanded PeaPod}: 4x3x1 units = 194cm x 146cm x 50+20cm (DIN backplane) = 1.98m${}^3$ (< 2)
 
-With width treated as depth for the purposes of the considerations of the "room size" constraint, the Standard meets this constraint.
+% With width treated as depth for the purposes of the considerations of the "room size" constraint, the Standard meets this constraint.
 
 \subsection{Power}
 % 1000chars
 
 \textbf{Constraint}: \textit{Avg < 1500 W, Peak < 3000 W}
 
-% For calculations and justification, see preliminary calculations Appendix \ref{app:power}.
+\textbf{Standard Expanded PeaPod}: Two Pumps (120W ea.), 4 Solenoids (36W ea.), LEDs at full power (8.4W per strip), 5 LED strips per grow tray = 849W
 
-\textbf{Total Power Consumption}: 1,284W
+% For calculations and justification, see preliminary calculations Appendix \ref{app:power}.
 
 \subsection{Water Consumption}
 % limit 1000 characters
@@ -88,25 +90,25 @@ With width treated as depth for the purposes of the considerations of the "room 
 
 % For calculations and justification, see preliminary calculations Appendix \ref{app:water}.
 
-\textit{Humidification}: CNet = \textbf{500mL initial + 50mL per hour}
+\textbf{Standard Expanded PeaPod}: Dependent on watering cycle, 5mL/sec per nozzle @100PSI.
 
-\textit{Aeroponics}: CNet = \textbf{1.25L primed + 1.2L per hour}.
+For 10sec watering every 30min: CNet = \textbf{20L primed + 0.8L per hour} (without recycling).
 
 \subsection{Mass}
 % limit 1000chars
 
 % For part breakdown, calculations, and justification, see preliminary calculations Appendix \ref{app:mass}.
 
-Total: \textbf{70kg}
+\textbf{Standard Expanded PeaPod}: \textbf{90kg}
 
 \subsection{Data Connection}
 % limit 1000 characters
 
-% \textit{Automation}: All of PeaPod's operation is automated, save for a select few setup, maintenance, and harvest tasks. This is controlled by a central computer, which uses a "program" to enact the desired environment at each point in time throughout the plant life cycle. 
+\textit{Automation}: All of PeaPod's operation is automated, save for a select few setup, maintenance, and harvest tasks. This is controlled by a central computer, which uses a "program" to enact the desired environment at each point in time throughout the plant life cycle. 
 \textit{Remote Control}: The program may be changed \uline{instantaneously} as an \textbf{appended instruction set} with immediate effect.
-% \textit{Feedback}: The feedback sensors provide the computer with information that will influence the control it exerts. For example, if the program indicates the leaf zone temperature should be set to 22 degrees C, the computer would apply greater power to the heater if the current temperature was 18 degrees C as opposed to 21 degrees C. This forms a control loop for each parameter, relying on one of many control functions (bang-bang, PID, etc.).
+\textit{Feedback}: The feedback sensors provide the computer with information that will influence the control it exerts. For example, if the program indicates the leaf zone temperature should be set to 22 degrees C, the computer would apply greater power to the heater if the current temperature was 18 degrees C as opposed to 21 degrees C. This forms a control loop for each parameter, relying on one of many control functions (bang-bang, PID, etc.).
 
-\textit{Data Presentation}: Plant and environment data can be viewed with \uline{live updates and video feed}.
+% \textit{Data Presentation}: Plant and environment data can be viewed with \uline{live updates and video feed}.
 
 \subsection{Crew Time}
 
@@ -114,11 +116,11 @@ Total: \textbf{70kg}
 
 For calculations and justification, see preliminary calculations Appendix.
 
-Total setup process time (2 trays per unit, 12 units, 1 CM): \textbf{17.5 hours} (\textit{one person}) or \textbf{4.5 hours} (\textit{crew of 4})
+Total setup process time (8 trays, 12 units, 1 CM): \textbf{17.5 hours} (\textit{one person}) or \textbf{4.5 hours} (\textit{crew of 4})
 
-Total maintenance time per week: \textbf{1-2 hours} (depending on program)
+Total maintenance time per week: \textbf{2 hours} (depending on program)
 
-\subsection{Operational Constraints} 
+\subsection{Operational Constraints}
 
 \textbf{Constraint}: \textit{Terrestrial: gravity (9.81 m/s${}^2$), ambient atmospheric pressure (101,325 Pa), ambient atmospheric temperature (22 °C), ambient atmospheric humidity (50 \%RH)}
 
@@ -183,6 +185,8 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 
 \input{../tex/TestingPlan.tex}
 
+\clearpage
+
 \input{../tex/HACCP.tex}
 
 % \input{../tex/Materials.tex}
@@ -195,6 +199,8 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 % Clear mitigation strategies to address the aforementioned risks
 
 \section{Inputs and Outputs}
+
+\subsection{Inputs}
 % With a focus on the progress or changes made during Phase 2 of the challenge, please describe the inputs and their amounts needed for your food production technology (limit 6000 characters).
 
 % Inputs could include:
@@ -220,9 +226,13 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 
 % With a focus on the progress made during Phase 2 of the challenge, please outline the net water consumption of your food production technology (limit 4000 characters).
 
+\input{../tex/appendices/WaterUsage.tex}
+
 % Note: As your team’s net water consumption is previously captured, you may copy and paste your response from the constraint section above.
 
 % With a focus on the progress or changes made during Phase 2 of the challenge, describe how the food production technology achieves the greatest amount of food output in relation to the quantity of inputs and quantity of waste output (limit 4000 characters)
+
+\input{../tex/report/Optimization.tex}
 
 \section{Reliability and Stability}
 % Reliability: Operational cycle time (i.e., amount of time for one production cycle) (limit 2000 characters)
@@ -240,9 +250,9 @@ Ambient temperature and humidity: less concern, housing is sealed and insulated
 % Estimated additional mass needed for replacement parts and cleaning materials
 % Estimated total time needed per month, per 6 months, and per year for maintenance and cleaning
 
-% Stability: Demonstrate the stability of both the input products used and food product outputs and provide rationalization of the estimated time the inputs and outputs will be fit for use and/or consumption (i.e., shelf-life). (limit 8000 characters)
+\input{../tex/Process.tex}
 
-\input{../tex/Materials.tex}
+% Stability: Demonstrate the stability of both the input products used and food product outputs and provide rationalization of the estimated time the inputs and outputs will be fit for use and/or consumption (i.e., shelf-life). (limit 8000 characters)
 
 \newpage
 
