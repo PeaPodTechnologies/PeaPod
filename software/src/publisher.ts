@@ -339,7 +339,7 @@ export default class PubSubPublisher implements Publisher {
 			username: 'unused',
 			password,
 			protocol: 'mqtts',
-			secureProtocol: 'TLSv1_2_method',
+			// secureProtocol: 'TLSv1_2_method',
 			ca: [servercert]
 		});
 

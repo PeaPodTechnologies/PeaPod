@@ -3,6 +3,10 @@ import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import axios from 'axios';
 import { spawn } from 'child_process';
 
+const PATHSTEM_IMAGES = '~/img/';
+
+const dateFormat = (d: Date) => (`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}`);
+
 /**
  * Checks the internet connectivity.
  * @param timeout Timeout in milliseconds. Default: 5000
@@ -103,5 +107,25 @@ export function execute(command: string, failureCodes: number[] = []): Promise<s
 			// If no options, no codes, OR non-failure:
 			res(log);
 		});
+	});
+}
+
+type CameraCaptureOptions = {
+	width?: number;
+	height?: number;
+	// TODO: Add more options
+};
+
+// Returns a path to the JPEG image.
+export function cameraCapture(options?: CameraCaptureOptions): Promise<string> {
+	return new Promise<string>((res, rej) => {
+		const p = `${PATHSTEM_IMAGES}-${dateFormat(new Date())}`;
+		execute(`libcamera-jpeg -o ${p}.jpg`)
+			.catch(err => {
+				rej(err);
+			})
+			.then(() => {
+				res(`${p}.jpg`);
+			});
 	});
 }

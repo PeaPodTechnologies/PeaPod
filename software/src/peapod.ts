@@ -114,7 +114,7 @@ export default class PeaPod {
 
 	// CONTROLLER FIELDS
 
-	private controlSystems?: { [key: string]: ControlSystem };
+	// private controlSystems?: { [key: string]: ControlSystem };
 
 	/**
 	 * Latest controller instruction set.
@@ -168,7 +168,7 @@ export default class PeaPod {
 					Screen.render();
 					break;
 				case 'revision':
-					this.controller.write(instructions);
+					this.controller.write(this.instructions);
 					break;
 				default:
 					// TODO: Console box?
@@ -207,23 +207,23 @@ export default class PeaPod {
 			switch (msg.type) {
 				case 'data':
 					// Initialize batch array
-					if (batch[msg.data.label] === undefined) batch[msg.data.label] = [];
+					if (this.batch[msg.data.label] === undefined) this.batch[msg.data.label] = [];
 					// Accumulate data into batches
-					batch[msg.data.label].push({
+					this.batch[msg.data.label].push({
 						timestamp: Date.now(),
 						value: msg.data.value
 					});
 					// Set actuator values
-					if (controlSystems[msg.data.label] !== undefined) {
-						controlSystems[msg.data.label].setValue(msg.data.value);
-					}
+					// if (!!this.controlSystems && !!(this.controlSystems[msg.data.label])) {
+					// 	this.controlSystems[msg.data.label].setValue(msg.data.value);
+					// }
 					break;
 				case 'revision':
-					this.controller.write(instructions);
+					this.controller.write(this.instructions);
 					break;
 				default:
 					Spinner.log(
-						`[${chalk.blueBright('CONTROLLER')} | ${msg.type.toUpperCase()}] - ${JSON.stringify(
+						`[${chalk.blueBright('CONTROLLER')}${msg.type ? ' | ' + msg.type.toUpperCase() : ''}  - ${JSON.stringify(
 							msg.data
 						)}`
 					);
@@ -287,14 +287,16 @@ export default class PeaPod {
 
 		// Start schedule phase 0
 		let phasePromises = [];
-		for (const parameter of Object.keys(this.schedule.parameters)) {
-			phasePromises.push(this.startPhase(schedule, parameter));
+		if(!!this.schedule) {
+			for (const parameter of Object.keys(this.schedule.parameters)) {
+				phasePromises.push(this.startPhase(this.schedule, parameter));
+			}
 		}
 
 		// Reset
-		batch = {};
+		this.batch = {};
 
-		batchInterval = setInterval(() => {
+		this.batchInterval = setInterval(() => {
 			// Publish entire batch
 			try {
 				this.publisher.publish({
@@ -304,7 +306,7 @@ export default class PeaPod {
 						project: projectid,
 						run
 					},
-					data: batch
+					data: this.batch
 				});
 			} catch {
 				Spinner.fail('Batch publish failed, will retry...');
@@ -312,36 +314,38 @@ export default class PeaPod {
 			}
 
 			Spinner.log(
-				`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(batch).reduce(
+				`[${chalk.magenta('PUBLISH')}] - Batch of ${Object.values(this.batch).reduce(
 					(sum, entry) => sum + entry.length,
 					0
 				)} datapoints published.`
 			);
 
 			// Reset batch to empty
-			batch = {};
+			this.batch = {};
 		}, BATCH_PUBLISH_INTERVAL * 1000);
 
 		// Refresh control system values and targets, update actuator instructions, send new instructions
-		const refreshInterval = setInterval(() => {
-			let instruction: ControllerInstructions = {};
-			for (const parameter of Object.keys(targets)) {
-				const cs = controlSystems[parameter];
-				cs.setTarget(targets[parameter]);
-				instruction[cs.actuator] = cs.refresh();
-			}
-			this.controller.write(instruction);
-		}, REFRESH_INTERVAL);
+		// const refreshInterval = setInterval(() => {
+		// 	let instruction: ControllerInstructions = {};
+		// 	for (const parameter of Object.keys(targets)) {
+		// 		const cs = this.controlSystems[parameter];
+		// 		cs.setTarget(this.targets[parameter]);
+		// 		instruction[cs.actuator] = cs.refresh();
+		// 	}
+		// 	this.controller.write(instruction);
+		// }, REFRESH_INTERVAL);
 
 		// When all phases for all parameters are complete, clear refresh interval, send "off" instruction, resolve this promise
-		return Promise.all(phasePromises).then(() => {
-			clearInterval(refreshInterval);
-			let off: ControllerInstructions = {};
-			for (const parameter of Object.keys(targets)) {
-				off[controlSystems[parameter].actuator] = 0;
-			}
-			this.controller.write(off);
-		});
+		// return Promise.all(phasePromises).then(() => {
+		// 	clearInterval(refreshInterval);
+		// 	let off: ControllerInstructions = {};
+		// 	if(!!this.controlSystems){
+		// 		for (const parameter of Object.keys(this.targets)) {
+		// 			off[this.controlSystems[parameter].actuator] = 0;
+		// 		}
+		// 	}
+		// 	this.controller.write(off);
+		// });
 	}
 
 	/**
@@ -374,7 +378,7 @@ export default class PeaPod {
 					for (const value of phase.values) {
 						let t = setTimeout(() => {
 							// Assign value
-							targets[parameter] = value.value;
+							this.targets[parameter] = value.value;
 							// Remove this timeout if/when it self-clears
 							timeouts.splice(
 								timeouts.findIndex(v => v == t),
@@ -395,7 +399,7 @@ export default class PeaPod {
 								intervals.push(
 									setInterval(() => {
 										// Assign value
-										targets[parameter] = value.value;
+										this.targets[parameter] = value.value;
 									}, phase.period)
 								);
 								// Remove this timeout if/when it self-clears

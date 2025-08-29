@@ -11,32 +11,33 @@ import PeaPod from './src/peapod';
 
 async function main(): Promise<void> {
 	Spinner.start(`Checking for ${chalk.blue('Internet')} connection...'`);
-	const internet = await checkInternet();
-	if (internet) {
-		Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
-	} else {
-		Spinner.fail(`Failed to connect to the ${chalk.blue('Internet')}.`);
-	}
+	// const internet = await checkInternet();
+	// const internet = false;
+	// if (internet) {
+	// 	Spinner.succeed(`Connected to the ${chalk.blue('Internet')}!`);
+	// } else {
+	// 	Spinner.fail(`Failed to connect to the ${chalk.blue('Internet')}.`);
+	// }
 
 	// Get desired publishing mode
-	let publishingmode = (
-		await inquirer.prompt<{ pm: PublishingMode }>([
-			{
-				type: 'list',
-				name: 'pm',
-				message: 'Select publishing mode:',
-				choices: Object.entries(PublishingMode).map(pm => {
-					return {
-						// Object.entries casts `PublishingMode` values to `string`. This recasts them to PublishingMode enum values (TypeScript magic)
-						value: PublishingMode[pm[0] as keyof typeof PublishingMode],
-						name: pm[1]
-					};
-				})
-			}
-		])
-	).pm;
+	// let publishingmode = (
+	// 	await inquirer.prompt<{ pm: PublishingMode }>([
+	// 		{
+	// 			type: 'list',
+	// 			name: 'pm',
+	// 			message: 'Select publishing mode:',
+	// 			choices: Object.entries(PublishingMode).map(pm => {
+	// 				return {
+	// 					// Object.entries casts `PublishingMode` values to `string`. This recasts them to PublishingMode enum values (TypeScript magic)
+	// 					value: PublishingMode[pm[0] as keyof typeof PublishingMode],
+	// 					name: pm[1]
+	// 				};
+	// 			})
+	// 		}
+	// 	])
+	// ).pm;
 
-	let peapod: PeaPod = new PeaPod(publishingmode);
+	let peapod: PeaPod = new PeaPod(PublishingMode.OFFLINE);
 
 	let idleInterval = await peapod.idle();
 
