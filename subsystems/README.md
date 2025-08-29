@@ -1,6 +1,6 @@
 # PeaPod Subsystems
 
-All subsystems will follow the same folder structure:
+All subsystems will follow the same folder structure (where applicable):
 
 - `assets/` - various graphical/etc. assets (diagrams, etc. excluding pictures of schematics/PCB layouts)
 - `hardware/`
@@ -14,7 +14,7 @@ In addition, each subsystem should have its own `README.MD` with the following i
 
 ## Hardware
 
-Includes all bills of materials (BOM), 3D printing files, PCB files, etc.
+Includes all **reference** bills of materials (BOM), 3D printing files, PCB files, etc.
 
 Subdirectories:
 

@@ -32,7 +32,7 @@ Designed as both a hassle-free food production system and a research tool for pr
 
 The following are performed on a computer:
 
-1. Format a microSD card (>=4GB) with a single FAT partition.
+1. Format a microSD card (>=32GB) with a single FAT partition.
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
 3. Flash the SD card with a *Raspberry Pi OS Lite (64-bit)* image.
 
@@ -46,7 +46,7 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 6. Execute `sudo raspi-config` and perform these steps to setup the Pi:
    1. *System Options > Wireless Lan* - Setup WiFi and connect to the Internet
    2. *System Options > Hostname* - Set a unique hostname (`e.g. peapod`)
-   3. *System Options > Boot/Auto Login* - Select `Console Autologin`
+   3. *System Options > Boot/Auto Login* - Select `Console Autologin` (B2)
    4. *Interface Options > SSH* - `Enable` SSH Server
    5. *Interface Options > Serial Port* - `Disable` serial login shell, but `Enable` the serial port hardware
    6. *Performance Options > GPU Memory* - 256 (MB)
@@ -60,11 +60,12 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
 > Note: In Future, steps 7-11 will be performed at runtime.
 7. Update Packages:
-     1. Update package listings, upgrade existing packages: `sudo apt-get update && sudo apt-get upgrade -y`
-     2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt-get install -y nodejs npm avrdude python3-venv` (could take a while)
+     1. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
+     2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt install -y nodejs npm avrdude python3-venv python3-dev` (could take a while)
      3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
+     4. If using a Raspberry Pi Camera, install the camera package: `sudo apt install -y libcamera-apps`
 
-8. Install PlatformIO Core with `python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"`
+8. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
 
 9. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
    1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:

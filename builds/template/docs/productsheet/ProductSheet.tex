@@ -1,0 +1,62 @@
+\documentclass{../../../../docs/tex/report}
+\usepackage{setspace} % Setting line spacing
+\usepackage{ulem} % Underline
+\usepackage{caption} % Captioning figures
+\usepackage{subcaption} % Subfigures
+\usepackage{geometry} % Page layout
+\usepackage{multicol} % Columned pages
+\usepackage{array,etoolbox}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[toc,page]{appendix}
+\setlist{noitemsep}
+
+% Page layout (margins, size, line spacing)
+\geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
+\setstretch{1}
+
+% Headers
+\pagestyle{fancy}
+\lhead{PeaPod XYZ}
+\rhead{PeaPod Technologies Inc.}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.2cm}
+
+        \textbf{\large{PeaPod XYZ - Product Sheet}}
+
+        \vspace{0.5cm}
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+        \vfill
+        \input{../../../docs/tex/documentation/Namecard.tex}
+        \vspace{1.25cm}
+
+        Revision 0.1\\
+        PeaPod Technologies Inc.\\
+        Month XX, 2024
+
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{plain}
+
+\tableofcontents
+\clearpage
+
+\section{Product Overview}
+
+\subsection{Introduction}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, nunc nec ultricies ultricies, nunc nunc ultricies nunc, nec ultricies nunc nunc nec. Sed auctor, nunc nec ultricies ultricies, nunc nunc ultricies nunc, nec ultricies nunc nunc nec. Sed auctor, nunc nec ultricies ultricies, nunc nunc ultricies nunc, nec ultricies nunc nunc nec. Sed auctor, nunc nec ultricies ultricies, nunc nunc ultricies nunc, nec ultricies nunc nunc nec.
+
+\clearpage
+
+% References
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
