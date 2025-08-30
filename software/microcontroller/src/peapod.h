@@ -2,10 +2,11 @@
 #define PEAPOD_H_
 
 #include <Arduino.h>
-#include <I2CIP.h>
 
 #include <state.h>
 #include <chronograph.h>
+
+#include <I2CIP.h>
 
 #include <HT16K33.h>
 #include <JHD1313.h>

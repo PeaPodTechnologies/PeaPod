@@ -1,5 +1,7 @@
 #include <peapod.h>
 
+#include <DebugJson.h>
+
 bool PeaPod::pinModeSet[255] = { false };
 
 using namespace PeaPod;
