@@ -1,18 +1,21 @@
 #include <peapod.h>
+#include <air.h>
 
 #include <DebugJson.h>
 
+FSM::Variable PeaPod::cycle = FSM::Variable(FSM::Number(0, false, false), "cycle");
+FSM::Variable PeaPod::fps = FSM::Variable(FSM::Number(0, false, false), "fps");
 bool PeaPod::pinModeSet[255] = { false };
 
 using namespace PeaPod;
 using namespace I2CIP;
 
-PeaPodModule::PeaPodModule() : JsonModule(PEAPOD_WIRENUM, PEAPOD_MODULENUM) { }
-
 DeviceGroup* PeaPodModule::deviceGroupFactory(const i2cip_id_t& id) {
   DeviceGroup* dg = DeviceGroup::create<EEPROM>(id);
   if(dg != nullptr) return dg;
   dg = DeviceGroup::create<SHT45>(id);
+  if(dg != nullptr) return dg;
+  dg = DeviceGroup::create<K30>(id);
   if(dg != nullptr) return dg;
   dg = DeviceGroup::create<HT16K33>(id);
   if(dg != nullptr) return dg;
@@ -118,4 +121,55 @@ void PeaPodModule::handleCommand(JsonObject command, Print& out) {
 
 void PeaPodModule::handleConfig(JsonObject config, Print& out) { 
   // TODO: Implement - something with EEPROM? or FSM?
+}
+
+void PeaPod::registerCallbacks(void)  {
+  cycle.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_cycle);
+
+  FSM::Chronos.addInterval(PEAPOD_DELTA_HEARTBEAT, PeaPod::callback_heartbeat);
+  FSM::Chronos.addInterval(PEAPOD_DELTA_MODULECHECK, PeaPod::callback_module<PEAPOD_MODULENUM_AIR, PeaPodModuleAir>);
+}
+
+unsigned long last = 0;
+void PeaPod::callback_cycle(bool _, const FSM::Number& __) {
+  FSM::Chronos.set(millis());
+
+  unsigned long delta = millis() - last;
+  PeaPod::fps.set(((unsigned)PeaPod::fps.get() + 1000.f / max(1.f, (float)delta))/2); // Old FPS plus new FPS over two (moving average)
+  last = millis();
+
+  while(Serial.available() > 0) { // With baud 115200, this should not block
+    DebugJson::update(Serial, I2CIP::commandRouter);
+  }
+}
+
+void PeaPod::callback_heartbeat(bool _, const FSM::fsm_timestamp_t& __) {
+  DebugJson::heartbeat(millis(), Serial);
+  DebugJson::revision(I2CIP_REVISION, Serial);
+  DebugJson::telemetry(millis(), (unsigned)PeaPod::fps.get(), "fps", Serial);
+  DebugJson::telemetry(millis(), (unsigned)PeaPod::cycle.get(), "cycle", Serial);
+}
+
+template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaPod::PeaPodModule, T>::value, int>::type = 0> void PeaPod::callback_module(bool _, const FSM::fsm_timestamp_t& __) {
+  if(M < 0 || M > I2CIP_MUX_COUNT) return;
+
+  if(I2CIP::MUX::pingMUX(PEAPOD_WIRENUM, M)) {
+    if(I2CIP::modules[M] == nullptr) {
+      I2CIP::modules[M] = new T();
+
+      // First Module - Add HT16K33
+      if(M == 0) {
+        I2CIP::modules[0]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, _i2cip_args_io_default, NullStream);
+      }
+    }
+
+    I2CIP::errlev[M] = I2CIP::modules[M]->operator()();
+  } else {
+    I2CIP::errlev[M] = I2CIP_ERR_HARD;
+  }
+
+  if(I2CIP::modules[M] != nullptr && I2CIP::errlev[M] == I2CIP_ERR_HARD) {
+    delete I2CIP::modules[M];
+    I2CIP::modules[M] = nullptr;
+  }
 }
