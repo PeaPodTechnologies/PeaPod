@@ -7,6 +7,8 @@
 #ifndef PEAPOD_AIR_T_
 #define PEAPOD_AIR_T_
 
+#include <DebugJson.h>
+
 template <unsigned char M> void PeaPod::PeaPodModuleAir::callback_sht45_mean(bool _, const FSM::fsm_timestamp_t& __) {
   if(M < 0 || M > I2CIP_MUX_COUNT || I2CIP::modules[M] == nullptr) return;
 

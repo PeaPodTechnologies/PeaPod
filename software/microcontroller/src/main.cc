@@ -6,6 +6,8 @@
 
 #include <peapod.h>
 #include <air.h>
+#include <water.h>
+#include <light.h>
 
 #include <DebugJson.h>
 
@@ -13,8 +15,8 @@
 // #define SEVENSEG_HUMIDITY 1 // Uncomment to enable 7-segment display for humidity
 #define SEVENSEG_CO2 1 // Uncomment to enable 7-segment display for CO2
 
-#define PEAPOD_MODULENUM_PCA9685 0
-#define PEAPOD_MODULENUM_MCP23017 0
+#define PEAPOD_MODULENUM_PCA9685 2
+#define PEAPOD_MODULENUM_MCP23017 1
 #define PEAPOD_MODULENUM_SEVENSEG 0
 
 void callback_temperature(bool _, const FSM::Number& v);
@@ -25,6 +27,8 @@ template <unsigned char P> void callback_mcp23017_digitalWrite(bool _, const boo
 template <unsigned char P> void callback_pca9685_analogWrite(bool _, const FSM::Number& v);
 template <unsigned char P> void callback_pca9685_onOff(bool _, const bool& v);
 
+void callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __);
+
 using namespace PeaPod;
 using namespace I2CIP;
 
@@ -34,12 +38,12 @@ using namespace I2CIP;
 // i2cip_fqa_t fqa_lcd = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM, 1, I2CIP_JHD1313_ADDRESS);
 // i2cip_fqa_t fqa_rotary = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM, 0, I2CIP_SEESAW_ADDRESS);
 // i2cip_fqa_t fqa_nunchuck = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM, 0, I2CIP_NUNCHUCK_ADDRESS);
-i2cip_fqa_t fqa_gpio = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM_MCP23017, 2, I2CIP_MCP23017_ADDRESS);
-i2cip_fqa_t fqa_pwm = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM_PCA9685, 1, I2CIP_PCA9685_ADDRESS);
+i2cip_fqa_t fqa_gpio = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM_MCP23017, 0, I2CIP_MCP23017_ADDRESS);
+i2cip_fqa_t fqa_pwm = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM_PCA9685, 0, I2CIP_PCA9685_ADDRESS);
 
 FSM::Flag led_zero = FSM::Flag("led0");
 FSM::Flag led_one = FSM::Flag("led1");
-FSM::Flag led_pwm = FSM::Flag("led_pwm");
+FSM::Variable led_pwm = FSM::Variable(FSM::notanumber, "led_pwm");
 
 void setup(void) {
   // 0. Builtin LED Pinmode; Serial Begin
@@ -54,8 +58,10 @@ void setup(void) {
 
   delay(100);
 
-  // Instantiate module ahead of time
+  // Instantiate modules ahead of time
   PeaPod::callback_module<PEAPOD_MODULENUM_AIR, PeaPodModuleAir>();
+  PeaPod::callback_module<PEAPOD_MODULENUM_WATERING, PeaPodModuleWatering>();
+  PeaPod::callback_module<PEAPOD_MODULENUM_LIGHTING, PeaPodModuleLighting>();
 
   // // Print all devices
   // delay(100);
@@ -81,15 +87,14 @@ void setup(void) {
 
   FSM::Chronos.addIntervalFlag(2000, 0, &led_zero, false);
   FSM::Chronos.addIntervalFlag(2000, 1000, &led_zero, true);
-  led_zero.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<0>);
+  led_zero.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PIN_A0>);
 
   FSM::Chronos.addIntervalFlag(10000, 0, &led_one, false);
   FSM::Chronos.addIntervalFlag(10000, 5000, &led_one, true);
-  led_one.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<2>);
+  led_one.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PIN_B0>);
 
-  FSM::Chronos.addIntervalFlag(5000, 0, &led_pwm, false);
-  FSM::Chronos.addIntervalFlag(5000, 2500, &led_pwm, true);
-  led_pwm.addLatchingConditional(true, false, callback_pca9685_onOff<0>);
+  FSM::Chronos.addInterval(50, 0, &callback_pwm_cycle, false);
+  led_pwm.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_pca9685_analogWrite<PCA9685_CH0>);
 }
 
 // LOOP GLOBALS
@@ -99,7 +104,7 @@ void loop(void) {
   // I2CIP_DEBUG_SERIAL.println(I2CIP::devicetree.toString());
   // I2CIP_DEBUG_SERIAL.println(modules[PEAPOD_MODULENUM]->toString());
 
-  PeaPod::cycle.set(PeaPod::cycle.get()++);
+  PeaPod::cycle.set(PeaPod::cycle.get() + FSM::Number(1, false, false));
 }
 
 // HELPER FUNCTIONS
@@ -147,6 +152,7 @@ void callback_co2(bool _, const FSM::Number& v) {
 }
 
 template <unsigned char P> void callback_mcp23017_digitalWrite(bool _, const bool& v) {
+  if(P > PIN_B7) return; // Invalid Pin
   if(I2CIP::errlev[PEAPOD_MODULENUM_MCP23017] == I2CIP_ERR_NONE && I2CIP::modules[PEAPOD_MODULENUM_MCP23017] != nullptr) {
 
     i2cip_mcp23017_bitmask_t gpio_mask = 1 << P;
@@ -158,10 +164,11 @@ template <unsigned char P> void callback_mcp23017_digitalWrite(bool _, const boo
 }
 
 template <unsigned char P> void callback_pca9685_analogWrite(bool _, const FSM::Number& v) {
+  if(P > PCA9685_CH15) return; // Invalid Channel
   if(I2CIP::errlev[PEAPOD_MODULENUM_PCA9685] == I2CIP_ERR_NONE && I2CIP::modules[PEAPOD_MODULENUM_PCA9685] != nullptr && P <= PCA9685_CH15) {
 
     i2cip_pca9685_chsel_t channel = (i2cip_pca9685_chsel_t)P;
-    i2cip_pca9685_t data = (uint16_t)min(0, max(4096, (int)v));
+    i2cip_pca9685_t data = (uint16_t)max(0, min(4096, (int)v));
     i2cip_args_io_t args = { .g = false, .a = nullptr, .s = &data, .b = &channel };
 
     I2CIP::modules[PEAPOD_MODULENUM_PCA9685]->operator()<PCA9685>(fqa_pwm, true, args, DebugJsonBreakpoints);
@@ -169,6 +176,7 @@ template <unsigned char P> void callback_pca9685_analogWrite(bool _, const FSM::
 }
 
 template <unsigned char P> void callback_pca9685_onOff(bool _, const bool& v) {
+  if(P > PCA9685_CH15) return; // Invalid Channel
   if(I2CIP::errlev[PEAPOD_MODULENUM_PCA9685] == I2CIP_ERR_NONE && I2CIP::modules[PEAPOD_MODULENUM_PCA9685] != nullptr && P <= PCA9685_CH15) {
 
     i2cip_pca9685_chsel_t channel = (i2cip_pca9685_chsel_t)P;
@@ -177,6 +185,12 @@ template <unsigned char P> void callback_pca9685_onOff(bool _, const bool& v) {
 
     I2CIP::modules[PEAPOD_MODULENUM_PCA9685]->operator()<PCA9685>(fqa_pwm, true, args, DebugJsonBreakpoints);
   }
+}
+
+void callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __) {
+  double pwm = ((cos((FSM::Chronos.get() % 5000) / 5000.0 * 2.0 * M_PI) + 1.0) * 2048.0); // 0 to 1 over 5s
+
+  led_pwm.set(FSM::Number(pwm, true, false));
 }
 
 #endif
