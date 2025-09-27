@@ -13,11 +13,13 @@
 
 // #define SEVENSEG_TEMPERATURE 1 // Uncomment to enable 7-segment display for temperature
 // #define SEVENSEG_HUMIDITY 1 // Uncomment to enable 7-segment display for humidity
-#define SEVENSEG_CO2 1 // Uncomment to enable 7-segment display for CO2
+// #define SEVENSEG_CO2 1 // Uncomment to enable 7-segment display for CO2
+#define SEVENSEG_ADC 1
 
 #define PEAPOD_MODULENUM_PCA9685 2
 #define PEAPOD_MODULENUM_MCP23017 1
 #define PEAPOD_MODULENUM_SEVENSEG 0
+#define PEAPOD_MODULENUM_ADS1115  2
 
 void callback_temperature(bool _, const FSM::Number& v);
 void callback_humidity(bool _, const FSM::Number& v);
@@ -26,8 +28,10 @@ void callback_co2(bool _, const FSM::Number& v);
 template <unsigned char P> void callback_mcp23017_digitalWrite(bool _, const bool& v);
 template <unsigned char P> void callback_pca9685_analogWrite(bool _, const FSM::Number& v);
 template <unsigned char P> void callback_pca9685_onOff(bool _, const bool& v);
+template <unsigned char C> void callback_adc_read(bool _, const FSM::fsm_timestamp_t& __);
 
 void callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __);
+void callback_adc_voltage(bool _, const FSM::Number& v);
 
 using namespace PeaPod;
 using namespace I2CIP;
@@ -40,10 +44,12 @@ using namespace I2CIP;
 // i2cip_fqa_t fqa_nunchuck = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM, 0, I2CIP_NUNCHUCK_ADDRESS);
 i2cip_fqa_t fqa_gpio = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM_MCP23017, 0, I2CIP_MCP23017_ADDRESS);
 i2cip_fqa_t fqa_pwm = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM_PCA9685, 0, I2CIP_PCA9685_ADDRESS);
+i2cip_fqa_t fqa_adc = createFQA(PEAPOD_WIRENUM, PEAPOD_MODULENUM_ADS1115, 0, I2CIP_ADS1115_ADDRESS);
 
 FSM::Flag led_zero = FSM::Flag("led0");
 FSM::Flag led_one = FSM::Flag("led1");
 FSM::Variable led_pwm = FSM::Variable(FSM::notanumber, "led_pwm");
+FSM::Variable adc_voltage = FSM::Variable(FSM::notanumber, "adc_volts");
 
 void setup(void) {
   // 0. Builtin LED Pinmode; Serial Begin
@@ -93,8 +99,11 @@ void setup(void) {
   FSM::Chronos.addIntervalFlag(10000, 5000, &led_one, true);
   led_one.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PIN_B0>);
 
-  FSM::Chronos.addInterval(50, 0, &callback_pwm_cycle, false);
+  FSM::Chronos.addInterval(50, 0, callback_pwm_cycle, false);
   led_pwm.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_pca9685_analogWrite<PCA9685_CH0>);
+
+  FSM::Chronos.addInterval(100, 0, callback_adc_read<ADS1115_CHANNEL_0>, false);
+  adc_voltage.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_adc_voltage);
 }
 
 // LOOP GLOBALS
@@ -191,6 +200,39 @@ void callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __) {
   double pwm = ((cos((FSM::Chronos.get() % 5000) / 5000.0 * 2.0 * M_PI) + 1.0) * 2048.0); // 0 to 1 over 5s
 
   led_pwm.set(FSM::Number(pwm, true, false));
+}
+
+template <unsigned char C> void callback_adc_read(bool _, const FSM::fsm_timestamp_t& __) {
+  if(C > ADS1115_CHANNEL_3) return; // Invalid Channel
+  if(I2CIP::errlev[PEAPOD_MODULENUM_ADS1115] == I2CIP_ERR_NONE && I2CIP::modules[PEAPOD_MODULENUM_ADS1115] != nullptr) {
+
+    i2cip_ads1115_chsel_t channel = (i2cip_ads1115_chsel_t)C;
+    i2cip_args_io_t args = { .g = true, .a = nullptr, .s = nullptr, .b = &channel };
+
+    i2cip_errorlevel_t errlev = I2CIP::modules[PEAPOD_MODULENUM_ADS1115]->operator()<ADS1115>(fqa_adc, true, args, DebugJsonBreakpoints);
+
+    if(errlev == I2CIP_ERR_NONE){
+      Device** dptr = I2CIP::devicetree[fqa_adc];
+      if(dptr != nullptr) {
+        ADS1115* ads = (ADS1115*)(*dptr);
+        float voltage = ads->getCache();
+        adc_voltage.set(FSM::Number((double)voltage, true, false));
+      }
+    }
+  }
+}
+void callback_adc_voltage(bool _, const FSM::Number& v) {
+  DebugJson::telemetry(millis(), (double)v, adc_voltage.getKey());
+
+  #ifdef SEVENSEG_ADC
+  if(I2CIP::errlev[PEAPOD_MODULENUM_SEVENSEG] == I2CIP_ERR_NONE && I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG] != nullptr) {
+    i2cip_ht16k33_mode_t seg_mode = SEG_2F;
+    i2cip_ht16k33_data_t seg_data = { .f = (float)v };
+    i2cip_args_io_t seg_args = { .g = false, .a = nullptr, .s = &seg_data, .b = &seg_mode };
+
+    I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, seg_args, DebugJsonBreakpoints);
+  }
+  #endif
 }
 
 #endif

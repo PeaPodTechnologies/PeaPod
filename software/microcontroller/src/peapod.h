@@ -16,6 +16,7 @@
 #include <Seesaw.h>
 #include <SHT45.h>
 #include <K30.h>
+#include <ADS1115.h>
 
 #define PEAPOD_WIRENUM 0
 

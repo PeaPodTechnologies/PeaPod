@@ -31,6 +31,8 @@ DeviceGroup* PeaPodModule::deviceGroupFactory(const i2cip_id_t& id) {
   dg = DeviceGroup::create<MCP23017>(id);
   if(dg != nullptr) return dg;
   dg = DeviceGroup::create<Nunchuck>(id);
+  if(dg != nullptr) return dg;
+  dg = DeviceGroup::create<ADS1115>(id);
   return dg;
 }
 
