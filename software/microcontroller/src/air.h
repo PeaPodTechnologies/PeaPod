@@ -14,12 +14,22 @@ namespace PeaPod {
   extern FSM::Variable air_co2;
 
   class PeaPodModuleAir : public PeaPodModule {
+    private:
+      FSM::IntervalCallback* interval_sht45 = nullptr;
+      FSM::IntervalCallback* interval_k30 = nullptr;
     public:
       PeaPodModuleAir(bool chronoCallbacks = true) : PeaPodModule(PEAPOD_MODULENUM_AIR) {
         if(chronoCallbacks) {
-          FSM::Chronos.addInterval(PEAPOD_SHT45_DELTA, PeaPodModuleAir::callback_sht45_mean<PEAPOD_MODULENUM_AIR>);
-          FSM::Chronos.addInterval(PEAPOD_K30_DELTA, PeaPodModuleAir::callback_k30_mean<PEAPOD_MODULENUM_AIR>);
+          interval_sht45 = FSM::Chronos.addInterval(PEAPOD_SHT45_DELTA, PeaPodModuleAir::callback_sht45_mean<PEAPOD_MODULENUM_AIR>);
+          interval_k30 = FSM::Chronos.addInterval(PEAPOD_K30_DELTA, PeaPodModuleAir::callback_k30_mean<PEAPOD_MODULENUM_AIR>);
         }
+      }
+
+      ~PeaPodModuleAir() {
+        FSM::Chronos.removeInterval(interval_sht45);
+        FSM::Chronos.removeInterval(interval_k30);
+        interval_sht45 = nullptr;
+        interval_k30 = nullptr;
       }
       
       template <unsigned char M> static void callback_sht45_mean(bool _ = true, const FSM::fsm_timestamp_t& __ = 0);

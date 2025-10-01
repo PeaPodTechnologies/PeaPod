@@ -213,7 +213,7 @@ template <unsigned char C> void callback_adc_read(bool _, const FSM::fsm_timesta
 
     if(errlev == I2CIP_ERR_NONE){
       Device** dptr = I2CIP::devicetree[fqa_adc];
-      if(dptr != nullptr) {
+      if(dptr != nullptr && *dptr != nullptr) {
         ADS1115* ads = (ADS1115*)(*dptr);
         float voltage = ads->getCache();
         adc_voltage.set(FSM::Number((double)voltage, true, false));
@@ -221,6 +221,7 @@ template <unsigned char C> void callback_adc_read(bool _, const FSM::fsm_timesta
     }
   }
 }
+
 void callback_adc_voltage(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, adc_voltage.getKey());
 
