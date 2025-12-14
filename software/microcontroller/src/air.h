@@ -13,6 +13,12 @@ namespace PeaPod {
   extern FSM::Variable air_humidity;
   extern FSM::Variable air_co2;
 
+  namespace Callbacks {
+    void callback_temperature(bool _, const FSM::Number& v);
+    void callback_humidity(bool _, const FSM::Number& v);
+    void callback_co2(bool _, const FSM::Number& v);
+  }
+
   class PeaPodModuleAir : public PeaPodModule {
     private:
       FSM::IntervalCallback* interval_sht45 = nullptr;
