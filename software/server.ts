@@ -105,17 +105,22 @@ const SIMULATOR_CONFIG: SimulatorConfig = {
   'humidity': { min: 30, max: 70, interval: 1500 },
 };
 
+const DEFAULT_SERIALPORT_STEM = '/dev/ttyACM'; // Linux default
+// const DEFAULT_SERIALPORT_STEM = '/dev/ttyS';
+// const DEFAULT_SERIALPORT_STEM = 'usbserial';
+
 const findController = (simulator?: boolean): Promise<Controller> => {
   if(simulator) return Promise.resolve(new SimulatedController(SIMULATOR_CONFIG));
   ui.start('SerialPort: Scanning...');
   return new Promise((res, rej) => {
-    findSerialPort('usbserial').then((ports) => {
+    findSerialPort(process.env.SERIALPORT ?? DEFAULT_SERIALPORT_STEM).then((ports) => {
       if(ports.length === 0) { rej(new DebugJsonSerialportError('No SerialPorts Found!')); }
 
       ui.succeed(`SerialPorts[${ports.length}]`);
       ports.forEach((ser, i) => {
         console.info(`SerialPort[${i}]: ${ser}`);
         if(process.env.SERIALPORT && process.env.SERIALPORT === ser) res(new MicroController(ser));
+        else if(!process.env.SERIALPORT && i === 0) res(new MicroController(ser)); // First one if none specified
       });
     });
   });
