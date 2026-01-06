@@ -55,7 +55,7 @@ export class PID extends ControlSystem {
 		}
 		const err = this.target - this.value;
 		let derivative = 0;
-		if (this.valueLastSet != NaN || this.lasterr != NaN) {
+		if (Number.isNaN(this.valueLastSet) || Number.isNaN(this.lasterr)) {
 			// Trapezoidal approximation
 			this.integral += ((this.lasterr + err) / 2) * (Date.now() - this.valueLastSet);
 			derivative = (err - this.lasterr) / (Date.now() - this.valueLastSet);

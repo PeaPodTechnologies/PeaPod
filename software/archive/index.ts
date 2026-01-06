@@ -2,10 +2,10 @@
 import chalk from 'chalk';
 import * as inquirer from 'inquirer';
 
-import { checkInternet, sleep } from './src/utils';
-import { Spinner } from './src/ui';
-import { PublishingMode } from './src/publisher';
-import PeaPod from './src/peapod';
+import { checkInternet, sleep } from '../src/utils';
+import { Spinner } from '../src/ui';
+import { PublishingMode } from '../src/publisher';
+import PeaPod from '../src/peapod';
 
 // MAIN
 

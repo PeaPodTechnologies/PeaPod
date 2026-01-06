@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext"],
+    "strict": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "baseUrl": "./",
+    "paths": {
+      "serialport": ["./lib/serialport/packages/serialport/lib/index"],
+      "@serialport/*": ["./lib/serialport/packages/*/lib/index"],
+      "serialport/*": ["./lib/serialport/packages/serialport/lib/*"]
+    }
+  },
+  "include": ["./api/**/*.ts"],
+  "exclude": ["./node_modules/**", "./src/**", "./lib/**"]
+}

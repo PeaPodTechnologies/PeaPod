@@ -1,17 +1,35 @@
 {
   "compilerOptions": {
-    "lib": ["es2020"],
-    "target": "es2019",                       /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
-    "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
-    "removeComments": true,                   /* Do not emit comments to output. */
-    "strict": true,                           /* Enable all strict type-checking options. */
-    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-    "skipLibCheck": true,                     /* Skip type checking of declaration files. */
-    "declaration": true,
-    "moduleResolution": "Node",
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
-    // No outDir: keep index.js at package root, only the binary gets published
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["index.ts", "./src/"],
-  "exclude": ["node_modules", "microcontroller", "**/*.spec.ts"],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "server.mjs"  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
