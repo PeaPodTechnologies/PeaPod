@@ -24,7 +24,8 @@ import { pushDebugMessages } from './api/firebase';
 
 enum PublishingMode {
 	FIREBASE = 'Firebase (CloudPonics)',
-	LOCAL = 'Local (Filesystem)'
+	LOCAL = 'Local (Filesystem)',
+  FRONTEND = 'Dashboard (Frontend)'
 }
 
 // Handle Command-Line Arguments
@@ -118,38 +119,10 @@ const findController = (simulator?: boolean): Promise<Controller> => {
   });
 };
 
+let io = undefined;
+
 // ===== MAIN =====
 (async () => {
-  // 1. IPv4 Lookup
-  ui.start('IPv4: Lookup...');
-  const host = await ipv4Lookup();
-  ui.succeed(`IPv4: ${host}`);
-
-  const hostname =  host || argv.host || 'localhost';
-  const port = argv.port || 3001;
-
-  // 2. Next.JS App and HTTP Server
-  ui.start('Next.JS: Preparing...');
-  const app = next({ dev: (process.env.NODE_ENV !== 'production'), hostname, port, conf: nextConfig });
-  const handler = app.getRequestHandler();
-  const server = createServer((req, res) => {
-    handler(req, res);
-  });
-  await app.prepare();
-  ui.succeed('Next.JS: Ready!');
-
-  await new Promise<void>(r => server.listen(port, host, () => {
-    ui.info(`HTTP Server Listening: http://${host}:${port}/`);
-    r();
-  }));
-
-  // 3. WebSockets
-  const io = new Server(server, {
-    cors: {
-      origin: '*',
-    },
-  });
-
   // 4. Select & Prepare Publishing Modes
   const pms = await checkbox({
     message: 'Select publishing modes:',
@@ -192,6 +165,38 @@ const findController = (simulator?: boolean): Promise<Controller> => {
     });
   }
 
+  if(pms.includes(PublishingMode.FRONTEND)) {
+    // 1. IPv4 Lookup
+    ui.start('IPv4: Lookup...');
+    const host = await ipv4Lookup();
+    ui.succeed(`IPv4: ${host}`);
+
+    const hostname =  host || argv.host || 'localhost';
+    const port = argv.port || 3001;
+
+    // 2. Next.JS App and HTTP Server
+    ui.start('Next.JS: Preparing...');
+    const app = next({ dev: (process.env.NODE_ENV !== 'production'), hostname, port, conf: nextConfig });
+    const handler = app.getRequestHandler();
+    const server = createServer((req, res) => {
+      handler(req, res);
+    });
+    await app.prepare();
+    ui.succeed('Next.JS: Ready!');
+
+    await new Promise<void>(r => server.listen(port, host, () => {
+      ui.info(`HTTP Server Listening: http://${host}:${port}/`);
+      r();
+    }));
+
+    // 3. WebSockets
+    io = new Server(server, {
+      cors: {
+        origin: '*',
+      },
+    });
+  }
+
   // 5. SerialPort DebugJson Controller
   const controller = await findController(argv.simulator || false);
   controller.start((messages) =>  {
@@ -200,7 +205,7 @@ const findController = (simulator?: boolean): Promise<Controller> => {
     messages.forEach((msg) => {
 
       // 1. Emit to WebSocket Clients
-      io.emit('microcontroller', msg);
+      if(pms.includes(PublishingMode.FRONTEND)) io.emit('microcontroller', msg);
 
       // 2. (aka 4B.) Local Filesystem Logging
       if(pms.includes(PublishingMode.LOCAL)) appendFileSync(`logs/${argv.simulator ? 'simulator_' : ''}${(new Date()).toISOString().split('T')[0]}.txt`, JSON.stringify(msg) + '\n');
@@ -256,138 +261,140 @@ const findController = (simulator?: boolean): Promise<Controller> => {
     // io.off('connection', handleSocketConnection);
     // microcontroller.reset();
   }).then(() => {
-    ui.succeed('I2CIP.js Ready!');
+    ui.succeed('PeaPodOS: Ready!');
 
-    // 6. Socket.IO Connection Handler
-    io.on('connection', (socket) => {
-      ui.log('Socket.IO ++');
+    if(pms.includes(PublishingMode.FRONTEND)) {
+      // 6. Socket.IO Connection Handler
+      io.on('connection', (socket) => {
+        ui.log('Socket.IO ++');
 
-      setTimeout(() => {
-        ui.info(`Socket.IO: ${socket.id}`);
-        socket.emit('json', { type: 'info', msg: 'Server Start', _socket: 'server' }); // Open subsocket 'server'
-        socket.emit('json', { type: 'revision', msg: 'Microcontroller Revision Match', data: CONTROLLER_REVISION, _socket: 'microcontroller' }); // Open subsocket 'microcontroller'
-      }, 1000);
+        setTimeout(() => {
+          ui.info(`Socket.IO: ${socket.id}`);
+          socket.emit('json', { type: 'info', msg: 'Server Start', _socket: 'server' }); // Open subsocket 'server'
+          socket.emit('json', { type: 'revision', msg: 'Microcontroller Revision Match', data: CONTROLLER_REVISION, _socket: 'microcontroller' }); // Open subsocket 'microcontroller'
+        }, 1000);
 
-      socket.on('disconnect', () => {
-        ui.log('Socket.IO --');
-      });
-
-      // SERIAL INPUT SOCKET HANDLERS
-
-      socket.on('serialinput', (data: DebugJsonInstruction, callback: (error?: {error: string}) => void) => {
-        ui.info(`CONTROLLER INPUT: ${JSON.stringify(data)}`);
-        if(!data || !data.type || !data.data) {
-          ui.fail('CONTROLLER INPUT ERROR: Invalid Data');
-          socket.emit('server', {type: 'error', msg: 'Controller Input Error: Invalid Data'});
-          callback({error: 'Invalid Serial Data'});
-          return;
-        }
-        try {
-          controller.write({type: data.type, data: data.data});
-        } catch (err) {
-          ui.fail(`CONTROLLER INPUT ERROR: ${err}`);
-
-          socket.emit('server', {type: 'error', msg: `Controller TX Error: ${err}`});
-          callback({error: `Controller TX Error: ${err}`});
-          return;
-        }
-        callback();
-      });
-
-      // SCHEDULER SOCKET HANDLERS
-
-      socket.on('scheduler-post', (data: { interval: number, instruction: DebugJsonInstruction }, callback: (error?: {error: string}) => void) => {
-        ui.info(`SCHEDULER POST: ${JSON.stringify(data)}`);
-        if(!data || !data.interval || !data.instruction || !data.instruction.type || !data.instruction.data) {
-          ui.fail('SCHEDULER POST ERROR: Invalid Data');
-          socket.emit('server', {type: 'error', msg: 'Scheduler Post Error: Invalid Data'});
-          callback({error: 'Invalid Scheduler Data'});
-          return;
-        }
-        const schedulerLabel = JSON.stringify(data.instruction);
-        if(schedule[schedulerLabel]) {
-          ui.info(`CONTROLLER INPUT SCHEDULE CLEARED: ${schedulerLabel}`);
-          clearInterval(schedule[schedulerLabel]);
-          delete schedule[schedulerLabel];
-        }
-        if(typeof data.interval === 'number' && data.interval >= 100) {
-          ui.info(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
-          schedule[schedulerLabel] = setInterval(() => {
-            ui.info(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
-            try {
-              controller.write({type: data.instruction.type, data: data.instruction.data});
-            } catch (err) {
-              ui.fail(`CONTROLLER INPUT ERROR: ${err}`);
-              socket.emit('server', {type: 'error', msg: `Controller TX Error: ${err}`});
-              clearInterval(schedule[schedulerLabel]);
-              delete schedule[schedulerLabel];
-
-              callback({error: `Controller TX Error: ${err}`});
-              return;
-            }
-          }, data.interval);
-          callback();
-        }
-      });
-
-      socket.on('scheduler-get', (data: unknown, callback: (keys: string[]) => void) => {
-        ui.info('SCHEDULER GET');
-        callback(Object.keys(schedule));
-      });
-
-      socket.on('scheduler-clear', (key: string, callback: (error?: {error: string}) => void) => {
-        ui.info(`SCHEDULER CLEAR: ${key}`);
-        if(!schedule[key]) {
-          ui.fail(`SCHEDULER CLEAR ERROR: No such key "${key}"`);
-          socket.emit('server', {type: 'error', msg: `Scheduler Clear Error: No such key "${key}"`});
-          callback({error: `No such key "${key}"`});
-          return;
-        }
-        clearInterval(schedule[key]);
-        delete schedule[key];
-        callback();
-      });
-
-      // LINKER SOCKET HANDLERS
-
-      socket.on('linker-post', (data: Linker & {label: string}, callback: (error?: {error: string}) => void) => {
-        ui.info(`LINKER POST: ${JSON.stringify(data)}`);
-        if(!data || !data.label || !data.key || !data.cast || !data.instruction || !data.eval || !data.instruction.type || !data.instruction.data) {
-          ui.fail('LINKER POST ERROR: Invalid Data');
-          socket.emit('server', {type: 'error', msg: 'Linker Post Error: Invalid Data'});
-          callback({error: 'Invalid Linker Data'});
-          return;
-        }
-        if(!linker[data.label]) linker[data.label] = [];
-        linker[data.label].push({
-          instruction: {
-            type: data.instruction.type,
-            data: {
-              ...data.instruction.data,
-              [data.key]: undefined
-            } 
-          }, 
-          key: data.key, 
-          eval: data.eval, 
-          cast: data.cast
+        socket.on('disconnect', () => {
+          ui.log('Socket.IO --');
         });
-        callback();
-      });
 
-      socket.on('linker-get', (data: unknown, callback: (linker: {[key: string]: Linker[]}) => void) => {
-        ui.info('LINKER GET');
-        callback(linker);
-      });
+        // SERIAL INPUT SOCKET HANDLERS
 
-      socket.on('linker-clear', (label: string, instruction: DebugJsonInstruction, callback: (error?: {error: string}) => void) => {
-        ui.info(`LINKER CLEAR: ${label} ${JSON.stringify(instruction)}`);
-        if(linker[label]) {
-          linker[label] = linker[label].filter((item) => {
-            return !(item.instruction.type === instruction.type && JSON.stringify(item.instruction.data) === JSON.stringify(instruction.data));
+        socket.on('serialinput', (data: DebugJsonInstruction, callback: (error?: {error: string}) => void) => {
+          ui.info(`CONTROLLER INPUT: ${JSON.stringify(data)}`);
+          if(!data || !data.type || !data.data) {
+            ui.fail('CONTROLLER INPUT ERROR: Invalid Data');
+            socket.emit('server', {type: 'error', msg: 'Controller Input Error: Invalid Data'});
+            callback({error: 'Invalid Serial Data'});
+            return;
+          }
+          try {
+            controller.write({type: data.type, data: data.data});
+          } catch (err) {
+            ui.fail(`CONTROLLER INPUT ERROR: ${err}`);
+
+            socket.emit('server', {type: 'error', msg: `Controller TX Error: ${err}`});
+            callback({error: `Controller TX Error: ${err}`});
+            return;
+          }
+          callback();
+        });
+
+        // SCHEDULER SOCKET HANDLERS
+
+        socket.on('scheduler-post', (data: { interval: number, instruction: DebugJsonInstruction }, callback: (error?: {error: string}) => void) => {
+          ui.info(`SCHEDULER POST: ${JSON.stringify(data)}`);
+          if(!data || !data.interval || !data.instruction || !data.instruction.type || !data.instruction.data) {
+            ui.fail('SCHEDULER POST ERROR: Invalid Data');
+            socket.emit('server', {type: 'error', msg: 'Scheduler Post Error: Invalid Data'});
+            callback({error: 'Invalid Scheduler Data'});
+            return;
+          }
+          const schedulerLabel = JSON.stringify(data.instruction);
+          if(schedule[schedulerLabel]) {
+            ui.info(`CONTROLLER INPUT SCHEDULE CLEARED: ${schedulerLabel}`);
+            clearInterval(schedule[schedulerLabel]);
+            delete schedule[schedulerLabel];
+          }
+          if(typeof data.interval === 'number' && data.interval >= 100) {
+            ui.info(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
+            schedule[schedulerLabel] = setInterval(() => {
+              ui.info(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
+              try {
+                controller.write({type: data.instruction.type, data: data.instruction.data});
+              } catch (err) {
+                ui.fail(`CONTROLLER INPUT ERROR: ${err}`);
+                socket.emit('server', {type: 'error', msg: `Controller TX Error: ${err}`});
+                clearInterval(schedule[schedulerLabel]);
+                delete schedule[schedulerLabel];
+
+                callback({error: `Controller TX Error: ${err}`});
+                return;
+              }
+            }, data.interval);
+            callback();
+          }
+        });
+
+        socket.on('scheduler-get', (data: unknown, callback: (keys: string[]) => void) => {
+          ui.info('SCHEDULER GET');
+          callback(Object.keys(schedule));
+        });
+
+        socket.on('scheduler-clear', (key: string, callback: (error?: {error: string}) => void) => {
+          ui.info(`SCHEDULER CLEAR: ${key}`);
+          if(!schedule[key]) {
+            ui.fail(`SCHEDULER CLEAR ERROR: No such key "${key}"`);
+            socket.emit('server', {type: 'error', msg: `Scheduler Clear Error: No such key "${key}"`});
+            callback({error: `No such key "${key}"`});
+            return;
+          }
+          clearInterval(schedule[key]);
+          delete schedule[key];
+          callback();
+        });
+
+        // LINKER SOCKET HANDLERS
+
+        socket.on('linker-post', (data: Linker & {label: string}, callback: (error?: {error: string}) => void) => {
+          ui.info(`LINKER POST: ${JSON.stringify(data)}`);
+          if(!data || !data.label || !data.key || !data.cast || !data.instruction || !data.eval || !data.instruction.type || !data.instruction.data) {
+            ui.fail('LINKER POST ERROR: Invalid Data');
+            socket.emit('server', {type: 'error', msg: 'Linker Post Error: Invalid Data'});
+            callback({error: 'Invalid Linker Data'});
+            return;
+          }
+          if(!linker[data.label]) linker[data.label] = [];
+          linker[data.label].push({
+            instruction: {
+              type: data.instruction.type,
+              data: {
+                ...data.instruction.data,
+                [data.key]: undefined
+              } 
+            }, 
+            key: data.key, 
+            eval: data.eval, 
+            cast: data.cast
           });
-        }
-        callback();
+          callback();
+        });
+
+        socket.on('linker-get', (data: unknown, callback: (linker: {[key: string]: Linker[]}) => void) => {
+          ui.info('LINKER GET');
+          callback(linker);
+        });
+
+        socket.on('linker-clear', (label: string, instruction: DebugJsonInstruction, callback: (error?: {error: string}) => void) => {
+          ui.info(`LINKER CLEAR: ${label} ${JSON.stringify(instruction)}`);
+          if(linker[label]) {
+            linker[label] = linker[label].filter((item) => {
+              return !(item.instruction.type === instruction.type && JSON.stringify(item.instruction.data) === JSON.stringify(instruction.data));
+            });
+          }
+          callback();
+        });
       });
-    });
+    }
   });
 })();

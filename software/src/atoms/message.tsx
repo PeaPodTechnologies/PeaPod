@@ -24,24 +24,22 @@ const DebugMessage: FC<DebugMessageProps> = ({ label, showJson, msg }) => {
           <span className="minWidth:1rem display:inline-block">&nbsp; </span>
           <span className="text-xs text-gray-400 display:inline-block">
             {msg.data
-              ? Object.entries(msg.data).map(([key, value], i) => {
-                  return (
-                    <span
-                      key={`debug-${label}-message-${i}`}
-                      className="ml-1 text-gray-900 display:inline-block"
-                    >
-                      {key
-                        .split('-')
-                        .map(
-                          (word) =>
-                            word.slice(0, 1).toUpperCase() +
-                            word.slice(1).toLowerCase()
-                        )
-                        .join(' ')}
-                      : {JSON.stringify(value)}
-                    </span>
-                  );
-                })
+              ? Object.entries(msg.data).map(([key, value], i) => (
+                  <span
+                    key={`debug-${label}-message-${i}`}
+                    className="ml-1 text-gray-900 display:inline-block"
+                  >
+                    {key
+                      .split('-')
+                      .map(
+                        (word) =>
+                          word.slice(0, 1).toUpperCase() +
+                          word.slice(1).toLowerCase()
+                      )
+                      .join(' ')}
+                    : {JSON.stringify(value)}
+                  </span>
+                ))
               : null}
           </span>
           <span className="text-xs text-gray-600 display:inline-block">

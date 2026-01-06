@@ -1,5 +1,4 @@
 // Imports: Firebase
-import { initializeApp } from 'firebase/app';
 import {
   getDatabase, 
   ref, 
