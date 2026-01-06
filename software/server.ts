@@ -108,13 +108,15 @@ const SIMULATOR_CONFIG: SimulatorConfig = {
 const findController = (simulator?: boolean): Promise<Controller> => {
   if(simulator) return Promise.resolve(new SimulatedController(SIMULATOR_CONFIG));
   ui.start('SerialPort: Scanning...');
-  findSerialPort('usbserial').then((ports) => {
-    if(ports.length === 0) { throw new DebugJsonSerialportError('No SerialPorts Found!'); }
+  return new Promise((res, rej) => {
+    findSerialPort('usbserial').then((ports) => {
+      if(ports.length === 0) { rej(new DebugJsonSerialportError('No SerialPorts Found!')); }
 
-    ui.succeed(`SerialPorts[${ports.length}]`);
-    ports.forEach((ser, i) => {
-      console.info(`SerialPort[${i}]: ${ser}`);
-      return new MicroController(ser);
+      ui.succeed(`SerialPorts[${ports.length}]`);
+      ports.forEach((ser, i) => {
+        console.info(`SerialPort[${i}]: ${ser}`);
+        if(process.env.SERIALPORT && process.env.SERIALPORT === ser) res(new MicroController(ser));
+      });
     });
   });
 };
