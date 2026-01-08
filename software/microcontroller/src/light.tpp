@@ -7,7 +7,7 @@
 #ifndef PEAPOD_LIGHT_T_
 #define PEAPOD_LIGHT_T_
 
-template <i2cip_fqa_t F, unsigned char C> void PeaPod::Callbacks::callback_adc_read(bool _, const FSM::fsm_timestamp_t& __) {
+template <i2cip_fqa_t F, unsigned char C> void PeaPod::callback_adc_read(bool _, const FSM::fsm_timestamp_t& __) {
   if(C > ADS1115_CHANNEL_3) return; // Invalid Channel
   if(I2CIP::errlev[I2CIP_FQA_SEG_MODULE(F)] == I2CIP_ERR_NONE && I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)] != nullptr) {
 

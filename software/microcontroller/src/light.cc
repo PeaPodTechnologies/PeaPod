@@ -1,10 +1,6 @@
 #include <light.h>
 
-FSM::Variable PeaPod::adc_voltage = FSM::Variable(FSM::notanumber, "adc_voltage");
-FSM::Variable PeaPod::pwm_lighting = FSM::Variable(FSM::notanumber, "pwm_lighting");
-FSM::Flag PeaPod::flag_lighting = FSM::Flag("flag_lighting");
-
-void PeaPod::Callbacks::callback_adc_voltage(bool _, const FSM::Number& v) {
+void PeaPod::callback_adc_voltage(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, adc_voltage.getKey());
 
   #ifdef PEAPOD_SEVENSEG_ADC

@@ -13,11 +13,9 @@ namespace PeaPod {
   extern FSM::Variable air_humidity;
   extern FSM::Variable air_co2;
 
-  namespace Callbacks {
-    void callback_temperature(bool _, const FSM::Number& v);
-    void callback_humidity(bool _, const FSM::Number& v);
-    void callback_co2(bool _, const FSM::Number& v);
-  }
+  void callback_temperature(bool _, const FSM::Number& v);
+  void callback_humidity(bool _, const FSM::Number& v);
+  void callback_co2(bool _, const FSM::Number& v);
 
   class PeaPodModuleAir : public PeaPodModule {
     private:
@@ -29,6 +27,14 @@ namespace PeaPod {
           interval_sht45 = FSM::Chronos.addInterval(PEAPOD_SHT45_DELTA, PeaPodModuleAir::callback_sht45_mean<PEAPOD_MODULENUM_AIR>);
           interval_k30 = FSM::Chronos.addInterval(PEAPOD_K30_DELTA, PeaPodModuleAir::callback_k30_mean<PEAPOD_MODULENUM_AIR>);
         }
+
+        air_temperature.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_temperature);
+        air_humidity.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_humidity);
+        air_co2.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_co2);
+
+        registerVariable(&air_temperature);
+        registerVariable(&air_humidity);
+        registerVariable(&air_co2);
       }
 
       ~PeaPodModuleAir() {

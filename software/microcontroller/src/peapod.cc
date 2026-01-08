@@ -125,7 +125,88 @@ void PeaPodModule::handleCommand(JsonObject command, Print& out) {
 }
 
 void PeaPodModule::handleConfig(JsonObject config, Print& out) { 
-  // TODO: Implement - something with EEPROM? or FSM?
+  JsonDocument doc;
+  doc["timestamp"] = millis();
+
+  bool list = false;
+  for (JsonPair kv : config) {
+    const char* key = kv.key().c_str();
+
+    if(strcmp(key, "timestamp") == 0) continue; // Reserved key
+    if(strcmp(key, "list") == 0) { list = true; continue; } // Reserved key
+
+    if(!doc["data"][key].isNull()) continue; // Already handled
+
+    JsonVariant value = kv.value();
+
+    FSM::Flag* flag = flags[key];
+    if(flag != nullptr) {
+      if(value.is<bool>()) {
+        flag->set(value.as<bool>());
+      }
+      doc["data"][key] = flag->get();
+      continue;
+    }
+
+    FSM::Variable* variable = variables[key];
+    if(variable != nullptr) {
+      if(value.is<unsigned>()) {
+        variable->set(FSM::Number(value.as<double>(), false, false));
+      } else if(value.is<int>()) {
+        variable->set(FSM::Number(value.as<double>(), false, true));
+      } else if(value.is<float>()) {
+        variable->set(FSM::Number(value.as<double>(), true, true));
+      }
+      doc["data"][key] = variable->get().operator double();
+      continue;
+    }
+  }
+
+  if(list) {
+    String* flagkeys = flags.keys();
+    uint8_t flagcount = flags.size();
+
+    for(uint8_t i = 0; i < flagcount; i++) {
+      if(doc["data"][flagkeys[i]].isNull()) doc["data"][flagkeys[i]] = flags[flagkeys[i].c_str()]->get();
+    }
+
+    String* varkeys = variables.keys();
+    uint8_t varcount = variables.size();
+
+    for(uint8_t i = 0; i < varcount; i++) {
+      if(doc["data"][varkeys[i]].isNull()) doc["data"][varkeys[i]] = variables[varkeys[i].c_str()]->get().operator double();
+    }
+  }
+
+  DebugJson::jsonPrintln(doc, out);
+}
+
+void PeaPodModule::registerFlag(FSM::Flag* flag) {
+  this->flags.set(flag->getKey(), flag);
+}
+void PeaPodModule::registerVariable(FSM::Variable* variable) {
+  this->variables.set(variable->getKey(), variable);
+}
+
+void PeaPodModule::setFlag(const char* key, const bool& value) {
+  FSM::Flag* flag = flags[key];
+  if(flag != nullptr) {
+    flag->set(value);
+  }
+}
+void PeaPodModule::setVariable(const char* key, const FSM::Number& value) {
+  FSM::Variable* variable = variables[key];
+  if(variable != nullptr) {
+    variable->set(value);
+  }
+}
+
+void PeaPod::configRouter(JsonObject command, Print& out) {
+  for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
+    if(I2CIP::modules[i] != nullptr) {
+      I2CIP::modules[i]->handleConfig(command, out);
+    }
+  }
 }
 
 void PeaPod::registerCallbacks(void)  {
@@ -147,7 +228,7 @@ void PeaPod::callback_cycle(bool _, const FSM::Number& __) {
   last = millis();
 
   while(Serial.available() > 0) { // With baud 115200, this should not block
-    DebugJson::update(Serial, I2CIP::commandRouter);
+    DebugJson::update(Serial, I2CIP::commandRouter, PeaPod::configRouter);
   }
 }
 

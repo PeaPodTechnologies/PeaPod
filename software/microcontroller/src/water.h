@@ -10,20 +10,27 @@
 #define PEAPOD_MODULE_WATERING_PHASE 5000 // 5 seconds
 
 namespace PeaPod {
+  
+  extern FSM::Flag flag_watering;
 
   class PeaPodModuleWatering : public PeaPodModule {
-    FSM::Flag flag_watering = FSM::Flag("flag_watering");
     FSM::IntervalCallback* interval_watering_on = nullptr;
     FSM::IntervalCallback* interval_watering_off = nullptr;
 
     public:
       PeaPodModuleWatering(bool chronoCallbacks = true) : PeaPodModule(PEAPOD_MODULENUM_WATERING) {
         if(chronoCallbacks) {
+          #ifdef PEAPOD_PROGRAM_DEFAULT
           interval_watering_on = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_WATERING_DELTA, 0, &flag_watering, false);
           interval_watering_off = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_WATERING_DELTA, PEAPOD_MODULE_WATERING_PHASE, &flag_watering, true);
-
-          flag_watering.addLatchingConditional(true, false, Callbacks::callback_mcp23017_digitalWrite<PEAPOD_MODULE_WATERING_GPIO_FQA, PEAPOD_MODULE_WATERING_GPIO_PIN>);
+          #endif
         }
+
+        flag_watering.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PEAPOD_MODULE_WATERING_GPIO_FQA, PEAPOD_MODULE_WATERING_GPIO_PIN>);
+
+        flag_watering.set(false);
+
+        registerFlag(&flag_watering);
       }
 
       ~PeaPodModuleWatering() {

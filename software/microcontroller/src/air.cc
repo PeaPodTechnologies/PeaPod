@@ -1,10 +1,6 @@
 #include <air.h>
 
-FSM::Variable PeaPod::air_temperature = FSM::Variable(FSM::Number(), "air-temperature");
-FSM::Variable PeaPod::air_humidity = FSM::Variable(FSM::Number(), "air-humidity");
-FSM::Variable PeaPod::air_co2 = FSM::Variable(FSM::Number(), "air-ppm-carbondioxide");
-
-void PeaPod::Callbacks::callback_temperature(bool _, const FSM::Number& v) {
+void PeaPod::callback_temperature(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, air_temperature.getKey());
 
   #ifdef PEAPOD_SEVENSEG_TEMPERATURE
@@ -18,7 +14,7 @@ void PeaPod::Callbacks::callback_temperature(bool _, const FSM::Number& v) {
   #endif
 }
 
-void PeaPod::Callbacks::callback_humidity(bool _, const FSM::Number& v) {
+void PeaPod::callback_humidity(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, air_humidity.getKey());
 
   #ifdef PEAPOD_SEVENSEG_HUMIDITY
@@ -32,7 +28,7 @@ void PeaPod::Callbacks::callback_humidity(bool _, const FSM::Number& v) {
   #endif
 }
 
-void PeaPod::Callbacks::callback_co2(bool _, const FSM::Number& v) {
+void PeaPod::callback_co2(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (unsigned)v, air_co2.getKey());
 
   #ifdef PEAPOD_SEVENSEG_CO2
