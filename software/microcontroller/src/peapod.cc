@@ -170,12 +170,16 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
       if(doc["data"][flagkeys[i]].isNull()) doc["data"][flagkeys[i]] = flags[flagkeys[i].c_str()]->get();
     }
 
+    delete[] flagkeys;
+
     String* varkeys = variables.keys();
     uint8_t varcount = variables.size();
 
     for(uint8_t i = 0; i < varcount; i++) {
       if(doc["data"][varkeys[i]].isNull()) doc["data"][varkeys[i]] = variables[varkeys[i].c_str()]->get().operator double();
     }
+
+    delete[] varkeys;
   }
 
   DebugJson::jsonPrintln(doc, out);
