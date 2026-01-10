@@ -127,6 +127,7 @@ void PeaPodModule::handleCommand(JsonObject command, Print& out) {
 void PeaPodModule::handleConfig(JsonObject config, Print& out) { 
   JsonDocument doc;
   doc["timestamp"] = millis();
+  doc["type"] = "config";
 
   bool list = false;
   for (JsonPair kv : config) {
