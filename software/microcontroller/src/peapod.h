@@ -110,7 +110,7 @@ namespace PeaPod {
   extern bool pinModeSet[255];
 
   template <unsigned char P> void controlPin(const bool& s) {
-    if(!pinModeSet[P]) { pinMode(P, OUTPUT); }
+    if(!pinModeSet[P]) { pinMode(P, OUTPUT); pinModeSet[P] = true; }
     if(s) {
       digitalWrite(P, HIGH);
     } else {
@@ -118,7 +118,7 @@ namespace PeaPod {
     }
   }
   template <unsigned char P> void controlPWM(const uint8_t& v) {
-    if(!pinModeSet[P]) { pinMode(P, OUTPUT); }
+    if(!pinModeSet[P]) { pinMode(P, OUTPUT); pinModeSet[P] = true; }
     analogWrite(P, v);
   }
 

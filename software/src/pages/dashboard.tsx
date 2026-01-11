@@ -34,9 +34,11 @@ import {
   Insights,
   Memory,
   Router,
+  TableChart,
 } from '@mui/icons-material';
 import Descheduler from '../organisms/descheduler';
 import Linker from '../organisms/unlinker';
+import StateTable from '../organisms/states';
 
 const drawerWidth = '240px';
 
@@ -52,6 +54,7 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
   const [enablePinger, setEnablePinger] = useState<boolean>(true);
   const [enableDescheduler, setEnableDescheduler] = useState<boolean>(true);
   const [enableLinker, setEnableLinker] = useState<boolean>(true);
+  const [enableStates, setEnableStates] = useState<boolean>(true);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -182,6 +185,20 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
               />
             </ListItemButton>
           </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableLinker(!enableLinker)}>
+              <ListItemIcon>
+                <TableChart />
+              </ListItemIcon>
+              <ListItemText primary={'State Table'} />
+              <Checkbox
+                edge="end"
+                checked={enableStates}
+                onChange={() => setEnableStates(!enableStates)}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
       </Drawer>
@@ -235,6 +252,11 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
             {enableLinker && (
               <Grid size={{ xs: 12, md: 4 }}>
                 <Linker />
+              </Grid>
+            )}
+            {enableStates && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <StateTable />
               </Grid>
             )}
             {enableDevices &&

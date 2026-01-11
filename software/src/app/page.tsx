@@ -5,6 +5,7 @@ import DebugSocketProvider from '@/contexts/socket';
 import Dashboard from '../pages/dashboard';
 import DevicesProvider from '@/contexts/devices';
 import TelemetryProvider from '@/contexts/telemetry';
+import StatesProvider from '../contexts/states';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Home: FC = (props) => {
@@ -12,7 +13,9 @@ const Home: FC = (props) => {
     <DebugSocketProvider>
       <DevicesProvider sock="microcontroller">
         <TelemetryProvider sock="microcontroller">
-          <Dashboard />
+          <StatesProvider sock="microcontroller">
+            <Dashboard />
+          </StatesProvider>
         </TelemetryProvider>
       </DevicesProvider>
     </DebugSocketProvider>

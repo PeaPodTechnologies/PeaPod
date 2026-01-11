@@ -4,6 +4,7 @@ import { ControllerTXError, DebugJsonSerialportError } from './errors';
 import { DebugJsonConsole as ui } from './ui';
 import { DebugJsonMessage, DebugJsonMessageTypes } from './types';
 import { updateMicrocontroller } from './utils';
+import { config } from 'process';
 
 // import { Gpio } from 'onoff';
 
@@ -335,8 +336,31 @@ export class SimulatedController implements Controller {
             this.generateTree()
           ]);
         }
+        break;
       }
-      break;
+    case 'config':
+      if(instructions.data && Object.keys(instructions.data).includes('list')) {
+        ui.info('SIMULATED CONTROLLER LIST STATES');
+        if(this.output) {
+          this.output([
+            this.parameters ? {
+              type: 'config' as DebugJsonMessageTypes,
+              timestamp: Date.now() - this.startDate,
+              data: {'onoff': true, ...Object.keys(this.parameters).reduce<{[key: string]: number | boolean}>((acc, key) => {
+                const max = this.parameters[key].max;
+                const min = this.parameters[key].min;
+                acc[key] = Math.random() * (max - min) + min;
+                return acc;
+              }, {})},
+            } : {
+              type: 'config' as DebugJsonMessageTypes,
+              timestamp: Date.now() - this.startDate,
+              data: {},
+            }
+          ]);
+        }
+        break;
+      }
     default:
       ui.info(`SIMULATED CONTROLLER WRITE: ${JSON.stringify(instructions)}`);
       break;

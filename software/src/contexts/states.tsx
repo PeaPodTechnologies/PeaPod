@@ -1,0 +1,67 @@
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useMemo,
+} from 'react';
+import { useSocket } from './socket';
+import { DeviceID } from '../devicetypes';
+
+type StateTree = {
+  [key: string]: number | boolean;
+};
+
+type StatesContextType = {
+  states: StateTree;
+};
+
+const StatesContext = createContext<StatesContextType>({
+  states: [],
+});
+
+const StatesProvider = ({
+  children,
+  sock,
+}: {
+  children: ReactNode;
+  sock?: string;
+}) => {
+  const [states, setStates] = useState<StateTree>({});
+
+  const { messages } = useSocket();
+
+  const table = useMemo(() => {
+    const topic = sock ?? 'microcontroller';
+    const feed = messages?.[topic];
+    if (feed) console.log(feed.filter((msg) => msg['type'] === 'config'));
+    return feed
+      ? feed
+          .filter((msg) => msg['type'] === 'config')
+          .reduce((acc, msg) => ({ ...acc, ...msg['data'] }), {})
+      : null;
+  }, [messages, sock]);
+
+  useEffect(() => {
+    if (messages && table) {
+      setStates(table as StateTree);
+    }
+  }, [table, messages]);
+
+  return (
+    <StatesContext.Provider value={{ states }}>
+      {children}
+    </StatesContext.Provider>
+  );
+};
+
+export const useStates = () => {
+  const context = useContext(StatesContext);
+  if (!context) {
+    throw new Error('useStates must be used within a StatesProvider');
+  }
+  return context;
+};
+
+export default StatesProvider;

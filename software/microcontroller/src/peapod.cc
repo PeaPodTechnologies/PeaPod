@@ -245,7 +245,7 @@ void PeaPod::callback_heartbeat(bool _, const FSM::fsm_timestamp_t& __) {
 }
 
 template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaPod::PeaPodModule, T>::value, int>::type = 0> void PeaPod::callback_module(bool _, const FSM::fsm_timestamp_t& __) {
-  if(M < 0 || M > I2CIP_MUX_COUNT) return;
+  if(M >= I2CIP_MUX_COUNT) return;
 
   if(I2CIP::MUX::pingMUX(PEAPOD_WIRENUM, M)) {
     if(I2CIP::modules[M] == nullptr) {

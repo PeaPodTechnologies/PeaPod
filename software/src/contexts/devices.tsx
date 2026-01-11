@@ -4,6 +4,7 @@ import React, {
   useState,
   ReactNode,
   useEffect,
+  useMemo,
 } from 'react';
 import { useSocket } from './socket';
 import { DeviceID } from '../devicetypes';
@@ -33,9 +34,11 @@ const DevicesProvider = ({
 
   const { messages } = useSocket();
 
-  const tree = messages[sock ?? 'microcontroller']
-    ? messages[sock ?? 'microcontroller'].find((msg) => msg['type'] == 'tree')
-    : null;
+  const tree = useMemo(() => {
+    const topic = sock ?? 'microcontroller';
+    const feed = messages?.[topic];
+    return feed ? feed.find((msg) => msg['type'] == 'tree') : null;
+  }, [messages, sock]);
 
   useEffect(() => {
     if (messages && tree) {
