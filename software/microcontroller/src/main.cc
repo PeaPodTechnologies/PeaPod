@@ -24,15 +24,15 @@ void setup(void) {
   while(!Serial) { digitalWrite(LED_BUILTIN, HIGH); delay(100); digitalWrite(LED_BUILTIN, LOW); delay(100); }
   
   delay(100);
-
-  DebugJson::revision(I2CIP_REVISION, Serial);
-
-  delay(100);
-
+  
   // Instantiate modules ahead of time
   PeaPod::callback_module<PEAPOD_MODULENUM_AIR, PeaPodModuleAir>();
   PeaPod::callback_module<PEAPOD_MODULENUM_WATERING, PeaPodModuleWatering>();
   PeaPod::callback_module<PEAPOD_MODULENUM_LIGHTING, PeaPodModuleLighting>();
+  
+  delay(100);
+  
+  DebugJson::revision(I2CIP_REVISION, Serial);
 
   // // Print all devices
   // delay(100);
@@ -53,7 +53,7 @@ void loop(void) {
   // I2CIP_DEBUG_SERIAL.println(I2CIP::devicetree.toString());
   // I2CIP_DEBUG_SERIAL.println(modules[PEAPOD_MODULENUM]->toString());
 
-  PeaPod::cycle.set(PeaPod::cycle.get() + FSM::Number(1, false, false));
+  PeaPod::cycle.set(PeaPod::cycle.get()++);
 }
 
 #endif

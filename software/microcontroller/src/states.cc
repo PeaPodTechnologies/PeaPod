@@ -6,9 +6,9 @@ FSM::Variable PeaPod::air_temperature = FSM::Variable(FSM::notanumber, "air-temp
 FSM::Variable PeaPod::air_humidity = FSM::Variable(FSM::notanumber, "air-humidity");
 FSM::Variable PeaPod::air_co2 = FSM::Variable(FSM::notanumber, "air-ppm-carbondioxide");
 
-FSM::Flag PeaPod::flag_watering = FSM::Flag(false, "flag_watering");
+FSM::Flag PeaPod::enable_watering = FSM::Flag(false, "enable_watering");
 
 FSM::Variable PeaPod::adc_voltage = FSM::Variable(FSM::notanumber, "adc_voltage");
-FSM::Variable PeaPod::pwm_lighting_red = FSM::Variable(FSM::Number(0, false, false), "pwm_lighting_red");
-FSM::Variable PeaPod::pwm_lighting_blue = FSM::Variable(FSM::Number(0, false, false), "pwm_lighting_blue");
-// FSM::Flag PeaPod::flag_lighting = FSM::Flag("flag_lighting");
+FSM::Variable PeaPod::pwm_lighting_red = FSM::Variable(FSM::Number(0, true), "pwm_lighting_red");
+FSM::Variable PeaPod::pwm_lighting_blue = FSM::Variable(FSM::Number(0, true), "pwm_lighting_blue");
+FSM::Flag PeaPod::enable_lighting = FSM::Flag("enable_lighting");

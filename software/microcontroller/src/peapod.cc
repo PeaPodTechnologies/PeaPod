@@ -193,19 +193,6 @@ void PeaPodModule::registerVariable(FSM::Variable* variable) {
   this->variables.set(variable->getKey(), variable);
 }
 
-void PeaPodModule::setFlag(const char* key, const bool& value) {
-  FSM::Flag* flag = flags[key];
-  if(flag != nullptr) {
-    flag->set(value);
-  }
-}
-void PeaPodModule::setVariable(const char* key, const FSM::Number& value) {
-  FSM::Variable* variable = variables[key];
-  if(variable != nullptr) {
-    variable->set(value);
-  }
-}
-
 void PeaPod::configRouter(JsonObject command, Print& out) {
   for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
     if(I2CIP::modules[i] != nullptr) {

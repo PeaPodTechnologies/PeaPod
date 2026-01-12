@@ -13,3 +13,61 @@ void PeaPod::callback_adc_voltage(bool _, const FSM::Number& v) {
   }
   #endif
 }
+
+// void PeaPod::PeaPodModuleLighting::callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __) {
+//   double pwm = ((cos((FSM::Chronos.get() % PEAPOD_MODULE_LIGHTING_PWMCYCLE_DELTA) / ((double)PEAPOD_MODULE_LIGHTING_PWMCYCLE_DELTA) * 2.0 * M_PI) + 1.0) * 2048.0 * PEAPOD_MODULE_LIGHTING_DUTY); // 0 to PEAPOD_MODULE_LIGHTING_DUTY over PEAPOD_MODULE_LIGHTING_PWMCYCLE_DELTA milliseconds
+
+//   pwm_lighting_red.set(FSM::Number(pwm, true, false));
+// }
+
+void PeaPod::PeaPodModuleLighting::callback_lighting_gate(bool _, const bool& onoff) {
+  pwm_lighting_blue.resume();
+  pwm_lighting_red.resume();
+}
+
+PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPodModule(PEAPOD_MODULENUM_LIGHTING) {
+  if(chronoCallbacks) {
+    // #ifdef PEAPOD_PROGRAM_DEFAULT
+    // interval_pwmcycle = FSM::Chronos.addInterval(50, 0, callback_pwm_cycle, false);
+    // #endif
+
+    #ifdef PEAPOD_PROGRAM_DEFAULT
+    interval_lighting_on = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_LIGHTING_DELTA, 0, &enable_lighting, false);
+    interval_lighting_off = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_LIGHTING_DELTA, PEAPOD_MODULE_LIGHTING_PHASE, &enable_lighting, true);
+    pwm_lighting_blue.set(FSM::Number(4096 * PEAPOD_MODULE_LIGHTING_DUTY_BLUE, true));
+    pwm_lighting_red.set(FSM::Number(4096 * PEAPOD_MODULE_LIGHTING_DUTY_RED, true));
+    #endif
+
+    // ADC
+    interval_adc = FSM::Chronos.addInterval(PEAPOD_MODULE_LIGHTING_ADC_DELTA, 0, callback_adc_read<PEAPOD_MODULE_LIGHTING_ADC_FQA, PEAPOD_MODULE_LIGHTING_ADC_CHANNEL>, false);
+  }
+
+  // enable_lighting.addLatchingConditional(true, false, callback_lighting_onoff);
+  
+  adc_voltage.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_adc_voltage);
+  enable_lighting.addLatchingConditional(true, false, callback_lighting_gate);
+  pwm_lighting_red.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_lighting_modulate<PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_RED>);
+  pwm_lighting_blue.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_lighting_modulate<PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_BLUE>);
+
+  // pwm_lighting_red.set(FSM::Number(0, true));
+  // pwm_lighting_blue.set(FSM::Number(0, true));
+  enable_lighting.set(false);
+
+  registerVariable(&adc_voltage);
+  registerVariable(&pwm_lighting_red);
+  registerVariable(&pwm_lighting_blue);
+  registerFlag(&enable_lighting);
+}
+
+PeaPod::PeaPodModuleLighting::~PeaPodModuleLighting() {
+  enable_lighting.set(false);
+
+  FSM::Chronos.removeInterval(interval_adc);
+  FSM::Chronos.removeInterval(interval_lighting_on);
+  FSM::Chronos.removeInterval(interval_lighting_off);
+  // FSM::Chronos.removeInterval(interval_pwmcycle);
+  interval_adc = nullptr;
+  interval_lighting_on = nullptr;
+  interval_lighting_off = nullptr;
+  // interval_pwmcycle = nullptr;
+}
