@@ -39,6 +39,7 @@ const StatesProvider = ({
     return feed
       ? feed
           .filter((msg) => msg['type'] === 'config')
+          .sort((a, b) => a['timestamp'] - b['timestamp'])
           .reduce((acc, msg) => ({ ...acc, ...msg['data'] }), {})
       : null;
   }, [messages, sock]);
