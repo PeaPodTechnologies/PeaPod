@@ -39,6 +39,8 @@ import {
 import Descheduler from '../organisms/descheduler';
 import Linker from '../organisms/unlinker';
 import StateTable from '../organisms/states';
+import { useStates } from '../contexts/states';
+import StatePanel from '../organisms/state';
 
 const drawerWidth = '240px';
 
@@ -46,6 +48,7 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
   const { connected, sockets } = useSocket();
   const { devicesFlat } = useDevices();
   const { telemetry } = useTelemetry();
+  const { states } = useStates();
 
   const [enableTelemetry, setEnableTelemetry] = useState<boolean>(true);
   const [enableMessages, setEnableMessages] = useState<boolean>(true);
@@ -259,6 +262,12 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
                 <StateTable />
               </Grid>
             )}
+            {enableStates &&
+              Object.entries(states).map(([key, value], idx) => (
+                <Grid size={{ xs: 12, md: 4 }} key={`grid-state-${idx}`}>
+                  <StatePanel label={key} value={value} />
+                </Grid>
+              ))}
             {enableDevices &&
               devicesFlat.map(([deviceId, fqa]) => (
                 <Grid
