@@ -42,11 +42,12 @@ namespace PeaPod {
     private:
     HashTable<FSM::Flag> flags = HashTable<FSM::Flag>();
     HashTable<FSM::Variable> variables = HashTable<FSM::Variable>();
+    HashTable<bool> locker = HashTable<bool>();
     protected:
     I2CIP::DeviceGroup* deviceGroupFactory(const i2cip_id_t& id) override;
 
-    void registerFlag(FSM::Flag* flag);
-    void registerVariable(FSM::Variable* variable);
+    void registerFlag(FSM::Flag* flag, bool locked = false);
+    void registerVariable(FSM::Variable* variable, bool locked = false);
     
     public:
     PeaPodModule(const uint8_t& mux) : JsonModule(PEAPOD_WIRENUM, mux) { }

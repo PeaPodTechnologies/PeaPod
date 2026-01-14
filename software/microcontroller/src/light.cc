@@ -53,7 +53,7 @@ PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPo
   // pwm_lighting_blue.set(FSM::Number(0, true));
   enable_lighting.set(false);
 
-  registerVariable(&adc_voltage);
+  registerVariable(&adc_voltage, true); // LOCKED
   registerVariable(&pwm_lighting_red);
   registerVariable(&pwm_lighting_blue);
   registerFlag(&enable_lighting);

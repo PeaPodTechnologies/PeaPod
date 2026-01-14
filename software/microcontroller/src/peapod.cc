@@ -138,6 +138,9 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
 
     if(!doc["data"][key].isNull()) continue; // Already handled
 
+    bool locked = locker[key];
+    if(locked) continue; // Locked, skip
+
     JsonVariant value = kv.value();
 
     FSM::Flag* flag = flags[key];
@@ -186,11 +189,13 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
   DebugJson::jsonPrintln(doc, out);
 }
 
-void PeaPodModule::registerFlag(FSM::Flag* flag) {
+void PeaPodModule::registerFlag(FSM::Flag* flag, bool locked) {
   this->flags.set(flag->getKey(), flag);
+  this->locker.set(flag->getKey(), locked);
 }
-void PeaPodModule::registerVariable(FSM::Variable* variable) {
+void PeaPodModule::registerVariable(FSM::Variable* variable, bool locked) {
   this->variables.set(variable->getKey(), variable);
+  this->locker.set(variable->getKey(), locked);
 }
 
 void PeaPod::configRouter(JsonObject command, Print& out) {

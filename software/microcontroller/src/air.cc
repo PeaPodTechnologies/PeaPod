@@ -52,9 +52,9 @@ PeaPod::PeaPodModuleAir::PeaPodModuleAir(bool chronoCallbacks) : PeaPodModule(PE
   air_humidity.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_humidity);
   air_co2.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_co2);
 
-  registerVariable(&air_temperature);
-  registerVariable(&air_humidity);
-  registerVariable(&air_co2);
+  registerVariable(&air_temperature, true); // LOCKED
+  registerVariable(&air_humidity, true); // LOCKED
+  registerVariable(&air_co2, true); // LOCKED
 }
 
 PeaPod::PeaPodModuleAir::~PeaPodModuleAir() {
