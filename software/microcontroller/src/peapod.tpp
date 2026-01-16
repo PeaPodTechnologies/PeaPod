@@ -21,7 +21,7 @@ template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_mcp23017_digital
 
 template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_pca9685_analogWrite(bool _, const FSM::Number& v) {
     if(P > PCA9685_CH15) return; // Invalid Channel
-    if(I2CIP::errlev[I2CIP_FQA_SEG_MODULE(F)] == I2CIP_ERR_NONE && I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)] != nullptr && P <= PCA9685_CH15) {
+    if(I2CIP::errlev[I2CIP_FQA_SEG_MODULE(F)] == I2CIP_ERR_NONE && I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)] != nullptr) {
 
       i2cip_pca9685_chsel_t channel = (i2cip_pca9685_chsel_t)P;
       i2cip_pca9685_t data = (uint16_t)max(0, min(4096, (int)v));
@@ -33,7 +33,7 @@ template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_pca9685_analogWr
 
   template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_pca9685_onOff(bool _, const bool& v) {
     if(P > PCA9685_CH15) return; // Invalid Channel
-    if(I2CIP::errlev[I2CIP_FQA_SEG_MODULE(F)] == I2CIP_ERR_NONE && I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)] != nullptr && P <= PCA9685_CH15) {
+    if(I2CIP::errlev[I2CIP_FQA_SEG_MODULE(F)] == I2CIP_ERR_NONE && I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)] != nullptr) {
 
       i2cip_pca9685_chsel_t channel = (i2cip_pca9685_chsel_t)P;
       i2cip_pca9685_t data = v ? 4096 : 0;

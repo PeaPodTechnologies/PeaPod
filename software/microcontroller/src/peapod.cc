@@ -138,8 +138,8 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
 
     if(!doc["data"][key].isNull()) continue; // Already handled
 
-    bool locked = locker[key];
-    if(locked) continue; // Locked, skip
+    bool* locked = locker[key];
+    if(locked && *locked) continue; // Locked, skip
 
     JsonVariant value = kv.value();
 
@@ -191,11 +191,11 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
 
 void PeaPodModule::registerFlag(FSM::Flag* flag, bool locked) {
   this->flags.set(flag->getKey(), flag);
-  this->locker.set(flag->getKey(), locked);
+  this->locker.set(flag->getKey(), new bool(locked)); // TODO: Memory leak?
 }
 void PeaPodModule::registerVariable(FSM::Variable* variable, bool locked) {
   this->variables.set(variable->getKey(), variable);
-  this->locker.set(variable->getKey(), locked);
+  this->locker.set(variable->getKey(), new bool(locked)); // TODO: Memory leak?
 }
 
 void PeaPod::configRouter(JsonObject command, Print& out) {
