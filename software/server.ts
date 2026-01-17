@@ -117,9 +117,10 @@ const findController = (simulator?: boolean): Promise<Controller> => {
       if(ports.length === 0) { rej(new DebugJsonSerialportError('No SerialPorts Found!')); }
 
       ui.succeed(`SerialPorts[${ports.length}]`);
+      let resolved = false;
       ports.forEach((ser, i) => {
         console.info(`SerialPort[${i}]: ${ser}`);
-        if(process.env.SERIALPORT && process.env.SERIALPORT === ser) res(new MicroController(ser));
+        if(process.env.SERIALPORT && resolved === false) { res(new MicroController(ser)); resolved = true; }
         else if(!process.env.SERIALPORT && i === 0) res(new MicroController(ser)); // First one if none specified
       });
     });

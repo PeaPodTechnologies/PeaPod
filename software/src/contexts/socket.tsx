@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const SOCKET_MESSAGES_MAX = 100;
+const SOCKET_MESSAGES_MAX = 1000;
 
 export type SocketContextType = {
   connected: boolean;

@@ -35,7 +35,7 @@ const StatesProvider = ({
   const table = useMemo(() => {
     const topic = sock ?? 'microcontroller';
     const feed = messages?.[topic];
-    if (feed) console.log(feed.filter((msg) => msg['type'] === 'config'));
+    // if (feed) console.log(feed.filter((msg) => msg['type'] === 'config'));
     return feed
       ? feed
           .filter((msg) => msg['type'] === 'config')
