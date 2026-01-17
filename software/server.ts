@@ -19,7 +19,7 @@ import { getAuth } from 'firebase/auth';
 import { DeviceFlowUI } from '@peapodtech/firebasedeviceflow';
 import { DebugJsonInstruction } from './api/types';
 import checkbox from '@inquirer/checkbox';
-import { ipv4Lookup } from './api/utils';
+import { ipv4Lookup, updateMicrocontroller } from './api/utils';
 import { pushDebugMessages } from './api/firebase';
 
 enum PublishingMode {
@@ -401,6 +401,18 @@ let io = undefined;
             });
           }
           callback();
+        });
+
+        socket.on('firmware', (callback: (error?: {error: string}) => void) => {
+          ui.info('FIRMWARE FLASH BEGIN');
+          controller.stop();
+          updateMicrocontroller().then(() => {
+            callback();
+          }).catch((err) => {
+            ui.fail(`FIRMWARE FLASH ERROR: ${err}`);
+            socket.emit('server', {type: 'error', msg: `Firmware Flash Error: ${err}`});
+            callback({error: `Firmware Flash Error: ${err}`});
+          });
         });
       });
     }

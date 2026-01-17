@@ -41,6 +41,7 @@ import Linker from '../organisms/unlinker';
 import StateTable from '../organisms/states';
 import { useStates } from '../contexts/states';
 import StatePanel from '../organisms/state';
+import Firmware from '../organisms/firmware';
 
 const drawerWidth = '240px';
 
@@ -277,6 +278,9 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
                   <Device deviceId={deviceId} fqa={fqa} />
                 </Grid>
               ))}
+            <Grid size={{ xs: 12 }}>
+              <Firmware />
+            </Grid>
           </Grid>
         ) : (
           <Box
