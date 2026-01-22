@@ -404,9 +404,10 @@ let io = undefined;
         });
 
         socket.on('firmware', (callback: (error?: {error: string}) => void) => {
-          ui.info('FIRMWARE FLASH BEGIN');
+          ui.start('FIRMWARE FLASH');
           controller.stop();
           updateMicrocontroller().then(() => {
+            ui.succeed('FIRMWARE FLASH SUCCESSFUL');
             callback();
           }).catch((err) => {
             ui.fail(`FIRMWARE FLASH ERROR: ${err}`);
