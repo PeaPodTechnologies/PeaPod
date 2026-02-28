@@ -35,6 +35,7 @@ import {
   Memory,
   Router,
   TableChart,
+  CameraAlt as CameraIcon,
 } from '@mui/icons-material';
 import Descheduler from '../organisms/descheduler';
 import Linker from '../organisms/unlinker';
@@ -42,6 +43,7 @@ import StateTable from '../organisms/states';
 import { useStates } from '../contexts/states';
 import StatePanel from '../organisms/state';
 import Firmware from '../organisms/firmware';
+import Camera from '../organisms/camera';
 
 const drawerWidth = '240px';
 
@@ -59,6 +61,7 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
   const [enableDescheduler, setEnableDescheduler] = useState<boolean>(true);
   const [enableLinker, setEnableLinker] = useState<boolean>(true);
   const [enableStates, setEnableStates] = useState<boolean>(true);
+  const [enableCamera, setEnableCamera] = useState<boolean>(true);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -203,6 +206,20 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
               />
             </ListItemButton>
           </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableCamera(!enableCamera)}>
+              <ListItemIcon>
+                <CameraIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Camera'} />
+              <Checkbox
+                edge="end"
+                checked={enableCamera}
+                onChange={() => setEnableCamera(!enableCamera)}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
       </Drawer>
@@ -278,6 +295,11 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
                   <Device deviceId={deviceId} fqa={fqa} />
                 </Grid>
               ))}
+            {enableCamera && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Camera />
+              </Grid>
+            )}
             <Grid size={{ xs: 12 }}>
               <Firmware />
             </Grid>

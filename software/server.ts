@@ -11,15 +11,15 @@ import { findSerialPort, MicroController, CONTROLLER_REVISION, Controller, Simul
 // import { pushDebugMessage, pushDebugMessages } from './api/firebase';
 import ui, { _logRedirect, _errRedirect } from './api/ui';
 import {DebugJsonSerialportError} from './api/errors';
-import { appendFileSync } from 'fs';
+import { appendFileSync, readFileSync } from 'fs';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { getApp, initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { DeviceFlowUI } from '@peapodtech/firebasedeviceflow';
 import { DebugJsonInstruction } from './api/types';
 import checkbox from '@inquirer/checkbox';
-import { ipv4Lookup, updateMicrocontroller } from './api/utils';
+import { cameraCapture, ipv4Lookup, updateMicrocontroller } from './api/utils';
 import { pushDebugMessages } from './api/firebase';
 
 enum PublishingMode {
@@ -29,7 +29,7 @@ enum PublishingMode {
 }
 
 // Handle Command-Line Arguments
-const argv = yargs(hideBin(process.argv))
+const argv = await yargs(hideBin(process.argv))
   .option('simulator', {
     alias: 's',
     type: 'boolean',
@@ -153,7 +153,7 @@ let io = undefined;
       measurementId: process.env.FIREBASE_MEASUREMENTID
     });
 
-    const auth = getAuth(firebaseApp);
+    getAuth(firebaseApp);
 
     const deviceFlowUI = new DeviceFlowUI(firebaseApp, {
       Google : {
@@ -213,7 +213,7 @@ let io = undefined;
     messages.forEach((msg) => {
 
       // 1. Emit to WebSocket Clients
-      if(pms.includes(PublishingMode.FRONTEND)) io.emit('microcontroller', msg);
+      if(pms.includes(PublishingMode.FRONTEND) && !!io) io.emit('microcontroller', msg);
 
       // 2. (aka 4B.) Local Filesystem Logging
       if(pms.includes(PublishingMode.LOCAL)) appendFileSync(`logs/${argv.simulator ? 'simulator_' : ''}${(new Date()).toISOString().split('T')[0]}.txt`, JSON.stringify(msg) + '\n');
@@ -236,7 +236,7 @@ let io = undefined;
                 controller.write(instruction);
               } catch (err) {
                 ui.fail(`LINKER ERROR: ${err}`);
-                io.emit('server', {type: 'error', msg: `Linker TX Error: ${err}`});
+                if(pms.includes(PublishingMode.FRONTEND) && !!io) io.emit('server', {type: 'error', msg: `Linker TX Error: ${err}`});
                 return; // Next key
               }
             }
@@ -264,14 +264,14 @@ let io = undefined;
     // });
 
   }).catch((err) => {
-    io.emit('server', {type: 'error', msg: `Lost Controller: ${err}`});
+    if(!!io) io.emit('server', {type: 'error', msg: `Lost Controller: ${err}`});
     ui.fail(err);
     // io.off('connection', handleSocketConnection);
     // microcontroller.reset();
   }).then(() => {
     ui.succeed('PeaPodOS: Ready!');
 
-    if(pms.includes(PublishingMode.FRONTEND)) {
+    if(pms.includes(PublishingMode.FRONTEND) && !!io) {
       // 6. Socket.IO Connection Handler
       io.on('connection', (socket) => {
         ui.log('Socket.IO ++');
@@ -403,8 +403,9 @@ let io = undefined;
           callback();
         });
 
-        socket.on('firmware', (callback: (error?: {error: string}) => void) => {
+        socket.on('firmware', (_: unknown, callback: (error?: {error: string}) => void) => {
           ui.start('FIRMWARE FLASH');
+          if(argv.simulator) {callback({error: 'Simulator!'}); return;}
           controller.stop();
           updateMicrocontroller().then(() => {
             ui.succeed('FIRMWARE FLASH SUCCESSFUL');
@@ -414,6 +415,20 @@ let io = undefined;
             socket.emit('server', {type: 'error', msg: `Firmware Flash Error: ${err}`});
             callback({error: `Firmware Flash Error: ${err}`});
           });
+        });
+
+        socket.on('camera', async (_: unknown, callback: (response: {error?: string, mime?: string, blob?: Buffer}) => void) => {
+          try {
+            ui.start('CAMERA CAPTURE');
+            controller.write({type: 'config', data: {enable_camera: true}});
+            const path = await cameraCapture();
+            const buf = readFileSync(path);
+            ui.succeed('CAMERA CAPTURE SUCCESSFUL: ' + path);
+            controller.write({type: 'config', data: {enable_camera: false}});
+            callback({mime: 'image/jpeg', blob: buf});
+          } catch (err) {
+            callback({error: `Camera Capture Error: ${err}`});
+          }
         });
       });
     }

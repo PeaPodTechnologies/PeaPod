@@ -12,3 +12,4 @@ FSM::Variable PeaPod::adc_voltage = FSM::Variable(FSM::notanumber, "adc_voltage"
 FSM::Variable PeaPod::pwm_lighting_red = FSM::Variable(FSM::Number(0, true), "pwm_lighting_red");
 FSM::Variable PeaPod::pwm_lighting_blue = FSM::Variable(FSM::Number(0, true), "pwm_lighting_blue");
 FSM::Flag PeaPod::enable_lighting = FSM::Flag("enable_lighting");
+FSM::Flag PeaPod::enable_camera = FSM::Flag("enable_camera");

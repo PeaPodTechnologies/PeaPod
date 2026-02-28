@@ -76,11 +76,13 @@ type CameraCaptureOptions = {
   // TODO: Add more options
 };
 
+const CAMERATIMEOUT = 3000;
+
 // Returns a path to the JPEG image.
 export function cameraCapture(options?: CameraCaptureOptions): Promise<string> {
   return new Promise<string>((res, rej) => {
     const p = `${PATHSTEM_IMAGES}-${dateFormat(new Date())}`;
-    execute(`libcamera-jpeg -o ${p}.jpg`)
+    execute(`rpicam-still -o ${p}.jpg -n --timeout ${CAMERATIMEOUT} --autofocus`)
       .catch(err => {
         rej(err);
       })

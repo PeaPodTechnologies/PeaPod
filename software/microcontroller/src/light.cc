@@ -25,6 +25,16 @@ void PeaPod::PeaPodModuleLighting::callback_lighting_gate(bool _, const bool& on
   pwm_lighting_red.resume();
 }
 
+void PeaPod::PeaPodModuleLighting::callback_lighting_camera(bool _, const bool& onoff) {
+  // Turn off all lights, then turn on the camera light if `onoff` is true
+  // enable_lighting.set(!onoff);
+  if(onoff) {
+    callback_pca9685_analogWrite<PEAPOD_MODULE_LIGHTING_PWM_FQA, PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_CAMERA>(true, FSM::Number(4096.0 * PEAPOD_MODULE_LIGHTING_DUTY_CAMERA, true));
+  } else {
+    callback_pca9685_onOff<PEAPOD_MODULE_LIGHTING_PWM_FQA, PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_CAMERA>(true, false); // OFF
+  }
+}
+
 PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPodModule(PEAPOD_MODULENUM_LIGHTING) {
   if(chronoCallbacks) {
     // #ifdef PEAPOD_PROGRAM_DEFAULT
@@ -46,21 +56,30 @@ PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPo
   
   adc_voltage.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_adc_voltage);
   enable_lighting.addLatchingConditional(true, false, callback_lighting_gate);
+  enable_camera.addLatchingConditional(true, false, callback_lighting_camera);
   pwm_lighting_red.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_lighting_modulate<PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_RED>);
   pwm_lighting_blue.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_lighting_modulate<PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_BLUE>);
+
+  /* A note on how the lighting gating and modulation logic works:
+  * The lighting modulation conditional callbacks added to pwm_lighting_red and pwm_lighting_blue execute each update (if the value is not NaN) and set the PWM of their respective channels according to the value of the variable DEPENDING ON whether enable_lighting is true or false.
+  * The lighting gate conditional callback added to enable_lighting executes each time enable_lighting changes state. Its only function is to resume/"refresh" pwm_lighting_red and pwm_lighting_blue, which retriggers the modulation callbacks.
+  */
 
   // pwm_lighting_red.set(FSM::Number(0, true));
   // pwm_lighting_blue.set(FSM::Number(0, true));
   enable_lighting.set(false);
+  enable_camera.set(false);
 
   registerVariable(&adc_voltage, true); // LOCKED
   registerVariable(&pwm_lighting_red);
   registerVariable(&pwm_lighting_blue);
   registerFlag(&enable_lighting);
+  registerFlag(&enable_camera);
 }
 
 PeaPod::PeaPodModuleLighting::~PeaPodModuleLighting() {
   enable_lighting.set(false);
+  enable_camera.set(false);
 
   FSM::Chronos.removeInterval(interval_adc);
   FSM::Chronos.removeInterval(interval_lighting_on);
