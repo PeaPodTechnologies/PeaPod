@@ -194,7 +194,7 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
           </ListItem>
           <Divider />
           <ListItem disablePadding>
-            <ListItemButton onClick={() => setEnableLinker(!enableLinker)}>
+            <ListItemButton onClick={() => setEnableStates(!enableStates)}>
               <ListItemIcon>
                 <TableChart />
               </ListItemIcon>

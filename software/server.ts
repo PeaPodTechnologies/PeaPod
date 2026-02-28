@@ -420,6 +420,7 @@ let io = undefined;
         socket.on('camera', async (_: unknown, callback: (response: {error?: string, mime?: string, blob?: Buffer}) => void) => {
           try {
             ui.start('CAMERA CAPTURE');
+            if(argv.simulator) {callback({mime: 'image/jpeg', blob: readFileSync('sample.jpg')}); return;}
             controller.write({type: 'config', data: {enable_camera: true}});
             const path = await cameraCapture();
             const buf = readFileSync(path);

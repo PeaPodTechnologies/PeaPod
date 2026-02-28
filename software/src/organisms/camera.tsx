@@ -66,10 +66,15 @@ const Camera: FC = () => {
     //devices ? (
     <Paper elevation={3} square={false} sx={{ padding: 2 }}>
       <Typography variant="h6">Camera</Typography>
-      <Button variant="contained" disabled={!socket} onClick={handleCapture}>
+      {image && <img src={image} alt="Captured" />}
+      <Button
+        sx={{ marginTop: 2 }}
+        variant="contained"
+        disabled={!socket}
+        onClick={handleCapture}
+      >
         CAPTURE
       </Button>
-      {image && <img src={image} alt="Captured" />}
       <Snackbar open={snackbar} autoHideDuration={6000} onClose={closeSnackbar}>
         <Alert
           onClose={closeSnackbar}
