@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'I2CIP.js Dashboard',
-  description: 'Inter-Integrated Circuit Intranetwork Protocols',
+  title: 'PeaPod Dashboard',
+  // description: '',
 };
 
 export default function RootLayout({

@@ -64,18 +64,18 @@ const DebugSocketMessages: FC<{
   //   [props.num]
   // );
 
-  useEffect(() => {
-    if (props.label && messages[props.label]) {
-      (messages[props.label] as DebugJsonMessage).forEach((msg) => {
-        if (msg.data) {
-          // addData(props.label, msg.timestamp, msg.data);
-          // Object.entries(msg.data).forEach(([key, value]) => {
-          //   if (key && value) addData(key as string, value, msg.timestamp);
-          // });
-        }
-      });
-    }
-  }, [props.label, messages]);
+  // useEffect(() => {
+  //   if (props.label && messages[props.label]) {
+  //     (messages[props.label] as DebugJsonMessage).forEach((msg) => {
+  //       if (msg.data) {
+  //         addData(props.label, msg.timestamp, msg.data);
+  //         Object.entries(msg.data).forEach(([key, value]) => {
+  //           if (key && value) addData(key as string, value, msg.timestamp);
+  //         });
+  //       }
+  //     });
+  //   }
+  // }, [props.label, messages]);
 
   const nosock =
     !props.label || !messages[props.label] || messages[props.label].length == 0;

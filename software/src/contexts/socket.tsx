@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, {
@@ -16,7 +17,7 @@ export type SocketContextType = {
   connected: boolean;
   socket: Socket | null;
   sockets: string[]; // List of connected sockets
-  messages: { [key: string]: object[] };
+  messages: { [key: string]: any[] };
   // clearMessages?: (label: string) => void;
 };
 
@@ -41,7 +42,7 @@ const socket = io();
 const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [sockets, setSockets] = useState<{ [key: string]: boolean }>({});
-  const [messages, setMessages] = useState<{ [key: string]: object[] }>({});
+  const [messages, setMessages] = useState<{ [key: string]: any[] }>({});
 
   // const clearMessages = (label: string) => {
   //   setMessages((prev) => {
@@ -51,7 +52,7 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
   // };
 
   useEffect(() => {
-    const addMessage = (label: string, msg: object) => {
+    const addMessage = (label: string, msg: any) => {
       setMessages((prev) => {
         // console.log(prev);
         return {
@@ -61,7 +62,7 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
       });
     };
 
-    function onJson(socketMsg: object) {
+    function onJson(socketMsg: any) {
       // Subsocket handling
       if (typeof socketMsg['_socket'] === 'string') {
         setSockets((prev) => {
@@ -94,7 +95,7 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
     socket.on('json', onJson);
     Object.entries(sockets).forEach((s) => {
       if (s[1]) {
-        socket.on(s[0], (msg: object) => {
+        socket.on(s[0], (msg: any) => {
           addMessage(s[0], msg);
         });
       }

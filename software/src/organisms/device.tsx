@@ -80,7 +80,7 @@ const Device: FC<{ deviceId: DeviceID; fqa: number }> = ({ deviceId, fqa }) => {
     setErrorSnackbar(false);
   };
 
-  const handleResponse = (response) => {
+  const handleResponse = (response: { error?: string }) => {
     if (response && response.error) {
       setErrorMessage(response.error);
       setErrorSnackbar(true);
@@ -90,6 +90,7 @@ const Device: FC<{ deviceId: DeviceID; fqa: number }> = ({ deviceId, fqa }) => {
   };
 
   const handleSet = () => {
+    if (!socket) return;
     const instruction = {
       type: 'command',
       data: {
@@ -128,6 +129,7 @@ const Device: FC<{ deviceId: DeviceID; fqa: number }> = ({ deviceId, fqa }) => {
   };
 
   const handleGet = () => {
+    if (!socket) return;
     console.log(`Scheduler: ${isInterval}, Interval: ${interval}`);
     const instruction = {
       type: 'command',

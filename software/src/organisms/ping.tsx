@@ -16,6 +16,7 @@ const Pinger: FC = () => {
   const { devices } = useDevices();
 
   const pingDevice = (fqa: number) => {
+    if (!socket) return;
     socket.emit('serialinput', {
       type: 'command',
       data: {

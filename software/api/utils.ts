@@ -66,8 +66,6 @@ export function execute(command: string, failureCodes: number[] = []): Promise<s
   });
 }
 
-const PATHSTEM_IMAGES = '~/img/';
-
 const dateFormat = (d: Date) => (`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}`);
 
 type CameraCaptureOptions = {
@@ -76,6 +74,7 @@ type CameraCaptureOptions = {
   // TODO: Add more options
 };
 
+const PATHSTEM_IMAGES = './logs/';
 const CAMERATIMEOUT = 3000;
 
 // Returns a path to the JPEG image.

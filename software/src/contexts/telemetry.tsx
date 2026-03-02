@@ -19,7 +19,7 @@ type TelemetryContextType = {
 };
 
 const TelemetryContext = createContext<TelemetryContextType>({
-  telemetry: null,
+  telemetry: {},
 });
 
 const TelemetryProvider = ({

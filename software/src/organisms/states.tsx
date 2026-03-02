@@ -49,7 +49,7 @@ const StateTable: FC = () => {
     setErrorSnackbar(false);
   };
 
-  const handleResponse = (response) => {
+  const handleResponse = (response: { error?: string }) => {
     if (response && response.error) {
       setErrorMessage(response.error);
       setErrorSnackbar(true);
@@ -59,6 +59,7 @@ const StateTable: FC = () => {
   };
 
   const handleRebuild = () => {
+    if (!socket) return;
     const instruction = {
       type: 'config',
       data: {

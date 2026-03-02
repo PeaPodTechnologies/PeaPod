@@ -42,7 +42,11 @@ const Camera: FC = () => {
     setErrorSnackbar(false);
   };
 
-  const handleResponse = (response) => {
+  const handleResponse = (response: {
+    error?: string;
+    blob?: ArrayBuffer;
+    mime?: string;
+  }) => {
     if (response && response.error) {
       setErrorMessage(response.error);
       setErrorSnackbar(true);
@@ -59,14 +63,15 @@ const Camera: FC = () => {
   };
 
   const handleCapture = () => {
-    socket.emit('camera', undefined, handleResponse);
+    if (!socket) return;
+    socket.emit('camera', {}, handleResponse);
   };
 
   return (
     //devices ? (
     <Paper elevation={3} square={false} sx={{ padding: 2 }}>
       <Typography variant="h6">Camera</Typography>
-      {image && <img src={image} alt="Captured" />}
+      {image && <img style={{ marginTop: 10 }} src={image} alt="Captured" />}
       <Button
         sx={{ marginTop: 2 }}
         variant="contained"

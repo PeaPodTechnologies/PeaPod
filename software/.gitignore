@@ -70,3 +70,5 @@ logs/*.txt
 server.mjs
 
 sample.jpg
+
+out.tar.gz

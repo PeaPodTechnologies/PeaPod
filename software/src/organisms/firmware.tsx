@@ -14,7 +14,8 @@ const Firmware: FC = () => {
   const [disable, setDisable] = useState(false);
 
   const flash = () => {
-    socket.emit('firmware', undefined, ({ error }: { error?: string }) => {
+    if (!socket) return;
+    socket.emit('firmware', {}, ({ error }: { error?: string }) => {
       if (error) {
         console.error('Firmware Flash Error:', error);
       } else {

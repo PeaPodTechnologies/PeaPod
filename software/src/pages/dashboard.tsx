@@ -36,6 +36,7 @@ import {
   Router,
   TableChart,
   CameraAlt as CameraIcon,
+  RocketLaunch,
 } from '@mui/icons-material';
 import Descheduler from '../organisms/descheduler';
 import Linker from '../organisms/unlinker';
@@ -62,6 +63,7 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
   const [enableLinker, setEnableLinker] = useState<boolean>(true);
   const [enableStates, setEnableStates] = useState<boolean>(true);
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
+  const [enableFirmware, setEnableFirmware] = useState<boolean>(true);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -72,7 +74,7 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            I2CIP.js Dashboard
+            PeaPod Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
@@ -220,6 +222,20 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
               />
             </ListItemButton>
           </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableFirmware(!enableFirmware)}>
+              <ListItemIcon>
+                <RocketLaunch />
+              </ListItemIcon>
+              <ListItemText primary={'Firmware Flash'} />
+              <Checkbox
+                edge="end"
+                checked={enableFirmware}
+                onChange={() => setEnableFirmware(!enableFirmware)}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
       </Drawer>
@@ -300,9 +316,11 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
                 <Camera />
               </Grid>
             )}
-            <Grid size={{ xs: 12 }}>
-              <Firmware />
-            </Grid>
+            {enableFirmware && (
+              <Grid size={{ xs: 12 }}>
+                <Firmware />
+              </Grid>
+            )}
           </Grid>
         ) : (
           <Box

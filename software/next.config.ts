@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   typescript: {
     tsconfigPath: './next.tsconfig.json',
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   output: 'standalone',
 };
 

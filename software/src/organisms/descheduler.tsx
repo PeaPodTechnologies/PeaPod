@@ -50,9 +50,9 @@ const Descheduler: FC = () => {
 
   const clearSchedule = (label: string) => {
     if (socket) {
-      socket.emit('scheduler-clear', label, (err) => {
-        if (err) {
-          setErrorMessage(err);
+      socket.emit('scheduler-clear', label, (response: { error?: string }) => {
+        if (response && response.error) {
+          setErrorMessage(response.error);
           setErrorSnackbar(true);
         } else {
           setSnackbar(true);

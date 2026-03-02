@@ -59,7 +59,7 @@ const SerialInput: FC<SerialInputProps> = () => {
     if (socket && !inputError) {
       try {
         const data = JSON.parse(inputString);
-        socket.emit('serialinput', data, (response) => {
+        socket.emit('serialinput', data, (response: { error?: string }) => {
           if (response && response.error) {
             setErrorMessage(`Rejected: ${response.error}`);
             setErrorSnackbar(true);

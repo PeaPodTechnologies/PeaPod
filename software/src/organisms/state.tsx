@@ -171,7 +171,8 @@ const StatePanel: FC<StatePanelProps> = ({ label, value }) => {
   const [errorSnackbar, setErrorSnackbar] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string>('');
 
-  const updateValue = (newValue: number | boolean) => {
+  const updateValue = (newValue: number | boolean | null) => {
+    if (!socket || newValue === null) return;
     socket.emit(
       'serialinput',
       {
@@ -181,9 +182,9 @@ const StatePanel: FC<StatePanelProps> = ({ label, value }) => {
           list: null,
         },
       },
-      (error) => {
-        if (error) {
-          setErrorMessage(error);
+      (response: { error?: string }) => {
+        if (response && response.error) {
+          setErrorMessage(response.error);
           setErrorSnackbar(true);
         } else {
           setSnackbar(true);
@@ -194,7 +195,10 @@ const StatePanel: FC<StatePanelProps> = ({ label, value }) => {
   return (
     <Paper elevation={3} square={false} sx={{ padding: 2 }}>
       <Typography variant="h6" gutterBottom>
-        {label}
+        {label
+          .split('_')
+          .map((word) => word[0].toUpperCase() + word.slice(1))
+          .join(' ')}
       </Typography>
       {typeof value === 'boolean' && (
         <Checkbox checked={value} onChange={(e, val) => updateValue(val)} />

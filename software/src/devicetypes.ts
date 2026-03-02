@@ -14,6 +14,7 @@ export const DEVICE_ARG_TYPES_GET: {
   '24LC32': () => false, // Disabled for now
   SEESAW: () => true, // No args required
   MCP23017: (a) => {
+    if(!a) return false;
     const _a = parseInt(a);
     if (isNaN(_a)) return false;
     return _a >= 0 && _a <= 0xffff;
@@ -30,17 +31,20 @@ export const DEVICE_ARG_TYPES_SET: {
   '24LC32': () => false, // Disabled for now
   SEESAW: () => false, // No set operation for SEESAW
   MCP23017: (s, b) => {
+    if(!s || !b) return false;
     const _s = parseInt(s);
     const _b = parseInt(b);
     if (isNaN(_s) || isNaN(_b)) return false;
     return _s >= 0 && _b >= 0 && _s <= 0xffff && _b <= 0xffff;
   },
   JHD1313: (s, b) => {
+    if(!s || !b) return false;
     const _b = parseInt(b);
     if (isNaN(_b)) return false;
     return _b >= 0 && _b <= 0xffffff;
   },
   PCA9685: (s, b) => {
+    if(!s || !b) return false;
     const _s = parseInt(s);
     const _b = parseInt(b);
     if (isNaN(_s) || isNaN(_b)) return false;
@@ -52,6 +56,7 @@ export const DEVICE_ARG_TYPES_SET: {
     );
   },
   HT16K33: (s, b) => {
+    if(!s || !b) return false;
     const _b = parseInt(b);
     if (isNaN(_b)) return false;
     return (

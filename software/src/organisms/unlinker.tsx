@@ -78,14 +78,19 @@ const Linker: FC = () => {
 
   const clearLinker = (label: string, instruction: LinkerInstruction) => {
     if (socket) {
-      socket.emit('linker-clear', label, instruction, (err) => {
-        if (err) {
-          setErrorMessage(err);
-          setErrorSnackbar(true);
-        } else {
-          setSnackbar(true);
+      socket.emit(
+        'linker-clear',
+        label,
+        instruction,
+        (response: { error?: string }) => {
+          if (response && response.error) {
+            setErrorMessage(response.error);
+            setErrorSnackbar(true);
+          } else {
+            setSnackbar(true);
+          }
         }
-      });
+      );
     }
   };
 

@@ -31,7 +31,7 @@ export type DebugJsonInstruction = {
     a?: boolean | number | string, 
     s?: boolean | number | string, 
     b?: boolean | number | string,
-    [key: string]: boolean | number | number[] | string }
+    [key: string]: boolean | number | number[] | string | undefined }
 };
 
 export function parseType(type: DebugJsonMessageTypes): string {

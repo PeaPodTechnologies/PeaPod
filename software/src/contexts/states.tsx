@@ -18,7 +18,7 @@ type StatesContextType = {
 };
 
 const StatesContext = createContext<StatesContextType>({
-  states: [],
+  states: {},
 });
 
 const StatesProvider = ({

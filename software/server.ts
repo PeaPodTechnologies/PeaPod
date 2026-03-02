@@ -418,17 +418,18 @@ let io = undefined;
         });
 
         socket.on('camera', async (_: unknown, callback: (response: {error?: string, mime?: string, blob?: Buffer}) => void) => {
+          ui.start('CAMERA CAPTURE');
+          if(argv.simulator) { callback({mime: 'image/jpeg', blob: readFileSync('sample.jpg')}); return; }
+          controller.write({type: 'config', data: { enable_camera: true }});
           try {
-            ui.start('CAMERA CAPTURE');
-            if(argv.simulator) {callback({mime: 'image/jpeg', blob: readFileSync('sample.jpg')}); return;}
-            controller.write({type: 'config', data: {enable_camera: true}});
             const path = await cameraCapture();
             const buf = readFileSync(path);
             ui.succeed('CAMERA CAPTURE SUCCESSFUL: ' + path);
-            controller.write({type: 'config', data: {enable_camera: false}});
             callback({mime: 'image/jpeg', blob: buf});
           } catch (err) {
-            callback({error: `Camera Capture Error: ${err}`});
+            ui.fail(`CAMERA CAPTURE ERROR: ${err}`);
+          } finally {
+            controller.write({type: 'config', data: { enable_camera: false }});
           }
         });
       });
