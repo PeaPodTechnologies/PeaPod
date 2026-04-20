@@ -53,7 +53,7 @@ export type PeaPodEnv = {
  *
  * Throws an error if the file does not exist.
  */
-function loadDotEnv(path: string = '.env'): void {
+export default function loadDotEnv(path: string = '.env'): void {
   // Check for file
   if (existsSync(path)) {
     const config = dotenv.config({ path });
@@ -148,6 +148,3 @@ export function loadPeaPodEnv(): PeaPodEnv {
     };
   }
 }
-
-// MAIN
-loadDotEnv();

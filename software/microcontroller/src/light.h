@@ -32,18 +32,19 @@ namespace PeaPod {
   void callback_adc_voltage(bool _, const FSM::Number& v);
 
   class PeaPodModuleLighting : public PeaPodModule {
-    FSM::IntervalCallback* interval_adc = nullptr;
-    FSM::IntervalCallback* interval_lighting_on = nullptr;
-    FSM::IntervalCallback* interval_lighting_off = nullptr;
-    // FSM::IntervalCallback* interval_pwmcycle = nullptr;
+    private:
+      FSM::IntervalCallback* interval_adc = nullptr;
+      FSM::IntervalCallback* interval_lighting_on = nullptr;
+      FSM::IntervalCallback* interval_lighting_off = nullptr;
+      // FSM::IntervalCallback* interval_pwmcycle = nullptr;
 
-    template <unsigned char P> static void callback_lighting_modulate(bool _, const FSM::Number& pwm);
+      template <unsigned char P> static void callback_lighting_modulate(bool _, const FSM::Number& pwm);
 
-    static void callback_lighting_gate(bool _, const bool& onoff);
+      static void callback_lighting_gate(bool _, const bool& onoff);
 
-    static void callback_lighting_camera(bool _, const bool& onoff);
+      static void callback_lighting_camera(bool _, const bool& onoff);
 
-    // static void callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __);
+      // static void callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __);
 
     public:
       PeaPodModuleLighting(bool chronoCallbacks = true);

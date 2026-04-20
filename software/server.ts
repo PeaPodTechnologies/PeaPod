@@ -1,6 +1,3 @@
-import { hostname } from 'os';
-import { lookup } from 'dns';
-
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 
@@ -21,6 +18,9 @@ import { DebugJsonInstruction } from './api/types';
 import checkbox from '@inquirer/checkbox';
 import { cameraCapture, ipv4Lookup, updateMicrocontroller } from './api/utils';
 import { pushDebugMessages } from './api/firebase';
+import loadDotEnv from './api/env';
+
+loadDotEnv();
 
 enum PublishingMode {
 	FIREBASE = 'Firebase (CloudPonics)',
@@ -38,20 +38,17 @@ const argv = await yargs(hideBin(process.argv))
   .option('port', {
     alias: 'p',
     type: 'number',
-    default: 3001,
     describe: 'HTTP port'
   })
   .option('host', {
     alias: 'h',
     type: 'string',
-    default: 'localhost',
     describe: 'Hostname to bind'
   })
   .option('serialport', {
     alias: 'd',
     type: 'string',
     describe: 'SerialPort device path (overrides auto-detection)',
-    default: process.env.SERIALPORT || undefined
   })
   .help().parse();
 
@@ -175,15 +172,16 @@ let io = undefined;
 
   if(pms.includes(PublishingMode.FRONTEND)) {
     // 1. IPv4 Lookup
-    ui.start('IPv4: Lookup...');
-    const host = await ipv4Lookup();
-    ui.succeed(`IPv4: ${host}`);
+    // ui.start('IPv4: Lookup...');
+    // const host = await ipv4Lookup();
+    // ui.succeed(`IPv4: ${host}`);
 
-    const hostname =  host || argv.host || 'localhost';
-    const port = argv.port || 3001;
+    // const hostname = argv.host ?? host ?? 'localhost';
+    const hostname = argv.host ?? 'localhost';
+    const port = argv.port ?? 3001;
 
     // 2. Next.JS App and HTTP Server
-    ui.start('Next.JS: Preparing...');
+    ui.start(`Next.JS: Preparing${process.env.NODE_ENV === 'production' ? ' (Production)' : ' (Development)'}...`);
     const app = next({ dev: (process.env.NODE_ENV !== 'production'), hostname, port, conf: nextConfig });
     const handler = app.getRequestHandler();
     const server = createServer((req, res) => {
@@ -192,8 +190,8 @@ let io = undefined;
     await app.prepare();
     ui.succeed('Next.JS: Ready!');
 
-    await new Promise<void>(r => server.listen(port, host, () => {
-      ui.info(`HTTP Server Listening: http://${host}:${port}/`);
+    await new Promise<void>(r => server.listen(port, hostname, () => {
+      ui.log(`HTTP Server Listening: http://${hostname}:${port}/`);
       r();
     }));
 
@@ -231,7 +229,7 @@ let io = undefined;
                 return; // Next key
               }
               const instruction = { ...item.instruction, data: { ...item.instruction.data, [item.key]: value } };
-              ui.info(`LINKER: ${key}: ${msg.data[key]} -> '${evalStr}' as ${cast} = ${value} -> ${JSON.stringify(instruction)}`);
+              ui.log(`LINKER: ${key}: ${msg.data[key]} -> '${evalStr}' as ${cast} = ${value} -> ${JSON.stringify(instruction)}`);
               try {
                 controller.write(instruction);
               } catch (err) {
@@ -249,7 +247,7 @@ let io = undefined;
     if(pms.includes(PublishingMode.FIREBASE)) pushDebugMessages(messages, 'microcontroller');
     
     // if (_msg_print_count % _msg_print_delta === 0) {
-    ui.info(`CONTROLLER JSON[${_msg_print_count}]: ${JSON.stringify(messages[0])}`);
+    ui.log(`CONTROLLER JSON[${_msg_print_count}]: ${JSON.stringify(messages[0])}`);
     // }
     _msg_print_count++;
 
@@ -277,7 +275,7 @@ let io = undefined;
         ui.log('Socket.IO ++');
 
         setTimeout(() => {
-          ui.info(`Socket.IO: ${socket.id}`);
+          ui.log(`Socket.IO: ${socket.id}`);
           socket.emit('json', { type: 'info', msg: 'Server Start', _socket: 'server' }); // Open subsocket 'server'
           socket.emit('json', { type: 'revision', msg: 'Microcontroller Revision Match', data: CONTROLLER_REVISION, _socket: 'microcontroller' }); // Open subsocket 'microcontroller'
         }, 1000);
@@ -289,7 +287,7 @@ let io = undefined;
         // SERIAL INPUT SOCKET HANDLERS
 
         socket.on('serialinput', (data: DebugJsonInstruction, callback: (error?: {error: string}) => void) => {
-          ui.info(`CONTROLLER INPUT: ${JSON.stringify(data)}`);
+          ui.log(`CONTROLLER INPUT: ${JSON.stringify(data)}`);
           if(!data || !data.type || !data.data) {
             ui.fail('CONTROLLER INPUT ERROR: Invalid Data');
             socket.emit('server', {type: 'error', msg: 'Controller Input Error: Invalid Data'});
@@ -311,7 +309,7 @@ let io = undefined;
         // SCHEDULER SOCKET HANDLERS
 
         socket.on('scheduler-post', (data: { interval: number, instruction: DebugJsonInstruction }, callback: (error?: {error: string}) => void) => {
-          ui.info(`SCHEDULER POST: ${JSON.stringify(data)}`);
+          ui.log(`SCHEDULER POST: ${JSON.stringify(data)}`);
           if(!data || !data.interval || !data.instruction || !data.instruction.type || !data.instruction.data) {
             ui.fail('SCHEDULER POST ERROR: Invalid Data');
             socket.emit('server', {type: 'error', msg: 'Scheduler Post Error: Invalid Data'});
@@ -320,14 +318,14 @@ let io = undefined;
           }
           const schedulerLabel = JSON.stringify(data.instruction);
           if(schedule[schedulerLabel]) {
-            ui.info(`CONTROLLER INPUT SCHEDULE CLEARED: ${schedulerLabel}`);
+            ui.log(`CONTROLLER INPUT SCHEDULE CLEARED: ${schedulerLabel}`);
             clearInterval(schedule[schedulerLabel]);
             delete schedule[schedulerLabel];
           }
           if(typeof data.interval === 'number' && data.interval >= 100) {
-            ui.info(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
+            ui.log(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
             schedule[schedulerLabel] = setInterval(() => {
-              ui.info(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
+              ui.log(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
               try {
                 controller.write({type: data.instruction.type, data: data.instruction.data});
               } catch (err) {
@@ -345,12 +343,12 @@ let io = undefined;
         });
 
         socket.on('scheduler-get', (data: unknown, callback: (keys: string[]) => void) => {
-          ui.info('SCHEDULER GET');
+          ui.log('SCHEDULER GET');
           callback(Object.keys(schedule));
         });
 
         socket.on('scheduler-clear', (key: string, callback: (error?: {error: string}) => void) => {
-          ui.info(`SCHEDULER CLEAR: ${key}`);
+          ui.log(`SCHEDULER CLEAR: ${key}`);
           if(!schedule[key]) {
             ui.fail(`SCHEDULER CLEAR ERROR: No such key "${key}"`);
             socket.emit('server', {type: 'error', msg: `Scheduler Clear Error: No such key "${key}"`});
@@ -365,7 +363,7 @@ let io = undefined;
         // LINKER SOCKET HANDLERS
 
         socket.on('linker-post', (data: Linker & {label: string}, callback: (error?: {error: string}) => void) => {
-          ui.info(`LINKER POST: ${JSON.stringify(data)}`);
+          ui.log(`LINKER POST: ${JSON.stringify(data)}`);
           if(!data || !data.label || !data.key || !data.cast || !data.instruction || !data.eval || !data.instruction.type || !data.instruction.data) {
             ui.fail('LINKER POST ERROR: Invalid Data');
             socket.emit('server', {type: 'error', msg: 'Linker Post Error: Invalid Data'});
@@ -389,12 +387,12 @@ let io = undefined;
         });
 
         socket.on('linker-get', (data: unknown, callback: (linker: {[key: string]: Linker[]}) => void) => {
-          ui.info('LINKER GET');
+          ui.log('LINKER GET');
           callback(linker);
         });
 
         socket.on('linker-clear', (label: string, instruction: DebugJsonInstruction, callback: (error?: {error: string}) => void) => {
-          ui.info(`LINKER CLEAR: ${label} ${JSON.stringify(instruction)}`);
+          ui.log(`LINKER CLEAR: ${label} ${JSON.stringify(instruction)}`);
           if(linker[label]) {
             linker[label] = linker[label].filter((item) => {
               return !(item.instruction.type === instruction.type && JSON.stringify(item.instruction.data) === JSON.stringify(instruction.data));
@@ -418,16 +416,18 @@ let io = undefined;
         });
 
         socket.on('camera', async (_: unknown, callback: (response: {error?: string, mime?: string, blob?: Buffer}) => void) => {
-          ui.start('CAMERA CAPTURE');
           if(argv.simulator) { callback({mime: 'image/jpeg', blob: readFileSync('sample.jpg')}); return; }
           controller.write({type: 'config', data: { enable_camera: true }});
           try {
+            ui.start('CAMERA CAPTURE');
             const path = await cameraCapture();
             const buf = readFileSync(path);
             ui.succeed('CAMERA CAPTURE SUCCESSFUL: ' + path);
             callback({mime: 'image/jpeg', blob: buf});
           } catch (err) {
             ui.fail(`CAMERA CAPTURE ERROR: ${err}`);
+            socket.emit('server', {type: 'error', msg: `Camera Capture Error: ${err}`});
+            callback({error: `Camera Capture Error: ${err}`});
           } finally {
             controller.write({type: 'config', data: { enable_camera: false }});
           }

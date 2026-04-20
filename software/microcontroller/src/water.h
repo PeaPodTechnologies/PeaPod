@@ -15,7 +15,7 @@ namespace PeaPod {
 
   class PeaPodModuleWatering : public PeaPodModule {
     FSM::IntervalCallback* interval_watering_on = nullptr;
-    FSM::IntervalCallback* interval_watering_off = nullptr;
+    FSM::IntervalCallback* interval_watering_off = nullptr; 
 
     public:
       PeaPodModuleWatering(bool chronoCallbacks = true);

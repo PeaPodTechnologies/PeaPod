@@ -1,5 +1,9 @@
 #include <light.h>
 
+FSM::Number calculate_pwm(const double& dutycycle) {
+  return FSM::Number(4096.0 * constrain(dutycycle, 0.0, 1.0), true);
+}
+
 void PeaPod::callback_adc_voltage(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, adc_voltage.getKey());
 
@@ -29,7 +33,7 @@ void PeaPod::PeaPodModuleLighting::callback_lighting_camera(bool _, const bool& 
   // Turn off all lights, then turn on the camera light if `onoff` is true
   // enable_lighting.set(!onoff);
   if(onoff) {
-    callback_pca9685_analogWrite<PEAPOD_MODULE_LIGHTING_PWM_FQA, PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_CAMERA>(true, FSM::Number(4096.0 * PEAPOD_MODULE_LIGHTING_DUTY_CAMERA, true));
+    callback_pca9685_analogWrite<PEAPOD_MODULE_LIGHTING_PWM_FQA, PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_CAMERA>(true, calculate_pwm(PEAPOD_MODULE_LIGHTING_DUTY_CAMERA)); // ON PWM
   } else {
     callback_pca9685_onOff<PEAPOD_MODULE_LIGHTING_PWM_FQA, PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_CAMERA>(true, false); // OFF
   }

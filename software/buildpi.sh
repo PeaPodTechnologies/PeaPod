@@ -1,3 +1,4 @@
+rm -rf out out.tar.gz
 docker buildx create --use --name pi-builder 2>/dev/null || true
 docker buildx build \
   --platform linux/arm64 \

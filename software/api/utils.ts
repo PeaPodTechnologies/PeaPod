@@ -74,16 +74,24 @@ type CameraCaptureOptions = {
   // TODO: Add more options
 };
 
-const PATHSTEM_IMAGES = './logs/';
+const PATHSTEM_IMAGES = 'capture';
 const CAMERATIMEOUT = 3000;
 
 // Returns a path to the JPEG image.
 export function cameraCapture(options?: CameraCaptureOptions): Promise<string> {
   return new Promise<string>((res, rej) => {
-    const p = `${PATHSTEM_IMAGES}-${dateFormat(new Date())}`;
-    execute(`rpicam-still -o ${p}.jpg -n --timeout ${CAMERATIMEOUT} --autofocus`)
+    const datestring = dateFormat(new Date());
+    const p = `./images/${PATHSTEM_IMAGES}-${datestring}`;
+    if (!existsSync('./images/')) {
+      mkdirSync('./images/', { recursive: true });
+    }
+    execute(`rpicam-still -o ${p}.jpg -n --timeout ${CAMERATIMEOUT}`)
       .catch(err => {
-        rej(err);
+        if (!existsSync('./logs/')) {
+          mkdirSync('./logs/', { recursive: true });
+        }
+        writeFileSync(`logs/cameraCapture_${datestring}.log`, err);
+        rej(new Error(err));
       })
       .then(() => {
         res(`${p}.jpg`);
