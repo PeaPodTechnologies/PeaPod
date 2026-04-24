@@ -198,6 +198,13 @@ void PeaPodModule::registerVariable(FSM::Variable* variable, bool locked) {
   this->locker.set(variable->getKey(), new bool(locked)); // TODO: Memory leak?
 }
 
+FSM::Flag* PeaPodModule::getFlagByIndex(uint8_t index) const {
+  return this->flags.getByFirstOccurrence(index);
+}
+FSM::Variable* PeaPodModule::getVariableByIndex(uint8_t index) const {
+  return this->variables.getByFirstOccurrence(index);
+}
+
 void PeaPod::configRouter(JsonObject command, Print& out) {
   for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
     if(I2CIP::modules[i] != nullptr) {

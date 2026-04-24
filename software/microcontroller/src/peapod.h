@@ -25,6 +25,7 @@
 #define PEAPOD_MODULENUM_AIR 0
 #define PEAPOD_MODULENUM_WATERING 1
 #define PEAPOD_MODULENUM_LIGHTING 2
+#define PEAPOD_MODULENUM_CONTROL 3
 
 #define PEAPOD_DELTA_HEARTBEAT 5000
 #define PEAPOD_DELTA_MODULECHECK 100
@@ -46,15 +47,21 @@ namespace PeaPod {
     protected:
     I2CIP::DeviceGroup* deviceGroupFactory(const i2cip_id_t& id) override;
 
-    void registerFlag(FSM::Flag* flag, bool locked = false);
-    void registerVariable(FSM::Variable* variable, bool locked = false);
-    
     public:
     PeaPodModule(const uint8_t& mux) : JsonModule(PEAPOD_WIRENUM, mux) { }
     
     void handleCommand(JsonObject command, Print& out) override;
     
     void handleConfig(JsonObject config, Print& out) override;
+    
+    void registerFlag(FSM::Flag* flag, bool locked = false);
+    void registerVariable(FSM::Variable* variable, bool locked = false);
+
+    FSM::Flag* getFlagByIndex(uint8_t index) const;
+    FSM::Variable* getVariableByIndex(uint8_t index) const;
+
+    uint8_t getNumFlags(void) const { return this->flags.size(); }
+    uint8_t getNumVariables(void) const { return this->variables.size(); }
   };
 
   // Global States
