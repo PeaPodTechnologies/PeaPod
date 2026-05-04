@@ -18,7 +18,8 @@ export type SocketContextType = {
   socket: Socket | null;
   sockets: string[]; // List of connected sockets
   messages: { [key: string]: any[] };
-  // clearMessages?: (label: string) => void;
+  stopSocket: () => void;
+  startSocket: () => void;
 };
 
 const SocketContext = createContext<SocketContextType>({
@@ -26,6 +27,8 @@ const SocketContext = createContext<SocketContextType>({
   socket: null,
   sockets: [],
   messages: {},
+  stopSocket: () => {},
+  startSocket: () => {},
 });
 
 export const useSocket = () => {
@@ -43,6 +46,7 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [sockets, setSockets] = useState<{ [key: string]: boolean }>({});
   const [messages, setMessages] = useState<{ [key: string]: any[] }>({});
+  const [enabled, setEnabled] = useState(true);
 
   // const clearMessages = (label: string) => {
   //   setMessages((prev) => {
@@ -88,27 +92,33 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
       // setMessages({});
     };
 
-    setIsConnected(socket.connected);
+    const subscribe = () => {
+      setIsConnected(socket.connected);
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('json', onJson);
-    Object.entries(sockets).forEach((s) => {
-      if (s[1]) {
-        socket.on(s[0], (msg: any) => {
-          addMessage(s[0], msg);
-        });
-      }
-    });
+      socket.on('connect', onConnect);
+      socket.on('disconnect', onDisconnect);
+      socket.on('json', onJson);
+      Object.entries(sockets).forEach((s) => {
+        if (s[1]) {
+          socket.on(s[0], (msg: any) => {
+            addMessage(s[0], msg);
+          });
+        }
+      });
+    };
 
-    return () => {
+    if (enabled) subscribe();
+
+    const unsubscribe = () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
       socket.off('json', onJson);
       Object.keys(sockets).forEach((s) => socket.removeAllListeners(s));
     };
-  });
-  // }, [sockets]);
+
+    return unsubscribe;
+    // }, []);
+  }, [sockets, enabled]);
 
   const listSockets = (): string[] =>
     Object.entries(sockets).reduce((arr, s) => {
@@ -125,6 +135,14 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
         socket: isConnected ? socket : null,
         sockets: isConnected ? listSockets() : [],
         messages,
+        stopSocket: () => {
+          console.log('Stopping Socket');
+          setEnabled(false);
+        },
+        startSocket: () => {
+          console.log('Starting Socket');
+          setEnabled(true);
+        },
       }}
     >
       {children}

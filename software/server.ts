@@ -19,8 +19,11 @@ import checkbox from '@inquirer/checkbox';
 import { cameraCapture, ipv4Lookup, updateMicrocontroller } from './api/utils';
 import { pushDebugMessages } from './api/firebase';
 import loadDotEnv from './api/env';
+import { SchedulerEntry } from './api/types';
 
 loadDotEnv();
+
+const SCHEDULER_INTERVAL = 5000; // ms - How often to check the scheduler for pending tasks
 
 enum PublishingMode {
 	FIREBASE = 'Firebase (CloudPonics)',
@@ -67,7 +70,8 @@ console.error = _errRedirect;
 // const _msg_print_delta = 1;
 let _msg_print_count = 0;
 
-const schedule: { [key: string]: NodeJS.Timeout } = {}; // { [key: instruction string]: NodeJS.Timeout} - Scheduled tasks
+const intervals: { [key: string]: NodeJS.Timeout } = {}; // { [key: instruction string]: NodeJS.Timeout} - Scheduled tasks
+const scheduler : {entry: SchedulerEntry & ({entry: 'event', executed: boolean} | {entry: 'interval', last: number}), interval: NodeJS.Timeout, instruction: DebugJsonInstruction}[] = []; // Scheduler Entries
 const linker: {
   [key: string]: Linker[]
 } = {};
@@ -124,7 +128,8 @@ const findController = (simulator?: boolean): Promise<Controller> => {
   });
 };
 
-let io = undefined;
+let io: Server | undefined = undefined;
+let schedulerInterval: NodeJS.Timeout | undefined = undefined;
 
 // ===== MAIN =====
 (async () => {
@@ -178,16 +183,17 @@ let io = undefined;
 
     // const hostname = argv.host ?? host ?? 'localhost';
     const hostname = argv.host ?? 'localhost';
-    const port = argv.port ?? 3001;
+    const port = argv.port ?? 3005;
 
     // 2. Next.JS App and HTTP Server
     ui.start(`Next.JS: Preparing${process.env.NODE_ENV === 'production' ? ' (Production)' : ' (Development)'}...`);
     const app = next({ dev: (process.env.NODE_ENV !== 'production'), hostname, port, conf: nextConfig });
+    await app.prepare();
     const handler = app.getRequestHandler();
     const server = createServer((req, res) => {
+      // console.log('[HTTP]', req.method, req.url);
       handler(req, res);
     });
-    await app.prepare();
     ui.succeed('Next.JS: Ready!');
 
     await new Promise<void>(r => server.listen(port, hostname, () => {
@@ -274,9 +280,12 @@ let io = undefined;
       io.on('connection', (socket) => {
         ui.log('Socket.IO ++');
 
+        socket.emit('scheduler')
+
         setTimeout(() => {
           ui.log(`Socket.IO: ${socket.id}`);
           socket.emit('json', { type: 'info', msg: 'Server Start', _socket: 'server' }); // Open subsocket 'server'
+          socket.emit('json', { type: 'info', msg: 'Scheduler Start', _socket: 'scheduler' }); // Open subsocket 'scheduler'
           socket.emit('json', { type: 'revision', msg: 'Microcontroller Revision Match', data: CONTROLLER_REVISION, _socket: 'microcontroller' }); // Open subsocket 'microcontroller'
         }, 1000);
 
@@ -306,33 +315,33 @@ let io = undefined;
           callback();
         });
 
-        // SCHEDULER SOCKET HANDLERS
+        // INTERVALS SOCKET HANDLERS
 
-        socket.on('scheduler-post', (data: { interval: number, instruction: DebugJsonInstruction }, callback: (error?: {error: string}) => void) => {
-          ui.log(`SCHEDULER POST: ${JSON.stringify(data)}`);
+        socket.on('intervals-post', (data: { interval: number, instruction: DebugJsonInstruction }, callback: (error?: {error: string}) => void) => {
+          ui.log(`INTERVALS POST: ${JSON.stringify(data)}`);
           if(!data || !data.interval || !data.instruction || !data.instruction.type || !data.instruction.data) {
-            ui.fail('SCHEDULER POST ERROR: Invalid Data');
-            socket.emit('server', {type: 'error', msg: 'Scheduler Post Error: Invalid Data'});
-            callback({error: 'Invalid Scheduler Data'});
+            ui.fail('INTERVALS POST ERROR: Invalid Data; Missing Fields: ' + Object.keys(data).filter(k => !data[k as keyof typeof data]).join(', '));
+            socket.emit('server', {type: 'error', msg: 'Intervals Post Error: Invalid Data'});
+            callback({error: 'Invalid Intervals Data'});
             return;
           }
           const schedulerLabel = JSON.stringify(data.instruction);
-          if(schedule[schedulerLabel]) {
-            ui.log(`CONTROLLER INPUT SCHEDULE CLEARED: ${schedulerLabel}`);
-            clearInterval(schedule[schedulerLabel]);
-            delete schedule[schedulerLabel];
+          if(intervals[schedulerLabel]) {
+            ui.log(`CONTROLLER INPUT INTERVAL CLEARED: ${schedulerLabel}`);
+            clearInterval(intervals[schedulerLabel]);
+            delete intervals[schedulerLabel];
           }
           if(typeof data.interval === 'number' && data.interval >= 100) {
-            ui.log(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
-            schedule[schedulerLabel] = setInterval(() => {
-              ui.log(`CONTROLLER INPUT SCHEDULE: ${schedulerLabel} @${data.interval}ms`);
+            ui.log(`CONTROLLER INPUT INTERVAL: ${schedulerLabel} @${data.interval}ms`);
+            intervals[schedulerLabel] = setInterval(() => {
+              ui.log(`CONTROLLER INPUT INTERVAL: ${schedulerLabel} @${data.interval}ms`);
               try {
                 controller.write({type: data.instruction.type, data: data.instruction.data});
               } catch (err) {
                 ui.fail(`CONTROLLER INPUT ERROR: ${err}`);
                 socket.emit('server', {type: 'error', msg: `Controller TX Error: ${err}`});
-                clearInterval(schedule[schedulerLabel]);
-                delete schedule[schedulerLabel];
+                clearInterval(intervals[schedulerLabel]);
+                delete intervals[schedulerLabel];
 
                 callback({error: `Controller TX Error: ${err}`});
                 return;
@@ -342,21 +351,21 @@ let io = undefined;
           }
         });
 
-        socket.on('scheduler-get', (data: unknown, callback: (keys: string[]) => void) => {
-          ui.log('SCHEDULER GET');
-          callback(Object.keys(schedule));
+        socket.on('intervals-get', (data: unknown, callback: (keys: string[]) => void) => {
+          ui.log('INTERVALS GET');
+          callback(Object.keys(intervals));
         });
 
-        socket.on('scheduler-clear', (key: string, callback: (error?: {error: string}) => void) => {
-          ui.log(`SCHEDULER CLEAR: ${key}`);
-          if(!schedule[key]) {
-            ui.fail(`SCHEDULER CLEAR ERROR: No such key "${key}"`);
-            socket.emit('server', {type: 'error', msg: `Scheduler Clear Error: No such key "${key}"`});
+        socket.on('intervals-clear', (key: string, callback: (error?: {error: string}) => void) => {
+          ui.log(`INTERVALS CLEAR: ${key}`);
+          if(!intervals[key]) {
+            ui.fail(`INTERVALS CLEAR ERROR: No such key "${key}"`);
+            socket.emit('server', {type: 'error', msg: `Intervals Clear Error: No such key "${key}"`});
             callback({error: `No such key "${key}"`});
             return;
           }
-          clearInterval(schedule[key]);
-          delete schedule[key];
+          clearInterval(intervals[key]);
+          delete intervals[key];
           callback();
         });
 
@@ -401,6 +410,8 @@ let io = undefined;
           callback();
         });
 
+        // FIRMWARE & CAMERA HANDLERS
+
         socket.on('firmware', (_: unknown, callback: (error?: {error: string}) => void) => {
           ui.start('FIRMWARE FLASH');
           if(argv.simulator) {callback({error: 'Simulator!'}); return;}
@@ -432,6 +443,79 @@ let io = undefined;
             controller.write({type: 'config', data: { enable_camera: false }});
           }
         });
+
+        // SCHEDULER
+
+        const deleteScheduledById = (id: string) => {
+          const index = scheduler.findIndex((item) => item.entry.id === id);
+          if(index !== -1) {
+            const item = scheduler[index];
+            if(item.interval) clearInterval(item.interval);
+            scheduler.splice(index, 1);
+          }
+        };
+
+        const schedulerEmit = () => {
+          scheduler.forEach((item) => {
+            socket.emit('scheduler', item.entry);
+          });
+          console.log(`SCHEDULER EMIT (${scheduler.length} entries)`);
+        };
+
+        socket.on('scheduler-post', (data: SchedulerEntry, callback: (error?: {error: string}) => void) => {
+          ui.log(`SCHEDULER CREATE ${data.entry === 'interval' ? 'INTERVAL' : 'EVENT'}: ${JSON.stringify(data)}`);
+          if(!data || !data.id || !data.entry || !data.instruction || !data.instruction.type || !data.instruction.data) {
+            ui.fail(`SCHEDULER CREATE ERROR: Invalid Data ${JSON.stringify(data)}`);
+            socket.emit('server', {type: 'error', msg: 'Scheduler Create Error: Invalid Data'});
+            callback({error: 'Invalid Scheduler Data'});
+            return;
+          }
+
+          const idx = scheduler.findIndex((item) => item.entry.id === data.id);
+          if(idx !== -1) {
+            ui.fail(`SCHEDULER CREATE: ID "${data.id}" already exists; replacing...`);
+            deleteScheduledById(data.id);
+          }
+
+          scheduler.push({entry: {...data, executed: data.entry === 'event' ? false : undefined, last: data.entry === 'interval' ? Date.now() : undefined}, instruction: data.instruction, interval: data.entry === 'interval' ? setInterval(() => {
+            try {
+              controller.write(data.instruction);
+            } catch (err) {
+              ui.fail(`SCHEDULER INTERVAL ERROR: ${err}`);
+              socket.emit('server', {type: 'error', msg: `Scheduler Interval TX Error: ${err}`});
+              deleteScheduledById(data.id);
+            }
+          }, data.interval) : data.entry === 'event' ? setTimeout(() => {
+            try {
+              controller.write(data.instruction);
+            }
+            catch (err) {
+              ui.fail(`SCHEDULER EVENT ERROR: ${err}`);
+              socket.emit('server', {type: 'error', msg: `Scheduler Event TX Error: ${err}`});
+            }
+            deleteScheduledById(data.id);
+          }, new Date(data.date).getTime() - Date.now()) : undefined});
+          callback();
+          schedulerEmit();
+        });
+
+        socket.on('scheduler-delete', (id: string, callback: (error?: {error: string}) => void) => {
+          ui.log(`SCHEDULER DELETE: ${id}`);
+          const index = scheduler.findIndex((item) => item.entry.id === id);
+          if(index === -1) {
+            ui.fail(`SCHEDULER DELETE ERROR: No such id "${id}"`);
+            socket.emit('server', {type: 'error', msg: `Scheduler Delete Error: No such id "${id}"`});
+            callback({error: `No such id "${id}"`});
+            return;
+          }
+          const item = scheduler[index];
+          if(item.interval) clearInterval(item.interval);
+          scheduler.splice(index, 1);
+          callback();
+          schedulerEmit();
+        });
+
+        schedulerInterval = setInterval(schedulerEmit, SCHEDULER_INTERVAL);
       });
     }
   });

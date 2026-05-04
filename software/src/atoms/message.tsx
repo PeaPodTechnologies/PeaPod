@@ -18,7 +18,11 @@ const DebugMessage: FC<DebugMessageProps> = ({ label, showJson, msg }) => {
         <>
           <span className="text-xs text-gray-400 display:inline-block">
             {`[ ${
-              msg.t ? `${msg.t}` : parseType(msg.type).toUpperCase()
+              msg.t
+                ? `${msg.t}`
+                : msg.type
+                  ? parseType(msg.type).toUpperCase()
+                  : 'UNKNOWN'
             } ${msg.timestamp ? parseTimestamp(msg.timestamp) : 'NOW'} ]`}
           </span>
           <span className="minWidth:1rem display:inline-block">&nbsp; </span>

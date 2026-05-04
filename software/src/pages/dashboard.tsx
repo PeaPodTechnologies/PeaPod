@@ -37,6 +37,7 @@ import {
   TableChart,
   CameraAlt as CameraIcon,
   RocketLaunch,
+  CalendarMonthOutlined,
 } from '@mui/icons-material';
 import Descheduler from '../organisms/descheduler';
 import Linker from '../organisms/unlinker';
@@ -45,6 +46,7 @@ import { useStates } from '../contexts/states';
 import StatePanel from '../organisms/state';
 import Firmware from '../organisms/firmware';
 import Camera from '../organisms/camera';
+import Scheduler from '../organisms/scheduler';
 
 const drawerWidth = '240px';
 
@@ -64,6 +66,7 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
   const [enableStates, setEnableStates] = useState<boolean>(true);
   const [enableCamera, setEnableCamera] = useState<boolean>(true);
   const [enableFirmware, setEnableFirmware] = useState<boolean>(true);
+  const [enableScheduler, setEnableScheduler] = useState<boolean>(true);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -119,6 +122,22 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
                 edge="end"
                 checked={enableMessages}
                 onChange={() => setEnableMessages(!enableMessages)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setEnableScheduler(!enableScheduler)}
+            >
+              <ListItemIcon>
+                <CalendarMonthOutlined />
+              </ListItemIcon>
+              <ListItemText primary={'Scheduler'} />
+              <Checkbox
+                edge="end"
+                checked={enableScheduler}
+                onChange={() => setEnableScheduler(!enableScheduler)}
               />
             </ListItemButton>
           </ListItem>
@@ -302,6 +321,11 @@ const Dashboard: FC<PropsWithChildren> = ({ children }) => {
                   <StatePanel label={key} value={value} />
                 </Grid>
               ))}
+            {enableScheduler && (
+              <Grid size={{ xs: 'grow', md: 'grow' }}>
+                <Scheduler />
+              </Grid>
+            )}
             {enableDevices &&
               devicesFlat.map(([deviceId, fqa]) => (
                 <Grid

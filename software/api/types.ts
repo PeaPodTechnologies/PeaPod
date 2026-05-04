@@ -73,3 +73,18 @@ export function parseTimestamp(ms: number): string {
 
   return `${hoursString}:${minutesString}:${secondsString}.${msString}`;
 };
+
+export type SchedulerEntry = {
+  id: string;
+  date: Date;
+  title: string;
+  description?: string;
+  instruction: DebugJsonInstruction;
+} & (
+  | { entry: 'event' }
+  | {
+      entry: 'interval';
+      endDate: Date;
+      interval: number;
+    }
+);

@@ -116,7 +116,7 @@ const Device: FC<{ deviceId: DeviceID; fqa: number }> = ({ deviceId, fqa }) => {
       );
     } else if (isInterval && interval > 0.1) {
       socket.emit(
-        'scheduler-post',
+        'intervals-post',
         {
           interval: interval * 1000,
           instruction,
@@ -141,7 +141,7 @@ const Device: FC<{ deviceId: DeviceID; fqa: number }> = ({ deviceId, fqa }) => {
     };
     if (isInterval && interval > 0.1) {
       socket.emit(
-        'scheduler-post',
+        'intervals-post',
         {
           interval: interval * 1000,
           instruction,

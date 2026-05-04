@@ -77,7 +77,7 @@ const DeviceTree: FC = () => {
     };
     if (isInterval && interval > 1) {
       socket.emit(
-        'scheduler-post',
+        'intervals-post',
         {
           interval: interval * 1000,
           instruction,

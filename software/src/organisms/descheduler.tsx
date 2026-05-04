@@ -41,7 +41,7 @@ const Descheduler: FC = () => {
 
   const getSchedule = () => {
     if (socket) {
-      socket.emit('scheduler-get', {}, (data: string[]) => {
+      socket.emit('intervals-get', {}, (data: string[]) => {
         setSchedule(data);
         setSnackbar(true);
       });
@@ -50,7 +50,7 @@ const Descheduler: FC = () => {
 
   const clearSchedule = (label: string) => {
     if (socket) {
-      socket.emit('scheduler-clear', label, (response: { error?: string }) => {
+      socket.emit('intervals-clear', label, (response: { error?: string }) => {
         if (response && response.error) {
           setErrorMessage(response.error);
           setErrorSnackbar(true);
