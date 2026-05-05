@@ -25,7 +25,7 @@ export const CONTROLLER_REVISION = 0; // Just zero for now
  */
 const SERIAL_TIMEOUT_SECONDS = 5;
 
-const RESET_INTERVAL = 10000;
+const RESET_INTERVAL = 60000;
 const BATCH_INTERVAL = 100; 
 
 /**

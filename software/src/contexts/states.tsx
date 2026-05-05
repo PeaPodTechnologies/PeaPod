@@ -15,10 +15,12 @@ type StateTree = {
 
 type StatesContextType = {
   states: StateTree;
+  rebuild: (cb?: (response: { error?: string }) => void) => void;
 };
 
 const StatesContext = createContext<StatesContextType>({
   states: {},
+  rebuild: () => {},
 });
 
 const StatesProvider = ({
@@ -30,7 +32,7 @@ const StatesProvider = ({
 }) => {
   const [states, setStates] = useState<StateTree>({});
 
-  const { messages } = useSocket();
+  const { messages, socket } = useSocket();
 
   const table = useMemo(() => {
     const topic = sock ?? 'microcontroller';
@@ -50,8 +52,19 @@ const StatesProvider = ({
     }
   }, [table, messages]);
 
+  const handleRebuild = (cb?: (response: { error?: string }) => void) => {
+    if (!socket) return;
+    const instruction = {
+      type: 'config',
+      data: {
+        list: null,
+      },
+    };
+    socket.emit('serialinput', instruction, cb);
+  };
+
   return (
-    <StatesContext.Provider value={{ states }}>
+    <StatesContext.Provider value={{ states, rebuild: handleRebuild }}>
       {children}
     </StatesContext.Provider>
   );

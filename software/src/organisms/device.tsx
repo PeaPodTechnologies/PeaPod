@@ -277,7 +277,7 @@ const Device: FC<{ deviceId: DeviceID; fqa: number }> = ({ deviceId, fqa }) => {
           <Box
             sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
           >
-            <Typography>Schedule?</Typography>
+            <Typography>Interval?</Typography>
             <Checkbox
               checked={isInterval}
               onChange={(e) => setIsInterval(e.target.checked)}

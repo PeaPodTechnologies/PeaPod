@@ -125,7 +125,7 @@ const DeviceTree: FC = () => {
           checked={rebuild}
           onChange={(e) => setRebuild(e.target.checked)}
         />
-        <Typography>Schedule?</Typography>
+        <Typography>Interval?</Typography>
         <Checkbox
           checked={isInterval}
           onChange={(e) => setIsInterval(e.target.checked)}

@@ -477,16 +477,28 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
             deleteScheduledById(data.id);
           }
 
-          scheduler.push({entry: {...data, executed: data.entry === 'event' ? false : undefined, last: data.entry === 'interval' ? Date.now() : undefined}, instruction: data.instruction, interval: data.entry === 'interval' ? setInterval(() => {
-            try {
+          scheduler.push({entry: {...data, executed: data.entry === 'event' ? false : undefined, last: data.entry === 'interval' ? Date.now() : undefined}, instruction: data.instruction, interval: data.entry === 'interval' ? setTimeout(() => {
+            try{
+              ui.log(`SCHEDULER INTERVAL START: ${JSON.stringify(data)}`);
               controller.write(data.instruction);
+              setInterval(() => {
+                try {
+                  ui.log(`SCHEDULER INTERVAL TRIGGER: ${JSON.stringify(data)}`);
+                  controller.write(data.instruction);
+                } catch (err) {
+                  ui.fail(`SCHEDULER INTERVAL ERROR: ${err}`);
+                  socket.emit('server', {type: 'error', msg: `Scheduler Interval TX Error: ${err}`});
+                  deleteScheduledById(data.id);
+                }
+              }, data.interval);
             } catch (err) {
               ui.fail(`SCHEDULER INTERVAL ERROR: ${err}`);
               socket.emit('server', {type: 'error', msg: `Scheduler Interval TX Error: ${err}`});
               deleteScheduledById(data.id);
             }
-          }, data.interval) : data.entry === 'event' ? setTimeout(() => {
+          }, new Date(data.date).getTime() - Date.now()) : data.entry === 'event' ? setTimeout(() => {
             try {
+              ui.log(`SCHEDULER EVENT TRIGGER: ${JSON.stringify(data)}`);
               controller.write(data.instruction);
             }
             catch (err) {

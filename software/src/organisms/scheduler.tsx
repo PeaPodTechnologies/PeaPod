@@ -52,8 +52,20 @@ const validateInstruction = (
     )
       return false;
   } else if (instruction.type === 'command') {
-    if (!instruction.data || !instruction.data.command) {
-      alert('Command instructions: must have data.command');
+    if (!instruction.data) {
+      alert('Command instructions: empty data');
+      return false;
+    }
+    if (!instruction.data.fqa) {
+      alert('Command instructions: no FQA provided');
+      return false;
+    }
+    if (
+      !['g', 'a', 's', 'b'].some((key) => instruction.data[key] !== undefined)
+    ) {
+      alert(
+        'Command instructions: no valid command parameters provided (must have at least one of g, a, s, b)'
+      );
       return false;
     }
   } else {
@@ -105,15 +117,11 @@ const EventModal: FC<{
   };
 
   const submitAndClose = () => {
-    if (
-      !title ||
-      !date ||
-      !instruction ||
-      !validateInstruction(instruction, states)
-    ) {
+    if (!title || !date || !instruction) {
       alert('Please fill out all required fields (Title, Date, Instruction)');
       return;
     }
+    if (!validateInstruction(instruction, states)) return;
     const eventData = {
       id: id ?? uuid(),
       entry: 'event',
@@ -241,18 +249,13 @@ const IntervalModal: FC<{
   };
 
   const submitAndClose = () => {
-    if (
-      !title ||
-      !date ||
-      !instruction ||
-      !interval ||
-      !validateInstruction(instruction, states)
-    ) {
+    if (!title || !date || !instruction || !interval) {
       alert(
         'Please fill out all required fields (Title, Date, Instruction, Interval)'
       );
       return;
     }
+    if (!validateInstruction(instruction, states)) return;
     const intervalData = {
       id: id ?? uuid(),
       entry: 'interval',
@@ -358,9 +361,11 @@ const Scheduler: FC = () => {
   const [dial, setDial] = useState(false);
 
   const { messages, socket, startSocket, stopSocket } = useSocket();
+  const { rebuild: rebuildStates } = useStates();
 
   const openEventModal = (id?: string) => {
-    stopSocket();
+    rebuildStates();
+    setTimeout(stopSocket, 1000);
     setSelectedEvent(id ?? null);
     setEventModal(true);
   };
@@ -372,7 +377,8 @@ const Scheduler: FC = () => {
   };
 
   const openIntervalModal = (id?: string) => {
-    stopSocket();
+    rebuildStates();
+    setTimeout(stopSocket, 1000);
     setSelectedInterval(id ?? null);
     setIntervalModal(true);
   };

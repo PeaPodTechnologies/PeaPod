@@ -3,16 +3,13 @@
 import { FC, useState } from 'react';
 import {
   Alert,
-  Box,
   Button,
-  Checkbox,
   List,
   ListItem,
   ListItemText,
   Paper,
   Snackbar,
   SnackbarCloseReason,
-  TextField,
   Typography,
 } from '@mui/material';
 import { useDevices } from '@/contexts/devices';
@@ -20,7 +17,7 @@ import { useSocket } from '@/contexts/socket';
 import { useStates } from '../contexts/states';
 
 const StateTable: FC = () => {
-  const { states } = useStates();
+  const { states, rebuild: handleRebuild } = useStates();
   const { socket } = useSocket();
 
   const [snackbar, setSnackbar] = useState<boolean>(false);
@@ -58,17 +55,6 @@ const StateTable: FC = () => {
     }
   };
 
-  const handleRebuild = () => {
-    if (!socket) return;
-    const instruction = {
-      type: 'config',
-      data: {
-        list: null,
-      },
-    };
-    socket.emit('serialinput', instruction, handleResponse);
-  };
-
   return (
     //devices ? (
     <Paper elevation={3} square={false} sx={{ padding: 2 }}>
@@ -84,7 +70,11 @@ const StateTable: FC = () => {
       ) : (
         <Typography variant="subtitle1">No states found</Typography>
       )}
-      <Button variant="text" disabled={!socket} onClick={handleRebuild}>
+      <Button
+        variant="text"
+        disabled={!socket}
+        onClick={() => handleRebuild(handleResponse)}
+      >
         REFRESH
       </Button>
       <Snackbar open={snackbar} autoHideDuration={6000} onClose={closeSnackbar}>
