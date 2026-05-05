@@ -8,7 +8,7 @@ import { findSerialPort, MicroController, CONTROLLER_REVISION, Controller, Simul
 // import { pushDebugMessage, pushDebugMessages } from './api/firebase';
 import ui, { _logRedirect, _errRedirect } from './api/ui';
 import {DebugJsonSerialportError} from './api/errors';
-import { appendFileSync, readFileSync } from 'fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'fs';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { initializeApp } from 'firebase/app';
@@ -462,22 +462,22 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
           console.log(`SCHEDULER EMIT (${scheduler.length} entries)`);
         };
 
-        socket.on('scheduler-post', (data: SchedulerEntry, callback: (error?: {error: string}) => void) => {
-          ui.log(`SCHEDULER CREATE ${data.entry === 'interval' ? 'INTERVAL' : 'EVENT'}: ${JSON.stringify(data)}`);
-          if(!data || !data.id || !data.entry || !data.instruction || !data.instruction.type || !data.instruction.data) {
-            ui.fail(`SCHEDULER CREATE ERROR: Invalid Data ${JSON.stringify(data)}`);
-            socket.emit('server', {type: 'error', msg: 'Scheduler Create Error: Invalid Data'});
-            callback({error: 'Invalid Scheduler Data'});
-            return;
+        socket.on('scheduler-save', (callback: (error?: {error: string}) => void) => {
+          ui.log(`SCHEDULER SAVE ${JSON.stringify(scheduler.map((item) => item.entry))} => scheduler.json`);
+          try {
+            const data = JSON.stringify(scheduler.map((item) => item.entry));
+            writeFileSync('scheduler.json', data, 'utf-8');
+            ui.succeed('SCHEDULER SAVE SUCCESSFUL');
+            callback();
+          } catch (err) {
+            ui.fail(`SCHEDULER SAVE ERROR: ${err}`);
+            socket.emit('server', {type: 'error', msg: `Scheduler Save Error: ${err}`});
+            callback({error: `Scheduler Save Error: ${err}`});
           }
+        });
 
-          const idx = scheduler.findIndex((item) => item.entry.id === data.id);
-          if(idx !== -1) {
-            ui.fail(`SCHEDULER CREATE: ID "${data.id}" already exists; replacing...`);
-            deleteScheduledById(data.id);
-          }
-
-          scheduler.push({entry: {...data, executed: data.entry === 'event' ? false : undefined, last: data.entry === 'interval' ? Date.now() : undefined}, instruction: data.instruction, interval: data.entry === 'interval' ? setTimeout(() => {
+        const addSchedulerEntry = (data: SchedulerEntry) => {
+          scheduler.push({entry: {...data, date: new Date(data.date), endDate: data.entry === 'interval' ? new Date(data.endDate) : undefined, executed: data.entry === 'event' ? false : undefined, last: data.entry === 'interval' ? Date.now() : undefined}, instruction: data.instruction, interval: data.entry === 'interval' ? setTimeout(() => {
             try{
               ui.log(`SCHEDULER INTERVAL START: ${JSON.stringify(data)}`);
               controller.write(data.instruction);
@@ -507,6 +507,44 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
             }
             deleteScheduledById(data.id);
           }, new Date(data.date).getTime() - Date.now()) : undefined});
+        };
+
+        socket.on('scheduler-load', (callback: (error?: {error: string}) => void) => {
+          // Overwrite entire scheduler with loaded data from scheduler.json
+          ui.log('SCHEDULER LOAD scheduler.json');
+          try {
+            const data = readFileSync('scheduler.json', 'utf-8');
+            const entries = JSON.parse(data);
+            scheduler.length = 0;
+            entries.forEach((entry: SchedulerEntry) => {
+              addSchedulerEntry(entry);
+            });
+            ui.succeed('SCHEDULER LOAD SUCCESSFUL');
+            callback();
+            schedulerEmit();
+          } catch (err) {
+            ui.fail(`SCHEDULER LOAD ERROR: ${err}`);
+            socket.emit('server', {type: 'error', msg: `Scheduler Load Error: ${err}`});
+            callback({error: `Scheduler Load Error: ${err}`});
+          }
+        });
+
+        socket.on('scheduler-post', (data: SchedulerEntry, callback: (error?: {error: string}) => void) => {
+          ui.log(`SCHEDULER CREATE ${data.entry === 'interval' ? 'INTERVAL' : 'EVENT'}: ${JSON.stringify(data)}`);
+          if(!data || !data.id || !data.entry || !data.instruction || !data.instruction.type || !data.instruction.data) {
+            ui.fail(`SCHEDULER CREATE ERROR: Invalid Data ${JSON.stringify(data)}`);
+            socket.emit('server', {type: 'error', msg: 'Scheduler Create Error: Invalid Data'});
+            callback({error: 'Invalid Scheduler Data'});
+            return;
+          }
+
+          const idx = scheduler.findIndex((item) => item.entry.id === data.id);
+          if(idx !== -1) {
+            ui.fail(`SCHEDULER CREATE: ID "${data.id}" already exists; replacing...`);
+            deleteScheduledById(data.id);
+          }
+
+          addSchedulerEntry(data);
           callback();
           schedulerEmit();
         });

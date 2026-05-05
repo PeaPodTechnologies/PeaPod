@@ -18,6 +18,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { DebugJsonInstruction, DebugJsonMessage } from '../../api/types';
 import { parseTimestamp, SchedulerEntry } from '../../api/types';
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -576,6 +577,39 @@ const Scheduler: FC = () => {
         onClose={closeEventModal}
         id={selectedEvent}
       />
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+        <Button
+          variant="contained"
+          onClick={() =>
+            socket &&
+            socket.emit('scheduler-save', (error: { error: string }) => {
+              if (error) {
+                alert(`Error saving scheduler: ${error.error}`);
+              } else {
+                alert('Scheduler saved successfully!');
+              }
+            })
+          }
+        >
+          Save to Disk
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() =>
+            socket &&
+            socket.emit('scheduler-load', (error: { error: string }) => {
+              if (error) {
+                alert(`Error loading scheduler: ${error.error}`);
+              } else {
+                alert('Scheduler loaded successfully!');
+              }
+            })
+          }
+        >
+          Load & Overwrite
+        </Button>
+      </Box>
       <IntervalModal
         open={intervalModal}
         onClose={closeIntervalModal}
