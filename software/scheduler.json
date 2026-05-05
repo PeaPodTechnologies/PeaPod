@@ -1,1 +1,34 @@
-[{"id":"52344927-2dfa-4ada-b6ef-ed30f1dc9936","entry":"event","title":"Lighting Event","description":"","date":"2026-05-05T19:00:00.000Z","instruction":{"type":"config","data":{"enable_lighting":true}},"executed":false}]
+[
+    {
+        "id": "127c24ff-667d-4738-8247-aab7ea80c512",
+        "entry": "interval",
+        "title": "Lighting ON",
+        "description": "Turns lighting on every 2 minutes.",
+        "date": "2026-05-05T19:05:00.000Z",
+        "instruction": {
+            "type": "config",
+            "data": {
+                "enable_lighting": true
+            }
+        },
+        "interval": 120000,
+        "endDate": null,
+        "last": 1778007887861
+    },
+    {
+        "id": "58100375-39c6-4c11-821d-8350a6c83902",
+        "entry": "interval",
+        "title": "Lighting OFF",
+        "description": "Turns lighting off every 2 minutes.",
+        "date": "2026-05-05T19:06:00.000Z",
+        "instruction": {
+            "type": "config",
+            "data": {
+                "enable_lighting": false
+            }
+        },
+        "interval": 120000,
+        "endDate": null,
+        "last": 1778007925157
+    }
+]

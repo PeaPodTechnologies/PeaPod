@@ -161,6 +161,7 @@ const EventModal: FC<{
         />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
+            views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
             sx={{ mt: 2 }}
             label="Date & Time"
             value={dayjs(date)}
@@ -300,6 +301,7 @@ const IntervalModal: FC<{
         />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
+            views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
             sx={{ mt: 2 }}
             label="Date & Time"
             value={dayjs(date)}

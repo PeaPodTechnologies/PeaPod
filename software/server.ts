@@ -452,6 +452,7 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
             const item = scheduler[index];
             if(item.interval) clearInterval(item.interval);
             scheduler.splice(index, 1);
+            schedulerEmit();
           }
         };
 
