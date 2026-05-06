@@ -115,14 +115,14 @@ const findController = (simulator?: boolean): Promise<Controller> => {
   ui.start('SerialPort: Scanning...');
   return new Promise((res, rej) => {
     findSerialPort(process.env.SERIALPORT ?? DEFAULT_SERIALPORT_STEM).then((ports) => {
-      if(ports.length === 0) { rej(new DebugJsonSerialportError('No SerialPorts Found!')); }
+      if(ports.length === 0) { rej(new DebugJsonSerialportError('No SerialPorts Found!')); return; }
 
       ui.succeed(`SerialPorts[${ports.length}]`);
       let resolved = false;
       ports.forEach((ser, i) => {
         console.info(`SerialPort[${i}]: ${ser}`);
         if(process.env.SERIALPORT && resolved === false) { res(new MicroController(ser)); resolved = true; }
-        else if(!process.env.SERIALPORT && i === 0) res(new MicroController(ser)); // First one if none specified
+        else if(!process.env.SERIALPORT && i === 0) { res(new MicroController(ser)); resolved = true; } // First one if none specified
       });
     });
   });
@@ -280,7 +280,7 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
       io.on('connection', (socket) => {
         ui.log('Socket.IO ++');
 
-        socket.emit('scheduler')
+        socket.emit('scheduler');
 
         setTimeout(() => {
           ui.log(`Socket.IO: ${socket.id}`);

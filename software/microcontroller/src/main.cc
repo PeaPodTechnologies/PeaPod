@@ -321,7 +321,7 @@ void onEncoderPress(void) {
   switch(menu.menu) {
     case PEAPOD_MENU_MAIN:
       if(menu.submenu == 0) {
-        // NOP
+        DebugJson::revision(0, Serial); // FOR NOW
       } else {
         switch(menu.submenu) {
           case 1:

@@ -172,7 +172,12 @@ const EventModal: FC<{
         </LocalizationProvider>
         <JsonEditor
           data={instruction}
-          setData={(data: DebugJsonInstruction) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setData={(data: any) => {
+            if (!data.type) {
+              alert('Instruction must have a type');
+              return false;
+            }
             if (data.type === 'config') {
               if (Object.keys(data.data).length === 0) {
                 alert('Config instructions: must have data');
@@ -320,7 +325,12 @@ const IntervalModal: FC<{
         />
         <JsonEditor
           data={instruction}
-          setData={(data: DebugJsonInstruction) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setData={(data: any) => {
+            if (!data.type) {
+              alert('Instruction must have a type');
+              return false;
+            }
             if (data.type === 'config') {
               if (Object.keys(data.data).length === 0) {
                 alert('Config instructions: must have data');
@@ -397,6 +407,10 @@ const Scheduler: FC = () => {
   const deleteEvent = (id: string) => {
     if (!window.confirm('Are you sure you want to delete this entry?')) return;
     resetSchedulerMessages(); // Temp fix
+    if (!socket) {
+      alert('No socket connection');
+      return;
+    }
     socket.emit('scheduler-delete', id, (error?: { error: string }) => {
       if (error) {
         alert(`Error deleting entry: ${error.error}`);
