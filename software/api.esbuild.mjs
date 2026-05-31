@@ -37,4 +37,11 @@ const build_server = esbuild.build({
   outdir: './'
 });
 
-await Promise.all([build_api, build_server]).catch((err) => { console.error(err); process.exit(1); } );
+// Build serial test
+const build_serialtest = esbuild.build({
+  ...esbuildConfig,
+  entryPoints: ['./serialtest.ts'],
+  outdir: './'
+});
+
+await Promise.all([build_api, build_server, build_serialtest]).catch((err) => { console.error(err); process.exit(1); } );
