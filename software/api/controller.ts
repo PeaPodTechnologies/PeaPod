@@ -274,16 +274,16 @@ export class MicroController implements Controller {
   }
 
   stop(): Promise<void> {
-    this.pauseTimeout();
+    this.pauseTimeout(true);
+    if (!this.serial.isOpen) return Promise.resolve();
     return new Promise<void>((resolve, reject) => {
-      if (this.serial.isOpen) this.serial.close((err) => {
+      this.serial.close((err) => {
         if (err) {
           reject(new DebugJsonSerialportError(`${err.name} - ${err.message}`));
         } else {
           resolve();
         }
       });
-      else resolve();
     });
     // Stop listening for data
     // this.parser.removeAllListeners('data');
