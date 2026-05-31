@@ -16,6 +16,7 @@ import { getAuth } from 'firebase/auth';
 import { DeviceFlowUI } from '@peapodtech/firebasedeviceflow';
 import { DebugJsonInstruction } from './api/types';
 import checkbox from '@inquirer/checkbox';
+import select from '@inquirer/select';
 import { cameraCapture, ipv4Lookup, updateMicrocontroller } from './api/utils';
 import { pushDebugMessages } from './api/firebase';
 import loadDotEnv from './api/env';
@@ -106,25 +107,32 @@ const SIMULATOR_CONFIG: SimulatorConfig = {
   'humidity': { min: 30, max: 70, interval: 1500 },
 };
 
-const DEFAULT_SERIALPORT_STEM = '/dev/ttyACM'; // Linux default
+// const DEFAULT_SERIALPORT_STEM = '/dev/ttyACM'; // Linux default
 // const DEFAULT_SERIALPORT_STEM = '/dev/ttyS';
 // const DEFAULT_SERIALPORT_STEM = 'usbserial';
 
-const findController = (simulator?: boolean): Promise<Controller> => {
-  if(simulator) return Promise.resolve(new SimulatedController(SIMULATOR_CONFIG));
+const findController = async (simulator?: boolean): Promise<Controller | void> => {
+  if(simulator) return new SimulatedController(SIMULATOR_CONFIG);
   ui.start('SerialPort: Scanning...');
-  return new Promise((res, rej) => {
-    findSerialPort(process.env.SERIALPORT ?? DEFAULT_SERIALPORT_STEM).then((ports) => {
-      if(ports.length === 0) { rej(new DebugJsonSerialportError('No SerialPorts Found!')); return; }
+  return findSerialPort(process.env.SERIALPORT ?? undefined, !!process.env.SERIALPORT).then(async (ports) => {
+    if(ports.length === 0) throw new DebugJsonSerialportError('No Serial Ports Found!');
 
-      ui.succeed(`SerialPorts[${ports.length}]`);
-      let resolved = false;
-      ports.forEach((ser, i) => {
-        console.info(`SerialPort[${i}]: ${ser}`);
-        if(process.env.SERIALPORT && resolved === false) { res(new MicroController(ser)); resolved = true; }
-        else if(!process.env.SERIALPORT && i === 0) { res(new MicroController(ser)); resolved = true; } // First one if none specified
-      });
+    ui.succeed(`Serial Ports Found: ${ports.length}`);
+
+    if(ports.length === 1) {
+      ui.log(`Serial Port Auto-Selected: ${ports[0]}`);
+      return new MicroController(ports[0], true);
+    }
+
+    const serial = await select({
+      message: 'Select Serial Port:',
+      choices: ports.map((ser, i) => ({
+        value: ser,
+        name: `${i}: ${ser}`
+      })),
     });
+
+    return new MicroController(serial, true);
   });
 };
 
@@ -211,6 +219,7 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
 
   // 5. SerialPort DebugJson Controller
   const controller = await findController(argv.simulator || false);
+  if(!controller) throw new DebugJsonSerialportError('Controller Not Found!');
   controller.start((messages) =>  {
     
     // Message Handling
@@ -570,4 +579,8 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
       });
     }
   });
-})();
+})().catch((err) => {
+  ui.fail(`FATAL! ${err}`);
+  console.error(err);
+  process.exit(1);
+});

@@ -33,12 +33,22 @@ const BATCH_INTERVAL = 100;
  */
 // const RESET_PIN = 26;
 
-export function findSerialPort(path: string): Promise<string[]> {
+export function findSerialPort(path?: string, matchExact: boolean = false): Promise<string[]> {
   return SerialPort.list().then(ports => {
+    let exact = false;
     return ports.reduce((acc, port) => {
       // console.log(JSON.stringify(port, null, 2));
-      if(port && port['path'] && (port['path'] as string).toLowerCase().includes(path.toLowerCase())) {
-        acc.push(port.path as string);
+      if(port && port['path']) {
+        if(!path) {
+          acc.push(port.path as string);
+          return acc;
+        }
+        if(matchExact && (port['path'] as string).toLowerCase() === path.toLowerCase()) {
+          exact = true;
+          acc = [port.path as string];
+        } else if(!exact && (port['path'] as string).toLowerCase().includes(path.toLowerCase())) {
+          acc.push(port.path as string);
+        }
       }
       return acc;
     }, [] as string[]);
@@ -126,6 +136,7 @@ export class MicroController implements Controller {
   parser: ReadlineParser;
   #timedout: boolean = false;
   #count: number = 0;
+  #started: boolean = false;
   #batch: DebugJsonMessage[] = [];
   private timeout?: NodeJS.Timeout;
   private resetInterval?: NodeJS.Timeout;
@@ -158,77 +169,77 @@ export class MicroController implements Controller {
   }
 
   // Starts serial (newline parser) and resolves when RX revision is correct
-  start(onMessage: (messages: DebugJsonMessage[]) => void): Promise<void> {
+  async start(onMessage: (messages: DebugJsonMessage[]) => void): Promise<void> {
     this.pauseTimeout(true); // Don't want it interrupting the start sequence
     // Reset listeners
     this.parser.removeAllListeners('data');
 
-    // Explicit promise construction so we can resolve only on valid comms AND revision check
-    return new Promise<void>(async (res, rej) => {
+    // resolve only on valid comms AND revision check
       
-      // Reset the microcontroller (opens the serial port)
-      this.reset().catch((err) => rej(err)).then(() => {
-        this.resetTimeout(rej);
-        this.resetInterval = setInterval(() => {
-          ui.info('CONTROLLER RESET INTERVAL');
-          this.reset().catch((err) => rej(err));
-        }, RESET_INTERVAL);
-        ui.start('CONTROLLER REVISION...');
-      });
+    // Reset the microcontroller (opens the serial port)
+    await this.reset();
 
-      this.parser.on('error', async (_err) => {
-        await this.reset().catch(() => rej(new DebugJsonSerialportError(`${_err.name} - ${_err.message}`)));
-      });
+    // Reset the serial timeout interval
+    this.resetTimeout();
 
-      // Set up the listener
+    // Set up the reset interval
+    this.resetInterval = setInterval(() => {
+      ui.info('CONTROLLER RESET INTERVAL');
+      this.reset();
+    }, RESET_INTERVAL);
+
+    this.parser.on('error', async (_err) => {
+      await this.reset().catch(() => {throw new DebugJsonSerialportError(`${_err.name} - ${_err.message}`)});
+    });
+
+    // Set up the data listener
+    ui.start('CONTROLLER REVISION...');
+    await new Promise<void>((resolve) => {
       this.parser.on('data', async (msgtxt) => {
-        this.resetTimeout(rej);
+        this.resetTimeout();
         this.#count++;
         
         // Attempt to parse the raw text as a valid JSON object
-        let msg: DebugJsonMessage;
-        try {
-          msg = JSON.parse(msgtxt);
-        } catch (err) {
-          rej(err);
-          return;
-        }
+        const msg: DebugJsonMessage = JSON.parse(msgtxt);
 
         // Microcontroller-specific pre-handling
         switch (msg.type) {
         case 'revision':
           // Software update
-          if (msg.data?.revision === CONTROLLER_REVISION) {
+          if (msg.data && Object.keys(msg.data).includes('revision') && msg.data['revision'] === CONTROLLER_REVISION) {
             if(ui.spinning()) {
               ui.succeed(
-                `CONTROLLER REVISION PASS! ${msg.data.revision}`
+                `CONTROLLER REVISION PASS! ${msg.data['revision']} === ${CONTROLLER_REVISION}`
               );
+              this.#started = true;
+              resolve();
             }
-            res(); //Successful start sequence
+            if(this.passRevision) {
+              onMessage([msg]);
+            }
+            return;
           } else {
             ui.fail(
-              `CONTROLLER REVISION FAIL: ${msg.data?.revision ?? 'NULL'} != ${CONTROLLER_REVISION}`
+              `CONTROLLER REVISION FAIL: ${msg.data['revision'] ?? 'NULL'} !== ${CONTROLLER_REVISION}`
             );
             // Attempt to update the microcontroller, and then restart
             this.stop();
-            ui.start('Compiling latest microcontroller software and flashing...');
-            await updateMicrocontroller();
-            ui.succeed('Updated microcontroller software successfully!');
+            // ui.start('CONTROLLER FLASH...');
+            // await updateMicrocontroller();
+            // ui.succeed('CONTROLLER FLASH PASS!');
           }
-          if(this.passRevision === false) { break; }
-          // onMessage([msg]); // Uncomment to pass revision messages to the rest of the app (unbatched)
           break;
         default:
-          this.#batch.push(msg);
-          if(Date.now() - this.#lastBatch >= BATCH_INTERVAL) {
-            onMessage(this.#batch);
-            this.#batch = [];
-            this.#lastBatch = Date.now();
+          if(this.#started) {
+            this.#batch.push(msg);
+            if(Date.now() - this.#lastBatch >= BATCH_INTERVAL) {
+              onMessage(this.#batch);
+              this.#batch = [];
+              this.#lastBatch = Date.now();
+            }
           }
           break;
         }
-
-        
       });
     });
   }
@@ -243,14 +254,15 @@ export class MicroController implements Controller {
   /**
    * Refresh (or start) the serial timeout.
    */
-  private resetTimeout(cb?: (err?: Error) => void, timeoutSeconds: number = SERIAL_TIMEOUT_SECONDS): void {
+  private resetTimeout(timeoutSeconds: number = SERIAL_TIMEOUT_SECONDS): void {
     this.pauseTimeout(true);
     this.timeout = setTimeout(() => {
       ui.fail(
         `CONTROLLER TIMEOUT: ${timeoutSeconds}s`
       );
       this.#timedout = true;
-      this.reset().catch((err) => {if(cb) {cb(err);}});
+      // this.reset().catch((err) => {if(cb) {cb(err);}});
+      this.reset();
     }, timeoutSeconds * 1000);
   }
 
@@ -278,25 +290,26 @@ export class MicroController implements Controller {
 
     this.#count = 0;
 
+    // this.#started = false;
+
     // Wait, then stop resetting
     // await new Promise<void>((r) => setTimeout(r, 1000));
     // this.resetpin.writeSync(0);
 
     // (Re-)open serial
-    return new Promise<void>((reso, reje) => {
-      ui.start('CONTROLLER...');
+    return new Promise<void>((resolve, reject) => {
+      ui.start('CONTROLLER RESET...');
       this.serial.open((err) => {
         if (err) {
-          reje(err);
+          ui.fail('CONTROLLER RESET FAIL!');
+          reject(new DebugJsonSerialportError(`${err.name} - ${err.message}`));
         } else {
-          ui.succeed('CONTROLLER!');
-          this.resetTimeout(reje);
-          reso();
+          ui.succeed('CONTROLLER RESET PASS!');
+          this.resetTimeout();
+          resolve();
         }
       });
     });
-
-    // Restart timeout
   }
 }
 

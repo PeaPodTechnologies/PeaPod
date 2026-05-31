@@ -23,6 +23,6 @@ export class EnvFieldError extends Error {
 
 export class DebugJsonSerialportError extends Error {
   constructor(err: string) {
-    super(`Serialport Error: ${err}`);
+    super(`SerialPort - ${err}`);
   }
 }
