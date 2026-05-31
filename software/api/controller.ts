@@ -85,7 +85,7 @@ export type Controller = {
   /**
    * Halt communications with the Controller.
    */
-  stop(): void;
+  stop(): Promise<void>;
 };
 
 /**
@@ -223,7 +223,7 @@ export class MicroController implements Controller {
               `CONTROLLER REVISION FAIL: ${msg.data['revision'] ?? 'NULL'} !== ${CONTROLLER_REVISION}`
             );
             // Attempt to update the microcontroller, and then restart
-            this.stop();
+            await this.stop();
             // ui.start('CONTROLLER FLASH...');
             // await updateMicrocontroller();
             // ui.succeed('CONTROLLER FLASH PASS!');
@@ -273,9 +273,17 @@ export class MicroController implements Controller {
     });
   }
 
-  stop(): void {
+  stop(): Promise<void> {
     this.pauseTimeout();
-    if (this.serial.isOpen) this.serial.close();
+    return new Promise<void>((resolve, reject) => {
+      if (this.serial.isOpen) this.serial.close((err) => {
+        if (err) {
+          reject(new DebugJsonSerialportError(`${err.name} - ${err.message}`));
+        } else {
+          resolve();
+        }
+      });
+    });
     // Stop listening for data
     // this.parser.removeAllListeners('data');
   }
@@ -285,29 +293,30 @@ export class MicroController implements Controller {
    */
   private reset(): Promise<void> {
     // Stop and reset
-    this.stop();
-    // this.resetpin.writeSync(1);
+    return this.stop().then(() => {
+      // this.resetpin.writeSync(1);
 
-    this.#count = 0;
+      this.#count = 0;
 
-    // this.#started = false;
+      // this.#started = false;
 
-    // Wait, then stop resetting
-    // await new Promise<void>((r) => setTimeout(r, 1000));
-    // this.resetpin.writeSync(0);
+      // Wait, then stop resetting
+      // await new Promise<void>((r) => setTimeout(r, 1000));
+      // this.resetpin.writeSync(0);
 
-    // (Re-)open serial
-    return new Promise<void>((resolve, reject) => {
-      ui.start('CONTROLLER RESET...');
-      this.serial.open((err) => {
-        if (err) {
-          ui.fail('CONTROLLER RESET FAIL!');
-          reject(new DebugJsonSerialportError(`${err.name} - ${err.message}`));
-        } else {
-          ui.succeed('CONTROLLER RESET PASS!');
-          this.resetTimeout();
-          resolve();
-        }
+      // (Re-)open serial
+      return new Promise<void>((resolve, reject) => {
+        ui.start('CONTROLLER RESET...');
+        this.serial.open((err) => {
+          if (err) {
+            ui.fail('CONTROLLER RESET FAIL!');
+            reject(new DebugJsonSerialportError(`${err.name} - ${err.message}`));
+          } else {
+            ui.succeed('CONTROLLER RESET PASS!');
+            this.resetTimeout();
+            resolve();
+          }
+        });
       });
     });
   }
@@ -379,10 +388,11 @@ export class SimulatedController implements Controller {
       break;
     }
   }
-  async stop(): Promise<void> {
+  stop(): Promise<void> {
     for (const interval of this.intervals) {
       clearInterval(interval);
     }
+    return Promise.resolve();
   }
 
   /**
