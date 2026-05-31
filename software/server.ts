@@ -220,7 +220,7 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
   // 5. SerialPort DebugJson Controller
   const controller = await findController(argv.simulator || false);
   if(!controller) throw new DebugJsonSerialportError('Controller Not Found!');
-  controller.start((messages) =>  {
+  controller.start((messages) => {
     
     // Message Handling
     messages.forEach((msg) => {

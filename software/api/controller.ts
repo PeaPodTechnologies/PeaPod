@@ -283,6 +283,7 @@ export class MicroController implements Controller {
           resolve();
         }
       });
+      else resolve();
     });
     // Stop listening for data
     // this.parser.removeAllListeners('data');
