@@ -42,14 +42,14 @@ The following are performed on a computer:
 
 The following are performed on the Raspberry Pi, with a keyboard and monitor:
 
-5. Login with the default username (`pi`) and password (`raspberry`).
+5. Login.
 6. Execute `sudo raspi-config` and perform these steps to setup the Pi:
-   1. *System Options > Wireless Lan* - Setup WiFi and connect to the Internet
-   2. *System Options > Hostname* - Set a unique hostname (`e.g. peapod`)
+   1. *System Options > Wireless Lan* - Setup WiFi and connect to the Internet (if not set from within imager)
+   2. *System Options > Hostname* - Set a unique hostname, e.g. `peapod` (if not set from within imager)
    3. *System Options > Boot/Auto Login* - Select `Console Autologin` (B2)
-   4. *Interface Options > SSH* - `Enable` SSH Server
+   4. *Interface Options > SSH* - `Enable` SSH Server (if not set from within imager)
    5. *Interface Options > Serial Port* - `Disable` serial login shell, but `Enable` the serial port hardware
-   6. *Performance Options > GPU Memory* - 256 (MB)
+   6. *Performance Options > GPU Memory* - 256 MB (to support the camera module, if used)
    7. *Localisation Options > Locale* (i.e. `en_US.UTF-8`)
    8. *Localisation Options > Timezone* (i.e. `US` > `Eastern`)
    9. *Localisation Options > Keyboard* (i.e. `Generic 105-key` > `English (US)` > `Default` > `No compose key`)

@@ -10,9 +10,9 @@
     "dev": "yarn buildapi && yarn start",
     "devsim": "yarn buildapi && yarn startsim",
     "build": "yarn upgrade && next build",
-    "buildapi": "rm -f ./api/*.mjs ./server.mjs && yarn install && node ./api.esbuild.mjs",
-    "start": "node ./server.mjs",
-    "startsim": "node ./server.mjs --simulator",
+    "buildapi": "rm -f api/*.mjs server.mjs && yarn install && node api.esbuild.mjs",
+    "start": "node server.mjs",
+    "startsim": "node server.mjs --simulator",
     "lint": "next lint --fix",
     "deploy_functions": "firebase deploy --only functions"
   },
