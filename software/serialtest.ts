@@ -25,6 +25,10 @@ SerialPort.list().then(ports => {
       autoOpen: false,
     });
 
+    serialport.on('data', data => {
+      console.log(`Data received from ${serial}:`, data.toString());
+    });
+
     serialport.open(err => {
       if (err) {
         return console.error('Error opening serial port:', err.message);
