@@ -3,93 +3,101 @@ import select from '@inquirer/select';
 
 const BAUDRATE = 115200;
 
-function forceExit(reason: string) {
-  console.error(`\nForce exit: ${reason}`);
+// eslint-disable-next-line prefer-const
+let serialport: SerialPort | undefined;
+
+function restoreTerminal() {
   try {
     if (process.stdin.isTTY) {
       process.stdin.setRawMode(false);
     }
+    process.stdin.pause();
   } catch {}
-  process.exit(1);
 }
 
-process.on('SIGINT', () => forceExit('SIGINT / Ctrl-C'));
-process.on('SIGTERM', () => forceExit('SIGTERM'));
-process.on('uncaughtException', (err) => {
-  console.error('uncaughtException:', err);
-  forceExit('uncaughtException');
-});
-process.on('unhandledRejection', (err) => {
-  console.error('unhandledRejection:', err);
-  forceExit('unhandledRejection');
+function exitCleanly(code = 0) {
+  restoreTerminal();
+
+  if (serialport?.isOpen) {
+    serialport.close(() => process.exit(code));
+  } else {
+    process.exit(code);
+  }
+}
+
+process.on('SIGINT', () => {
+  console.log('\nCaught Ctrl-C');
+  exitCleanly(0);
 });
 
-// List available serial ports
-SerialPort.list().then(ports => {
-  console.log('Available Serial Ports:');
-  ports.forEach(port => {
-    console.log(`- ${port.path} (${port.manufacturer || 'Unknown Manufacturer'})`);
+process.on('SIGTERM', () => {
+  console.log('\nCaught SIGTERM');
+  exitCleanly(0);
+});
+
+const ports = await SerialPort.list();
+
+console.log('Available Serial Ports:');
+ports.forEach((port) => {
+  console.log(`- ${port.path} (${port.manufacturer || 'Unknown Manufacturer'})`);
+});
+
+const serial = await select({
+  message: 'Select Serial Port:',
+  choices: ports.map((ser, i) => ({
+    value: ser.path,
+    name: `${i}: ${ser.path}`,
+  })),
+});
+
+restoreTerminal();
+
+console.log(`Selected Serial Port: ${serial}`);
+
+serialport = new SerialPort({
+  path: serial,
+  baudRate: BAUDRATE,
+  autoOpen: false,
+});
+
+serialport.on('data', (data) => {
+  console.log('DATA hex:', data.toString('hex'));
+  console.log('DATA str:', JSON.stringify(data.toString()));
+});
+
+serialport.on('open', () => {
+  console.log('OPEN EVENT');
+});
+
+serialport.on('error', (err) => {
+  console.error('ERROR EVENT:', err);
+});
+
+serialport.on('close', () => {
+  console.log('CLOSE EVENT');
+});
+
+console.log('About to open serial port');
+
+const timer = setTimeout(() => {
+  console.error('serialport.open() callback did not fire after 5s', {
+    isOpen: serialport?.isOpen,
+    readable: serialport?.readable,
+    writable: serialport?.writable,
   });
 
-  select({
-    message: 'Select Serial Port:',
-    choices: ports.map((ser, i) => ({
-      value: ser.path,
-      name: `${i}: ${ser.path}`
-    })),
-  }).then(serial => {
-    console.log(`Selected Serial Port: ${serial}`);
+  // Do not process.exit immediately if you want to keep observing data.
+  // exitCleanly(1);
+}, 5000);
 
-    const serialport = new SerialPort({
-      path: serial,
-      baudRate: BAUDRATE,
-      autoOpen: false,
-    });
+serialport.open((err) => {
+  clearTimeout(timer);
 
-    serialport.on('open', () => {
-      console.log(`OPEN EVENT: ${serial}`);
-    });
+  if (err) {
+    console.error('Error opening serial port:', err.message);
+    exitCleanly(1);
+    return;
+  }
 
-    serialport.on('close', () => {
-      console.log(`CLOSE EVENT: ${serial}`);
-    });
-
-    serialport.on('error', (err) => {
-      console.error(`ERROR EVENT: ${err.name} - ${err.message}`);
-    });
-
-    serialport.on('data', (data) => {
-      console.log(`DATA: ${data.toString()}`);
-    });
-
-    serialport.on('data', data => {
-      console.log(`Data received from ${serial}:`, data.toString());
-    });
-
-    const openTimeout = setTimeout(() => {
-      console.error('serialport.open() callback did not fire after 5s');
-
-      try {
-        console.error('Port state:', {
-          isOpen: serialport.isOpen,
-          path: serial,
-        });
-      } catch {}
-
-      forceExit('open timeout');
-    }, 5000);
-
-
-    serialport.open(err => {
-      clearTimeout(openTimeout);
-      if (err) {
-        console.error('Error opening serial port:', err.message);
-        forceExit('open failed');
-        return;
-      }
-      console.log(`Serial port ${serial} opened at baud rate ${BAUDRATE}`);
-    });
-  });
-}).catch(err => {
-  console.error('Error listing serial ports:', err);
+  console.log(`Serial port ${serial} opened at baud rate ${BAUDRATE}`);
 });
