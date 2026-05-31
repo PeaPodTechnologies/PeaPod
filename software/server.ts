@@ -190,8 +190,8 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
     // ui.succeed(`IPv4: ${host}`);
 
     // const hostname = argv.host ?? host ?? 'localhost';
-    const hostname = argv.host ?? 'localhost';
-    const port = argv.port ?? 3005;
+    const hostname = argv.host ?? process.env.NEXT_HOST ?? 'localhost';
+    const port = argv.port ?? process.env.NEXT_PORT ?? 3000;
 
     // 2. Next.JS App and HTTP Server
     ui.start(`Next.JS: Preparing${process.env.NODE_ENV === 'production' ? ' (Production)' : ' (Development)'}...`);

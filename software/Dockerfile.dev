@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile --non-interactive --network-timeout 100000
+RUN yarn install --network-timeout 100000
 
 # Copy the rest of your app's source code
 COPY . .
@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run your app using CMD which defines your runtime
-CMD ["yarn", "start"]
+# CMD ["yarn", "dev"] # Must be done from the CLI to allow for user input
+CMD ["/bin/bash"]

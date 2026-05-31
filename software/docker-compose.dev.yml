@@ -1,0 +1,30 @@
+services:
+  peapodos:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    restart: always
+    networks:
+      - app-network
+    stdin_open: true
+    tty: true
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./public:/usr/share/nginx/html
+    depends_on:
+      - peapodos
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
