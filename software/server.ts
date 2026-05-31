@@ -18,7 +18,7 @@ import { DebugJsonInstruction } from './api/types';
 import checkbox from '@inquirer/checkbox';
 import select from '@inquirer/select';
 import { cameraCapture, ipv4Lookup, updateMicrocontroller } from './api/utils';
-import { pushDebugMessages } from './api/firebase';
+import { pushDebugMessages, uploadFile } from './api/firebase';
 import loadDotEnv from './api/env';
 import { SchedulerEntry } from './api/types';
 
@@ -444,6 +444,11 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
             const buf = readFileSync(path);
             ui.succeed('CAMERA CAPTURE SUCCESSFUL: ' + path);
             callback({mime: 'image/jpeg', blob: buf});
+
+            if(pms.includes(PublishingMode.FIREBASE)) {
+              await uploadFile(buf, `camera-${Date.now()}.jpg`);
+              ui.succeed('CAMERA UPLOAD SUCCESSFUL');
+            }
           } catch (err) {
             ui.fail(`CAMERA CAPTURE ERROR: ${err}`);
             socket.emit('server', {type: 'error', msg: `Camera Capture Error: ${err}`});

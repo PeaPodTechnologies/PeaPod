@@ -4,6 +4,12 @@ export class ControllerTXError extends Error {
   }
 }
 
+export class ControllerRXError extends Error {
+  constructor(msg: any) {
+    super("DEBUGJSON TX FAIL: '" + JSON.stringify(msg) + "'");
+  }
+}
+
 // UNUSED
 // export class SerialTimeoutError extends Error {
 //   constructor(timeoutSeconds?: number) {
@@ -24,5 +30,11 @@ export class EnvFieldError extends Error {
 export class DebugJsonSerialportError extends Error {
   constructor(err: string) {
     super(`SerialPort - ${err}`);
+  }
+}
+
+export class FirebaseError extends Error {
+  constructor(err: FirebaseError | string | undefined = undefined) {
+    super(`Firebase - ${err ?? 'Unknown error'}`);
   }
 }
