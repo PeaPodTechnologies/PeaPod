@@ -231,16 +231,16 @@ void PeaPod::callback_cycle(bool _, const FSM::Number& __) {
   PeaPod::fps.set(((unsigned)PeaPod::fps.get() + 1000.f / max(1.f, (float)delta))/2); // Old FPS plus new FPS over two (moving average)
   last = millis();
 
-  while(Serial.available() > 0) { // With baud 115200, this should not block
-    DebugJson::update(Serial, I2CIP::commandRouter, PeaPod::configRouter);
+  while(PEAPOD_SERIAL.available() > 0) { // With baud 115200, this should not block
+    DebugJson::update(PEAPOD_SERIAL, I2CIP::commandRouter, PeaPod::configRouter);
   }
 }
 
 void PeaPod::callback_heartbeat(bool _, const FSM::fsm_timestamp_t& __) {
-  DebugJson::heartbeat(millis(), Serial);
-  DebugJson::revision(I2CIP_REVISION, Serial);
-  DebugJson::telemetry(millis(), (unsigned)PeaPod::fps.get(), "fps", Serial);
-  DebugJson::telemetry(millis(), (unsigned)PeaPod::cycle.get(), "cycle", Serial);
+  DebugJson::heartbeat(millis(), PEAPOD_SERIAL);
+  DebugJson::revision(I2CIP_REVISION, PEAPOD_SERIAL);
+  DebugJson::telemetry(millis(), (unsigned)PeaPod::fps.get(), "fps", PEAPOD_SERIAL);
+  DebugJson::telemetry(millis(), (unsigned)PeaPod::cycle.get(), "cycle", PEAPOD_SERIAL);
 }
 
 template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaPod::PeaPodModule, T>::value, int>::type = 0> void PeaPod::callback_module(bool _, const FSM::fsm_timestamp_t& __) {

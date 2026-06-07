@@ -6,17 +6,10 @@
 
 #include <Arduino.h>
 
-// #define PEAPOD_SERIAL Serial
-#define PEAPOD_SERIAL Serial1
-
-#define DEBUG_SERIAL PEAPOD_SERIAL
-
 #include <peapod.h>
 #include <air.h>
 #include <water.h>
 #include <light.h>
-
-#include <DebugJson.h>
 
 // NAMESPACE USAGE
 
@@ -101,7 +94,7 @@ void setup(void) {
   
   delay(100);
   
-  DebugJson::revision(I2CIP_REVISION, Serial);
+  DebugJson::revision(I2CIP_REVISION, PEAPOD_SERIAL);
 
   // // Print all devices
   // delay(100);
@@ -326,7 +319,7 @@ void onEncoderPress(void) {
   switch(menu.menu) {
     case PEAPOD_MENU_MAIN:
       if(menu.submenu == 0) {
-        DebugJson::revision(0, Serial); // FOR NOW
+        DebugJson::revision(0, PEAPOD_SERIAL); // FOR NOW
       } else {
         switch(menu.submenu) {
           case 1:

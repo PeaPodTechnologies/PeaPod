@@ -18,6 +18,11 @@
 #include <K30.h>
 #include <ADS1115.h>
 
+// #define PEAPOD_SERIAL Serial
+#define PEAPOD_SERIAL Serial1
+
+#define DEBUG_SERIAL PEAPOD_SERIAL
+
 #include <DebugJson.h>
 
 #define PEAPOD_WIRENUM 0
