@@ -3,6 +3,12 @@
 
 #include <Arduino.h>
 
+// Select a Serial port for output
+// #define PEAPOD_SERIAL Serial // USB
+#define PEAPOD_SERIAL Serial1 // GPIO TX/RX
+
+#define DEBUG_SERIAL PEAPOD_SERIAL // For DebugJson
+
 #include <state.h>
 #include <chronograph.h>
 
@@ -17,11 +23,6 @@
 #include <SHT45.h>
 #include <K30.h>
 #include <ADS1115.h>
-
-// #define PEAPOD_SERIAL Serial
-#define PEAPOD_SERIAL Serial1
-
-#define DEBUG_SERIAL PEAPOD_SERIAL
 
 #include <DebugJson.h>
 

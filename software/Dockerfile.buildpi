@@ -9,6 +9,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN corepack enable
 
+COPY package*.json ./
+COPY yarn.lock ./
+RUN yarn install --frozen-lockfile --non-interactive --network-timeout 100000
+
 COPY . .
 
 RUN yarn buildapi
@@ -18,15 +22,20 @@ RUN rm -f /app/.next/standalone/server.js
 RUN rm -rf /app/.next/standalone/node_modules
 RUN rm -f /app/.next/standalone/package.json
 
+RUN mkdir -p /tmp/export/.next/static /tmp/export/api /tmp/export/microcontroller \
+  && cp -a /app/.next/standalone/. /tmp/export/ \
+  && cp -a /app/.next/static/. /tmp/export/.next/static/ \
+  && cp -a /app/public /tmp/export/public \
+  && cp -a /app/api/*.mjs /tmp/export/api/ \
+  && cp -a /app/server.mjs /tmp/export/ \
+  && cp -a /app/microcontroller /tmp/export/microcontroller \
+  && cp -a /app/.env /tmp/export/.env \
+  && cp -a /app/node_modules /tmp/export/node_modules \
+  && cp -a /app/package.json /tmp/export/package.json \
+  && cp -a /app/yarn.lock /tmp/export/yarn.lock
+
+RUN tar -czf /app/out.tar.gz -C /tmp/export .
+
 FROM scratch AS export
 
-COPY --from=build /app/.next/standalone /
-COPY --from=build /app/.next/static /.next/static
-COPY --from=build /app/public /public
-COPY --from=build /app/api/*.mjs /api/
-COPY --from=build /app/server.mjs /
-COPY --from=build /app/microcontroller /microcontroller
-COPY --from=build /app/.env /.env
-COPY --from=build /app/node_modules /node_modules
-COPY --from=build /app/package.json /package.json
-COPY --from=build /app/yarn.lock /yarn.lock
+COPY --from=buildpi /app/out.tar.gz /out.tar.gz
