@@ -1,4 +1,4 @@
-import { SerialPort } from 'serialport';
+import { SerialPort, ReadlineParser } from 'serialport';
 import select from '@inquirer/select';
 
 const BAUDRATE = 115200;
@@ -60,9 +60,10 @@ serialport = new SerialPort({
   autoOpen: false,
 });
 
-serialport.on('data', (data) => {
-  console.log('DATA hex:', data.toString('hex'));
-  console.log('DATA str:', JSON.stringify(data.toString()));
+const parser = serialport.pipe(new ReadlineParser({ delimiter: '\n' }));
+
+parser.on('data', (line) => {
+  console.log(JSON.stringify(line));
 });
 
 serialport.on('open', () => {

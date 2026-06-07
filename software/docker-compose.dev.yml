@@ -11,6 +11,7 @@ services:
       - app-network
     stdin_open: true
     tty: true
+    privileged: true
 
   nginx:
     image: nginx:latest

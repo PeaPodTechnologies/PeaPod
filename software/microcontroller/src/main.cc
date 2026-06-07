@@ -6,6 +6,11 @@
 
 #include <Arduino.h>
 
+// #define PEAPOD_SERIAL Serial
+#define PEAPOD_SERIAL Serial1
+
+#define DEBUG_SERIAL PEAPOD_SERIAL
+
 #include <peapod.h>
 #include <air.h>
 #include <water.h>
@@ -66,8 +71,8 @@ void setup(void) {
   // Builtin LED Pinmode; Serial Begin
 
   pinMode(LED_BUILTIN, OUTPUT);
-  Serial.begin(115200);
-  while(!Serial) { digitalWrite(LED_BUILTIN, HIGH); delay(100); digitalWrite(LED_BUILTIN, LOW); delay(100); }
+  PEAPOD_SERIAL.begin(115200);
+  while(!PEAPOD_SERIAL) { digitalWrite(LED_BUILTIN, HIGH); delay(100); digitalWrite(LED_BUILTIN, LOW); delay(100); }
   
   delay(100);
   

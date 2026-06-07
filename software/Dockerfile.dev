@@ -4,6 +4,9 @@ FROM node:20 AS peapodos
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
+# Install apt dependencies
+RUN apt-get update && apt-get install -y udev
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
