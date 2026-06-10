@@ -33,3 +33,10 @@ jest.config.js
 *.oo
 **/.vscode/
 **/.pio/
+
+# Docker
+Dockerfile
+Dockerfile.*
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml

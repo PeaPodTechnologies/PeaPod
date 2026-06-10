@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:20 AS peapodos
+FROM node:20 AS peapodos-local
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -11,14 +11,10 @@ RUN apt-get update && apt-get install -y udev
 COPY package*.json ./
 
 # Install dependencies
-RUN yarn install --network-timeout 100000
+RUN yarn install --frozen-lockfile --non-interactive --network-timeout 100000
 
 # Copy the rest of your app's source code
 COPY . .
 
 # Your app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
 EXPOSE 3000
-
-# Define the command to run your app using CMD which defines your runtime
-# CMD ["yarn", "dev"] # Must be done from the CLI to allow for user input
-CMD ["/bin/bash"]

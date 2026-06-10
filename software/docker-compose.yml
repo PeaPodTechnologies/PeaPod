@@ -1,6 +1,8 @@
 services:
   peapodos:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.local
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -10,6 +12,7 @@ services:
     stdin_open: true
     tty: true
     privileged: true
+    # command: ["yarn", "start"]
 
   nginx:
     image: nginx:latest
