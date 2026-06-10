@@ -4,7 +4,6 @@ import { ControllerTXError, DebugJsonSerialportError } from './errors';
 import { DebugJsonConsole as ui } from './ui';
 import { DebugJsonMessage, DebugJsonMessageTypes } from './types';
 import { updateMicrocontroller } from './utils';
-import { config } from 'process';
 
 // import { Gpio } from 'onoff';
 
@@ -114,17 +113,6 @@ export type Controller = {
 // export type ControllerInstructions = {
 // 	[key: string]: number;
 // };
-
-/**
- * Simulated controller parameters
- */
-export type SimulatorConfig = {
-  [key: string]: {
-    min: number;
-    max: number;
-    interval: number;
-  };
-};
 
 // CLASSES
 
@@ -324,26 +312,69 @@ export class MicroController implements Controller {
 }
 
 /**
+ * Simulated controller parameters
+ */
+export type SimulatorConfig = {
+  [key: string]: {
+    interval: number;
+    locked: boolean;
+  } & ({
+    type: 'number';
+    value: number;
+    min: number;
+    max: number;
+  } | {
+    type: 'boolean';
+    value: boolean;
+  });
+};
+
+/**
  * A simulated controller for generating random data.
  */
 export class SimulatedController implements Controller {
-  private intervals: NodeJS.Timeout[] = [];
-  private readonly startDate: number = Date.now();
+  #intervals: NodeJS.Timeout[] = [];
+  readonly #startDate: number = Date.now();
+  #booleans: {[key: string]: boolean} = {};
+  #numbers: {[key: string]: number} = {};
+
   private output?: (msg: DebugJsonMessage[]) => void;
 
-  constructor(readonly parameters: SimulatorConfig) {}
+  constructor(readonly parameters: SimulatorConfig) {
+    Object.keys(parameters).forEach(label => {
+      if(parameters[label].type === 'boolean') {
+        this.#booleans[label] = parameters[label].value;
+      } else if(parameters[label].type === 'number') {
+        this.#numbers[label] = parameters[label].value;
+      }
+    });
+  }
 
   async start(onMessage: (msg: DebugJsonMessage[]) => void): Promise<void> {
+    // Save the 
     this.output = onMessage;
     for (const label of Object.keys(this.parameters)) {
-      this.intervals.push(
+      this.#intervals.push(
         setInterval(() => {
+          // Update values if locked state (simulate sensor readings)
+          if(this.parameters[label].locked) {
+            if(this.parameters[label].type === 'boolean' ) {
+              this.#booleans[label] = !this.#booleans[label];
+            } else if(this.parameters[label].type === 'number') {
+              const max = this.parameters[label].max;
+              const min = this.parameters[label].min;
+              this.#numbers[label] = Math.random() * (max - min) + min;
+            }
+          }
+          // Publish message
           onMessage(
-            [this.generateData(
-              label,
-              this.parameters[label].min,
-              this.parameters[label].max
-            )]
+            [{
+              type: 'event',
+              timestamp: Date.now() - this.#startDate,
+              data: {
+                [label]: this.parameters[label].type === 'number' ? this.#numbers[label] : this.#booleans[label],
+              }
+            }]
           );
         }, this.parameters[label].interval)
       );
@@ -356,31 +387,46 @@ export class SimulatedController implements Controller {
         ui.info('SIMULATED CONTROLLER REBUILD TREE');
         if(this.output) {
           this.output([
-            this.generateTree()
+            {
+              type: 'tree' as DebugJsonMessageTypes,
+              timestamp: Date.now() - this.#startDate,
+              data: Object.keys(this.parameters).reduce<{[key: string]: number[]}[]>((acc, label, idx) => { 
+                acc[0][label] = [idx]; // Module zero, device = label, fqa is just index for now
+                return acc;
+              }, [{}])
+            }
           ]);
         }
         break;
       }
     case 'config':
-      if(instructions.data && Object.keys(instructions.data).includes('list')) {
-        ui.info('SIMULATED CONTROLLER LIST STATES');
-        if(this.output) {
-          this.output([
-            this.parameters ? {
-              type: 'config' as DebugJsonMessageTypes,
-              timestamp: Date.now() - this.startDate,
-              data: {'onoff': true, ...Object.keys(this.parameters).reduce<{[key: string]: number | boolean}>((acc, key) => {
-                const max = this.parameters[key].max;
-                const min = this.parameters[key].min;
-                acc[key] = Math.random() * (max - min) + min;
-                return acc;
-              }, {})},
-            } : {
-              type: 'config' as DebugJsonMessageTypes,
-              timestamp: Date.now() - this.startDate,
-              data: {},
+      if(instructions.data) {
+        Object.keys(instructions.data).forEach(key => {
+          if(Object.keys(this.parameters).includes(key)) {
+            const value = instructions.data ? instructions.data[key] : undefined;
+            if(typeof value === 'number' && this.parameters[key].type === 'number') {
+              this.#numbers[key] = value;
+              ui.info(`SIMULATED CONTROLLER CONFIG: ${key} set to ${value}`);
             }
-          ]);
+            if(typeof value === 'boolean' && this.parameters[key].type === 'boolean') {
+              this.#booleans[key] = value;
+              ui.info(`SIMULATED CONTROLLER CONFIG: ${key} set to ${value}`);
+            }
+          }
+        });
+        if(Object.keys(instructions.data).includes('list')) {
+          ui.info('SIMULATED CONTROLLER LIST STATES');
+          if(this.output) {
+            this.output([{
+              type: 'config',
+              timestamp: Date.now() - this.#startDate,
+              data: Object.keys(this.parameters).reduce<{[key: string]: number | boolean}>((acc, key) => {
+                const value = this.parameters[key].type === 'number' ? this.#numbers[key] : this.#booleans[key];
+                acc[key] = value;
+                return acc;
+              }, {}),
+            } as DebugJsonMessage]);
+          }
         }
         break;
       }
@@ -390,35 +436,9 @@ export class SimulatedController implements Controller {
     }
   }
   stop(): Promise<void> {
-    for (const interval of this.intervals) {
+    for (const interval of this.#intervals) {
       clearInterval(interval);
     }
     return Promise.resolve();
-  }
-
-  /**
-   * Generate a single data point
-   * @param label Dataset label
-   * @param min Minimum value
-   * @param max Maximum value
-   */
-  private generateData(
-    label: string,
-    min: number,
-    max: number
-  ): DebugJsonMessage {
-    const d = (Math.random() * (max - min) + min);
-    return {
-      type: 'event',
-      timestamp: Date.now() - this.startDate,
-      data: {
-        [label]: d,
-      },
-    };
-  }
-
-  private generateTree() {
-    // modules: {devices: {id: string, fqa: number}[]}[]
-    return {type: 'tree' as DebugJsonMessageTypes, timestamp: Date.now() - this.startDate, data: Object.keys(this.parameters).reduce<{[key: string]: number[]}[]>((acc, label, idx) => { acc[0][label] = [idx]; return acc; }, [{}])};
   }
 }

@@ -103,8 +103,9 @@ const linkerEvaluator = (value, evalStr) => {
 };
 
 const SIMULATOR_CONFIG: SimulatorConfig = {
-  'temperature': { min: 20, max: 30, interval: 1000 },
-  'humidity': { min: 30, max: 70, interval: 1500 },
+  'temperature': { type: 'number', value: 25, min: 20, max: 30, interval: 1000, locked: true },
+  'humidity': { type: 'number', value: 50, min: 30, max: 70, interval: 1500, locked: true },
+  'onoff': { type: 'boolean', value: false, interval: 2000, locked: false },
 };
 
 // const DEFAULT_SERIALPORT_STEM = '/dev/ttyACM'; // Linux default

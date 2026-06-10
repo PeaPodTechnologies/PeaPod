@@ -68,6 +68,7 @@ api/*.js
 logs/*.txt
 
 server.mjs
+serialtest.mjs
 
 sample.jpg
 

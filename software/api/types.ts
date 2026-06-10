@@ -17,7 +17,9 @@ export type DebugJsonMessage = {
   data?: {
     [key: string]: boolean | number | number[] | string; // I.e. {"temperature": 25.0, "button0": true, "nav": "~/mydir/"}
     // We'll handle floating-point precision at deserialization time, create a class DebugJsonNumber
-  };
+  } | {
+    [key: string]: boolean | number | number[] | string;
+  }[];
   units?: {
     [key: string]: string; // I.e. "temperature": "°C"
   };
