@@ -37,7 +37,11 @@
 
         \vspace{0.5cm}
 
-        Outlining the Requirements for a Design Submission to the \\NASA/CSA Deep Space Food Challenge
+        A Food Production System Design Submission to the NASA/CSA Deep Space Food Challenge
+
+        and
+
+        An Open-Source, Modular Research Platform for Generating Reproducible Biological Datasets
 
         \vfill
         \input{../tex/documentation/Namecard.tex}
@@ -45,7 +49,7 @@
 
         Revision 1.0\\
         PeaPod Technologies Inc.\\
-        July 12th, 2022
+        June 10th, 2026
 
     \end{center}
 \end{titlepage}
@@ -61,14 +65,20 @@
 \subsection{Purpose}
 \label{sec:purpose}
 
-The purpose of this document is to outline both the \textit{categorical} requirements (Section \ref{sec:requirements}) for a design submission to the NASA/CSA Deep Space Food Challenge (DSFC) \cite{dsfc}, as well as the \textit{scoped} requirements (Section \ref{sec:scope}) for the specific design being proposed by PeaPod Technologies Inc.
+\hspace{24pt} The purpose of this document is to outline both the \textit{categorical} requirements (Section \ref{sec:requirements}) for all food production system design submissions to the NASA/CSA Deep Space Food Challenge (DSFC) \cite{dsfc}, as well as the \textit{scoped} requirements (Section \ref{sec:scope}) for the specific open-source, modular design being proposed by PeaPod Technologies Inc.: \textbf{PeaPod}.
 
-The goal of the DSFC is for participants to "Create novel food production technologies or systems that require \uline{minimal inputs} and \uline{maximize safe, nutritious, and palatable food outputs} for \uline{long-duration space missions}, and which have potential to benefit people on Earth." \cite{applicantguide}
+\hspace{24pt} The goal of the DSFC is for participants to "Create novel food production technologies or systems that require \uline{minimal inputs} and \uline{maximize safe, nutritious, and palatable food outputs} for \uline{long-duration space missions}, and which have potential to benefit people on Earth." \cite{applicantguide}
+
+\hspace{24pt} The mission of PeaPod is to design, develop, test, and deploy an open-source, modular framework and formal control specification for automated controlled-environment systems that generate reproducible biological datasets while producing food.
+
+\hspace{24pt} The vision of PeaPod is to become the de-facto standard for biological dataset generation, controlled environment research and development, and food production systems for both terrestrial and space applications.
+
+\clearpage
 
 \subsection{Design Paradigm}
 \label{sec:structure}
 
-\input{../../../../docs/tex/documentation/DesignParadigm.tex}
+\input{../tex/documentation/DesignParadigm.tex}
 
 \clearpage
 \subsection{Scope and Justification}
@@ -77,28 +87,29 @@ The goal of the DSFC is for participants to "Create novel food production techno
 The three underlined criteria in the challenge statement in Section \ref{sec:purpose} have helped to define the scope of the design:
 \begin{enumerate}[label=SC\arabic*., ref=SC\arabic*]
     \item \label{sc:1} The longer the duration of the space mission (up to and including interplanetary travel and permanent colonization) the lesser the feasibility of resupply\footnote{Minimal resupply is also listed as a constraint directly in the challenge details \cite{applicantguide,dsfc-phase2}.}. The lesser the feasibility of resupply, and the more minimal the input (i.e. launch mass), the less food will be able to be packed at launch, thus the more the design will need to generate \uline{net-new food grown on-board during the mission}.
-    \item \label{sc:2} The minimization of inputs (launch mass), the minimization of other negative criteria such as growth time, design complexity, etc. and the maximization of safety (pathogenic and otherwise) means that the design should focus on \uline{food-producing plant growth}\footnote{This is primarily an issue in-transit; for colonization, non-plant food production systems should definitely be considered.}. Animal food production has been deemed not feasible, and is outside the scope of this design
+    \item \label{sc:2} The minimization of inputs (launch mass), the minimization of other negative criteria such as growth time, design complexity, etc. and the maximization of safety (pathogenic and otherwise) means that food animal growth has been deemed not feasible, and is outside the scope of this document. Thus, the design should focus on \uline{food-producing plant growth}\footnote{This is primarily an issue in-transit; for colonization, non-plant food production systems should definitely be considered.}.
     \item \label{sc:3} Spacecraft are not good plant growth systems (lack of water access, proper lighting and nutrition, etc.), thus the design should encompass a \uline{plant growth environment} that:
-        \begin{enumerate}[label=SC3\alph*., ref=SC3\alph*]
-            \item \label{sc:3a} provides of all necessary \uline{plant growth inputs} (water, nutrients, lighting, etc.);
-            \item \label{sc:3b} contains or otherwise encompasses a viable \uline{plant growth environment} (temperature, humidity, gas concentrations, airflow, etc.);
-        \item \label{sc:3c} has control over all of both a) and b), collectively referred to as the \uline{environment parameters}, producing suitable \uline{environment conditions}.
-        \end{enumerate}
-    \item \label{sc:4} To maximize safety (of both plants and the crew) and redundancy, and to minimize inputs (required human interaction), the environment should be \uline{automated and isolated} from the spacecraft cabin with regards to all environment conditions (thermal insulation, water-tight, etc.) unless beneficial and efficient (i.e. no loss).
-\clearpage
-    \item \label{sc:5} A greater degree of nutrition and palatability of food outputs implies a greater variety of plants (incl. leafy greens, fruits, root vegetables, legumes, etc.). As such, the food production system should be able to \uline{generate a continuous and wide variety of environmental conditions} such that virtually \uline{any food plants} could be grown within.
-    \item \label{sc:6} The demand for high plant variety, automation, parameter control, efficiency/input minimization (water, nutrients, footprint per plant), etc. implies the use of an \uline{aeroponic plant watering method} \cite{spinoff}.
-    \item \label{sc:7} Output nutrient and yield maximization in a controlled-environment implies \uline{environment parameter optimization}. This is best accomplished via data collection of both plant-growth and environment metrics and cross-growth-environment networking (data versatility, sharing, and machine intelligence).
+    \begin{enumerate}[label=SC3\alph*., ref=SC3\alph*]
+        \item \label{sc:3a} provides of all necessary \uline{plant growth inputs} (water, nutrients, lighting, etc.);
+        \item \label{sc:3b} contains or otherwise encompasses a viable \uline{plant growth environment} (temperature, humidity, gas concentrations, airflow, etc.);
+        \item \label{sc:3c} has control over all \uline{parameters} of both a) and b) (environment parameters); these together are the (plant growth) \uline{environment conditions}.
+    \end{enumerate}
+    \item \label{sc:4} To maximize safety (of both the plants and the crew) and redundancy, and to minimize inputs (required human interaction), the environment should be \uline{automated and isolated} from the spacecraft cabin with regards to all environment conditions (thermally, water-tight, etc.) unless beneficial and efficient (i.e no loss).
+\newpage
+    \item \label{sc:5} A greater degree of nutrition and palatability of food outputs implies a greater variety of plants (incl. leafy greens, fruits, root vegetables, legumes, etc.); as such the food production system should be able to \uline{generate a continuous and wide variety of environmental conditions} such that \uline{any food plants} could be grown within.
+    \item \label{sc:6} The demand for high plant variety, automation, parameter control, efficiency/input minimization (water, nutrients, footprint per plant), etc. implies the use of an \uline{aeroponic plant growth method} \cite{spinoff}.
+    \item \label{sc:7} Output nutrient and yield maximization in a controlled-environment implies \uline{environment parameter optimization}. This is best accomplished via \uline{reproducible dataset generation} of both plant-growth and environment metrics and cross-growth-environment networking (data versatility, sharing, and machine intelligence).
     \item \label{sc:8} A solution focussed on palatability (focus on enjoyable plants) and variety (adaptability to many distinct environment requirements) is not suited to high caloric output. Most plants are simply not capable of producing the required daily caloric output in the space allotted (Section \ref{sec:constraints}). As such, the scope of our solution places \uline{far greater importance on output palatability and variety} (both culinary and nutritional) as well as production of critical micronutrients as opposed to pure caloric yield\footnote{The solution "need not meet the full nutritional requirements of future crews, but can contribute significantly to, and integrate with, a comprehensive food system." \cite{applicantguide}}.
+    \item \label{sc:9} Because mission-level reproducibility depends on controllable and transferable system behavior, the scope must define a \uline{formal environment-control specification} describing parameter interfaces, execution behavior, and validation criteria so environment programs can be reproduced across compatible growth systems.
+    \item \label{sc:10} Because long-duration food production systems will need to evolve between mission, operator, and hardware constraints, minimizing redesign effort and single-vendor dependency while maximizing in-situ repairability and adaptability requires an \uline{open-source and modular implementation model} in which subsystem interfaces are explicit, components are replaceable, and improvements can be validated and integrated by the broader community without re-architecting the full system.
 \end{enumerate}
-
-DSFC Phase 1 and 2 development, testing, and assessment is scoped to "Earth-like" operating conditions \cite{applicantguide,dsfc-phase2}:
-\begin{itemize}
-    \item Gravity (9.81 m/s${}^2$);
-    \item Ambient atmospheric pressure (101,325 Pa);
-    \item Ambient atmospheric temperature (22 °C);
-    \item Ambient atmospheric humidity (50 \%RH);
-\end{itemize}
+% DSFC Phase 1 development, testing, and assessment is scoped to terrestrial/Earth-like operational constraints \cite{applicantguide,dsfc-phase2}:
+% \begin{itemize}
+%     \item Gravity (9.81 m/s${}^2$);
+%     \item Ambient atmospheric pressure (101,325 Pa);
+%     \item Ambient atmospheric temperature (22 °C);
+%     \item Ambient atmospheric humidity (50 \%RH);
+% \end{itemize}
 
 \clearpage
 \subsection{Definitions}
@@ -106,12 +117,11 @@ DSFC Phase 1 and 2 development, testing, and assessment is scoped to "Earth-like
 
 A number of useful definitions have emerged from the above scoping:
 \begin{enumerate}
-    \item \textbf{(Plant Growth) Environment} - The holistic environment with which the plant interacts over the course of its growth.
-    \item \textbf{(Plant Growth) Environment Parameters} - The independent quantitative parameters defining the Environment (i.e. air temperature, CO${}_2$ concentration).
-    \item \textbf{(Plant Growth) Environment Conditions} - The collection of Environment Parameter values at any given time, or, the environment as experienced by the plant.
-    \item \textbf{(Plant) Growth System} - Includes the physical enclosure isolating the plant and Environment from the surroundings, as well as any infrastructure required to control the Environment Parameters and generate the Environment by maintaining Environment Conditions. Satisfies all requirements in this document.
-    \item \textbf{(Plant) Growth Metrics} - The quantitative measures of plant growth, including yield mass, growth rate, compound concentrations (i.e. nutrients, flavour compounds), caloric density, etc.
-    \item \textbf{(Environment) Schedule} - An instruction set outlining the ideal values for each Environment Parameter to be enacted by the Plant Growth System over the course of a growth cycle.
+    \item \textbf{(Plant Growth) Environment}: The physical space and time-varying holistic state with which the plant interacts over the course of its growth.
+    \item \textbf{(Plant Growth) Environment Parameters}: The independently-addressable controlled quantitative axes producing the Environment.
+    \item \textbf{(Plant) Growth System}: Includes the physical enclosure isolating the plant and Environment from the surroundings, as well as any infrastructure required to implement the Environment Parameters and generate the Environment.
+    \item \textbf{(Plant) Growth/Phenotype Metrics}: The quantitative measures of plant expression and growth in a given Environment; e.g. yield and plant mass, leaf count and canopy area, growth rate, compound concentrations (i.e. nutrients, flavour compounds), caloric density.
+    \item \textbf{(Environment) Program}: A set of time-series Environment Parameter values implemented by the Plant Growth System to generate a particular Environment. May be optimized to produce a particular Environment or Growth Metric outcome.
 \end{enumerate}
 
 \clearpage
@@ -121,9 +131,9 @@ A number of useful definitions have emerged from the above scoping:
 \subsection{Opportunity}
 \label{sec:opportunity}
 
-Design an automated and isolated aeroponic plant growth system for the Deep Space Food Challenge \cite{dsfc}, able to generate any environment from a combination of independent environment parameters, with both environment and plant growth metric data collection.
+Design, develop, and test an automated and isolated aeroponic plant growth system capable of producing a controlled environment from a combination of independent environment parameters while generating reproducible linked environment and plant phenotype metric datasets.
 
-\subsection{Challenge Requirements}
+\subsection{Requirements}
 \label{sec:requirements}
 
 The following are the overall challenge requirements compiled from DSFC Applicant Guide details \cite{applicantguide}, the DSFC Phase 2 Instructions \cite{dsfc-phase2}, and an excerpt from NASA-STD-3001: Section 7.1 Food and Nutrition \cite{nutrition}.
@@ -143,14 +153,34 @@ The following are the overall challenge requirements compiled from DSFC Applican
 \end{enumerate}
 
 \clearpage
+
+The following are additional requirements derived from the scope and definitions in Sections \ref{sec:scope} and \ref{sec:definitions}:
+
+\begin{enumerate}[label=R\arabic*., ref=R\arabic*]
+    \setcounter{enumi}{5}
+    \item \label{r:6} \textbf{Must} generate linked reproducible time-series datasets of environment parameters and plant phenotype metrics compatible with cross-environment and cross-growth system analysis, optimization, and machine intelligence applications;
+    \item \label{r:7} \textbf{Must} have a formal environment control specification describing parameter interfaces, execution behavior, and validation criteria for reproducible environment program implementation across compatible growth systems;
+    \item \label{r:8} \textbf{Must} be designed with an open-source and modular implementation model in which subsystem interfaces are explicit, components are replaceable, and improvements can be validated and integrated by the broader community without re-architecting the full system;
+    % \begin{enumerate}[label=(\alph*), ref=R6\alph*]
+    %     \item 
+    % \end{enumerate}
+\end{enumerate}
+
+
+% Change line spacing for the more list-heavy sections
+\setstretch{1}
 \subsection{Stakeholders}
 \label{sec:stakeholders}
 \setstretch{1} % Change line spacing for the more list-heavy sections
 
 \begin{enumerate}[label=S\arabic*., ref=S\arabic*]
-    \item \label{s:1} Crew - Time requirement; output safety, palatability, quality
-    \item \label{s:2} NASA/CSA Stakeholders - Feasability; operational safety; input limitation, optimization
+    \item \label{s:1} Food Product Consumers: Palatability, output
+    \item \label{s:2} NASA/CSA Stakeholders: Feasability, input, optimization
+    \item \label{s:3} Open-Source Community: Modularity, reproducibility, dataset generation
+    \item \label{s:4} Operational Crew: Safety, maintainability, adaptability
 \end{enumerate}
+
+\clearpage
 
 \subsection{Objectives}
 \label{sec:objectives}
@@ -158,11 +188,13 @@ The following are the overall challenge requirements compiled from DSFC Applican
 % High-Level
 \begin{multicols}{2}[\subsubsection{High-Level}\label{sec:hlos}]
     \begin{enumerate}[label=HL\arabic*., ref=HL\arabic*]
-        \item \label{hl:output} Food Output Safety, Suitability                         \\      (\ref{s:1}, \ref{s:2}, \ref{r:1}, \ref{r:1a}-\ref{r:1d}, \ref{r:2})
-        \item \label{hl:process} Process Safety, Stability, Reliability                 \\      (\ref{s:1}, \ref{s:2}, \ref{r:1b}) \\
-        \item \label{hl:environment} Environment Control, Automation, and Optimization  \hfill  (\ref{s:2}, \ref{r:1b}, \ref{r:1d}, \ref{r:2}, \ref{r:3}, \ref{r:4})
-        \item \label{hl:efficiency} Time and Resource Efficiency                        \\      (\ref{s:1}, \ref{s:2}, \ref{r:1d}, \ref{r:2}, \ref{r:3})
-        \item \label{hl:feasibility} Feasibility                                        \hfill  (\ref{s:2}, \ref{r:2}, \ref{r:5})
+        \item \label{hl:output} Food Output Safety, Suitability \hfill (\ref{s:1}, \ref{r:1}, \ref{r:1a}, \ref{r:1c}, \ref{r:1d}, \ref{r:2})
+        \item \label{hl:safety} Process Safety, Stability, Reliability \hfill (\ref{s:1}, \ref{s:2}, \ref{s:3}, \ref{r:1b})
+        \item \label{hl:environment} Environment Control, Automation, and Optimization \hfill (\ref{s:2}, \ref{s:4}, \ref{r:1b}, \ref{r:1d}, \ref{r:2}, \ref{r:3}, \ref{r:4}, \ref{r:6}, \ref{r:7})
+        \item \label{hl:contamination} Cross-Contamination \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1b}, \ref{r:2})
+        \item \label{hl:modularity} Modularity, Repairability, Adaptability \hfill (\ref{s:1}, \ref{s:2}, \ref{s:3}, \ref{s:4}, \ref{r:8})
+        \item \label{hl:feasability} Feasability \hfill (\ref{s:2}, \ref{r:2}, \ref{r:5})
+        \item \label{hl:efficiency} Time and Resource Efficiency \hfill (\ref{s:1}, \ref{s:2}, \ref{r:1d}, \ref{r:2}, \ref{r:3})
     \end{enumerate}
 \end{multicols}
 
@@ -182,21 +214,37 @@ The following are the overall challenge requirements compiled from DSFC Applican
         \item \label{ll:insulateisolate} Insulation, Isolation              \hfill (\ref{hl:environment}, \ref{hl:output}, \ref{hl:efficiency})
         \item \label{ll:control_aircirculation} Air Circulation Control     \hfill (\ref{hl:environment}, \ref{hl:output})
         \item \label{ll:control_nutrientsolution} Nutrient Solution Control \hfill (\ref{hl:environment})
-        \item \label{ll:control_roottemp} Root-Zone Thermoregulation        \hfill (\ref{hl:environment})
-        \item \label{ll:success} Growth Success                             \hfill (\ref{hl:environment}, \ref{hl:efficiency}, \ref{hl:process})
-        \item \label{ll:automation} Automation                              \hfill (\ref{hl:output}, \ref{hl:efficiency})
-        \item \label{ll:efficiency_energy} Energy Efficiency                \hfill (\ref{hl:efficiency})
-        \item \label{ll:efficiency_water} Water Usage                       \hfill (\ref{hl:efficiency})
-        \item \label{ll:time_growth} Growth Time                            \hfill (\ref{hl:efficiency})
-        \item \label{ll:time} Time-To-Harvest                               \hfill (\ref{hl:efficiency})
-        % By-Product, Process Safety: Pathogenic, Chemical,
-        \item \label{ll:safety_pathogen} Pathogenic Hazard Safety           \hfill (\ref{hl:output}, \ref{hl:process})
-        \item \label{ll:safety_chemical} Chemical Hazard                    \hfill (\ref{hl:output}, \ref{hl:process})
-        \item \label{ll:reliability} Reliability                            \hfill (\ref{hl:process})
-        \item \label{ll:stability_input} Input Stability                    \hfill (\ref{hl:process})
-        \item \label{ll:stability_output} Output Shelf Life                 \hfill (\ref{hl:process})
-        \item \label{ll:cost} Cost                                          \hfill (\ref{hl:feasibility})
-        \item \label{ll:size} Size                                          \hfill (\ref{hl:feasibility})
+        \item \label{ll:control_roottemp} Root-Zone Thermoregulation \hfill (\ref{hl:environment})
+        \item \label{ll:germinationsuccess} Germination Success \hfill (\ref{hl:environment}, \ref{hl:efficiency}, \ref{hl:safety})
+        \item \label{ll:automation} Degree of Automation \hfill (\ref{hl:contamination}, \ref{hl:efficiency})
+        \item \label{ll:efficiency_energy} Energy Efficiency \hfill (\ref{hl:efficiency})
+        \item \label{ll:efficiency_water} Water Usage \hfill (\ref{hl:efficiency})
+        % \item \label{ll:efficiency_plantmatter} Plant Matter Usage \hfill (\ref{hl:efficiency})
+        % \item \label{ll:efficiency_gasexchange} Gas Exchange Incentive \hfill (\ref{hl:efficiency})
+        % \item \label{ll:efficiency_harvest} Number of Harvests \hfill (\ref{hl:efficiency})
+        \item \label{ll:time_germination} Germination Time \hfill (\ref{hl:efficiency})
+        \item \label{ll:time_growth} Growth Time \hfill (\ref{hl:efficiency})
+        \item \label{ll:time_harvest} Time-To-Harvest/-Reharvest \hfill (\ref{hl:efficiency})
+        \item \label{ll:crosscontamination} Potential for Cross-Contamination \hfill (\ref{hl:contamination})
+        \item \label{ll:safety_process} Process Safety \hfill (\ref{hl:safety})
+        \item \label{ll:safety_pathogen} Pathogenic Hazard Safety \hfill (\ref{hl:output}, \ref{hl:safety}, \ref{hl:contamination})
+        \item \label{ll:safety_chemical} Chemical Hazard Safety \hfill (\ref{hl:output}, \ref{hl:safety})
+        \item \label{ll:output_safety} Output Consumption Safety, Shelf-Life \hfill (\ref{hl:output}, \ref{hl:safety}, \ref{hl:contamination})
+        \item \label{ll:reliability} Reliability \hfill (\ref{hl:safety})
+        \item \label{ll:stability_input} Input Stability \hfill (\ref{hl:safety})
+        \item \label{ll:stability_output} Output Shelf Life \hfill (\ref{hl:safety})
+        % \item \label{ll:31} Infrastructure Modularity Support \hfill (\ref{hl:modularity})
+        % \item \label{ll:32} Growth Container Repairability \hfill (\ref{hl:modularity})
+        % \item \label{ll:33} Infrastructure Repairability \hfill (\ref{hl:modularity})
+        % \item \label{ll:35} Design Complexity \hfill (\ref{hl:modularity})
+        % \item \label{ll:36} Tool Speciality and Number \hfill (\ref{hl:modularity})
+        \item \label{ll:cost} Cost \hfill (\ref{hl:feasability})
+        \item \label{ll:size} Size \hfill (\ref{hl:feasability})
+        \item \label{ll:modularity_structural} Structural Modularity, Repairability \hfill (\ref{hl:modularity})
+        \item \label{ll:modularity_subsystem} Subsystem Modularity,  Repairability \hfill (\ref{hl:modularity})
+        \item \label{ll:modularity_automation} Automation Modularity, Repairability \hfill (\ref{hl:modularity})
+        \item \label{ll:documentation} Documentation Completeness \hfill (\ref{hl:modularity})
+        \item \label{ll:reproducibility} Reproducibility \hfill (\ref{hl:modularity}, \ref{hl:environment})
     \end{enumerate}
 \end{multicols}
 
@@ -207,47 +255,89 @@ The following are the overall challenge requirements compiled from DSFC Applican
 
 \begin{tabular}{| @{\makebox[2.4em][c]{\metricrow}} | p{8.7cm} | p{5.9cm} |} 
     \hline
-    \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}
-    {\textbf{Metric}}                                                                                                           & \textbf{Units}                                        \\ \hline
-    Plant Species Capability                    \mlabel{m:plant_variety}            \hfill (\ref{ll:output_variety})            & Y/N (per plant species)                               \\ \hline
-    Palatability of Output                      \mlabel{m:palatability}             \hfill (\ref{ll:output_palatability})       & 1-9 Hedonic (per plant)                               \\ \hline
-    Protein Output                              \mlabel{m:nutrient_protein}         \hfill (\ref{ll:output_nutrients})          & g/kg body mass/crewmember/day                         \\ \hline
-    Protein Output Calories                     \mlabel{m:nutrient_proteincal}      \hfill (\ref{ll:output_nutrients})          & kCal/day/crewmember (\%TDEI)                          \\ \hline
-    Carbohydrate Output Calories                \mlabel{m:nutrient_carbs}           \hfill (\ref{ll:output_nutrients})          & kCal/day/crewmember (\%TDEI)                          \\ \hline
-    Lipid Output Calories                       \mlabel{m:nutrient_fats}            \hfill (\ref{ll:output_nutrients})          & kCal/day/crewmember (\%TDEI)                          \\ \hline
-    $\Omega$-6 Fatty Acid Output                \mlabel{m:nutrient_om6fats}         \hfill (\ref{ll:output_nutrients})          & g/day/crewmember                                      \\ \hline
-    $\Omega$-3 Fatty Acid Output                \mlabel{m:nutrient_om3fats}         \hfill (\ref{ll:output_nutrients})          & g/day/crewmember                                      \\ \hline
-    Saturated Fat Output Calories               \mlabel{m:nutrient_satfats}         \hfill (\ref{ll:output_nutrients})          & kCal/day/crewmember (\%TDEI)                          \\ \hline
-    Trans Fatty Acids Output                    \mlabel{m:nutrient_transfats}       \hfill (\ref{ll:output_nutrients})          & kCal/crewmember (\%TDEI)                              \\ \hline
-    Cholesterol Output                          \mlabel{m:nutrient_cholesterol}     \hfill (\ref{ll:output_nutrients})          & mg/day/crewmember                                     \\ \hline
-    Fiber Output                                \mlabel{m:nutrient_fiber}           \hfill (\ref{ll:output_nutrients})          & g/day/crewmember                                      \\ \hline
-    Caloric Output                              \mlabel{m:output_calories}          \hfill (\ref{ll:output_energy})             & kCal/day/crewmember                                   \\ \hline
-    Air Temperature Control Range               \mlabel{m:airtemp_range}            \hfill (\ref{ll:control_airtemp})           & min, max °C                                           \\ \hline
-    Air Temperature Control Rate                \mlabel{m:airtemp_rate}             \hfill (\ref{ll:control_airtemp})           & $\Delta$°C/sec at each °C                             \\ \hline
-    Air Temperature Control Stability           \mlabel{m:airtemp_stability}        \hfill (\ref{ll:control_airtemp})           & $\pm$°C at each °C                                    \\ \hline
-    Air Humidity Control Range                  \mlabel{m:airhum_range}             \hfill (\ref{ll:control_airhum})            & min, max \%RH                                         \\ \hline
-    Air Humidity Control Rate                   \mlabel{m:airhum_rate}              \hfill (\ref{ll:control_airhum})            & $\Delta$\%RH/sec at each \%RH                         \\ \hline
-    Air Humidity Control Stability              \mlabel{m:airhum_stability}         \hfill (\ref{ll:control_airhum})            & $\pm$\%RH at each \%RH                                \\ \hline
-    CO${}_2$ Supplementation Range              \mlabel{m:co2_range}                \hfill (\ref{ll:control_gas})               & max ppm CO${}_2$                                      \\ \hline
-    CO${}_2$ Concentration Control Rate         \mlabel{m:co2_rate}                 \hfill (\ref{ll:control_gas})               & ppm CO${}_2$/sec at each ppm CO${}_2$                 \\ \hline
-    CO${}_2$ Concentration Control Stability    \mlabel{m:co2_stability}            \hfill (\ref{ll:control_gas})               & $\pm$ppm CO${}_2$ at each ppm CO${}_2$                \\ \hline
-    Light Spectrum Wavelength Range             \mlabel{m:light_waverange}          \hfill (\ref{ll:control_light})             & min, max nm                                           \\ \hline
-    Light Spectrum PAR Match                    \mlabel{m:light_parmatch}           \hfill (\ref{ll:control_light})             & \% (each plant)                                       \\ \hline
-    Light Intensity Control Range               \mlabel{m:lightintensity_range}     \hfill (\ref{ll:control_light})             & min, max $\mu$mol m${}^{-2}$sec${}^{-1}$ at each nm   \\ \hline
-    Light Intensity Control Stability           \mlabel{m:lightintensity_stability} \hfill (\ref{ll:control_light})             & $\pm\mu$mol m${}^{-2}$sec${}^{-1}$ at each nm         \\ \hline
-    Light Loss, Capture by Surfaces             \mlabel{m:light_loss}               \hfill (\ref{ll:insulateisolate})           & \%                                                    \\ \hline
-    Outside Light Penetration                   \mlabel{m:light_isolation}          \hfill (\ref{ll:insulateisolate})           & \%                                                    \\ \hline
-    Heat Loss                                   \mlabel{m:heat_loss}                \hfill (\ref{ll:insulateisolate})           & $\pm$W at each °C                                     \\ \hline
-    Water Loss due to Leaks, Evaporation        \mlabel{m:water_loss}               \hfill (\ref{ll:insulateisolate})           & mL/hr                                                 \\ \hline
-    Internal Circulation Airflow Control Range  \mlabel{m:circulation_range}        \hfill (\ref{ll:control_aircirculation})    & min, max m${}^3$/min                                  \\ \hline
-    Gas Exchange due to Leaks                   \mlabel{m:gas_loss}                 \hfill (\ref{ll:control_aircirculation})    & m${}^3$/min                                           \\ \hline
-    Maximum Intentional Gas Exchange            \mlabel{m:gas_maxrate}              \hfill (\ref{ll:control_aircirculation})    & m${}^3$/min                                           \\ \hline
-    Nutrient Sol'n Delivery Control Range       \mlabel{m:solutionrate_range}       \hfill (\ref{ll:control_nutrientsolution})  & min, max mL/sec                                       \\ \hline
-    Nutrient Sol'n Delivery Control Rate        \mlabel{m:solutionrate_rate}        \hfill (\ref{ll:control_nutrientsolution})  & $\Delta$mL/sec${}^2$ at each mL/sec                   \\ \hline
-    Nutrient Sol'n Delivery Control Stability   \mlabel{m:solutionrate_stability}   \hfill (\ref{ll:control_nutrientsolution})  & $\pm$mL/sec at each mL/sec                            \\ \hline
-    Nutrient Concentrations Control Range       \mlabel{m:nutrient_range}           \hfill (\ref{ll:control_nutrientsolution})  & min, max ppm (each nutrient)                          \\ \hline
-    Nutrient Concentrations Control Rate        \mlabel{m:nutrient_rate}            \hfill (\ref{ll:control_nutrientsolution})  & $\Delta$ppm/sec at each ppm (each nutr.)              \\ \hline
-    Nutrient Concentrations Control Stability   \mlabel{m:nutrient_stability}       \hfill (\ref{ll:control_nutrientsolution})  & $\pm$ppm at each ppm (each nutrient)                  \\ \hline
+    \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \hline
+    Plant Species Capability \mlabel{m:plant_variety} \hfill (\ref{ll:output_variety}) & Y/N (per plant species) \\
+    \hline
+    % TODO: ref hedonic scale
+    Palatability of Output \mlabel{m:palatability} \hfill (\ref{ll:output_palatability}) & 1-9 Hedonic (per plant) \\
+    \hline
+    Protein Output \mlabel{m:nutrient_protein} \hfill (\ref{ll:output_nutrients}) & g/kg body mass/crewmember/day \\
+    \hline
+    Protein Output Calories \mlabel{m:nutrient_proteincal} \hfill (\ref{ll:output_nutrients}) & kCal/day/crewmember (\%TDEI) \\
+    \hline
+    Carbohydrate Output Calories \mlabel{m:nutrient_carbs} \hfill (\ref{ll:output_nutrients}) & kCal/day/crewmember (\%TDEI) \\
+    \hline
+    Lipid Output Calories \mlabel{m:nutrient_fats} \hfill (\ref{ll:output_nutrients}) & kCal/day/crewmember (\%TDEI) \\
+    \hline
+    $\Omega$-6 Fatty Acid Output \mlabel{m:nutrient_om6fats} \hfill (\ref{ll:output_nutrients}) & g/day/crewmember \\
+    \hline
+    $\Omega$-3 Fatty Acid Output \mlabel{m:nutrient_om3fats} \hfill (\ref{ll:output_nutrients}) & g/day/crewmember \\
+    \hline
+    Saturated Fat Output Calories \mlabel{m:nutrient_satfats} \hfill (\ref{ll:output_nutrients}) & kCal/day/crewmember (\%TDEI) \\
+    \hline
+    Trans Fatty Acids Output Calories \mlabel{m:nutrient_transfats} \hfill (\ref{ll:output_nutrients}) & kCal/crewmember (\%TDEI) \\
+    \hline
+    Cholesterol Output \mlabel{m:nutrient_cholesterol} \hfill (\ref{ll:output_nutrients}) & mg/day/crewmember \\
+    \hline
+    Fiber Output \mlabel{m:nutrient_fiber} \hfill (\ref{ll:output_nutrients}) & g/day/crewmember \\
+    \hline
+    % Crew Nutrient Requirement Coverage \mlabel{m:14} \hfill (\ref{ll:output_nutrients}) & \% (best plant combo) \\
+    % \hline
+    Caloric Output \mlabel{m:output_calories} \hfill (\ref{ll:output_energy}) & kCal/day/crewmember \\
+    \hline
+    Leaf-Zone Thermoregulation Range \mlabel{m:airtemp_range} \hfill (\ref{ll:control_airtemp}) & min, max °C \\
+    \hline
+    Leaf-Zone Thermoregulation Rate \mlabel{m:airtemp_rate} \hfill (\ref{ll:control_airtemp}) & $\Delta$°C/sec at each °C \\
+    \hline
+    Leaf-Zone Thermoregulation Stability \mlabel{m:airtemp_stability} \hfill (\ref{ll:control_airtemp}) & $\pm$°C at each °C \\
+    \hline
+    Leaf-Zone Humidity Control Range \mlabel{m:airhum_range} \hfill (\ref{ll:control_airhum}) & min, max \%RH \\
+    \hline
+    Leaf-Zone Humidity Control Rate \mlabel{m:airhum_rate} \hfill (\ref{ll:control_airhum}) & $\Delta$\%RH/sec at each \%RH \\
+    \hline
+    Leaf-Zone Humidity Control Stability \mlabel{m:airhum_stability} \hfill (\ref{ll:control_airhum}) & $\pm$\%RH at each \%RH \\
+    \hline
+    CO${}_2$ Supplementation Range \mlabel{m:co2_range} \hfill (\ref{ll:control_gas}) & max ppm CO${}_2$ \\
+    \hline
+    CO${}_2$ Concentration Control Rate \mlabel{m:co2_rate} \hfill (\ref{ll:control_gas}) & ppm CO${}_2$/sec at each ppm CO${}_2$ \\
+    \hline
+    CO${}_2$ Concentration Control Stability \mlabel{m:co2_stability} \hfill (\ref{ll:control_gas}) & $\pm$ppm CO${}_2$ at each ppm CO${}_2$ \\
+    \hline
+    Light Spectrum Wavelength Range \mlabel{m:light_waverange} \hfill (\ref{ll:control_light}, \ref{ll:crosscontamination}) & min, max nm \\
+    \hline
+    Light Spectrum PAR Match \mlabel{m:light_parmatch} \hfill (\ref{ll:control_light}) & \% (each plant) \\
+    \hline
+    Light Intensity Control Range \mlabel{m:lightintensity_range} \hfill (\ref{ll:control_light}) & min, max $\mu$mol m${}^{-2}$sec${}^{-1}$ per nm \\
+    \hline
+    Light Intensity Control Stability \mlabel{m:lightintensity_stability} \hfill (\ref{ll:control_light}) & $\pm\mu$mol m${}^{-2}$sec${}^{-1}$ per nm \\
+    \hline
+    Light Loss, Capture by Surfaces \mlabel{m:light_loss} \hfill (\ref{ll:insulateisolate}) & \% \\
+    \hline
+    Outside Light Penetration \mlabel{m:light_isolation} \hfill (\ref{ll:insulateisolate}) & \% \\
+    \hline
+    Heat Loss \mlabel{m:heat_loss} \hfill (\ref{ll:insulateisolate}) & $\pm$W at each °C \\
+    \hline
+    Water Loss due to Leaks, Evaporation \mlabel{m:water_loss} \hfill (\ref{ll:insulateisolate}) & mL/hr \\
+    \hline
+    Internal Circulation Airflow Control Range \mlabel{m:circulation_range} \hfill (\ref{ll:control_aircirculation}) & min, max m${}^3$/min \\
+    \hline
+    Gas Exchange due to Leaks \mlabel{m:gas_loss} \hfill (\ref{ll:control_aircirculation}) & m${}^3$/min \\
+    \hline
+    Maximum Intentional Gas Exchange \mlabel{m:gas_maxrate} \hfill (\ref{ll:control_aircirculation}) & m${}^3$/min \\
+    \hline
+    Nutrient Sol'n Delivery Control Range \mlabel{m:solutionrate_range} \hfill (\ref{ll:control_nutrientsolution}) & min, max mL/sec \\
+    \hline
+    Nutrient Sol'n Delivery Control Rate \mlabel{m:solutionrate_rate} \hfill (\ref{ll:control_nutrientsolution}) & $\Delta$mL/sec${}^2$ at each mL/sec  \\
+    \hline
+    Nutrient Sol'n Delivery Control Stability \mlabel{m:solutionrate_stability} \hfill (\ref{ll:control_nutrientsolution}) & $\pm$mL/sec at each mL/sec \\
+    \hline
+    Nutrient Concentrations Control Range \mlabel{m:nutrient_range} \hfill (\ref{ll:control_nutrientsolution}) & min, max ppm (each nutrient) \\
+    \hline
+    Nutrient Concentrations Control Rate \mlabel{m:nutrient_rate} \hfill (\ref{ll:control_nutrientsolution}) & $\Delta$ppm/sec at each ppm (each nutr.)  \\
+    \hline
+    Nutrient Concentrations Control Stability \mlabel{m:nutrient_stability} \hfill (\ref{ll:control_nutrientsolution}) & $\pm$ppm at each ppm (each nutrient) \\
+    \hline
 \end{tabular}
 \clearpage
 
@@ -256,38 +346,150 @@ The following are the overall challenge requirements compiled from DSFC Applican
 
 \begin{tabular}{| @{\makebox[2.4em][c]{\metricrow}} | p{9.45cm} | p{5.1cm} |} 
     \hline
-    \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}
-    {\textbf{Metric}}                                                                                                               & \textbf{Units}        \\ \hline
-    Nutrient Sol'n Temp. Control Range          \mlabel{m:solutiontemp_range}           \hfill (\ref{ll:control_roottemp})          & min, max °C           \\ \hline
-    Nutrient Sol'n Temp. Control Rate           \mlabel{m:solutiontemp_rate}            \hfill (\ref{ll:control_roottemp})          & °C/sec at each °C     \\ \hline
-    Nutrient Sol'n Temp Control Stability       \mlabel{m:solutiontemp_stability}       \hfill (\ref{ll:control_roottemp})          & $\pm$°C at each °C    \\ \hline
-    Germination Success Rate                    \mlabel{m:germinationsuccess}           \hfill (\ref{ll:success})                   & \%                    \\ \hline
-    Time Requirement - Maintenance              \mlabel{m:time_maintenance}             \hfill (\ref{ll:automation})                & hrs/week              \\ \hline
-    Time Requirement - Setup                    \mlabel{m:time_setup}                   \hfill (\ref{ll:automation})                & hrs                   \\ \hline
-    Energy Efficiency - Power vs. kCal          \mlabel{m:efficiency_energy}            \hfill (\ref{ll:efficiency_energy})         & \%                    \\ \hline
-    Necessary Water Waste per Day               \mlabel{m:efficiency_water}             \hfill (\ref{ll:efficiency_water})          & L/day                 \\ \hline
-    Initial Water Requirement                   \mlabel{m:water_initial}                \hfill (\ref{ll:efficiency_water})          & L                     \\ \hline
-    Reharvest Period - Fruiting Plants          \mlabel{m:time_reharvest}               \hfill (\ref{ll:time})                      & days (each plant)     \\ \hline
-    Germination Time                            \mlabel{m:time}                         \hfill (\ref{ll:time})                      & days (each plant)     \\ \hline
-    Time to Harvest                             \mlabel{m:time}                         \hfill (\ref{ll:time_growth})               & days (each plant)     \\ \hline
-    Chemical Hazard - System Materials          \mlabel{m:hazard_chemical_materials}    \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
-    Chemical Hazard - System Inputs             \mlabel{m:hazard_chemical_inputs}       \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
-    Chemical Hazard - System By-Products        \mlabel{m:hazard_chemical_byproducts}   \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
-    Chemical Hazard - Food Outputs              \mlabel{m:hazard_chemical_outputs}      \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
-    Chemical Hazard - Process                   \mlabel{m:hazard_chemical_process}      \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
-    Pathogen Hazard - System Materials          \mlabel{m:hazard_pathogen_materials}    \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
-    Pathogen Hazard - System Inputs             \mlabel{m:hazard_pathogen_inputs}       \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
-    Pathogen Hazard - System By-Products        \mlabel{m:hazard_pathogen_byproducts}   \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
-    Pathogen Hazard - Food Outputs              \mlabel{m:hazard_pathogen_outputs}      \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
-    Pathogen Hazard - Process                   \mlabel{m:hazard_pathogen_process}      \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
-    Loss of Functionality Over 3 Years          \mlabel{m:longevity}                    \hfill (\ref{ll:reliability})               & \%                    \\ \hline
-    Input Lifetime while Safe, Useful           \mlabel{m:shelflife_input}              \hfill (\ref{ll:stability_input})           & Days                  \\ \hline
-    Output Shelf Life while Safe, Quality       \mlabel{m:shelflife_output}             \hfill (\ref{ll:stability_output})          & Days                  \\ \hline
-    Cost                                        \mlabel{m:cost}                         \hfill (\ref{ll:cost})                      & CAD                   \\ \hline
-    Outer Dimensions                            \mlabel{m:dimensions}                   \hfill (\ref{ll:size})                      & m (W, D, H)           \\ \hline
-    Outer Volume                                \mlabel{m:volume}                       \hfill (\ref{ll:size})                      & m${}^3$               \\ \hline
-    Power Consumption                           \mlabel{m:power}                        \hfill (\ref{ll:size})                      & W                     \\ \hline
-    Mass                                        \mlabel{m:mass}                         \hfill (\ref{ll:size})                      & kg                    \\ \hline
+    \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \hline
+    Nutrient Sol'n Temp. Control Range \mlabel{m:solutiontemp_range} \hfill (\ref{ll:control_roottemp}) & min, max °C \\
+    \hline
+    Nutrient Sol'n Temp. Control Rate \mlabel{m:solutiontemp_rate} \hfill (\ref{ll:control_roottemp}) & °C/sec at each °C  \\
+    \hline
+    Nutrient Sol'n Temp. Control Stability \mlabel{m:solutiontemp_stability} \hfill (\ref{ll:control_roottemp}) & $\pm$°C at each °C  \\
+    \hline
+    Germination Success Rate \mlabel{m:germinationsuccess} \hfill (\ref{ll:germinationsuccess}) & \% \\
+    \hline
+    Maintenance Time \mlabel{m:time_maintenance} \hfill (\ref{ll:automation}) & hrs/week \\
+    \hline
+    Setup Time \mlabel{m:time_setup} \hfill (\ref{ll:automation}) & hrs \\
+    \hline
+    Energy Efficiency \mlabel{m:efficiency_energy} \hfill (\ref{ll:efficiency_energy}) & \% (kCal per kWh) \\
+    \hline
+    Necessary Water Waste per Day \mlabel{m:efficiency_water} \hfill (\ref{ll:efficiency_water}) & L/day \\
+    \hline
+    % Water Recycling from Spacecraft Systems \mlabel{m:50} \hfill (\ref{ll:efficiency_water}) & L/day \\
+    % \hline
+    Initial Water Requirement \mlabel{m:water_initial} \hfill (\ref{ll:efficiency_water}) & L \\
+    \hline
+    % Plant Matter Usage \mlabel{m:52} \hfill (\ref{ll:efficiency_plantmatter}) & \% \\
+    % \hline
+    % CO${}_2$ Capture - Fraction of Typical Reclaimer Consumption \mlabel{m:53} \hfill (\ref{ll:efficiency_gasexchange}) & \% \\
+    % \hline
+    % O${}_2$ Production - Fraction of Typical Reclaimer Production \mlabel{m:54} \hfill (\ref{ll:efficiency_gasexchange}) & \% \\
+    % \hline
+    % Number of Harvests per Planting \mlabel{m:55} \hfill (\ref{ll:efficiency_harvest}) & \# (each plant)\\
+    % \hline
+    Reharvest Period \mlabel{m:time_reharvest} \hfill (\ref{ll:time_harvest}) & days (per species)  \\
+    \hline
+    Germination Time \mlabel{m:time_germination} \hfill (\ref{ll:time_germination}) & hours (per species) \\
+    \hline
+    Time to Harvest \mlabel{m:time_harvest} \hfill (\ref{ll:time_growth}) & days (per species) \\
+    \hline
+    Potential for Germination Contamination \mlabel{m:contamination_germination} \hfill (\ref{ll:crosscontamination}) & \% (each event)\\
+    \hline 
+    Potential for Planting Contamination \mlabel{m:contamination_planting} \hfill (\ref{ll:crosscontamination}) & \% (each event)\\
+    \hline
+    Potential for Harvest Contamination \mlabel{m:contamination_harvest} \hfill (\ref{ll:crosscontamination}) & \% (each event)\\
+    \hline
+    Use of Hazardous Compounds \mlabel{m:hazards_compounds} \hfill (\ref{ll:safety_process}) & Y/N\\
+    \hline
+    Cleaning Hazards \mlabel{m:hazards_cleaning} \hfill (\ref{ll:safety_process}) & Y/N \\
+    \hline
+    Physical, Chemical, Bio Hazards \mlabel{m:hazards_other} \hfill (\ref{ll:safety_process}) & Y/N \\
+    \hline
+    Consumption Safety \mlabel{m:safety_consumption} \hfill (\ref{ll:output_safety}) & \% \\
+    \hline
+    % Chemical Hazard - System Materials          \mlabel{m:hazard_chemical_materials}    \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    % Chemical Hazard - System Inputs             \mlabel{m:hazard_chemical_inputs}       \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    % Chemical Hazard - System By-Products        \mlabel{m:hazard_chemical_byproducts}   \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    % Chemical Hazard - Food Outputs              \mlabel{m:hazard_chemical_outputs}      \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    % Chemical Hazard - Process                   \mlabel{m:hazard_chemical_process}      \hfill (\ref{ll:safety_chemical})           & Controlled? Y/N       \\ \hline
+    % Pathogen Hazard - System Materials          \mlabel{m:hazard_pathogen_materials}    \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    % Pathogen Hazard - System Inputs             \mlabel{m:hazard_pathogen_inputs}       \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    % Pathogen Hazard - System By-Products        \mlabel{m:hazard_pathogen_byproducts}   \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    % Pathogen Hazard - Food Outputs              \mlabel{m:hazard_pathogen_outputs}      \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    % Pathogen Hazard - Process                   \mlabel{m:hazard_pathogen_process}      \hfill (\ref{ll:safety_pathogen})           & Controlled? Y/N       \\ \hline
+    Loss of Functionality Over 3 Years\mlabel{m:longevity} \hfill (\ref{ll:reliability}) & \% \\
+    \hline
+    Input Lifetime while Safe, Useful \mlabel{m:shelflife_input} \hfill (\ref{ll:stability_input}) & days \\
+    \hline
+    Output Shelf Life while Safe, Quality \mlabel{m:shelflife_output} \hfill (\ref{ll:stability_output}) & days \\
+    \hline
+    % Infrastructure Failure Notification? \mlabel{m:69} \hfill (\ref{ll:29}) & Y/N \\
+    % \hline
+    % Independent Plant Growth Environments? \mlabel{m:70} \hfill (\ref{ll:30}) & Y/N \\
+    % \hline
+    % Support for N+1 Plant Growth Environments? \mlabel{m:71} \hfill (\ref{ll:31}) & Y/N \\
+    % \hline
+    % Lighting System Swappable? \mlabel{m:72} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Heating/Cooling System(s) Swappable? \mlabel{m:73} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Water Delivery System(s) Swappable? \mlabel{m:74} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Lighting System Swappable? \mlabel{m:75} \hfill (\ref{ll:32}) & Y/N \\
+    % \hline
+    % Computer Subsystems Swappable? \mlabel{m:76} \hfill (\ref{ll:33}) & Y/N \\
+    % \hline
+    % \hline
+    % \multicolumn{1}{| @{\makebox[2em][l]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    % \hline
+    % Number of New Tools Required \mlabel{m:82} \hfill (\ref{ll:36}) & \# \\
+    % \hline
+    Cost \mlabel{m:cost} \hfill (\ref{ll:cost}) & CAD \\
+    \hline
+    Outer Dimensions \mlabel{m:dimensions} \hfill (\ref{ll:size}) & m (W, D, H) \\
+    \hline
+    Outer Volume \mlabel{m:volume} \hfill (\ref{ll:size}) & m${}^3$ \\
+    \hline
+    Power Consumption \mlabel{m:power} \hfill (\ref{ll:size}) & W \\
+    \hline
+    Mass \mlabel{m:mass} \hfill (\ref{ll:size}) & kg \\
+    \hline
+    Structural Member Replaceability \mlabel{m:structural_replaceability} \hfill (\ref{ll:modularity_structural}) & Self-Reported \\
+    \hline
+    Structural Extensibility \mlabel{m:structural_extensibility} \hfill (\ref{ll:modularity_structural}) & Y/N \\
+    \hline
+    Aeroponic Component Replaceability \mlabel{m:aeroponic_replaceability} \hfill (\ref{ll:modularity_subsystem}) & Self-Reported \\
+    \hline
+    Aeroponic Subsystem Extensibility \mlabel{m:aeroponic_extensibility} \hfill (\ref{ll:modularity_subsystem}) & Y/N \\
+    \hline
+    Leaf-Zone Thermoregulation Component Replaceability \mlabel{m:thermoregulation_replaceability} \hfill (\ref{ll:modularity_subsystem}) & Self-Reported \\
+    \hline
+    Leaf-Zone Thermoregulation Subsystem Extensibility \mlabel{m:thermoregulation_extensibility} \hfill (\ref{ll:modularity_subsystem}) & Y/N \\
+    \hline
+    Leaf-Zone Humidification Component Replaceability \mlabel{m:humidification_replaceability} \hfill (\ref{ll:modularity_subsystem}) & Self-Reported \\
+    \hline
+    Leaf-Zone Humidification Subsystem Extensibility \mlabel{m:humidification_extensibility} \hfill (\ref{ll:modularity_subsystem}) & Y/N \\
+    \hline
+\end{tabular}
+
+\clearpage
+
+\textbf{\large{2.5 \ \ Metrics (Cont'd)}}
+\normalsize
+
+\begin{tabular}{| @{\makebox[2.4em][c]{\metricrow}} | p{9.45cm} | p{5.1cm} |} 
+    \hline
+    \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \hline
+    Leaf-Zone Dehumidification Component Replaceability \mlabel{m:dehumidification_replaceability} \hfill (\ref{ll:modularity_subsystem}) & Self-Reported \\
+    \hline
+    Leaf-Zone Dehumidification Subsystem Extensibility \mlabel{m:dehumidification_extensibility} \hfill (\ref{ll:modularity_subsystem}) & Y/N \\
+    \hline
+    Gas Control Component Replaceability \mlabel{m:gascontrol_replaceability} \hfill (\ref{ll:modularity_subsystem}) & Self-Reported \\
+    \hline
+    Lighting Component Replaceability \mlabel{m:lighting_replaceability} \hfill (\ref{ll:modularity_subsystem}) & Self-Reported \\
+    \hline
+    Lighting Subsystem Extensibility \mlabel{m:lighting_extensibility} \hfill (\ref{ll:modularity_subsystem}) & Y/N \\
+    \hline
+    Fabrication Procedures, Tools, and Materials Documentation \mlabel{m:documentation_fabrication} \hfill (\ref{ll:documentation}) & Y/N \\
+    \hline
+    Assembly Procedures, Tools, and Materials Documentation \mlabel{m:documentation_assembly} \hfill (\ref{ll:documentation}) & Y/N \\
+    \hline
+    Repair Procedures, Tools, and Materials Documentation \mlabel{m:documentation_repair} \hfill (\ref{ll:documentation}) & Y/N \\
+    \hline
+    Total Fabrication, Assembly, and Startup Time \mlabel{m:assembly_time} \hfill (\ref{ll:reproducibility}) & min \\
+    \hline
+    Total Number of Tools Required \mlabel{m:assembly_tools} \hfill (\ref{ll:reproducibility}) & \# \\
+    \hline 
 \end{tabular}
 
 \subsection{Constraints}
