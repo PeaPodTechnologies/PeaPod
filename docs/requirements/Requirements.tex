@@ -253,6 +253,8 @@ The following are additional requirements derived from the scope and definitions
 \subsection{Metrics}
 \label{sec:metrics}
 
+\renewcommand{\arraystretch}{0.9} % Adjust row height
+
 \begin{tabular}{| @{\makebox[2.4em][c]{\metricrow}} | p{8.7cm} | p{5.9cm} |} 
     \hline
     \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
@@ -492,6 +494,8 @@ The following are additional requirements derived from the scope and definitions
     \hline 
 \end{tabular}
 
+\clearpage
+
 \subsection{Constraints}
 \label{sec:constraints}
 
@@ -517,27 +521,29 @@ The following are additional requirements derived from the scope and definitions
     \mref{m:lightintensity_range}       & Min = 0, Max $\ge$ typical horticulture                           \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
     \mref{m:circulation_range}          & Min = 0 m${}^3$/min, Max $\ge$ 2 m${}^3$/min                      \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline
     \mref{m:solutionrate_range}         & Min = 0, Max $\ge$ max plant requirement                          \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
-    \mref{m:solutiontemp_range}         & Min < 10°C, Max > 25°C                                            \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
     \mref{m:nutrient_range}             & Min = 0, Max $\ge$ max plant requirement                          \hfill (\ref{sc:5}, \ref{sc:7})                         \\ \hline % TODO: Source?
+    \mref{m:solutiontemp_range}         & Min < 10°C, Max > 25°C                                            \hfill (\ref{sc:5})                                     \\ \hline % TODO: Source?
     \mref{m:time_maintenance}           & 0.5 hrs/week                                                      \hfill \cite{dsfc-phase2}                               \\ \hline
     \mref{m:efficiency_water}           & $\le$4L/day                                                       \hfill \cite{dsfc-phase2}                               \\ \hline
     \mref{m:water_initial}              & $\le$80L                                                          \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_chemical_materials}  & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_chemical_inputs}     & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_chemical_byproducts} & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_chemical_outputs}    & Controlled                                                        \hfill (\ref{r:1b}), \cite{dsfc-phase2}                 \\ \hline
-    \mref{m:hazard_chemical_process}    & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_pathogen_materials}  & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_pathogen_inputs}     & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_pathogen_byproducts} & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
-    \mref{m:hazard_pathogen_outputs}    & Controlled                                                        \hfill (\ref{r:1b}), \cite{dsfc-phase2}                 \\ \hline
-    \mref{m:hazard_pathogen_process}    & Controlled                                                        \hfill \cite{dsfc-phase2}                               \\ \hline
+    \mref{m:hazards_compounds} & No \hfill \cite{dsfc-phase2} \\ \hline
+    \mref{m:hazards_cleaning} & No \hfill \cite{dsfc-phase2} \\ \hline
+    \mref{m:hazards_other} & No \hfill \cite{dsfc-phase2} \\ \hline
     \mref{m:longevity}                  & $\le$10\%                                                         \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
     \mref{m:shelflife_input}            & $\ge$3 years (1095 days)                                          \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
     \mref{m:shelflife_output}           & $\ge$3 days                                                       \hfill \cite{dsfc-phase2}                               \\ \hline
     \mref{m:dimensions}                 & Fits through 1.07m x 1.90m doorway; W<1.829m, D<2.438m, H<2.591m  \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
     \mref{m:volume}                     & $\le$ 2 m${}^3$                                                   \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
     \mref{m:power}                      & Avg. <1500W; Peak < 3000W                                         \hfill \cite{applicantguide,dsfc-phase2}                \\ \hline
+    \mref{m:structural_extensibility}   & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:aeroponic_extensibility}        & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:thermoregulation_extensibility} & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:humidification_extensibility}   & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:dehumidification_extensibility} & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:lighting_extensibility}          & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:documentation_fabrication}       & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:documentation_assembly}          & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
+    \mref{m:documentation_repair}            & Yes                                                               \hfill (\ref{r:8}, \ref{sc:10})                         \\ \hline
 \end{tabular}
 
 \subsection{Criteria}
@@ -563,18 +569,33 @@ The following are additional requirements derived from the scope and definitions
     \mref{m:gas_maxrate}                & Should Maximize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
     \mref{m:solutionrate_rate}          & Should Maximize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
     \mref{m:solutionrate_stability}     & Should Minimize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
-    \mref{m:solutiontemp_rate}          & Should Maximize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
-    \mref{m:solutiontemp_stability}     & Should Minimize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
     \mref{m:nutrient_rate}              & Should Maximize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
     \mref{m:nutrient_stability}         & Should Minimize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
+    \mref{m:solutiontemp_rate}          & Should Maximize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
+    \mref{m:solutiontemp_stability}     & Should Minimize           \hfill (\ref{sc:5}, \ref{sc:7})             \\ \hline
     \mref{m:germinationsuccess}         & Should Maximize           \hfill (\ref{r:1}, \ref{r:1b})              \\ \hline
     \mref{m:time_setup}                 & Should Minimize           \hfill (\ref{s:1})                          \\ \hline
     \mref{m:efficiency_energy}          & Should Maximize           \hfill (\ref{r:3})                          \\ \hline
     \mref{m:time_reharvest}             & Should Minimize           \hfill (\ref{r:1b}, \ref{r:3})              \\ \hline
-    \mref{m:time}                       & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:time}                       & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
-    \mref{m:cost}                       & Could Minimize            \hfill (\ref{s:2})                          \\ \hline
+    \mref{m:time_germination}           & Should Minimize           \hfill (\ref{r:1b}, \ref{r:3})              \\ \hline
+    \mref{m:time_harvest}               & Should Minimize           \hfill (\ref{r:1b}, \ref{r:3})              \\ \hline
+    \mref{m:contamination_germination}  & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
+    \mref{m:contamination_planting}     & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
+    \mref{m:contamination_harvest}      & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
+    \mref{m:safety_consumption} & Should Maximize \hfill (\ref{r:1b}) \\ \hline
+    % \mref{m:time}                       & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
+    % \mref{m:time}                       & Should Minimize           \hfill (\ref{r:1b})                         \\ \hline
+    \mref{m:cost}                       & Should Minimize            \hfill (\ref{s:2})                          \\ \hline
     \mref{m:mass}                       & Should Minimize           \hfill (\ref{r:3})                          \\ \hline
+    \mref{m:structural_replaceability}  & Should Maximize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:aeroponic_replaceability}       & Should Maximize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:thermoregulation_replaceability} & Should Maximize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:humidification_replaceability}   & Should Maximize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:dehumidification_replaceability} & Should Maximize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:gascontrol_replaceability} & Should Maximize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:lighting_replaceability}    & Should Maximize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:assembly_time}                 & Should Minimize           \hfill (\ref{r:8})                          \\ \hline
+    \mref{m:assembly_tools}                & Should Minimize           \hfill (\ref{r:8})                          \\ \hline
 \end{tabular}
 
 % Refer to Appendix \ref{sec:assessment} for prototype verification Assessment Criteria (categories, weights, etc.).
