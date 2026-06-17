@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2026-06-16T17:22:57Z",
+        "GenerationSoftware": {
+            "Application": "Fusion Electronics",
+            "Vendor": "Autodesk",
+            "Version": "9.7.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "Motherboard (PCB) v9"
+        },
+        "Owner": "Jayden Lefebvre <jayden.lefebvre@peapodtech.com>",
+        "Size": {
+            "X": 107,
+            "Y": 57
+        }
+    }
+}

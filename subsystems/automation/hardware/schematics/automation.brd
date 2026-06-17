@@ -29,7 +29,7 @@
 <drill diameter="812800" />
 </drillsymbolsettings>
 </settings>
-<grid distance="100" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="100" unitdist="mil" unit="mil" style="lines" multiple="1" display="no" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -65,7 +65,7 @@
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
 <layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
-<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="yes" active="yes"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
 <layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
 <layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
@@ -227,11 +227,11 @@
 <text x="5.08" y="40.64" size="1.9304" layer="21" font="fixed">PeaPod Technologies Inc.</text>
 </plain>
 <libraries>
-<library name="Raspberry Pi Zero W" urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ">
+<library name="Raspberry Pi Zero 2 W" urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ">
 <description>Generated from &lt;b&gt;TMC2660-test-with-grbl.brd&lt;/b&gt;&lt;p&gt;
 by exp-project-lbr.ulp</description>
 <packages>
-<package name="RASPBERRYPI_BASTELSTUBE_V13_RASPI_BOARD_B+_FULL" library_version="6">
+<package name="RASPBERRYPI_BASTELSTUBE_V13_RASPI_BOARD_B+_FULL" library_version="7">
 <description>Raspberry Pi board model B+, full outline with position of big connectors &amp;amp; drill holes</description>
 <circle x="3.5" y="3.5" radius="3.1" width="0.127" layer="21"/>
 <circle x="61.5" y="3.5" radius="3.1" width="0.127" layer="21"/>
@@ -328,13 +328,13 @@ by exp-project-lbr.ulp</description>
 <wire x1="50.1" y1="-0.5" x2="58.1" y2="-0.5" width="0.127" layer="21"/>
 <wire x1="58.1" y1="-0.5" x2="57.85" y2="0" width="0.127" layer="21"/>
 <text x="7.62" y="30.48" size="1.27" layer="25">&gt;NAME</text>
-<text x="31.75" y="15.24" size="3.81" layer="21" align="center">Raspberry Pi Zero W</text>
+<text x="31.75" y="15.24" size="3.81" layer="21" align="center">Raspberry Pi Zero 2 W</text>
 </package>
 </packages>
 </library>
 <library name="ESP32 Feather V2 Socket" urn="urn:adsk.wipprod:fs.file:vf.wOf9326mQT6ImOG0pQpvSw">
 <packages>
-<package name="ESP32FEATHERV2HEADERS" library_version="3">
+<package name="ESP32FEATHERV2HEADERS" library_version="9">
 <pad name="D37" x="0" y="0" drill="1.27"/>
 <pad name="TX" x="-2.54" y="0" drill="1.27"/>
 <pad name="RX" x="-5.08" y="0" drill="1.27"/>
@@ -363,7 +363,6 @@ by exp-project-lbr.ulp</description>
 <pad name="+5V" x="-22.86" y="20.32" drill="1.27"/>
 <pad name="EN" x="-25.4" y="20.32" drill="1.27"/>
 <pad name="BAT" x="-27.94" y="20.32" drill="1.27"/>
-<text x="-18.7833" y="10.4394" size="1.27" layer="21" font="vector" ratio="12" rot="R180" align="center">Adafruit Feather ESP32 V2</text>
 <wire x1="6.35" y1="21.59" x2="6.35" y2="-1.27" width="0.127" layer="21"/>
 <wire x1="6.35" y1="-1.27" x2="-44.45" y2="-1.27" width="0.127" layer="21"/>
 <wire x1="-44.45" y1="-1.27" x2="-44.45" y2="21.59" width="0.127" layer="21"/>
@@ -372,6 +371,8 @@ by exp-project-lbr.ulp</description>
 <hole x="3.81" y="1.27" drill="2.54"/>
 <hole x="-41.91" y="1.27" drill="2.54"/>
 <hole x="-41.91" y="19.05" drill="2.54"/>
+<text x="-44.45" y="21.844" size="1.27" layer="25">&gt;NAME</text>
+<text x="-19.05" y="10.16" size="2.54" layer="27" align="center">Adafruit ESP32 Feather V2</text>
 </package>
 </packages>
 </library>
@@ -568,15 +569,16 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="U1" library="Raspberry Pi Zero W" library_urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ" package="RASPBERRYPI_BASTELSTUBE_V13_RASPI_BOARD_B+_FULL" value="RASPBERRY PI ZERO 2 W" x="5" y="-2.5" smashed="yes">
+<element name="U1" library="Raspberry Pi Zero 2 W" library_urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ" package="RASPBERRYPI_BASTELSTUBE_V13_RASPI_BOARD_B+_FULL" value="RASPBERRY PI ZERO 2 W" x="5" y="-2.5" smashed="yes">
 <attribute name="NAME" x="12.62" y="27.98" size="1.27" layer="25"/>
 </element>
-<element name="U2" library="ESP32 Feather V2 Socket" library_urn="urn:adsk.wipprod:fs.file:vf.wOf9326mQT6ImOG0pQpvSw" package="ESP32FEATHERV2HEADERS" value="ESP32FEATHERV2ESP32FEATHERV2HEADERS" x="93.98" y="43.18" smashed="yes" rot="R90">
+<element name="U2" library="ESP32 Feather V2 Socket" library_urn="urn:adsk.wipprod:fs.file:vf.wOf9326mQT6ImOG0pQpvSw" package="ESP32FEATHERV2HEADERS" value="Adafruit ESP32 Feather V2" base_value="Adafruit ESP32 Feather V2" x="93.98" y="43.18" smashed="yes" rot="R90">
 <attribute name="CATEGORY_L1" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="CATEGORY_L2" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="DATASHEET" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MANUFACTURER" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MPN" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="72.136" y="-1.27" size="1.27" layer="25" rot="R90"/>
 <attribute name="PACKAGE" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VENDOR" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VPN" value="" x="93.98" y="43.18" size="1.778" layer="27" rot="R90" display="off"/>

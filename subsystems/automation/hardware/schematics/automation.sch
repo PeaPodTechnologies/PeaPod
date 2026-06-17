@@ -188,11 +188,11 @@
 </layers>
 <schematic xreflabel="%F%N/%S.%C%R" xrefpart="/%S.%C%R">
 <libraries>
-<library name="Raspberry Pi Zero W" urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ">
+<library name="Raspberry Pi Zero 2 W" urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ">
 <description>Generated from &lt;b&gt;TMC2660-test-with-grbl.brd&lt;/b&gt;&lt;p&gt;
 by exp-project-lbr.ulp</description>
 <packages>
-<package name="RASPBERRYPI_BASTELSTUBE_V13_RASPI_BOARD_B+_FULL" library_version="6">
+<package name="RASPBERRYPI_BASTELSTUBE_V13_RASPI_BOARD_B+_FULL" library_version="7">
 <description>Raspberry Pi board model B+, full outline with position of big connectors &amp;amp; drill holes</description>
 <circle x="3.5" y="3.5" radius="3.1" width="0.127" layer="21"/>
 <circle x="61.5" y="3.5" radius="3.1" width="0.127" layer="21"/>
@@ -289,7 +289,7 @@ by exp-project-lbr.ulp</description>
 <wire x1="50.1" y1="-0.5" x2="58.1" y2="-0.5" width="0.127" layer="21"/>
 <wire x1="58.1" y1="-0.5" x2="57.85" y2="0" width="0.127" layer="21"/>
 <text x="7.62" y="30.48" size="1.27" layer="25">&gt;NAME</text>
-<text x="31.75" y="15.24" size="3.81" layer="21" align="center">Raspberry Pi Zero W</text>
+<text x="31.75" y="15.24" size="3.81" layer="21" align="center">Raspberry Pi Zero 2 W</text>
 </package>
 </packages>
 <symbols>
@@ -345,7 +345,7 @@ by exp-project-lbr.ulp</description>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="RPI-ZERO" prefix="U" library_version="6">
+<deviceset name="RPI-ZERO" prefix="U" library_version="7">
 <gates>
 <gate name="G$1" symbol="RPI-ZERO" x="0" y="0"/>
 </gates>
@@ -403,7 +403,7 @@ by exp-project-lbr.ulp</description>
 </library>
 <library name="ESP32 Feather V2 Socket" urn="urn:adsk.wipprod:fs.file:vf.wOf9326mQT6ImOG0pQpvSw">
 <packages>
-<package name="ESP32FEATHERV2HEADERS" library_version="3">
+<package name="ESP32FEATHERV2HEADERS" library_version="9">
 <pad name="D37" x="0" y="0" drill="1.27"/>
 <pad name="TX" x="-2.54" y="0" drill="1.27"/>
 <pad name="RX" x="-5.08" y="0" drill="1.27"/>
@@ -432,7 +432,6 @@ by exp-project-lbr.ulp</description>
 <pad name="+5V" x="-22.86" y="20.32" drill="1.27"/>
 <pad name="EN" x="-25.4" y="20.32" drill="1.27"/>
 <pad name="BAT" x="-27.94" y="20.32" drill="1.27"/>
-<text x="-18.7833" y="10.4394" size="1.27" layer="21" font="vector" ratio="12" rot="R180" align="center">Adafruit Feather ESP32 V2</text>
 <wire x1="6.35" y1="21.59" x2="6.35" y2="-1.27" width="0.127" layer="21"/>
 <wire x1="6.35" y1="-1.27" x2="-44.45" y2="-1.27" width="0.127" layer="21"/>
 <wire x1="-44.45" y1="-1.27" x2="-44.45" y2="21.59" width="0.127" layer="21"/>
@@ -441,10 +440,12 @@ by exp-project-lbr.ulp</description>
 <hole x="3.81" y="1.27" drill="2.54"/>
 <hole x="-41.91" y="1.27" drill="2.54"/>
 <hole x="-41.91" y="19.05" drill="2.54"/>
+<text x="-44.45" y="21.844" size="1.27" layer="25">&gt;NAME</text>
+<text x="-19.05" y="10.16" size="2.54" layer="27" align="center">Adafruit ESP32 Feather V2</text>
 </package>
 </packages>
 <symbols>
-<symbol name="ESP32FEATHERV2HEADERS" library_version="3">
+<symbol name="ESP32FEATHERV2HEADERS" library_version="4">
 <pin name="~RST" x="2.54" y="17.78" length="middle"/>
 <pin name="+3.3V" x="2.54" y="15.24" length="middle"/>
 <pin name="NC" x="2.54" y="12.7" length="middle"/>
@@ -477,11 +478,12 @@ by exp-project-lbr.ulp</description>
 <wire x1="7.62" y1="-22.86" x2="22.86" y2="-22.86" width="0.254" layer="94"/>
 <wire x1="22.86" y1="-22.86" x2="22.86" y2="20.32" width="0.254" layer="94"/>
 <wire x1="22.86" y1="20.32" x2="7.62" y2="20.32" width="0.254" layer="94"/>
-<text x="7.62" y="22.86" size="1.778" layer="94">ESP32 Feather V2</text>
+<text x="7.62" y="23.622" size="1.778" layer="95">&gt;NAME</text>
+<text x="7.62" y="21.082" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="ESP32FEATHERV2" prefix="U" library_version="3">
+<deviceset name="ESP32FEATHERV2" prefix="U" uservalue="yes" library_version="9">
 <gates>
 <gate name="G$1" symbol="ESP32FEATHERV2HEADERS" x="0" y="0"/>
 </gates>
@@ -524,7 +526,7 @@ by exp-project-lbr.ulp</description>
 <attribute name="MANUFACTURER" value="" constant="no"/>
 <attribute name="CATEGORY_L2" value="" constant="no"/>
 <attribute name="MPN" value="" constant="no"/>
-<attribute name="VALUE" value="" constant="no"/>
+<attribute name="VALUE" value="Adafruit ESP32 Feather V2" constant="no"/>
 <attribute name="VENDOR" value="" constant="no"/>
 <attribute name="VPN" value="" constant="no"/>
 <attribute name="PACKAGE" value="" constant="no"/>
@@ -545,8 +547,8 @@ by exp-project-lbr.ulp</description>
 </class>
 </classes>
 <parts>
-<part name="U1" library="Raspberry Pi Zero W" library_urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ" deviceset="RPI-ZERO" device="" value="RASPBERRY PI ZERO 2 W"/>
-<part name="U2" library="ESP32 Feather V2 Socket" library_urn="urn:adsk.wipprod:fs.file:vf.wOf9326mQT6ImOG0pQpvSw" deviceset="ESP32FEATHERV2" device="ESP32FEATHERV2HEADERS"/>
+<part name="U1" library="Raspberry Pi Zero 2 W" library_urn="urn:adsk.wipprod:fs.file:vf.0Niv2XteR2OEI_HsVnvPwQ" deviceset="RPI-ZERO" device="" value="RASPBERRY PI ZERO 2 W"/>
+<part name="U2" library="ESP32 Feather V2 Socket" library_urn="urn:adsk.wipprod:fs.file:vf.wOf9326mQT6ImOG0pQpvSw" deviceset="ESP32FEATHERV2" device="ESP32FEATHERV2HEADERS" value="Adafruit ESP32 Feather V2"/>
 </parts>
 <sheets>
 <sheet>
@@ -557,7 +559,10 @@ by exp-project-lbr.ulp</description>
 <attribute name="NAME" x="-17.78" y="-35.56" size="1.27" layer="95" font="vector"/>
 <attribute name="VALUE" x="-17.78" y="-37.465" size="1.27" layer="96" font="vector"/>
 </instance>
-<instance part="U2" gate="G$1" x="-10.16" y="-5.08" smashed="yes"/>
+<instance part="U2" gate="G$1" x="-10.16" y="-5.08" smashed="yes">
+<attribute name="NAME" x="-2.54" y="18.542" size="1.778" layer="95"/>
+<attribute name="VALUE" x="-2.54" y="16.002" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -565,95 +570,95 @@ by exp-project-lbr.ulp</description>
 <net name="GND" class="0">
 <segment>
 <wire x1="27.94" y1="-45.72" x2="30.48" y2="-45.72" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="GND@8"/>
 <label x="30.48" y="-45.72" size="1.778" layer="95" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="GND@8"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="GND"/>
 <wire x1="-7.62" y1="5.08" x2="-10.16" y2="5.08" width="0.1524" layer="91"/>
 <label x="-10.16" y="5.08" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="GND"/>
 </segment>
 </net>
 <net name="TX" class="0">
 <segment>
 <wire x1="27.94" y1="-48.26" x2="30.48" y2="-48.26" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="TXD0/GPIO14"/>
 <label x="30.48" y="-48.26" size="1.778" layer="95" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="TXD0/GPIO14"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="RX"/>
 <wire x1="-7.62" y1="-20.32" x2="-10.16" y2="-20.32" width="0.1524" layer="91"/>
 <label x="-10.16" y="-20.32" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="RX"/>
 </segment>
 </net>
 <net name="RX" class="0">
 <segment>
 <wire x1="27.94" y1="-50.8" x2="30.48" y2="-50.8" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="RXD0/GPIO15"/>
 <label x="30.48" y="-50.8" size="1.778" layer="95" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="RXD0/GPIO15"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="TX"/>
 <wire x1="-7.62" y1="-22.86" x2="-10.16" y2="-22.86" width="0.1524" layer="91"/>
 <label x="-10.16" y="-22.86" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="TX"/>
 </segment>
 </net>
 <net name="MOSI" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="GPIO12"/>
 <wire x1="27.94" y1="-78.74" x2="30.48" y2="-78.74" width="0.1524" layer="91"/>
 <label x="30.48" y="-78.74" size="1.778" layer="95" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="GPIO12"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="MOSI"/>
 <wire x1="-7.62" y1="-15.24" x2="-10.16" y2="-15.24" width="0.1524" layer="91"/>
 <label x="-10.16" y="-15.24" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="MOSI"/>
 </segment>
 </net>
 <net name="MISO" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="GPIO13"/>
 <wire x1="-20.32" y1="-81.28" x2="-22.86" y2="-81.28" width="0.1524" layer="91"/>
 <label x="-22.86" y="-81.28" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="GPIO13"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="MISO"/>
 <wire x1="-7.62" y1="-17.78" x2="-10.16" y2="-17.78" width="0.1524" layer="91"/>
 <label x="-10.16" y="-17.78" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="MISO"/>
 </segment>
 </net>
 <net name="RST" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="GPIO5"/>
 <wire x1="-20.32" y1="-76.2" x2="-22.86" y2="-76.2" width="0.1524" layer="91"/>
 <label x="-22.86" y="-76.2" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="GPIO5"/>
 </segment>
 </net>
 <net name="SCK" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="GPIO6"/>
 <wire x1="-20.32" y1="-78.74" x2="-22.86" y2="-78.74" width="0.1524" layer="91"/>
 <label x="-22.86" y="-78.74" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="GPIO6"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="SCK"/>
 <wire x1="-7.62" y1="-12.7" x2="-10.16" y2="-12.7" width="0.1524" layer="91"/>
 <label x="-10.16" y="-12.7" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="SCK"/>
 </segment>
 </net>
 <net name="+5V" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="5V0@2"/>
 <wire x1="27.94" y1="-43.18" x2="27.94" y2="-40.64" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="-40.64" x2="30.48" y2="-40.64" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="5V0@1"/>
 <junction x="27.94" y="-40.64"/>
 <label x="30.48" y="-40.64" size="1.778" layer="95" xref="yes"/>
+<pinref part="U1" gate="G$1" pin="5V0@1"/>
+<pinref part="U1" gate="G$1" pin="5V0@2"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="+5V"/>
 <wire x1="17.78" y1="-2.54" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
 <label x="20.32" y="-2.54" size="1.778" layer="95" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="+5V"/>
 </segment>
 </net>
 </nets>
