@@ -11,12 +11,14 @@ Ensure UART voltage levels are compatible (i.e. 3.3V for both Raspberry Pi Zero 
 ### Table of Contents
 - [Background](#background)
 - [Architecture](#architecture)
+- [Development](#development)
 - [Production](#production)
   - [Raspberry Pi Zero 2 W](#raspberry-pi-zero-2-w)
     - [SD Card Preparation](#sd-card-preparation)
     - [First-Time Setup](#first-time-setup)
   - [Preparation](#preparation)
   - [Installation](#installation)
+  - [Execution](#execution)
 
 # Background
 
@@ -56,7 +58,9 @@ dashboard webserver
     - Microcontroller Instructions
     - Tasks
 
-***
+# Development
+
+
 
 # Production
 
@@ -90,7 +94,7 @@ The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and mo
    8. *Localisation Options > Timezone* (i.e. `US` > `Eastern`)
    9. *Localisation Options > Keyboard* (i.e. `Generic 105-key` > `English (US)` > `Default` > `No compose key`)
    10. Optional: *Advanced Options > Expand Filesystem*
-   11. Reboot to save: `sudo reboot` 
+   11. Reboot to save: `sudo reboot -f` 
 
 > You can now SSH into the Raspberry Pi to perform the rest of the setup, or continue with the keyboard and monitor.
 
@@ -98,18 +102,20 @@ The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and mo
 
 The following are performed on a computer with an internet connection:
 
-1. Execute `./scripts/build.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
-2. Execute `./scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
+7. Execute `./scripts/build.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
+8. Execute `./scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
+
+> You may need to use `chmod +x ./scripts/*.sh` to make the scripts executable.
 
 ## Installation
 
-7. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
+9. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
 
-8. Install Node.JS, the Node package manager, and Python dependencies: `sudo apt install -y nodejs npm python3-venv python3-dev`
+10. Install Node.JS, the Node package manager, and Python dependencies: `sudo apt install -y nodejs npm python3-venv python3-dev`
 <!-- 3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save` -->
 <!-- 4. If using a Raspberry Pi Camera, install the camera package: `sudo apt install -y libcamera-apps` -->
 
-9. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
+11. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
 <!-- 
 1. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
    1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
@@ -207,10 +213,24 @@ The following are performed on a computer with an internet connection:
     3.  Update packages: `sudo apt-get update`
     4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6` -->
 
-10.  Populate a `~/.env` file based on `./.env.template` with Firebase configuration, Google and/or GitHub auth configuration, serial port configuration, and webserver configuration (if applicable).
+12.  Populate a `~/.env` file based on `./.env.template` with Firebase configuration, Google and/or GitHub auth configuration, serial port configuration, and webserver configuration (if applicable).
 
-11. Unpack the `~/out.tar.gz` archive to the home directory: `tar -xzf ~/out.tar.gz -C ~`
+13. Unpack the `~/out.tar.gz` archive to the home directory: `tar -xzf ~/out.tar.gz -C ~`
 
-12. Run the main program by executing `node ~/server.mjs`.
+14. Connect a USB cable from the computer (i.e. Raspberry Pi Zero 2 W) to the microcontroller (i.e. Adafruit ESP32 Feather V2), and verify that the serial port is available and openable by executing `node ~/serialtest.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
+
+15. Perform first-time microcontroller firmware flashing by executing `node ~/flash.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
+
+## Execution
+
+16. Run the main program by executing `node ~/server.mjs`.
+
+18. Follow the prompts to select a publishing mode (Local Filesystem, Firebase, and/or Dashboard), and if applicable, perform Firebase Device Flow Authentication.
+
+19. The webserver should start, making the dashboard accessible at the displayed hostname and port.
+
+20. Select the appropriate serial port (i.e. `/dev/ttyS0` for GPIO UART-Arduino `Serial1`, `/dev/ttyACM0` for USB-Arduino `Serial`) to connect to the microcontroller.
+
+21. The console will begin printing raw telemetry and debugging information from the microcontroller.
 
 <!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->

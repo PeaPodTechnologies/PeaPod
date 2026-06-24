@@ -44,4 +44,10 @@ const build_serialtest = esbuild.build({
   outdir: './'
 });
 
-await Promise.all([build_api, build_server, build_serialtest]).catch((err) => { console.error(err); process.exit(1); } );
+const build_flash = esbuild.build({
+  ...esbuildConfig,
+  entryPoints: ['./flash.ts'],
+  outdir: './'
+});
+
+await Promise.all([build_api, build_server, build_serialtest, build_flash]).catch((err) => { console.error(err); process.exit(1); } );

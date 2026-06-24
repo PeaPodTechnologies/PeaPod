@@ -1,5 +1,6 @@
 import { SerialPort, ReadlineParser } from 'serialport';
 import select from '@inquirer/select';
+import { updateMicrocontroller } from './api/utils';
 
 const BAUDRATE = 115200;
 const TIMEOUT_MS = 5000;
@@ -101,5 +102,23 @@ serialport.open((err) => {
     return;
   }
 
-  console.log(`Serial port ${serial} opened at baud rate ${BAUDRATE}`);
+  console.log(`Serial port ${serial} opened at baud rate ${BAUDRATE}; Closing serial port now...`);
+
+  serialport.close((closeErr) => {
+    if (closeErr) {
+      console.error('Error closing serial port:', closeErr.message);
+      exitCleanly(1);
+      return;
+    }
+
+    console.log(`Serial port ${serial} closed successfully; Flashing firmware now...`);
+
+    updateMicrocontroller().then(() => {
+      console.log('Firmware update completed successfully.');
+      exitCleanly(0);
+    }).catch((updateErr) => {
+      console.error('Error updating firmware:', updateErr);
+      exitCleanly(1);
+    });
+  });
 });
