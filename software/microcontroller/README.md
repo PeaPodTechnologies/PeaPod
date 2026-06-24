@@ -1,5 +1,7 @@
 # PeaPod Microcontroller Firmware
 
+Makes use of I2CIP, FSM, and DebugJson libraries for QOS-2 I2C device state management and abstraction, program state and control flow, and bidirectional JSON-formatted newline-delimited serial communication, respectively. Supports a main menu via 16x2 character LCD and rotary encoder with push button, and a seven segment display.
+
 # Architecture
 
 ## Main

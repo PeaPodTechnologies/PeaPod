@@ -1,46 +1,82 @@
-# PeaPod OS <!-- omit in toc -->
-
-[![issuesopen](https://img.shields.io/github/issues/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues) [![issuesclosed](https://img.shields.io/github/issues-closed/PeaPodTechnologies/peapod)](https://github.com/PeaPodTech/PeaPod/issues?q=is%3Aissue+is%3Aclosed) [![opensource](https://img.shields.io/badge/open-source-red)](https://github.com/PeaPodTechnologies/PeaPod/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Open%22) ![coffee](https://img.shields.io/badge/powered%20by-coffee-brown) [![24/7](https://img.shields.io/badge/Eat,%20Sleep,-PeaPod-darkgreen)](https://www.youtube.com/watch?v=2zWv9JC5G3w) [![FLDSMDFR](https://img.shields.io/badge/The-FLDSMDFR-orange)](https://www.youtube.com/watch?v=k8xFbWLUDoQ)
-
-<!-- TODO: Build Statuses? -->
+# PeaPodOS <!-- omit in toc -->
  
-Main software for PeaPod.
+A two-part system, consisting of a high-level software application and a low-level microcontroller firmware, designed for remote monitoring and configuration of control systems.
 
-A cloud-connected isolated and automated plant growth environment, able to generate any environment from a combination of independent environment parameters. 
+The software is written in TypeScript and runs on any compatible computer system with an internet connection, persistent storage, and a UART serial interface (i.e. Raspberry Pi Zero 2 W).
 
-Designed as both a hassle-free food production system and a research tool for precise and distributed mapping of the plant-environment relationship.
+The firmware is written in Arduino C++ and runs on any compatible microcontroller system with UART serial and I2C interfaces (i.e. Adafruit ESP32 Feather V2). See `./microcontroller/README.md` for more information.
 
-***
+Ensure UART voltage levels are compatible (i.e. 3.3V for both Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2).
+
 ### Table of Contents
 - [Background](#background)
+- [Architecture](#architecture)
 - [Production](#production)
-    - [Setting Up Raspberry Pi](#setting-up-raspberry-pi)
-- [Development](#development)
-    - [Arduino Test Suite](#arduino-test-suite)
-    - [Build from Source](#build-from-source)
-***
+  - [Raspberry Pi Zero 2 W](#raspberry-pi-zero-2-w)
+    - [SD Card Preparation](#sd-card-preparation)
+    - [First-Time Setup](#first-time-setup)
+  - [Preparation](#preparation)
+  - [Installation](#installation)
 
 # Background
 
-<img src="assets/control_flow.png" width=60% style="border: 5px solid #333"/>
+<img src="assets/control_flow.png" style="border: 5px solid #333"/>
+
+# Architecture
+
+start menu
+- publishing mode selection (Local Filesytem, Firebase, Dashboard)
+- Firebase Device Flow Authentication
+  - Provider Selection (Google, GitHub)
+  - Device Code & URL
+- Microcontroller Serial Port Selection
+
+serial communication
+- bidirectional
+- JSON-formatted
+- newline-delimited
+- encoding: device commands, system configuration
+- decoding: telemetry/debugging
+
+WebSockets API w/ Callbacks
+- camera capture and image streaming
+- serial passthrough
+- intervals
+- linker
+- firmware flashing
+- scheduler
+
+Control Systems (TODO)
+
+dashboard webserver
+- Debugging Console
+- Telemetry Charts
+- Calendar + DataGrid
+- Interval & Event Scheduler
+    - Microcontroller Instructions
+    - Tasks
 
 ***
 
 # Production
 
-### Setting Up Raspberry Pi
+## Raspberry Pi Zero 2 W
 
-The following are performed on a computer:
+### SD Card Preparation
+
+The following are performed on a computer with an internet connection:
 
 1. Format a microSD card (>=32GB) with a single FAT partition.
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
 3. Flash the SD card with a *Raspberry Pi OS Lite (64-bit)* image.
 
-> Note: In Future, a custom PeaPod Raspberry Pi OS Lite image will be released with steps 5, 6, and 12 already complete.
+> Note: A custom PeaPodOS image will be released in the future.
 
-4. Plug in a keyboard and display, insert the microSD card, and power the Raspberry Pi device.
+### First-Time Setup
 
-The following are performed on the Raspberry Pi, with a keyboard and monitor:
+4. Plug in a keyboard and display, insert the microSD card, and power on the Raspberry Pi Zero 2 W.
+
+The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and monitor:
 
 5. Login.
 6. Execute `sudo raspi-config` and perform these steps to setup the Pi:
@@ -56,18 +92,26 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
    10. Optional: *Advanced Options > Expand Filesystem*
    11. Reboot to save: `sudo reboot` 
 
-> You can now SSH into the Raspberry Pi to perform the rest of the setup (`ssh pi@{hostname}.local` with your chosen hostname, or with VS Code)
+> You can now SSH into the Raspberry Pi to perform the rest of the setup, or continue with the keyboard and monitor.
 
-> Note: In Future, steps 7-11 will be performed at runtime.
-7. Update Packages:
-     1. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
-     2. Install Node.JS, the Node package manager, and *avrdude*: `sudo apt install -y nodejs npm avrdude python3-venv python3-dev` (could take a while)
-     3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
-     4. If using a Raspberry Pi Camera, install the camera package: `sudo apt install -y libcamera-apps`
+## Preparation
 
-8. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
+The following are performed on a computer with an internet connection:
 
-9. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
+1. Execute `./scripts/build.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
+2. Execute `./scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
+
+## Installation
+
+7. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
+
+8. Install Node.JS, the Node package manager, and Python dependencies: `sudo apt install -y nodejs npm python3-venv python3-dev`
+<!-- 3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save` -->
+<!-- 4. If using a Raspberry Pi Camera, install the camera package: `sudo apt install -y libcamera-apps` -->
+
+9. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
+<!-- 
+1. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
    1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
 
        ```
@@ -147,17 +191,15 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
        avrdude: safemode: Fuses OK (E:FD, H:DA, L:FF)
 
        avrdude done.  Thank you.
-       ```
+       ``` -->
 
-10. Perform first-time flashing with `~/.platformio/penv/bin/platformio run -e peapod -d ~/microcontroller/ --target upload`
-
-11. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
+<!-- 11. Edit the `sudoers` file to allow `avrdude` to be executed using `sudo` *without a password*:
     1.  Open the `sudoers` file: `sudo visudo`
     2.  Add the following line to the end (assuming your username is `pi`, the hostname is `peapod`, and the `avrdude` binary is located at `/usr/bin/avrdude`):
         
         `pi peapod = (root) NOPASSWD: /usr/bin/avrdude`
         
-        (*Ctrl-O* to save, *Ctrl-X* to exit; *avrdude* can be located with `whereis avrdude`)
+        (*Ctrl-O* to save, *Ctrl-X* to exit; *avrdude* can be located with `whereis avrdude`) -->
 
 <!-- 12. Install the *UV4L* camera library:
     1.  `curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -`
@@ -165,24 +207,10 @@ The following are performed on the Raspberry Pi, with a keyboard and monitor:
     3.  Update packages: `sudo apt-get update`
     4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6` -->
 
-13. Populate a `.env` file with Firebase and Google and/or GitHub auth keys (a template is provided as `.env.template`), as well as the field `SERIALPORT="/dev/ttyS0"` (Raspberry Pi Zero 2 W GPIO mini-UART).
+10.  Populate a `~/.env` file based on `./.env.template` with Firebase configuration, Google and/or GitHub auth configuration, serial port configuration, and webserver configuration (if applicable).
 
-14. Run the main program by executing `peapodos`.
+11. Unpack the `~/out.tar.gz` archive to the home directory: `tar -xzf ~/out.tar.gz -C ~`
+
+12. Run the main program by executing `node ~/server.mjs`.
 
 <!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->
-# Development
-
-### Arduino Test Suite
-
-To run the PlatformIO test suite: `~/.platformio/penv/bin/platformio test -e peapod -d ~/microcontroller/`
-
-### Build from Source
-
-1. Install TypeScript language support and compiler, as well as a Node build tool: `sudo npm install -g typescript`
-2. Clone this source, copy contents of `software/` (only the essentials: `index.ts`, `package.json`, `tsconfig.json`, `src/`, and `microcontroller/`)to home folder `~/`
-3. Build the `serialport` package from source: `sudo npm install serialport --unsafe-perm --build-from-source`
-4. Install all other Node dependencies: `npm i`
-5. Compile: `tsc`
-6. Populate the `.env` file (see `.env.template`)
-7. Compile and upload microcontroller software: `~/.platformio/penv/bin/platformio run -e peapod -d ~/microcontroller/ --target upload`
-8. Execute: `node .`

@@ -22,14 +22,17 @@ Optional, but recommended:
 ## Instructions
 
 1. Solder stacking headers to the motherboard: one 2x20 at U1 for the Raspberry Pi Zero 2 W, and one each 1x16 and 1x12 at U2 for the Adafruit ESP32 Feather V2.
-2. Solder 2x20 header pins to the Raspberry Pi ON THE BOTTOM FACE of the board, ensuring the pins are oriented to connect with the motherboard headers.
-3. Solder 1x16 and 1x12 header pins to the Adafruit ESP32 Feather V2 ON THE BOTTOM FACE of the board (if not pre-assembled), ensuring the pins are oriented to connect with the motherboard headers.
-4. Insert the Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2 into their respective headers on the motherboard, ensuring proper orientation (match footprint to the silkscreen).
-5. Attach the small end of the orange-colored camera flex cable to the Raspberry Pi Zero 2 W camera port. Attach the large end to the coupling board. Attach one end of the long camera flex cable to the coupling board, and the other end to the camera module. Ensure that all cables are oriented such that the metal connectors on the cable are facing the PCB.
-6. Connect the USB hub to the micro-USB port on the Raspberry Pi Zero 2 W. Connect the keyboard to the USB hub.
-7. Connect a display to the mini-HDMI port on the Raspberry Pi Zero 2 W.
-8. Prepare the micro-SD card according to the instructions in `/software/README.md` (using the SD card adapter). Insert the micro-SD card into the Raspberry Pi Zero 2 W.
-9. Connect the power supply to the micro-USB port on the Raspberry Pi Zero 2 W.
+2. Solder 2x20 stacking header pins to the Raspberry Pi Zero 2 W, ensuring the pins are oriented to connect with the motherboard headers.
+3. Solder 1x16 and 1x12 stacking header pins to the Adafruit ESP32 Feather V2 (if not pre-assembled), ensuring the pins are oriented to connect with the motherboard headers.
+4. Prepare the micro-SD card according to the instructions in `/software/README.md` (using the SD card adapter). Insert the micro-SD card into the Raspberry Pi Zero 2 W.
+5. Insert the Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2 into their respective headers on the motherboard, ensuring proper orientation (match footprint to the silkscreen).
+6. Flash the Adafruit ESP32 Feather V2 with the `/software/microcontroller/` firmware according to the instructions in `/software/README.md`.
+7. Assemble all subsystem modules in accordance with their instructions. Cut and strip four Qwiic wires, making eight one-ended connectors. Connect the modules to the Adafruit ESP32 Feather V2 I2C port using Adafruit Qwiic cables.
+8. Optional: Mount the Adafruit 7-Segment Display Featherwing directly to the Adafruit ESP32 Feather V2 stacking headers.
+9. Attach the small end of the orange-colored camera flex cable to the Raspberry Pi Zero 2 W camera port. Attach the large end to the coupling board. Attach one end of the long camera flex cable to the coupling board, and the other end to the camera module. Ensure that all cables are oriented such that the metal connectors on the cable are facing the PCB.
+10. Connect a display to the mini-HDMI port on the Raspberry Pi Zero 2 W.
+11. Connect the USB hub to the micro-USB port labelled "USB" on the Raspberry Pi Zero 2 W. Connect the keyboard to the USB hub.
+12. Connect the power supply to the micro-USB port labelled "PWR" on the Raspberry Pi Zero 2 W.
 
 # Testing
 
