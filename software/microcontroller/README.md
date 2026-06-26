@@ -6,16 +6,29 @@ Makes use of I2CIP, FSM, and DebugJson libraries for QOS-2 I2C device state mana
 
 ## Main
 
+**Globals**:
+- Menu State (menu index: enum, submenu index: unsigned char, selected module index: unsigned char)
+- FSM:
+  - Chronograph
+- I2CIP:
+  - modules\[8\]
+  - errlev\[8\]
+
 **Setup**:
 
 1. Initialize Serial communication (115200 baud).
 2. Wait for Serial connection.
 3. Instantiate PeaPod modules (Air, Watering, Lighting; See Module Callbacks).
-4. Print firmware `revision` to Serial.
-5. Register callbacks:
+4. Instantiate non-module devices:
+   1. Seven-Segment Display (HT16K33)
+   2. 16x2 Character LCD (JHD1313)
+   3. Rotary Encoder with Push Button (Adafruit Seesaw)
+5. Attach LCD print callback to menu state changes.
+6. Print firmware `revision` to Serial.
+7. Register callbacks:
    1. Cycle Callback (triggered on `Cycle` change):
       1. Set Chronograph to current time.
-      2. Calculate and set `FPS`
+      2. Calculate and set `FPS`.
       3. Read Serial input (DebugJson) and route commands/config.
    2. Heartbeat Callback (Chronograph interval):
       1. Print `heartbeat` message to Serial.
@@ -27,7 +40,16 @@ Makes use of I2CIP, FSM, and DebugJson libraries for QOS-2 I2C device state mana
       2. If MUX doesn't ping, set module error level.
       3. If error level indicates hardware has been lost, de-instantiate module.
 
-**Loop**: Increment `Cycle` (See Cycle Callback).
+**Loop**:
+
+1. Increment `Cycle` (See Cycle Callback).
+2. Read encoder input and update menu state.
+
+**Subroutines**:
+
+- onEncoderChange
+- writeLCDMenu
+- onEncoderPress
 
 ## Modules
 

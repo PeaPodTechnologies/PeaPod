@@ -6,6 +6,8 @@
 
 #include <DebugJson.h>
 
+PeaPod::PeaPodModule PeaPod::nomodule = PeaPodModule(I2CIP_MUX_NUM_FAKE);
+
 FSM::Variable PeaPod::cycle = FSM::Variable(FSM::Number(0, false, false), "cycle");
 FSM::Variable PeaPod::fps = FSM::Variable(FSM::Number(0, false, false), "fps");
 bool PeaPod::pinModeSet[255] = { false };

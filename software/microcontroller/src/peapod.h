@@ -70,6 +70,8 @@ namespace PeaPod {
     uint8_t getNumVariables(void) const { return this->variables.size(); }
   };
 
+  extern PeaPodModule nomodule;
+
   // Global States
   extern FSM::Variable cycle;
   extern FSM::Variable fps;
