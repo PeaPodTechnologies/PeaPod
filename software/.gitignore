@@ -3,6 +3,7 @@ node_modules/
 *.js
 *.d.ts
 !jest.config.js
+!webpack.config.js
 
 # Runtime files
 deviceInfo.json
@@ -51,7 +52,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
 !.env.template
 

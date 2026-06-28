@@ -85,7 +85,7 @@ Optional, but recommended:
 **Failure Protocol**:
 1. See *Serial Communication Test* failure protocols for issues related to serial communication between the Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2.
 2. *Dashboard Fails to Load*: Ensure the separate device is on the same network as the Raspberry Pi Zero 2 W. Check that the correct local IP address and port number are being used to access the dashboard. Check for any firewall settings that may be blocking access to the port.
-3. *Dashboard Loads but No Data*: Check the terminal output for any errors related to receiving or processing data from the Adafruit ESP32 Feather V2. Ensure that the dashboard code is correctly set up to receive and display data.
+3. *Dashboard Loads but No Data*: Check the terminal output for any errors related to receiving or processing data from the Adafruit ESP32 Feather V2.
 
 ## Scheduler Test
 
