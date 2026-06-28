@@ -1,0 +1,40 @@
+export class ControllerTXError extends Error {
+  constructor(msg: any) {
+    super("DEBUGJSON RX FAIL: '" + JSON.stringify(msg) + "'");
+  }
+}
+
+export class ControllerRXError extends Error {
+  constructor(msg: any) {
+    super("DEBUGJSON TX FAIL: '" + JSON.stringify(msg) + "'");
+  }
+}
+
+// UNUSED
+// export class SerialTimeoutError extends Error {
+//   constructor(timeoutSeconds?: number) {
+//     super(`Arduino serial communication timed out${ timeoutSeconds === undefined ? '' : ` after ${ timeoutSeconds } seconds` }.`);
+//   }
+// };
+
+export class EnvFieldError extends Error {
+  constructor(mode: string, missingFields: string[]) {
+    super(
+      `.env file is missing the following fields necessary for ${mode} functionality: ${missingFields.join(
+        ', '
+      )}`
+    );
+  }
+}
+
+export class DebugJsonSerialportError extends Error {
+  constructor(err: string) {
+    super(`SerialPort - ${err}`);
+  }
+}
+
+export class FirebaseError extends Error {
+  constructor(err: FirebaseError | string | undefined = undefined) {
+    super(`Firebase - ${err ?? 'Unknown error'}`);
+  }
+}

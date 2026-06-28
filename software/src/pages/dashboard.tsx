@@ -1,0 +1,367 @@
+'use client';
+
+import {
+  Grid,
+  CircularProgress,
+  Box,
+  AppBar,
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Checkbox,
+} from '@mui/material';
+import { FC, PropsWithChildren, useState } from 'react';
+import { useSocket } from '@/contexts/socket';
+import DebugMessageBoard from '@/organisms/board';
+import DeviceTree from '@/organisms/tree';
+import Pinger from '@/organisms/ping';
+import Device from '@/organisms/device';
+import { useTelemetry } from '@/contexts/telemetry';
+import TelemetryChart from '@/organisms/telemetrychart';
+import { useDevices } from '@/contexts/devices';
+import MessageDataGrid from '@/organisms/datagrid';
+import {
+  Build,
+  CalendarMonth,
+  Chat,
+  DeviceHub,
+  Insights,
+  Memory,
+  Router,
+  TableChart,
+  CameraAlt as CameraIcon,
+  RocketLaunch,
+  CalendarMonthOutlined,
+} from '@mui/icons-material';
+import Descheduler from '../organisms/descheduler';
+import Linker from '../organisms/unlinker';
+import StateTable from '../organisms/states';
+import { useStates } from '../contexts/states';
+import StatePanel from '../organisms/state';
+import Firmware from '../organisms/firmware';
+import Camera from '../organisms/camera';
+import Scheduler from '../organisms/scheduler';
+
+const drawerWidth = '240px';
+
+const Dashboard: FC<PropsWithChildren> = ({ children }) => {
+  const { connected, sockets } = useSocket();
+  const { devicesFlat } = useDevices();
+  const { telemetry } = useTelemetry();
+  const { states } = useStates();
+
+  const [enableTelemetry, setEnableTelemetry] = useState<boolean>(true);
+  const [enableMessages, setEnableMessages] = useState<boolean>(true);
+  const [enableDevices, setEnableDevices] = useState<boolean>(true);
+  const [enableTree, setEnableTree] = useState<boolean>(true);
+  const [enablePinger, setEnablePinger] = useState<boolean>(true);
+  const [enableDescheduler, setEnableDescheduler] = useState<boolean>(true);
+  const [enableLinker, setEnableLinker] = useState<boolean>(true);
+  const [enableStates, setEnableStates] = useState<boolean>(true);
+  const [enableCamera, setEnableCamera] = useState<boolean>(true);
+  const [enableFirmware, setEnableFirmware] = useState<boolean>(true);
+  const [enableScheduler, setEnableScheduler] = useState<boolean>(true);
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <AppBar
+        position="fixed"
+        // sx={{ width: `calc(100% - ${drawerWidth})`, ml: `${drawerWidth}` }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            PeaPod Dashboard
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar />
+        <Divider />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setEnableTelemetry(!enableTelemetry)}
+            >
+              <ListItemIcon>
+                <Insights />
+              </ListItemIcon>
+              <ListItemText primary={'Telemetry Charts'} />
+              <Checkbox
+                edge="end"
+                checked={enableTelemetry}
+                onChange={() => setEnableTelemetry(!enableTelemetry)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableMessages(!enableMessages)}>
+              <ListItemIcon>
+                <Chat />
+              </ListItemIcon>
+              <ListItemText primary={'Message Boards'} />
+              <Checkbox
+                edge="end"
+                checked={enableMessages}
+                onChange={() => setEnableMessages(!enableMessages)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setEnableScheduler(!enableScheduler)}
+            >
+              <ListItemIcon>
+                <CalendarMonthOutlined />
+              </ListItemIcon>
+              <ListItemText primary={'Scheduler'} />
+              <Checkbox
+                edge="end"
+                checked={enableScheduler}
+                onChange={() => setEnableScheduler(!enableScheduler)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableDevices(!enableDevices)}>
+              <ListItemIcon>
+                <Memory />
+              </ListItemIcon>
+              <ListItemText primary={'Device Controls'} />
+              <Checkbox
+                edge="end"
+                checked={enableDevices}
+                onChange={() => setEnableDevices(!enableDevices)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableTree(!enableTree)}>
+              <ListItemIcon>
+                <DeviceHub />
+              </ListItemIcon>
+              <ListItemText primary={'Module Tree'} />
+              <Checkbox
+                edge="end"
+                checked={enableTree}
+                onChange={() => setEnableTree(!enableTree)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnablePinger(!enablePinger)}>
+              <ListItemIcon>
+                <Router />
+              </ListItemIcon>
+              <ListItemText primary={'Ping Tool'} />
+              <Checkbox
+                edge="end"
+                checked={enablePinger}
+                onChange={() => setEnablePinger(!enablePinger)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setEnableDescheduler(!enableDescheduler)}
+            >
+              <ListItemIcon>
+                <CalendarMonth />
+              </ListItemIcon>
+              <ListItemText primary={'Descheduler'} />
+              <Checkbox
+                edge="end"
+                checked={enableDescheduler}
+                onChange={() => setEnableDescheduler(!enableDescheduler)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableLinker(!enableLinker)}>
+              <ListItemIcon>
+                <Build />
+              </ListItemIcon>
+              <ListItemText primary={'Linker'} />
+              <Checkbox
+                edge="end"
+                checked={enableLinker}
+                onChange={() => setEnableLinker(!enableLinker)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableStates(!enableStates)}>
+              <ListItemIcon>
+                <TableChart />
+              </ListItemIcon>
+              <ListItemText primary={'State Table'} />
+              <Checkbox
+                edge="end"
+                checked={enableStates}
+                onChange={() => setEnableStates(!enableStates)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableCamera(!enableCamera)}>
+              <ListItemIcon>
+                <CameraIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Camera'} />
+              <Checkbox
+                edge="end"
+                checked={enableCamera}
+                onChange={() => setEnableCamera(!enableCamera)}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => setEnableFirmware(!enableFirmware)}>
+              <ListItemIcon>
+                <RocketLaunch />
+              </ListItemIcon>
+              <ListItemText primary={'Firmware Flash'} />
+              <Checkbox
+                edge="end"
+                checked={enableFirmware}
+                onChange={() => setEnableFirmware(!enableFirmware)}
+              />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <Divider />
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        {connected ? (
+          <Grid
+            container
+            spacing={3}
+            direction="row"
+            sx={{
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+            }}
+          >
+            {enableTelemetry &&
+              Object.entries(telemetry)
+                .sort(([a], [b]) => a.localeCompare(b))
+                .map(([key, data]) => (
+                  <Grid size={{ xs: 12, md: 4 }} key={`grid-telemetry-${key}`}>
+                    <TelemetryChart label={key} data={data} />
+                  </Grid>
+                ))}
+            {enableMessages &&
+              sockets.map((s) => (
+                <Grid key={`grid-socket-${s}`} size={{ xs: 12, md: 8 }}>
+                  <DebugMessageBoard
+                    socket={s}
+                    enableSerialInput={s === 'microcontroller'}
+                  />
+                </Grid>
+              ))}
+            <Grid size={{ xs: 12, md: 8 }}>
+              <MessageDataGrid socket="microcontroller" />
+            </Grid>
+            {enableTree && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <DeviceTree />
+              </Grid>
+            )}
+            {enablePinger && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Pinger />
+              </Grid>
+            )}
+            {enableDescheduler && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Descheduler />
+              </Grid>
+            )}
+            {enableLinker && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Linker />
+              </Grid>
+            )}
+            {enableStates && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <StateTable />
+              </Grid>
+            )}
+            {enableStates &&
+              Object.entries(states).map(([key, value], idx) => (
+                <Grid size={{ xs: 12, md: 4 }} key={`grid-state-${idx}`}>
+                  <StatePanel label={key} value={value} />
+                </Grid>
+              ))}
+            {enableScheduler && (
+              <Grid size={{ xs: 'grow', md: 'grow' }}>
+                <Scheduler />
+              </Grid>
+            )}
+            {enableDevices &&
+              devicesFlat.map(([deviceId, fqa]) => (
+                <Grid
+                  key={`grid-device-${deviceId}-${fqa}`}
+                  size={{ xs: 12, md: 4 }}
+                >
+                  <Device deviceId={deviceId} fqa={fqa} />
+                </Grid>
+              ))}
+            {enableCamera && (
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Camera />
+              </Grid>
+            )}
+            {enableFirmware && (
+              <Grid size={{ xs: 12 }}>
+                <Firmware />
+              </Grid>
+            )}
+          </Grid>
+        ) : (
+          <Box
+            sx={{
+              width: '100vw',
+              height: '100vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
+      </Box>
+    </Box>
+  );
+};
+
+export default Dashboard;

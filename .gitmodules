@@ -1,0 +1,3 @@
+[submodule "software/microcontroller/lib/I2CIP"]
+	path = software/microcontroller/lib/I2CIP
+	url = https://github.com/PeaPodTechnologies/I2CIP

@@ -1,0 +1,26 @@
+# Dependency directories (prevent host modules from entering build context)
+node_modules
+**/node_modules
+
+# macOS metadata files
+.DS_Store
+._*
+.AppleDouble
+
+# VCS and editor metadata
+.git
+.gitmodules
+.vscode
+
+# Local build/test artifacts
+out
+out.tar.gz
+.next
+coverage
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env
+.env.*
