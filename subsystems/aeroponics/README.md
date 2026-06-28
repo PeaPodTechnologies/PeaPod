@@ -58,7 +58,7 @@ Refer to [the purchase BOM](./hardware/aeroponics_bom_purchase.csv).
 
 **Validation**: The pump is able to prime the system and expel all air.
 
-**Failure Protocol**: Ensure the system is level and the system input is submerged. Ensure the pump is recieving power.
+**Failure Protocol**: Ensure the system is level and the system input is submerged. Ensure the pump is receiving power.
 
 ## Pressurization
 
@@ -68,14 +68,14 @@ Refer to [the purchase BOM](./hardware/aeroponics_bom_purchase.csv).
 
 **Failure Protocols** (in increasing order of severity): 
 
-1. *Leak*: Disassemble the failed connection(s). Remove existing Teflon. Reapply Teflon, and reassemble the connection(s). Ensure Teflon is applied properly, and each connection is appropriately secured.
+1. *Leak*: Depressurize the system. Disassemble the failed connection(s). Remove existing Teflon. Reapply Teflon, and reassemble the connection(s) tightly. Ensure Teflon is applied properly, and each connection is appropriately secured.
 2. *Component Failure*: Replace the failed component. Repeat Assembly.
 
 ## Nozzle Function
 
 **Protocol**: Same as [Priming](#priming).
 
-**Validation**: Nozzle flow is uninterrupted and consistent in rate over time. Droplet size is as expected and consistent, both over time and across the range of drople.
+**Validation**: Nozzle flow is uninterrupted and consistent in rate over time. Droplet size is as expected and consistent, both over time and across the range of droplets.
 
 **Failure Protocol**: N/A
 
@@ -83,7 +83,7 @@ Refer to [the purchase BOM](./hardware/aeroponics_bom_purchase.csv).
 
 **Protocol**: Same as [Priming](#priming).
 
-**Validation**: Pump shuts off automatically approximately one minute after priming is complete. Nozzle flow is uninterrupted. Pump turns back on automatically approximately one minute after having shut off.
+**Validation**: Pump shuts off automatically approximately one minute after priming is complete once pressurization is achieved. Nozzle flow is uninterrupted. Pump turns back on automatically to maintain pressure.
 
 **Failure Protocol**: N/A
 

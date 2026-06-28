@@ -1,7 +1,9 @@
 # PeaPod Subsystems
 
-All subsystems will follow the same folder structure (where applicable):
+All subsystems will follow the same structure:
 
+- `README.md` - Detailed instructions for fabrication and purchasing, list of materials incl. tools, assembly instructions with graphics, testing and validation protocol, method of operation, and expected results.
+- `REQUIREMENTS.md`
 - `assets/` - various graphical/etc. assets (diagrams, etc. excluding pictures of schematics/PCB layouts)
 - `hardware/`
 - `software/`
