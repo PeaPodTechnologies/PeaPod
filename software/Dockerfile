@@ -1,0 +1,43 @@
+# ---- deps (Yarn) ----
+FROM --platform=$BUILDPLATFORM node:20-bookworm-slim AS peapodos
+WORKDIR /app
+
+# Tools needed for node-gyp native addons (like epoll)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates curl python3 python3-venv make g++ \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL -o get-platformio.py https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py && python3 get-platformio.py
+
+RUN corepack enable
+
+COPY package*.json ./
+COPY yarn.lock ./
+RUN yarn install --frozen-lockfile --non-interactive --network-timeout 100000
+
+COPY . .
+
+RUN yarn buildapi
+RUN npx next build
+
+RUN rm -f /app/.next/standalone/server.js
+RUN rm -rf /app/.next/standalone/node_modules
+RUN rm -f /app/.next/standalone/package.json
+
+RUN mkdir -p /tmp/export/.next/static /tmp/export/api /tmp/export/microcontroller \
+  && cp -a /app/.next/standalone/. /tmp/export/ \
+  && cp -a /app/.next/static/. /tmp/export/.next/static/ \
+  && cp -a /app/public /tmp/export/public \
+  && cp -a /app/api/*.mjs /tmp/export/api/ \
+  && cp -a /app/server.mjs /tmp/export/ \
+  && cp -a /app/microcontroller /tmp/export/microcontroller \
+  && cp -a /app/.env /tmp/export/.env \
+  && cp -a /app/node_modules /tmp/export/node_modules \
+  && cp -a /app/package.json /tmp/export/package.json \
+  && cp -a /app/yarn.lock /tmp/export/yarn.lock
+
+RUN tar -czf /app/out.tar.gz -C /tmp/export .
+
+FROM scratch AS export
+
+COPY --from=peapodos /app/out.tar.gz /out.tar.gz

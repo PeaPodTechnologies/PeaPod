@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /projects/{projectId} {
+      allow read, write: if request.auth.uid in resource.data.owners;
+    }
+    match /projects/{projectId}/runs/{runId} {
+      allow read, write: if resource.data.owner == request.auth.uid;
+    }
+    match /projects/{projectId}/{subdoc=**} {
+      allow read, write: if request.auth.uid in get(/databases/$(database)/documents/projects/$(projectId)).data.owners;
+    }
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId;
+      allow write: if false; //Cloud Functions only
+    }
+    match /users/{userId}/{subdoc=**} {
+      allow read: if request.auth.uid == userId;
+      allow write: if false; //Cloud Functions only
+    }
+    match /devices/{deviceId=**} {
+      allow read: if resource.data.owner == request.auth.uid;
+      allow write: if false; //Cloud Functions only
+    }
+  }
+}

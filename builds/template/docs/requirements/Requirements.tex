@@ -1,0 +1,210 @@
+\documentclass{../../../../docs/tex/report}
+\usepackage{setspace} % Setting line spacing
+\usepackage{ulem} % Underline
+\usepackage{caption} % Captioning figures
+\usepackage{subcaption} % Subfigures
+\usepackage{geometry} % Page layout
+\usepackage{multicol} % Columned pages
+\usepackage{array,etoolbox}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[toc,page]{appendix}
+
+% Page layout (margins, size, line spacing)
+\geometry{letterpaper, left=1in, right=1in, bottom=1in, top=1in}
+\setstretch{1.5}
+
+% Headers
+\pagestyle{fancy}
+\lhead{PeaPod for XYZ - Requirements}
+\rhead{PeaPod Technologies Inc.}
+
+% Metric counter, referencing commands
+\newcounter{metricnumber}
+\setcounter{metricnumber}{1}
+\newcommand{\metricrow}{M\arabic{metricnumber}}
+\newcommand{\mlabel}[1]{\addtocounter{metricnumber}{-1}\refstepcounter{metricnumber}\label{#1}\addtocounter{metricnumber}{1}}
+\newcommand{\mref}[1]{\hyperref[#1]{M\ref{#1}}}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1.2cm}
+
+        \textbf{\large{PeaPod for XYZ - Requirements}}
+
+        \vspace{0.5cm}
+
+        Outlining the Implementation-Specific Requirements for a PeaPod XYZ\\
+
+        \textit{Extends: \textbf{PeaPod - Requirements}}
+
+        \vfill
+        \input{../../../../docs/tex/documentation/Namecard.tex}
+        \vspace{1.25cm}
+
+        Revision 0.1\\
+        PeaPod Technologies Inc.\\
+        March 31st, 2024
+
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{plain}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{Purpose}
+\label{sec:purpose}
+
+The purpose of this document is to outline both the category requirements (Section \ref{sec:requirements}) for an implementation of the PeaPod framework (See \textit{PeaPod - Requirements}) that XYZ and the scoped requirements (Section \ref{sec:scope}) for the design being proposed by PeaPod Technologies Inc.: \textbf{PeaPod for XYZ}.
+
+\subsection{Design Paradigm}
+\label{sec:structure}
+
+\input{../../../../docs/tex/documentation/DesignParadigm.tex}
+
+\clearpage
+
+
+\subsection{Scope and Justification}
+\label{sec:scope}
+
+\begin{enumerate}[label=SC\arabic*., ref=SC\arabic*]
+    \item \label{sc:1} Lorem ipsum dolor sit amet, consectetur adipiscing elit:
+    \begin{enumerate}[label=SC3\alph*., ref=SC3\alph*]
+        \item \label{sc:1a} Sed auctor, nunc nec ultricies ultricies, nunc nunc ultricies nunc, nec ultricies nunc nunc nec.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Definitions}
+\label{sec:definitions}
+
+A number of useful definitions have emerged from the above scoping:
+\begin{enumerate}
+    \item \textbf{ABC} - Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+\end{enumerate}
+
+\clearpage
+
+
+\section{Framing}
+\label{sec:framing}
+
+\subsection{Problem Statement}
+\label{sec:opportunity}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, nunc nec ultricies ultricies, nunc nunc ultricies nunc, nec ultricies nunc nunc nec.
+
+\subsection{Solution Requirements}
+\label{sec:requirements}
+
+The following are the overall challenge requirements compiled from A, B, and an excerpt from C:
+\begin{enumerate}[label=R\arabic*., ref=R\arabic*]
+    \item \label{r:1} \textbf{Must} lorem ipsum dolor sit amet, consectetur adipiscing elit:
+    \begin{enumerate}[ref=R1\alph*]
+        \item \label{r:1a} \textbf{Should} lorem ipsum dolor sit amet, consectetur adipiscing elit;
+    \end{enumerate}
+\end{enumerate}
+
+% Change line spacing for the more list-heavy sections
+\setstretch{1}
+\subsection{Stakeholders and Values}
+\label{sec:stakeholders}
+
+\begin{enumerate}[label=S\arabic*., ref=S\arabic*]
+    \item \label{s:1} A - Values, etc.
+    \item \label{s:2} B - DfX, etc.
+\end{enumerate}
+
+\clearpage
+
+
+\subsection{Problem-Solving Goals}
+\label{sec:goals}
+
+% High-Level
+\begin{multicols}{2}[]
+    \begin{enumerate}[label=HL\arabic*., ref=HL\arabic*]
+        \item \label{hl:output} Goal ABC \hfill (\ref{s:1}, \ref{r:1}, \ref{r:1a})
+    \end{enumerate}
+\end{multicols}
+
+\subsection{Solution Objectives}
+\label{sec:objectives}
+
+% Low-Level
+\begin{multicols}{2}[]
+    \begin{enumerate}[label=LL\arabic*., ref=LL\arabic*]
+        \item \label{ll:output_variety} Objective ABC \hfill (\ref{hl:output})
+    \end{enumerate}
+\end{multicols}
+
+\clearpage
+
+
+\subsection{Metrics}
+\label{sec:metrics}
+
+\begin{tabular}{| @{\makebox[2.4em][c]{\metricrow}} | p{8.7cm} | p{5.9cm} |} 
+    \hline
+    \multicolumn{1}{| @{\makebox[2.4em][c]{\textbf{\#}}} | l |}{\textbf{Metric}} & \textbf{Units}\\ 
+    \hline
+    Metric ABC \mlabel{m:constraint} \hfill (\ref{ll:output_variety}) & Yes/No \\
+    Metric XYZ \mlabel{m:criteria} \hfill (\ref{ll:output_variety}) & 0 - 100\% \\
+    \hline
+\end{tabular}
+
+\clearpage
+
+
+\subsection{Constraints}
+\label{sec:constraints}
+
+\begin{tabular}{|l|p{14.35cm}|}
+    \hline
+    \textbf{Metric} & \textbf{Constraint \hfill Justification} \\
+    \hline
+    \mref{m:constraint} & Yes \hfill (\ref{s:1})\\
+    \hline
+\end{tabular}
+
+\subsection{Criteria}
+\label{sec:criteria}
+
+\begin{tabular}{|l|p{14.35cm}|}
+    \hline
+    \textbf{Metric} & \textbf{Criteria \hfill Justification} \\
+    \hline
+    \mref{m:criteria} & Should Maximize \hfill (\ref{r:1a}) \\
+    \hline
+\end{tabular}
+
+% Refer to Appendix \ref{sec:assessment} for prototype verification Assessment Criteria (categories, weights, etc.).
+
+\newpage
+
+\section{Reference Designs}
+
+% -------- TEMPLATE --------
+% Introduction - Project goal, scope, differences from this project
+% Graphics - Design drawings/photos, etc.
+% Analysis - Rank the design across each of our metrics
+    % TODO: Metrics might be too much, maybe just qualitative analysis based on LLOs?
+
+\subsection{Reference Design XYZ}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, nunc nec ultricies ultricies, nunc nunc ultricies nunc, nec ultricies nunc nunc nec.
+
+% \newpage
+
+% % References
+% \bibliographystyle{IEEEtran}
+% \bibliography{references}
+
+\end{document}

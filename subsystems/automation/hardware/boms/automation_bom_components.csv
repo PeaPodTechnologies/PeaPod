@@ -1,0 +1,12 @@
+﻿Index,Manufacturer Part Number,Manufacturer Name,Description,Requested Quantity 1,Pack Quantity 1,Pack Type 1,Digi-Key Part Number 1,Unit Price 1,Extended Price 1,Minimum Order Quantity 1,Datasheet,Reference Designator,Product Notes
+1,61304021121,Würth Elektronik,CONN HEADER VERT 40POS 2.54MM,1,1,Bag,732-5310-ND,2.79000,$2.79,1,https://www.we-online.com/catalog/datasheet/61304021121.pdf,U1,
+2,1294,Adafruit Industries LLC,MEMORY CARD SDHC 8GB CLASS 4,1,1,Bulk,1528-1294-ND,39.49000,$39.49,1,,,
+3,SC1176,Raspberry Pi,SBC 1.0GHZ 4 CORE 512MB RAM,1,1,Bulk,2648-SC1176-ND,21.94000,$21.94,1,https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf,U1,
+4,742-10010-00300,CNC Tech,CBL HDMI-A M TO HDMI-C M 3M SHLD,1,1,Box,1175-1676-ND,29.00000,$29.00,1,https://www.cnctech.us/pdfs/742-10010-00300.pdf,,
+5,5400,Adafruit Industries LLC,ESP32 FEATHER V2 STEMMA QT,1,1,Bulk,1528-5400-ND,31.11000,$31.11,1,,U2,
+6,61301611121,Würth Elektronik,CONN HEADER VERT 16POS 2.54MM,1,1,Bag,732-5327-ND,1.33000,$1.33,1,https://www.we-online.com/components/products/datasheet/61301611121.pdf,U2,
+7,61301211121,Würth Elektronik,CONN HEADER VERT 12POS 2.54MM,1,1,Bag,732-5323-ND,0.79000,$0.79,1,https://www.we-online.com/components/products/datasheet/61301211121.pdf,U2,
+8,2185,Adafruit Industries LLC,CABLE A PLUG TO MCR B PLUG 6.56',1,1,Bulk,1528-2185AD-ND,7.72000,$7.72,1,,,
+9,2992,Adafruit Industries LLC,OTG MICRO-USB AND ETHERNET HUB,1,1,Bulk,1528-1615-ND,21.87000,$21.87,1,https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/903/2992_Web.pdf,,
+10,1994,Adafruit Industries LLC,5V 2A SWITCHING POWER SUPPLY W/,1,1,Bulk,1528-1994-ND,13.38000,$13.38,1,,,
+11,922,Adafruit Industries LLC,BLACK USB KEYBOARD,1,1,Bulk,1528-922-ND,73.06000,$73.06,1,,,
