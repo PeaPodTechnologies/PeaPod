@@ -1,9 +1,9 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2022-03-25T00:40:22Z",
+        "CreationDate": "2026-06-28T20:18:27Z",
         "GenerationSoftware": {
-            "Application": "EAGLE",
+            "Application": "Fusion Electronics",
             "Vendor": "Autodesk",
             "Version": "9.7.0"
         },
@@ -13,12 +13,12 @@
         "BoardThickness": 1.57,
         "LayerNumber": 2,
         "Name": {
-            "ProjectId": "Lighting Driver Board (PCB) v24"
+            "ProjectId": "LED Strip (BRD) v7"
         },
         "Owner": "Jayden Lefebvre <jayden.lefebvre@peapodtech.com>",
         "Size": {
-            "X": 170.815,
-            "Y": 39.116
+            "X": 125,
+            "Y": 10
         }
     }
 }
