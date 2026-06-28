@@ -1,34 +1,34 @@
 # PeaPod Lighting Subsystem
 
-## Purchasing
+# Assembly
 
-<!-- TODO: Notes on purchasing in main README (i.e. suppliers, process) -->
+## Materials
 
-- PCBs - `./hardware/boms/lighting_purchase_bom.csv`
-- Lighting Cables - `./hardware/boms/lighting_component_bom.csv`
-- 5x Lighting LED Board BoM - `./hardware/led/boms/lighting_led_component_bom.csv`
-- 1x Lighting Driver Board BoM - `./hardware/driver/boms/lighting_power_component_bom.csv`
+### Purchased
 
-## Assembly
+<!-- TODO: Cables?? -->
 
-<!-- TODO: Photos for board mount positioning, PCB orientation -->
-<!-- TODO: Tools and materials needed? -->
+See `./hardware/lighting_bom_purchase.csv` for the purchase bill of materials. See `./hardware/gerber/` for PCB manufacturing files (NOTE: STENCIL NECESSARY). See `./hardware/lighting_bom_components.csv` for the electronic components bill of materials (DigiKey).
 
-1. Assemble all PCBs (see BoMs for reference designators)
-2. Fasten LED and driver board mounts to lighting tray frame
-3. Fasten LED and driver boards to appropriate board mounts, ensuring proper LED board orientation for daisy-chaining
-4. Connect all cables:
-   1. Daisy-chained LED board power cables (driver `+` -> LED board 1 `+`, LED board 1 `-` -> LED board 2 `+`, ..., LED board 5 `-` -> driver `-`)
-   2. Power board DC jack (+48VDC)
-   3. Signal cable (driver `SIGNAL` -> motherboard `LIGHTING`)
+### Tools
+
+Required:
+- Soldering Iron, Solder, and Flux
+- Wire Strippers (20-30 AWG)
+- Reflow Oven (or hot air rework station) and solder paste
+- Putty Scraper
+
+Optional, but recommended:
+- Helping Hands (for soldering)
+- Multimeter (for testing connections)
+- Oscilloscope (for testing signal integrity)
+- Luminous Flux Meter (for measuring light output)
+
+## Instructions
+
+1. Using a putty scraper, apply solder paste to the PCB using the stencil.
+2. Place the surface-mount components (signal connector, resistor, and LEDs) on the PCB according to the silkscreen.
+3. Reflow the PCB in a reflow oven (or use a hot air rework station) to solder the surface-mount components.
+4. Solder the through-hole components (power connector and LED driver) to the PCB according to the silkscreen.
 
 ## Testing
-
-<!-- TODO: Single-board and channel-control testing, integration with PIO unit tests -->
-<!-- TODO: Troubleshooting? -->
-
-### Driver Board Power
-
-1. Disconnect cables from driver board except DC jack
-2. Power on the power supply (+48VDC)
-3. Test the voltage difference between the VCC and GND test points using a voltmeter
