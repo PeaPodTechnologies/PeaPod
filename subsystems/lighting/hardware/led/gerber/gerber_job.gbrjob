@@ -1,9 +1,9 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2021-11-26T06:52:41Z",
+        "CreationDate": "2026-06-28T20:18:27Z",
         "GenerationSoftware": {
-            "Application": "EAGLE",
+            "Application": "Fusion Electronics",
             "Vendor": "Autodesk",
             "Version": "9.7.0"
         },
@@ -13,12 +13,12 @@
         "BoardThickness": 1.57,
         "LayerNumber": 2,
         "Name": {
-            "ProjectId": "LED Board (PCB) v16"
+            "ProjectId": "LED Strip (BRD) v7"
         },
-        "Owner": "Jayden Lefebvre <jayden.lefebvre@infinitytechnology.ca>",
+        "Owner": "Jayden Lefebvre <jayden.lefebvre@peapodtech.com>",
         "Size": {
-            "X": 44.45,
-            "Y": 63.5
+            "X": 125,
+            "Y": 10
         }
     }
 }

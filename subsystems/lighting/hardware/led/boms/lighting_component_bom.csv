@@ -1,0 +1,6 @@
+﻿Index,Manufacturer Part Number,Manufacturer Name,Description,Requested Quantity 1,Pack Quantity 1,Pack Type 1,Digi-Key Part Number 1,Unit Price 1,Extended Price 1,Minimum Order Quantity 1,Datasheet,Reference Designator,Product Notes
+1,LDD-350L,MEAN WELL USA Inc.,LED DRIVER CC BUCK 2-32V 350MA,1,1,Tube,1866-3109-ND,4.68000,$4.68,1,https://www.meanwellusa.com/upload/pdf/LDD-L/LDD-L-spec.pdf,M1,
+2,XPGDWT-01-0000-00ME2,Cree LED,LED XLAMP COOL WHITE 5700K SMD,8,8,Cut Tape (CT),XPGDWT-01-0000-00ME2CT-ND,2.34000,$18.72,1,https://downloads.cree-led.com/files/ds/x/XLamp-XPG3.pdf,LED1-8,
+3,5055670271,Molex,CONN HEADER SMD R/A 2POS 1.25MM,1,1,Cut Tape (CT),WM17038CT-ND,1.41000,$1.41,1,https://www.molex.com/pdm_docs/ps/5055650000-000.pdf,J1,
+4,0436500201,Molex,CONN HEADER R/A 2POS 3MM,1,1,Tray,WM1865-ND,1.65000,$1.65,1,https://tools.molex.com/pdm_docs/ps/PS-43650.pdf,J2,
+5,RC0603FR-0710KL,YAGEO,RES 10K OHM 1% 1/10W 0603,1,1,Cut Tape (CT),311-10.0KHRCT-ND,0.16000,$0.16,1,https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L,R1,
