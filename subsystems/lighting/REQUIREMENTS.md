@@ -1,8 +1,8 @@
-# 7. Lighting Subsystem Requirements Outline
+# Lighting Subsystem Requirements
 
 ## 1. Purpose
 
-The Lighting Subsystem shall provide programmable plant-growth lighting with controlled intensity, spectrum, photoperiod, and spatial distribution suitable for reproducible growth trials and food production.
+The lighting subsystem shall provide programmable plant-growth lighting with controlled intensity, spectrum, photoperiod, and spatial distribution suitable for reproducible phenotype dataset generation and food production.
 
 ## 2. Scope
 
@@ -58,80 +58,41 @@ The Lighting Subsystem shall provide programmable plant-growth lighting with con
 
 ### Interfaces to Other Subsystems
 
-* Automation: commands, schedules, telemetry.
+* Automation: commands, schedules, telemetry, imaging.
 * Housing: mounting, reflectivity, light isolation.
 * Air Thermoregulation: heat load coordination.
 * Humidification/Dehumidification: condensation protection.
-* Aeroponics: crop growth dependency but no direct control responsibility.
 
 ## 5. Operating Modes
 
-* Off
-* Standby
-* Active Photoperiod
-* Dimming/Ramp
-* Calibration
-* Maintenance
-* Fault
-* Safe-Off
+* LIGHT-MODE-001: Off
+* LIGHT-MODE-002: Standby
+* LIGHT-MODE-003: Active
+* LIGHT-MODE-004: Sanitization
+* LIGHT-MODE-005: Imaging
+* LIGHT-MODE-006: Fault
 
-## 6. Functional Requirements
+## 6. Requirements
 
-* LIGHT-FUNC-001: The subsystem shall provide controlled light to the plant canopy.
-* LIGHT-FUNC-002: The subsystem shall support programmable photoperiods.
-* LIGHT-FUNC-003: The subsystem shall support programmable light intensity.
-* LIGHT-FUNC-004: The subsystem shall support programmable spectral channels if multi-channel lighting is included.
-* LIGHT-FUNC-005: The subsystem shall report commanded and active lighting states.
-* LIGHT-FUNC-006: The subsystem shall prevent unsafe light operation during maintenance access if required.
-* LIGHT-FUNC-007: The subsystem shall expose documented replaceable lighting components.
-* LIGHT-FUNC-008: The subsystem shall define its heat output or thermal load for the Air Thermoregulation Subsystem.
+* LIGHT-REQ-001: MUST provide controlled light to the plant canopy.
+* LIGHT-REQ-002: MUST support programmable photoperiods (on/off).
+* LIGHT-REQ-003: MUST support programmable light intensity (dimming).
+* LIGHT-REQ-004: MUST support programmable spectral channels.
+* LIGHT-REQ-005: SHOULD report commanded and active lighting states.
+* LIGHT-REQ-006: SHOULD support sanitization via disinfection light if allocated.
+* LIGHT-REQ-007: SHOULD support imaging light if allocated.
+* LIGHT-REQ-008: MUST expose documented swappable lighting components.
+* LIGHT-REQ-009: SHOULD define its heat output or thermal load for the Air Thermoregulation Subsystem.
 
-## 7. Performance Requirements
+## 7. Criteria
 
-Define:
-
-* PPFD range at canopy height;
-* spectral wavelength/channel range;
-* intensity stability;
-* spatial uniformity;
-* dimming resolution;
-* photoperiod timing accuracy;
-* ramp-rate capability;
-* maximum power draw;
-* energy efficiency;
-* thermal output;
-* expected LED lifetime;
-* calibration interval.
-
-## 8. Safety Requirements
-
-* prevent eye/skin exposure to hazardous light levels during maintenance;
-* prevent electrical hazards in high-humidity conditions;
-* prevent overheating of light drivers or LED boards;
-* fail lights off on critical fault;
-* prevent unsafe UV operation unless interlocked;
-* log lighting faults.
-
-## 9. Data Requirements
-
-Required logs:
-
-* photoperiod start/stop timestamps;
-* commanded intensity;
-* commanded spectral channel values;
-* measured intensity if available;
-* lighting power state;
-* estimated power consumption;
-* thermal derating events;
-* fault events;
-* calibration records.
-
-## 10. Verification
-
-* Measure PPFD range.
-* Measure spatial uniformity.
-* Measure spectral output or channel response.
-* Test photoperiod timing.
-* Test dimming resolution.
-* Test safe-off behavior.
-* Inspect replaceability and interface documentation.
+* LIGHT-CRIT-001: PPFD range at canopy height;
+* LIGHT-CRIT-002: spectral wavelength/channel range;
+* LIGHT-CRIT-003: intensity stability;
+* LIGHT-CRIT-004: spatial uniformity;
+* LIGHT-CRIT-005: dimming resolution;
+* LIGHT-CRIT-006: photoperiod (on/off) timing accuracy;
+* LIGHT-CRIT-007: maximum power draw;
+* LIGHT-CRIT-008: energy efficiency;
+* LIGHT-CRIT-009: thermal output;
+* LIGHT-CRIT-010: expected LED lifetime.

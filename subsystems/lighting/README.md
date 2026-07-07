@@ -1,16 +1,23 @@
 # PeaPod Lighting Subsystem
 
-# Assembly
+See `./REQUIREMENTS.md` for the subsystem requirements.
 
-## Materials
+Provides controlled light to the plant canopy and supports programmable photoperiods (on/off), light intensity (dimming), and spectral channel control via Adafruit PCA9685 PWM dimming of MEAN WELL LDD-L constant-current LED drivers powering CREE XLAMP LEDs with a variety of spectra, including PAR and white for imaging. Power regulator, I2C cables, and PCBs are documented swappable components.
 
-### Purchased
+# Production
+
+## Assembly
+
+### Bills of Materials
 
 <!-- TODO: Cables?? -->
 
 See `./hardware/lighting_bom_purchase.csv` for the purchase bill of materials. See `./hardware/gerber/` for PCB manufacturing files (NOTE: STENCIL NECESSARY). See `./hardware/lighting_bom_components.csv` for the electronic components bill of materials (DigiKey).
 
-### Tools
+1. 1 x Lighting BOM Components per led board
+2. 1 x Lighting BOM Purchase per led board
+
+### Tools and Equipment
 
 Required:
 - Soldering Iron, Solder, and Flux
@@ -31,9 +38,9 @@ Optional, but recommended:
 3. Reflow the PCB in a reflow oven (or use a hot air rework station) to solder the surface-mount components.
 4. Solder the through-hole components (power connector and LED driver) to the PCB according to the silkscreen.
 
-# Testing
+## Testing
 
-## Power Test
+### Power Test
 
 **Protocol**: Connect the 24V power supply (+24VDC and GND) to the power connector on the PCB.
 
@@ -45,7 +52,7 @@ Optional, but recommended:
 
 2. *Incorrect Voltage Readings*: Check the power supply connections and ensure the PCB is properly soldered.
 
-## LED Light Test
+### LED Light Test
 
 **Protocol**: Connect the 24V power supply (+24VDC and GND) to the power connector on the PCB. Flash an Arduino-compatible microcontroller with the `./software/tests/Test_SingleWave/Test_SingleWave.ino` sketch. Connect the microcontroller to the signal connector on the PCB (Digital Pin 3 and GND). Observe the behavior of the LEDs.
 
