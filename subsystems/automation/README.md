@@ -4,35 +4,71 @@
 
 ## Materials
 
-### Purchased
-
-See `./hardware/automation_bom_purchase.csv` for the purchase bill of materials. See `./hardware/gerber/` for PCB manufacturing files. See `./hardware/automation_bom_components.csv` for the electronic components bill of materials (DigiKey).
-
 ### Tools
 
 Required:
 - Soldering Iron, Solder, and Flux
 - Wire Strippers (20-30 AWG)
+- 3D-Printer and PETG filament (or printing service)
 
 Optional, but recommended:
 - Helping Hands (for soldering)
 - Multimeter (for testing connections)
 - Oscilloscope (for testing signal integrity)
 
+### Purchasing
+
+See `./hardware/automation_bom_purchase.csv` for the purchase bill of materials. See `./hardware/gerber/` for PCB manufacturing files. See `./hardware/automation_bom_components.csv` for the electronic components bill of materials (DigiKey).
+
+- 1x Automation Subsystem Motherboard PCB
+- 1x Raspberry Pi Zero 2 W with 2x stacking headers, and:
+  - 1x Micro-SD card with adapter
+  - 1x Micro-USB power supply
+  - 1x Mini-HDMI to HDMI adapter
+  - 1x micro-USB USB A hub
+  - 1x USB A keyboard
+  - 1x Raspberry Pi Camera Module with 1x coupling board and cables
+- 1x Adafruit ESP32 Feather V2 with 2x stacking headers and 1x USB C-to-A cable
+- 1x Adafruit 4x20-character LCD screen with 1x Adafruit LCD backpack
+- 1x Adafruit Stemma QT Rotary Encoder Breakout with 1x knob
+- 1x Adafruit Stemma QT 3V to 5V Level Booster Breakout
+- 3x Adafruit Stemma QT 5-Port Hub
+- 1x Adafruit 7-Segment Display Featherwing
+- 10x Adafruit Stemma QT JST SH 4-pin cables
+- 8x Adafruit Ethernet Round Panel-Mount Extension Cables
+
+### Fabrication
+
+See `./hardware/fabrication/` for 3D-printed parts.
+
+- 1x Automation Module Case (3D-printed)
+- 1x Automation Module Case Lid (3D-printed)
+
 ## Instructions
 
+<!-- TODO: Perma-proto -->
+
 1. Solder stacking headers to the motherboard: one 2x20 at U1 for the Raspberry Pi Zero 2 W, and one each 1x16 and 1x12 at U2 for the Adafruit ESP32 Feather V2.
-2. Solder 2x20 stacking header pins to the Raspberry Pi Zero 2 W, ensuring the pins are oriented to connect with the motherboard headers.
-3. Solder 1x16 and 1x12 stacking header pins to the Adafruit ESP32 Feather V2 (if not pre-assembled), ensuring the pins are oriented to connect with the motherboard headers.
-4. Prepare the micro-SD card according to the instructions in `/software/README.md` (using the SD card adapter). Insert the micro-SD card into the Raspberry Pi Zero 2 W.
-5. Insert the Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2 into their respective headers on the motherboard, ensuring proper orientation (match footprint to the silkscreen).
-6. Flash the Adafruit ESP32 Feather V2 with the `/software/microcontroller/` firmware according to the instructions in `/software/README.md`.
-7. Assemble all subsystem modules in accordance with their instructions. Cut and strip four Qwiic wires, making eight one-ended connectors. Connect the modules to the Adafruit ESP32 Feather V2 I2C port using Adafruit Qwiic cables.
-8. Optional: Mount the Adafruit 7-Segment Display Featherwing directly to the Adafruit ESP32 Feather V2 stacking headers.
-9. Attach the small end of the orange-colored camera flex cable to the Raspberry Pi Zero 2 W camera port. Attach the large end to the coupling board. Attach one end of the long camera flex cable to the coupling board, and the other end to the camera module. Ensure that all cables are oriented such that the metal connectors on the cable are facing the PCB.
-10. Connect a display to the mini-HDMI port on the Raspberry Pi Zero 2 W.
-11. Connect the USB hub to the micro-USB port labelled "USB" on the Raspberry Pi Zero 2 W. Connect the keyboard to the USB hub.
-12. Connect the power supply to the micro-USB port labelled "PWR" on the Raspberry Pi Zero 2 W.
+2. Mount the motherboard to the case using the included M4 screws and standoffs, ensuring the motherboard is oriented such that the USB ports on the silkscreen are facing the case opening.
+3. Solder 2x20 stacking header pins to the Raspberry Pi Zero 2 W, ensuring the pins are oriented to connect with the motherboard headers (chipset up).
+4. Solder 1x16 and 1x12 stacking header pins to the Adafruit ESP32 Feather V2 (if not pre-assembled), ensuring the pins are oriented to connect with the motherboard headers (chipset up).
+5. Prepare the micro-SD card according to the instructions in `/software/README.md` (using the SD card adapter). Insert the micro-SD card into the Raspberry Pi Zero 2 W.
+6. Insert the Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2 into their respective headers on the motherboard, ensuring proper orientation (match footprint to the silkscreen).
+7. Solder the included header pins to the Adafruit 4x20-character LCD screen. Align the Adafruit LCD backpack with the LCD screen header pins as shown [here](https://cdn-learn.adafruit.com/assets/assets/000/001/882/original/lcds___displays_option1_t.jpeg) and solder the backpack to the header pins. Mount the screen to the case lid using the included M3 screws and nuts.
+8. Mount the Adafruit Stemma QT Rotary Encoder Breakout to the case lid using the included M2.5 screws and nuts. Fasten the knob to the rotary encoder.
+9. Connect one end of an Adafruit Stemma QT JST SH 4-pin cable to the Adafruit ESP32 Feather V2 I2C port. Connect the other end to the Adafruit Stemma QT 3V to 5V Level Booster Breakout, and then in series to the Adafruit LTC4311 I2C Extender/Active Terminator using another Stemma QT cable. Connect the active terminator to three Adafruit Stemma QT 5-Port Hubs in series, making a total of ten open active Stemma QT ports.
+10. Cut and strip four Adafruit Stemma QT JST SH 4-pin cables, making eight one-ended connectors. Cut the male ends off of the eight Adafruit Ethernet Round Panel-Mount Extension Cables and strip the RJ45 wires. Solder the stripped wires to the one-ended connectors as follows:
+    - Red (5V) to RJ45 orange pair
+    - Black (GND) to RJ45 brown pair
+    - Blue (SDA) to RJ45 blue pair
+    - Yellow (SCL) to RJ45 green pair
+11. Connect the eight one-ended connectors to eight of the open ports on the 5-Port Hubs. Connect the screen backpack to any open port on the 5-Port Hubs. Connect the Adafruit Stemma QT Rotary Encoder Breakout to any open port on the 5-Port Hubs.
+12. Mount the Adafruit 7-Segment Display Featherwing directly to the Adafruit ESP32 Feather V2 stacking headers.
+13. Flash the Adafruit ESP32 Feather V2 with the `/software/microcontroller/` firmware according to the instructions in `/software/README.md`.
+14. Attach the small end of the orange-colored camera flex cable to the Raspberry Pi Zero 2 W camera port. Attach the large end to the coupling board. Attach one end of the long camera flex cable to the coupling board, and the other end to the camera module. Ensure that all cables are oriented such that the metal connectors on the cable are facing the PCB.
+15. Connect a display to the mini-HDMI port on the Raspberry Pi Zero 2 W.
+16. Connect the USB hub to the micro-USB port labelled "USB" on the Raspberry Pi Zero 2 W. Connect the keyboard to the USB hub.
+17. Connect the power supply to the micro-USB port labelled "PWR" on the Raspberry Pi Zero 2 W.
 
 # Testing
 
@@ -49,7 +85,7 @@ Optional, but recommended:
 
 ## Serial Communication Test
 
-**Protocol**: Execute `yarn buildapi && node serialtest.mjs`. Select the appropriate serial port for the Adafruit ESP32 Feather V2 when prompted. Observe the output in the terminal.
+**Protocol**: Execute `yarn buildapi && node serialtest.mjs`. Select the appropriate serial port for the Adafruit ESP32 Feather V2 when prompted (i.e. `/dev/ttyS0`). Observe the output in the terminal.
 
 **Validation**: The terminal outputs JSON-formatted sensor data at regular intervals (e.g. every second), as sent from the Adafruit ESP32 Feather V2.
 
