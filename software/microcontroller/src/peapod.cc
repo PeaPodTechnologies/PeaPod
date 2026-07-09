@@ -26,7 +26,9 @@ DeviceGroup* PeaPodModule::deviceGroupFactory(const i2cip_id_t& id) {
   if(dg != nullptr) return dg;
   dg = DeviceGroup::create<PCA9685>(id);
   if(dg != nullptr) return dg;
-  dg = DeviceGroup::create<JHD1313>(id);
+  // dg = DeviceGroup::create<JHD1313>(id);
+  // if(dg != nullptr) return dg;
+  dg = DeviceGroup::create<MCP23008>(id);
   if(dg != nullptr) return dg;
   dg = DeviceGroup::create<RotaryEncoder>(id);
   if(dg != nullptr) return dg;

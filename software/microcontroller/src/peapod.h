@@ -15,7 +15,8 @@
 #include <I2CIP.h>
 
 #include <HT16K33.h>
-#include <JHD1313.h>
+// #include <JHD1313.h> // Replaced with LCD-MCP23008
+#include <LCD-MCP23008.h>
 #include <MCP23017.h>
 #include <Nunchuck.h>
 #include <PCA9685.h>

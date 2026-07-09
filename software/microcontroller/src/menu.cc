@@ -5,6 +5,8 @@ using namespace PeaPod::Menu;
 i2cip_errorlevel_t PeaPod::Menu::errlev_lcd = I2CIP_ERR_NONE;
 i2cip_errorlevel_t PeaPod::Menu::errlev_encoder = I2CIP_ERR_NONE;
 
+LCD* PeaPod::Menu::lcd = nullptr;
+
 peapod_menustate_t PeaPod::Menu::_peapod_menustate_default = {
   .menu = PEAPOD_MENU_MAIN,
   .submenu = 0, 
@@ -14,7 +16,7 @@ peapod_menustate_t PeaPod::Menu::_peapod_menustate_default = {
 FSM::State<peapod_menustate_t> PeaPod::Menu::menu_state = FSM::State<peapod_menustate_t>(_peapod_menustate_default, "menu");
 
 i2cip_errorlevel_t PeaPod::Menu::initializeDevices(void) {
-  errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, false, _i2cip_args_io_default, DebugJsonOut);
+  errlev_lcd = nomodule.operator()<MCP23008>(fqa_lcd, false, _i2cip_args_io_default, DebugJsonOut);
   I2CIP_ERR_BREAK(errlev_lcd);
 
   errlev_encoder = nomodule.operator()<Seesaw>(fqa_encoder, false, _i2cip_args_io_default, DebugJsonOut);
@@ -25,9 +27,19 @@ i2cip_errorlevel_t PeaPod::Menu::initializeDevices(void) {
     i2cip_args_io_t args = _i2cip_args_io_default;
     args.g = false;
     args.s = &init;
-    i2cip_jhd1313_args_t rgb = JHD1313::randomRGBLCD();
-    i2cip_args_io_t args_lcd = { .a = nullptr, .s = nullptr, .b = &rgb };
-    errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
+    // i2cip_jhd1313_args_t rgb = JHD1313::randomRGBLCD();
+    // i2cip_args_io_t args_lcd = { .a = nullptr, .s = nullptr, .b = &rgb };
+    // errlev_lcd = nomodule.operator()<MCP23008>(fqa_lcd, true, _i2cip_args_io_default, DebugJsonOut);
+
+    MCP23008** dptr = (MCP23008**)devicetree.operator[](fqa_lcd);
+    if(dptr && *dptr) {
+      MCP23008* mcp = *dptr;
+      lcd = new LCD(mcp);
+
+      errlev_lcd = lcd->set(init, LCD_ARGS_NONE);
+    } else {
+      lcd = nullptr;
+    }
 
     menu_state.addCallback(writeLCDMenu);
   }
@@ -37,7 +49,15 @@ i2cip_errorlevel_t PeaPod::Menu::initializeDevices(void) {
 int32_t encoder_last = 0;
 bool toggle = false;
 
+bool initialized = false;
+
 i2cip_errorlevel_t PeaPod::Menu::update(void) {
+
+  if(!initialized) {
+    writeLCDMenu(false, menu_state.get());
+    initialized = true;
+  }
+
   errlev_encoder = nomodule.operator()<Seesaw>(fqa_encoder, true, _i2cip_args_io_default, DebugJsonOut);
   if(errlev_encoder == I2CIP_ERR_NONE) {
     // Read encoder state and update menu
@@ -60,13 +80,15 @@ i2cip_errorlevel_t PeaPod::Menu::update(void) {
       // TODO: Ping and add
     }
   } else {
-    String init = PEAPOD_MENU_STR_ENCODERFAIL;
-    i2cip_args_io_t args = _i2cip_args_io_default;
-    args.g = false;
-    args.s = &init;
-    i2cip_jhd1313_args_t rgb = JHD1313::randomRGBLCD();
-    i2cip_args_io_t args_lcd = { .a = nullptr, .s = nullptr, .b = &rgb };
-    errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
+    String fail = PEAPOD_MENU_STR_ENCODERFAIL;
+    // i2cip_args_io_t args = _i2cip_args_io_default;
+    // args.g = false;
+    // args.s = &init;
+    // i2cip_jhd1313_args_t rgb = JHD1313::randomRGBLCD();
+    // i2cip_args_io_t args_lcd = { .a = nullptr, .s = nullptr, .b = &rgb };
+    // errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
+    if(lcd != nullptr) errlev_lcd = lcd->set(fail, LCD_ARGS_NONE);
+    else errlev_lcd = I2CIP_ERR_SOFT;
   }
   return errlev_lcd;
 }
@@ -219,14 +241,16 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
       break;
   }
 
-  String display = line1 + "\n" + line2;
+  String display = line1 + "\n" + line2 + "\n\nCurrent Module: " + String(menu.module_idx);
 
   i2cip_args_io_t args = _i2cip_args_io_default;
   args.g = false;
   args.s = &display;
   args.b = nullptr;
 
-  errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
+  // errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
+  if(lcd != nullptr) errlev_lcd = lcd->set(display, LCD_ARGS_NONE);
+  else errlev_lcd = I2CIP_ERR_SOFT;
 }
 
 void PeaPod::Menu::onEncoderPress(void) {
