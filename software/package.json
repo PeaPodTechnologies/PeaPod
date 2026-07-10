@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "1.1.0",
+  "version": "0.2.0",
   "description": "Main software for PeaPod.",
   "main": "./server.mjs",
   "exports": {
@@ -8,7 +8,15 @@
   },
   "files": [
     "api/*.mjs",
-    "microcontroller/lib/I2CIP/lib/",
+    "microcontroller/lib/I2CIP/lib/**/*.c",
+    "microcontroller/lib/I2CIP/lib/**/*.cc",
+    "microcontroller/lib/I2CIP/lib/**/*.cpp",
+    "microcontroller/lib/I2CIP/lib/**/*.h",
+    "microcontroller/lib/I2CIP/lib/**/*.hpp",
+    "microcontroller/lib/I2CIP/lib/**/library.json",
+    "microcontroller/lib/I2CIP/lib/**/library.properties",
+    "microcontroller/lib/I2CIP/lib/**/LICENSE",
+    "microcontroller/lib/I2CIP/lib/**/LICENSE",
     "microcontroller/lib/I2CIP/src/",
     "microcontroller/lib/I2CIP/test/",
     "microcontroller/lib/I2CIP/I2CIP.h",
@@ -36,11 +44,12 @@
     "devsim": "yarn buildapi && yarn startsim",
     "build": "yarn upgrade && yarn buildapi && next build",
     "buildapi": "rm -f api/*.mjs index.mjs server.mjs serialtest.mjs flash.mjs && node api.esbuild.mjs",
-    "prepack": "npm run buildapi",
     "start": "node server.mjs",
     "startsim": "node server.mjs --simulator",
     "lint": "next lint --fix",
-    "deploy_functions": "firebase deploy --only functions"
+    "deploy_functions": "firebase deploy --only functions",
+    "prepublishOnly": "./scripts/pack.sh",
+    "publish": "npm publish ./dist/peapodos.tgz --access public"
   },
   "repository": {
     "type": "git",
@@ -135,6 +144,6 @@
     "access": "public"
   },
   "bin": {
-    "peapodos": "./index.mjs"
+    "peapodos": "node index.mjs"
   }
 }
