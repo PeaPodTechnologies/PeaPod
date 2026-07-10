@@ -45,6 +45,11 @@ dist/**
 out.tar.gz
 
 logs/*.txt
-sample.jpg
+
+*.jpg
+*.jpeg
+*.png
+
+scheduler.json
 
 deploy/**

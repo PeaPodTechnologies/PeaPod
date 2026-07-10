@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Main software for PeaPod.",
   "main": "./server.mjs",
   "exports": {
@@ -8,16 +8,21 @@
   },
   "files": [
     "api/*.mjs",
-    "bin/",
-    "microcontroller/",
+    "microcontroller/lib/I2CIP/lib/",
+    "microcontroller/lib/I2CIP/src/",
+    "microcontroller/lib/I2CIP/test/",
+    "microcontroller/lib/I2CIP/I2CIP.h",
+    "microcontroller/src/",
+    "microcontroller/test/",
+    "microcontroller/platformio.ini",
+    "microcontroller/README.md",
     "public/",
-    "scheduler.json",
-    "sample.jpg",
-    "server.mjs",
-    "serialtest.mjs",
     "flash.mjs",
+    "index.mjs",
+    "serialtest.mjs",
+    "server.mjs",
     ".env.template",
-    "README.md"
+    "*.md"
   ],
   "engines": {
     "node": ">=20"
