@@ -1,17 +1,15 @@
+# Start the PeaPod software stack
+
 services:
   peapodos:
     build:
       context: .
-      dockerfile: Dockerfile.local
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
+      dockerfile: Dockerfile.sim
     restart: always
     networks:
       - network
     stdin_open: true
     tty: true
-    privileged: true
     # command: ["yarn", "start"]
 
   nginx:

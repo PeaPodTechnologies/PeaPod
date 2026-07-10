@@ -1,16 +1,37 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Main software for PeaPod.",
-  "main": "index.js",
+  "main": "./server.mjs",
+  "exports": {
+    ".": "./server.mjs"
+  },
+  "files": [
+    "api/*.mjs",
+    "bin/",
+    "microcontroller/",
+    "public/",
+    "scheduler.json",
+    "sample.jpg",
+    "server.mjs",
+    "serialtest.mjs",
+    "flash.mjs",
+    ".env.template",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "preferGlobal": true,
   "directories": {
     "lib": "lib"
   },
   "scripts": {
     "dev": "yarn buildapi && yarn start",
     "devsim": "yarn buildapi && yarn startsim",
-    "build": "yarn upgrade && next build",
-    "buildapi": "rm -f api/*.mjs server.mjs serialtest.mjs && yarn install && node api.esbuild.mjs",
+    "build": "yarn upgrade && yarn buildapi && next build",
+    "buildapi": "rm -f api/*.mjs index.mjs server.mjs serialtest.mjs flash.mjs && node api.esbuild.mjs",
+    "prepack": "npm run buildapi",
     "start": "node server.mjs",
     "startsim": "node server.mjs --simulator",
     "lint": "next lint --fix",
@@ -45,6 +66,7 @@
     "@mui/x-data-grid": "^8.10.1",
     "@mui/x-date-pickers": "^9.0.4",
     "@peapodtech/firebasedeviceflow": "^0.2.0",
+    "@serialport/bindings-cpp": "^13.0.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@xyflow/react": "^12.8.4",
     "autoprefixer": "^10.4.21",
@@ -67,6 +89,7 @@
     "react-dom": "^19.0.0",
     "rxjs": "^6.6.3",
     "serialport": "^13.0.0",
+    "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.11",
     "ts-jest": "^29.2.5",
@@ -77,7 +100,6 @@
     "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.17.0",
     "@serialport/binding-mock": "^10.2.2",
-    "@serialport/bindings-cpp": "^13.0.1",
     "@serialport/parser-readline": "^9.0.1",
     "@types/blessed": "^0.1.25",
     "@types/debug": "^4.1.12",
@@ -101,7 +123,6 @@
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
     "prettier": "3.4.2",
-    "socket.io": "^4.8.1",
     "typescript": "^5",
     "typescript-eslint": "^8.19.0"
   },
@@ -109,6 +130,6 @@
     "access": "public"
   },
   "bin": {
-    "peapodos": "./index.js"
+    "peapodos": "./index.mjs"
   }
 }

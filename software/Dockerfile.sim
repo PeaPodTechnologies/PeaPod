@@ -1,0 +1,26 @@
+# Builds and runs the software with microcontroller simulator
+FROM node:20-bookworm-slim AS peapodos-sim
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Install apt dependencies for serial and native modules
+RUN apt-get update && apt-get install -y --no-install-recommends \
+	udev python3 make g++ \
+	&& rm -rf /var/lib/apt/lists/*
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN yarn install --frozen-lockfile --non-interactive --network-timeout 100000
+
+# Copy the source code, .env, and other necessary files into the container
+COPY . .
+
+# Default to development mode inside container
+ENV NODE_ENV=development
+
+EXPOSE 3000
+
+# No launch command - wait for attach.sh

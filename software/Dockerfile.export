@@ -1,5 +1,6 @@
-# ---- deps (Yarn) ----
-FROM --platform=$BUILDPLATFORM node:20-bookworm-slim AS peapodos
+# Export a built tarball of the entire software project for upload to a development Raspberry Pi Zero 2 W
+FROM --platform=$BUILDPLATFORM node:20-bookworm-slim AS peapodos-export
+ARG TARGETPLATFORM
 WORKDIR /app
 
 # Tools needed for node-gyp native addons (like epoll)
@@ -30,14 +31,14 @@ RUN mkdir -p /tmp/export/.next/static /tmp/export/api /tmp/export/microcontrolle
   && cp -a /app/public /tmp/export/public \
   && cp -a /app/api/*.mjs /tmp/export/api/ \
   && cp -a /app/server.mjs /tmp/export/ \
+  && cp -a /app/serialtest.mjs /tmp/export/ \
+  && cp -a /app/flash.mjs /tmp/export/ \
   && cp -a /app/microcontroller /tmp/export/microcontroller \
-  && cp -a /app/.env /tmp/export/.env \
-  && cp -a /app/node_modules /tmp/export/node_modules \
+  && cp -a /app/.env /tmp/export/.env \  && cp -a /app/node_modules /tmp/export/node_modules \
   && cp -a /app/package.json /tmp/export/package.json \
   && cp -a /app/yarn.lock /tmp/export/yarn.lock
 
 RUN tar -czf /app/out.tar.gz -C /tmp/export .
 
 FROM scratch AS export
-
-COPY --from=peapodos /app/out.tar.gz /out.tar.gz
+COPY --from=peapodos-export /app/out.tar.gz /out.tar.gz

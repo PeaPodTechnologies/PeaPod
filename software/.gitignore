@@ -74,3 +74,7 @@ serialtest.mjs
 sample.jpg
 
 out.tar.gz
+
+dist/**
+
+deploy/**

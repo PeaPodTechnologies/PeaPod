@@ -1,3 +1,6 @@
 [submodule "software/microcontroller/lib/I2CIP"]
 	path = software/microcontroller/lib/I2CIP
 	url = https://github.com/PeaPodTechnologies/I2CIP
+[submodule "software/pi-gen"]
+	path = software/pi-gen
+	url = https://github.com/RPi-Distro/pi-gen.git

@@ -1,4 +1,20 @@
 # PeaPodOS <!-- omit in toc -->
+
+Main software for PeaPod.
+
+### Table of Contents
+- [Usage](#usage)
+  - [Development](#development)
+    - [Native Simulator Development](#native-simulator-development)
+    - [Packing for NPM](#packing-for-npm)
+    - [Exporting Software Bundle](#exporting-software-bundle)
+  - [Production](#production)
+    - [Build Raspberry Pi Image](#build-raspberry-pi-image)
+    - [Raspberry Pi First-Time Setup](#raspberry-pi-first-time-setup)
+  - [Installation](#installation)
+  - [Execution](#execution)
+
+## Design
  
 A two-part system, consisting of a high-level software application and a low-level microcontroller firmware, designed for remote monitoring and configuration of control systems.
 
@@ -8,23 +24,9 @@ The firmware is written in Arduino C++ and runs on any compatible microcontrolle
 
 Ensure UART voltage levels are compatible (i.e. 3.3V for both Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2).
 
-### Table of Contents
-- [Background](#background)
-- [Architecture](#architecture)
-- [Development](#development)
-- [Production](#production)
-  - [Raspberry Pi Zero 2 W](#raspberry-pi-zero-2-w)
-    - [SD Card Preparation](#sd-card-preparation)
-    - [First-Time Setup](#first-time-setup)
-  - [Preparation](#preparation)
-  - [Installation](#installation)
-  - [Execution](#execution)
-
-# Background
-
 <img src="assets/control_flow.png" style="border: 5px solid #333"/>
 
-# Architecture
+## Architecture
 
 start menu
 - publishing mode selection (Local Filesytem, Firebase, Dashboard)
@@ -58,32 +60,59 @@ dashboard webserver
     - Microcontroller Instructions
     - Tasks
 
-# Development
+# Usage
 
+## Development
 
+There are three entrypoints:
+1. Docker compose development environment for native simulator development
+2. NPM package for development and publishing
+3. Exported software bundle for development deployment
 
-# Production
+### Native Simulator Development
 
-## Raspberry Pi Zero 2 W
+1. `git clone https://github.com/PeaPodTechnologies/PeaPod.git`
+2. `cd software`
+3. `chmod +x ./scripts/attach.sh`
+4. `docker compose up`
+5. In a separate terminal, `./scripts/attach.sh` to attach to the container and run the software.
 
-### SD Card Preparation
+### Packing for NPM
 
-The following are performed on a computer with an internet connection:
+1. `git clone https://github.com/PeaPodTechnologies/PeaPod.git`
+2. `cd software`
+3. `chmod +x ./scripts/pack.sh`
+4. `./scripts/pack.sh` to build the software and create a `.tgz` package in `./dist/peapodos.tgz` for publishing to NPM.
+
+### Exporting Software Bundle
+
+1. Execute `./scripts/export.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
+2. Optional: Execute `./scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
+3. Unzip the `out.tar.gz` archive with `tar -xzf out.tar.gz -C ~`.
+
+## Production
+
+This targets Raspberry Pi Zero 2 W with GPIO UART serial connection to an Adafruit ESP32 Feather V2 microcontroller.
+
+### Build Raspberry Pi Image
+
+The following are performed on a computer with an internet connection, Docker, and Homebrew installed:
 
 1. Format a microSD card (>=32GB) with a single FAT partition.
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
-3. Flash the SD card with a *Raspberry Pi OS Lite (64-bit)* image.
+3. Build the Raspberry Pi OS Lite (64-bit) image: `scripts/build.sh`. This creates a Docker build container that produces a `.zip` file at `deploy/*.zip`. This requires Homebrew and installs `gnu-sed`.
+4. Flash the SD card with the Raspberry Pi OS Lite (64-bit) image using Raspberry Pi Imager, and select `deploy/*.zip` as the custom image.
 
 > Note: A custom PeaPodOS image will be released in the future.
 
-### First-Time Setup
+### Raspberry Pi First-Time Setup
 
-4. Plug in a keyboard and display, insert the microSD card, and power on the Raspberry Pi Zero 2 W.
+1. Plug in a keyboard and display, insert the microSD card, and power on the Raspberry Pi Zero 2 W.
 
 The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and monitor:
 
-5. Login.
-6. Execute `sudo raspi-config` and perform these steps to setup the Pi:
+2. Login.
+3. Execute `sudo raspi-config` and perform these steps to setup the Pi:
    1. *System Options > Wireless Lan* - Setup WiFi and connect to the Internet (if not set from within imager)
    2. *System Options > Hostname* - Set a unique hostname, e.g. `peapod` (if not set from within imager)
    3. *System Options > Boot/Auto Login* - Select `Console Autologin` (B2)
@@ -98,24 +127,15 @@ The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and mo
 
 > You can now SSH into the Raspberry Pi to perform the rest of the setup, or continue with the keyboard and monitor.
 
-## Preparation
-
-The following are performed on a computer with an internet connection:
-
-7. Execute `./scripts/build.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
-8. Execute `./scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
-
-> You may need to use `chmod +x ./scripts/*.sh` to make the scripts executable.
-
 ## Installation
 
-9. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
+1. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
 
-10. Install Node.JS, the Node package manager, and Python dependencies: `sudo apt install -y nodejs npm python3-venv python3-dev`
+2. Install Node.JS, the Node package manager, and Python dependencies: `sudo apt install -y nodejs npm python3-venv python3-dev`
 <!-- 3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save` -->
 <!-- 4. If using a Raspberry Pi Camera, install the camera package: `sudo apt install -y libcamera-apps` -->
 
-11. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
+3. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
 <!-- 
 1. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
    1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
@@ -213,24 +233,24 @@ The following are performed on a computer with an internet connection:
     3.  Update packages: `sudo apt-get update`
     4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6` -->
 
-12.  Populate a `~/.env` file based on `./.env.template` with Firebase configuration, Google and/or GitHub auth configuration, serial port configuration, and webserver configuration (if applicable).
+4.  Populate a `~/.env` file based on `./.env.template` with Firebase configuration, Google and/or GitHub auth configuration, serial port configuration, and webserver configuration (if applicable).
 
-13. Unpack the `~/out.tar.gz` archive to the home directory: `tar -xzf ~/out.tar.gz -C ~`
+5.  Unpack the `~/out.tar.gz` archive to the home directory: `tar -xzf ~/out.tar.gz -C ~`
 
-14. Connect a USB cable from the computer (i.e. Raspberry Pi Zero 2 W) to the microcontroller (i.e. Adafruit ESP32 Feather V2), and verify that the serial port is available and openable by executing `node ~/serialtest.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
+6.  Connect a USB cable from the computer (i.e. Raspberry Pi Zero 2 W) to the microcontroller (i.e. Adafruit ESP32 Feather V2), and verify that the serial port is available and openable by executing `node ~/serialtest.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
 
-15. Perform first-time microcontroller firmware flashing by executing `node ~/flash.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
+7.  Perform first-time microcontroller firmware flashing by executing `node ~/flash.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
 
 ## Execution
 
-16. Run the main program by executing `node ~/server.mjs`.
+1. Run the main program by executing `node ~/server.mjs`.
 
-18. Follow the prompts to select a publishing mode (Local Filesystem, Firebase, and/or Dashboard), and if applicable, perform Firebase Device Flow Authentication.
+2. Follow the prompts to select a publishing mode (Local Filesystem, Firebase, and/or Dashboard), and if applicable, perform Firebase Device Flow Authentication.
 
-19. The webserver should start, making the dashboard accessible at the displayed hostname and port.
+3. The webserver should start, making the dashboard accessible at the displayed hostname and port.
 
-20. Select the appropriate serial port (i.e. `/dev/ttyS0` for GPIO UART-Arduino `Serial1`, `/dev/ttyACM0` for USB-Arduino `Serial`) to connect to the microcontroller.
+4. Select the appropriate serial port (i.e. `/dev/ttyS0` for GPIO UART-Arduino `Serial1`, `/dev/ttyACM0` for USB-Arduino `Serial`) to connect to the microcontroller.
 
-21. The console will begin printing raw telemetry and debugging information from the microcontroller.
+5. The console will begin printing raw telemetry and debugging information from the microcontroller.
 
 <!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->

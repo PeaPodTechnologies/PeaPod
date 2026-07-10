@@ -40,3 +40,11 @@ Dockerfile.*
 .dockerignore
 docker-compose.yml
 docker-compose.*.yml
+
+dist/**
+out.tar.gz
+
+logs/*.txt
+sample.jpg
+
+deploy/**

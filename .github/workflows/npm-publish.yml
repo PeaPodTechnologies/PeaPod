@@ -1,0 +1,79 @@
+name: Publish NPM Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run pack validation without publishing"
+        required: false
+        default: true
+        type: boolean
+      npm_tag:
+        description: "npm dist-tag to publish under"
+        required: false
+        default: "latest"
+        type: string
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    defaults:
+      run:
+        working-directory: software
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: yarn
+          cache-dependency-path: software/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build package tarball with Docker pack script
+        run: |
+          chmod +x ./scripts/pack.sh
+          ./scripts/pack.sh
+          test -f ./dist/peapodos.tgz
+
+      - name: Enforce master-only publish
+        if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true) }}
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            if [[ "${GITHUB_REF_NAME}" != "master" ]]; then
+              echo "Publishing is restricted to the master branch."
+              exit 1
+            fi
+            exit 0
+          fi
+
+          git fetch origin master
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" "origin/master"; then
+            echo "Tag commit is not contained in origin/master. Publish blocked."
+            exit 1
+          fi
+
+      - name: Publish to npm
+        if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true) }}
+        run: npm publish ./dist/peapodos.tgz --access public --tag "${{ github.event.inputs.npm_tag || 'latest' }}" --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Dry run result
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
+        run: echo "Dry run completed. No publish attempted."

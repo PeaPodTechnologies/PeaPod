@@ -50,4 +50,10 @@ const build_flash = esbuild.build({
   outdir: './'
 });
 
-await Promise.all([build_api, build_server, build_serialtest, build_flash]).catch((err) => { console.error(err); process.exit(1); } );
+const build_index = esbuild.build({
+  ...esbuildConfig,
+  entryPoints: ['./index.ts'],
+  outdir: './'
+});
+
+await Promise.all([build_api, build_server, build_serialtest, build_flash, build_index]).catch((err) => { console.error(err); process.exit(1); } );

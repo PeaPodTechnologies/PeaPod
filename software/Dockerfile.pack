@@ -1,0 +1,22 @@
+# Build a publishable npm tarball with `npm pack`
+FROM node:20-bookworm-slim AS peapodos-pack
+WORKDIR /app
+
+# Native toolchain needed for optional native modules during npm install
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  python3 make g++ \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install
+
+COPY . .
+
+RUN rm dist/*.tgz || true
+
+# /out/peapodos-dist.tgz
+RUN mkdir -p /dist && npm pack --pack-destination /dist && mv /dist/*.tgz /dist/peapodos.tgz
+
+FROM scratch AS export
+COPY --from=peapodos-pack /dist/peapodos.tgz /peapodos.tgz

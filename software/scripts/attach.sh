@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker compose exec -it peapodos node server.mjs
+docker compose exec -it peapodos yarn devsim
