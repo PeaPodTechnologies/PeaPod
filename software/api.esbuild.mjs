@@ -53,7 +53,10 @@ const build_flash = esbuild.build({
 const build_index = esbuild.build({
   ...esbuildConfig,
   entryPoints: ['./index.ts'],
-  outdir: './'
+  outdir: './',
+  banner: {
+    js: '#!/usr/bin/env node',
+  },
 });
 
 await Promise.all([build_api, build_server, build_serialtest, build_flash, build_index]).catch((err) => { console.error(err); process.exit(1); } );

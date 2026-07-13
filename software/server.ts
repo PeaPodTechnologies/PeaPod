@@ -17,10 +17,13 @@ import { DeviceFlowUI } from '@peapodtech/firebasedeviceflow';
 import { DebugJsonInstruction } from './api/types';
 import checkbox from '@inquirer/checkbox';
 import select from '@inquirer/select';
-import { cameraCapture, ipv4Lookup, updateMicrocontroller } from './api/utils';
+import { cameraCapture, updateMicrocontroller } from './api/utils';
 import { pushDebugMessages, uploadFile } from './api/firebase';
 import loadDotEnv from './api/env';
 import { SchedulerEntry } from './api/types';
+import input from '@inquirer/input';
+import number from '@inquirer/number';
+import { SerialPort } from 'serialport';
 
 loadDotEnv();
 
@@ -114,22 +117,43 @@ const SIMULATOR_CONFIG: SimulatorConfig = {
 
 const findController = async (simulator?: boolean): Promise<Controller | void> => {
   if(simulator) return new SimulatedController(SIMULATOR_CONFIG);
-  ui.start('SerialPort: Scanning...');
-  return findSerialPort(process.env.SERIALPORT ?? undefined, !!process.env.SERIALPORT).then(async (ports) => {
+
+  // const serial = await input({
+  //   message: 'Enter serial port stem:',
+  //   default: argv.serialport ?? process.env.SERIALPORT ?? '/dev/ttyS',
+  // });
+
+  // return findSerialPort(serial).then(async (ports) => {
+  //   if(ports.length === 0) throw new DebugJsonSerialportError('No Serial Ports Found!');
+
+  //   ui.succeed(`Serial Ports Found: ${ports.length}`);
+
+  //   if(ports.length === 1) {
+  //     ui.log(`Serial Port Auto-Selected: ${ports[0]}`);
+  //     return new MicroController(ports[0], true);
+  //   }
+
+  //   const serial = await select({
+  //     message: 'Select serial port:',
+  //     choices: ports.map((ser, i) => ({
+  //       value: ser,
+  //       name: `${i}: ${ser}`
+  //     })),
+  //   });
+
+  //   return new MicroController(serial, true);
+  // });
+
+  return await SerialPort.list().then(async (ports) => {
     if(ports.length === 0) throw new DebugJsonSerialportError('No Serial Ports Found!');
 
     ui.succeed(`Serial Ports Found: ${ports.length}`);
 
-    if(ports.length === 1) {
-      ui.log(`Serial Port Auto-Selected: ${ports[0]}`);
-      return new MicroController(ports[0], true);
-    }
-
     const serial = await select({
-      message: 'Select Serial Port:',
+      message: 'Select serial port:',
       choices: ports.map((ser, i) => ({
-        value: ser,
-        name: `${i}: ${ser}`
+        value: ser.path,
+        name: `${i}: ${ser.path}`
       })),
     });
 
@@ -141,7 +165,7 @@ let io: Server | undefined = undefined;
 let schedulerInterval: NodeJS.Timeout | undefined = undefined;
 
 // ===== MAIN =====
-(async () => {
+async function main() {
   // 4. Select & Prepare Publishing Modes
   const pms = await checkbox({
     message: 'Select publishing modes:',
@@ -191,8 +215,15 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
     // ui.succeed(`IPv4: ${host}`);
 
     // const hostname = argv.host ?? host ?? 'localhost';
-    const hostname = argv.host ?? process.env.NEXT_HOST ?? 'localhost';
-    const port = argv.port ?? process.env.NEXT_PORT ?? 3000;
+    const hostname = await input({
+      message: 'Enter host:',
+      default: argv.host ?? process.env.NEXT_HOST ?? 'localhost',
+    });
+
+    const port = await number({
+      message: 'Enter port:',
+      default: argv.port ?? parseInt(process.env.NEXT_PORT) ?? 3000,
+    });
 
     // 2. Next.JS App and HTTP Server
     ui.start(`Next.JS: Preparing${process.env.NODE_ENV === 'production' ? ' (Production)' : ' (Development)'}...`);
@@ -585,8 +616,6 @@ let schedulerInterval: NodeJS.Timeout | undefined = undefined;
       });
     }
   });
-})().catch((err) => {
-  ui.fail(`FATAL! ${err}`);
-  console.error(err);
-  process.exit(1);
-});
+}
+
+export default main;
