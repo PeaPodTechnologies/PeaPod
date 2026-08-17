@@ -3,18 +3,24 @@
 Main software for PeaPod.
 
 ### Table of Contents
+- [Design](#design)
+  - [Architecture](#architecture)
+    - [environment](#environment)
+    - [index](#index)
+    - [server](#server)
 - [Usage](#usage)
   - [Development](#development)
     - [Native Simulator Development](#native-simulator-development)
     - [Packing for NPM](#packing-for-npm)
     - [Exporting Software Bundle](#exporting-software-bundle)
+    - [QEMU Raspberry Pi Simulator](#qemu-raspberry-pi-simulator)
   - [Production](#production)
     - [Build Raspberry Pi Image](#build-raspberry-pi-image)
     - [Raspberry Pi First-Time Setup](#raspberry-pi-first-time-setup)
   - [Installation](#installation)
   - [Execution](#execution)
 
-## Design
+# Design
  
 A two-part system, consisting of a high-level software application and a low-level microcontroller firmware, designed for remote monitoring and configuration of control systems.
 
@@ -28,12 +34,27 @@ Ensure UART voltage levels are compatible (i.e. 3.3V for both Raspberry Pi Zero 
 
 ## Architecture
 
+### environment
+
+Priority:
+
+1. User input
+2. Command-line arguments
+3. Environment variables
+4. Defaults
+
+### index
+run tests, flash firmware, launch server
+
+### server
+
 start menu
 - publishing mode selection (Local Filesytem, Firebase, Dashboard)
 - Firebase Device Flow Authentication
   - Provider Selection (Google, GitHub)
   - Device Code & URL
 - Microcontroller Serial Port Selection
+- Dashboard Webserver Hostname & Port Selection
 
 serial communication
 - bidirectional
@@ -86,9 +107,16 @@ There are three entrypoints:
 
 ### Exporting Software Bundle
 
-1. Execute `./scripts/export.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
-2. Optional: Execute `./scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
-3. Unzip the `out.tar.gz` archive with `tar -xzf out.tar.gz -C ~`.
+1. Execute `scripts/export.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
+2. Optional: Execute `scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
+3. Unzip the `~/out.tar.gz` archive with `tar -xzf ~/out.tar.gz -C ~`.
+
+### QEMU Raspberry Pi Simulator
+
+1. Install dependencies: `brew install qemu`
+2. Build the Raspberry Pi OS Lite (64-bit) QEMU-compatible image: `./qemu-image.sh`
+3. Build the Docker image for the QEMU simulator: `./qemu-build.sh`
+4. Run the QEMU simulator container with `./qemu-run.sh deploy/<date>-peapod-lite-qemu.img` to install boot the Raspberry Pi OS Lite (64-bit) image in a virtual machine.
 
 ## Production
 
@@ -100,7 +128,7 @@ The following are performed on a computer with an internet connection, Docker, a
 
 1. Format a microSD card (>=32GB) with a single FAT partition.
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
-3. Build the Raspberry Pi OS Lite (64-bit) image: `scripts/build.sh`. This creates a Docker build container that produces a `.zip` file at `deploy/*.zip`. This requires Homebrew and installs `gnu-sed`.
+3. Build the Raspberry Pi OS Lite (64-bit) image: `build.sh`. This creates a Docker build container that produces a `.zip` file at `deploy/*.zip`. This requires Homebrew and installs `gnu-sed`.
 4. Flash the SD card with the Raspberry Pi OS Lite (64-bit) image using Raspberry Pi Imager, and select `deploy/*.zip` as the custom image.
 
 > Note: A custom PeaPodOS image will be released in the future.

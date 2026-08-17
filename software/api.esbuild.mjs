@@ -15,7 +15,7 @@ const esbuildConfig = {
   keepNames: true,
   outExtension: { '.js': '.mjs' },
   tsconfig: './api.tsconfig.json',
-  external: ['debug', 'ora', 'chalk', 'socket.io', 'blessed'],
+  // external: ['debug', 'ora', 'chalk', 'socket.io', 'blessed'],
   plugins: [esbuildPluginFilePathExtensions({
     esm: true,
     esmExtension: 'mjs',

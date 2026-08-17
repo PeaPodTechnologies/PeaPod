@@ -4,7 +4,7 @@ import { Server } from 'socket.io';
 import next from 'next';
 import nextConfig from './next.config';
 
-import { findSerialPort, MicroController, CONTROLLER_REVISION, Controller, SimulatedController, SimulatorConfig } from './api/controller';
+import { MicroController, CONTROLLER_REVISION, Controller, SimulatedController, SimulatorConfig } from './api/controller';
 // import { pushDebugMessage, pushDebugMessages } from './api/firebase';
 import ui, { _logRedirect, _errRedirect } from './api/ui';
 import {DebugJsonSerialportError} from './api/errors';
@@ -24,8 +24,14 @@ import { SchedulerEntry } from './api/types';
 import input from '@inquirer/input';
 import number from '@inquirer/number';
 import { SerialPort } from 'serialport';
+import path from 'node:path';
+import { fileURLToPath } from 'url';
 
-loadDotEnv();
+const packageRoot = path.dirname(fileURLToPath(import.meta.url));
+
+ui.log(`PeaPodOS: Launching Server in ${packageRoot}`);
+
+loadDotEnv(`${packageRoot}/.env`);
 
 const SCHEDULER_INTERVAL = 5000; // ms - How often to check the scheduler for pending tasks
 
@@ -55,7 +61,7 @@ const argv = await yargs(hideBin(process.argv))
   .option('serialport', {
     alias: 'd',
     type: 'string',
-    describe: 'SerialPort device path (overrides auto-detection)',
+    describe: 'SerialPort device path',
   })
   .help().parse();
 
@@ -144,6 +150,11 @@ const findController = async (simulator?: boolean): Promise<Controller | void> =
   //   return new MicroController(serial, true);
   // });
 
+  if(argv.serialport) {
+    ui.log(`Serial Port Selected: ${argv.serialport}`);
+    return new MicroController(argv.serialport, true);
+  }
+
   return await SerialPort.list().then(async (ports) => {
     if(ports.length === 0) throw new DebugJsonSerialportError('No Serial Ports Found!');
 
@@ -215,19 +226,32 @@ async function main() {
     // ui.succeed(`IPv4: ${host}`);
 
     // const hostname = argv.host ?? host ?? 'localhost';
-    const hostname = await input({
+    const hostname = argv.host || await input({
       message: 'Enter host:',
-      default: argv.host ?? process.env.NEXT_HOST ?? 'localhost',
+      default: process.env.NEXT_HOST || '0.0.0.0',
     });
 
-    const port = await number({
+    let envport;
+    try {
+      envport = parseInt(process.env.NEXT_PORT);
+    } catch {
+      envport = undefined;
+    }
+
+    const port = argv.port || await number({
       message: 'Enter port:',
-      default: argv.port ?? parseInt(process.env.NEXT_PORT) ?? 3000,
+      default: envport || 3000,
     });
 
     // 2. Next.JS App and HTTP Server
-    ui.start(`Next.JS: Preparing${process.env.NODE_ENV === 'production' ? ' (Production)' : ' (Development)'}...`);
-    const app = next({ dev: (process.env.NODE_ENV !== 'production'), hostname, port, conf: nextConfig });
+    ui.start(`Next.JS: Preparing${process.env.NODE_ENV === 'development' ? ' (Development)' : ' (Production)'}...`);
+    const app = next({
+      dev: (process.env.NODE_ENV === 'development'),
+      hostname,
+      port,
+      conf: nextConfig,
+      dir: packageRoot
+    });
     await app.prepare();
     const handler = app.getRequestHandler();
     const server = createServer((req, res) => {

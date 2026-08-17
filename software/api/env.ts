@@ -60,9 +60,11 @@ export default function loadDotEnv(path: string = '.env'): void {
     if (config.error) {
       throw config.error;
     }
-  } else {
-    throw new Error('Environment variable file not found.');
   }
+  // This breaks in production.
+  //  else {
+  //   throw new Error('Environment variable file not found.');
+  // }
 }
 
 /**
