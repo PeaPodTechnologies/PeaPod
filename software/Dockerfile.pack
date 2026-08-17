@@ -9,11 +9,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY package.json ./
 COPY yarn.lock ./
+
 RUN yarn install
 
 COPY . .
 
-RUN rm dist/*.tgz || true
+RUN yarn build
+
+# Remove Next.js files to reduce size of the tarball
+RUN rm -rf .next/cache
 
 # /out/peapodos-dist.tgz
 RUN mkdir -p /dist && npm pack --pack-destination /dist && mv /dist/*.tgz /dist/peapodos.tgz

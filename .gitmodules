@@ -3,4 +3,5 @@
 	url = https://github.com/PeaPodTechnologies/I2CIP
 [submodule "software/pi-gen"]
 	path = software/pi-gen
-	url = https://github.com/RPi-Distro/pi-gen.git
+	url = https://github.com/PeaPodTechnologies/pi-gen.git
+	branch = arm64

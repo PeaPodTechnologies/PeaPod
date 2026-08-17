@@ -1,0 +1,17 @@
+# Builds the image for running the software with QEMU (Raspberry Pi 3B+ emulation)
+FROM node:20-bookworm-slim AS peapodos-qemu
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    qemu-system-arm \
+    qemu-utils \
+    mtools \
+    parted \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+
+COPY scripts/qemu.sh /usr/local/bin/boot-qemu
+
+RUN chmod +x /usr/local/bin/boot-qemu
+
+ENTRYPOINT ["/usr/local/bin/boot-qemu"]

@@ -28,3 +28,9 @@ yarn-error.log*
 dest/**
 
 deploy/**
+
+# TypeScript build artifacts
+*.js
+*.d.ts
+!jest.config.js
+!webpack.config.js

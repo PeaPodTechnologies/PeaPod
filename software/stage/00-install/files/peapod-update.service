@@ -1,13 +1,18 @@
 [Unit]
 Description=PeaPod Update Service
-Wants=network-online.target
-After=network-online.target
+After=network.target
 
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/peapod-update.sh
 RemainAfterExit=yes
-TimeoutStartSec=300
+Restart=on-failure
+RestartSec=20
+StartLimitIntervalSec=300
+StartLimitBurst=6
+TimeoutStartSec=infinity
+StandardOutput=journal+console
+StandardError=journal+console
 
 [Install]
 WantedBy=multi-user.target
