@@ -1,6 +1,6 @@
 # PeaPodOS <!-- omit in toc -->
 
-Main software for PeaPod.
+Main software for PeaPod. Scripts are written for MacOS, and probably work on other Unix-like systems.
 
 ### Table of Contents
 - [Design](#design)
@@ -16,7 +16,7 @@ Main software for PeaPod.
     - [QEMU Raspberry Pi Simulator](#qemu-raspberry-pi-simulator)
   - [Production](#production)
     - [Build Raspberry Pi Image](#build-raspberry-pi-image)
-    - [Raspberry Pi First-Time Setup](#raspberry-pi-first-time-setup)
+    - [Raspberry Pi 400 First-Time Setup](#raspberry-pi-400-first-time-setup)
   - [Installation](#installation)
   - [Execution](#execution)
 
@@ -24,11 +24,11 @@ Main software for PeaPod.
  
 A two-part system, consisting of a high-level software application and a low-level microcontroller firmware, designed for remote monitoring and configuration of control systems.
 
-The software is written in TypeScript and runs on any compatible computer system with an internet connection, persistent storage, and a UART serial interface (i.e. Raspberry Pi Zero 2 W).
+The software is written in TypeScript and runs on any compatible computer system with an internet connection, persistent storage, and a UART serial interface (i.e. Raspberry Pi).
 
 The firmware is written in Arduino C++ and runs on any compatible microcontroller system with UART serial and I2C interfaces (i.e. Adafruit ESP32 Feather V2). See `./microcontroller/README.md` for more information.
 
-Ensure UART voltage levels are compatible (i.e. 3.3V for both Raspberry Pi Zero 2 W and Adafruit ESP32 Feather V2).
+Ensure UART voltage levels are compatible (i.e. 3.3V for both Raspberry Pi and Adafruit ESP32 Feather V2).
 
 <img src="assets/control_flow.png" style="border: 5px solid #333"/>
 
@@ -108,7 +108,7 @@ There are three entrypoints:
 ### Exporting Software Bundle
 
 1. Execute `scripts/export.sh` WITH NO ARGUMENTS to compile TypeScript to JavaScript and bundle the webserver, creating an `./out.tar.gz` archive containing the compiled software.
-2. Optional: Execute `scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi Zero 2 W home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
+2. Optional: Execute `scripts/upload.sh <hostname>` to upload the `./out.tar.gz` archive to the Raspberry Pi home directory, where `<hostname>` is the hostname of the Raspberry Pi (e.g. `peapod.local`).
 3. Unzip the `~/out.tar.gz` archive with `tar -xzf ~/out.tar.gz -C ~`.
 
 ### QEMU Raspberry Pi Simulator
@@ -120,7 +120,7 @@ There are three entrypoints:
 
 ## Production
 
-This targets Raspberry Pi Zero 2 W with GPIO UART serial connection to an Adafruit ESP32 Feather V2 microcontroller.
+This targets Raspberry Pi 400 with USB serial and power connection to an Adafruit ESP32 Feather V2 microcontroller.
 
 ### Build Raspberry Pi Image
 
@@ -128,30 +128,29 @@ The following are performed on a computer with an internet connection, Docker, a
 
 1. Format a microSD card (>=32GB) with a single FAT partition.
 2. Download the Raspberry Pi Imager [(Download)](https://www.raspberrypi.com/software/).
-3. Build the Raspberry Pi OS Lite (64-bit) image: `build.sh`. This creates a Docker build container that produces a `.zip` file at `deploy/*.zip`. This requires Homebrew and installs `gnu-sed`.
-4. Flash the SD card with the Raspberry Pi OS Lite (64-bit) image using Raspberry Pi Imager, and select `deploy/*.zip` as the custom image.
+3. Build the Raspberry Pi OS (64-bit) image: `build.sh`. This creates a Docker build container that produces a `.zip` file at `deploy/*.zip`. This requires Homebrew and installs `gnu-sed`.
+4. Flash the SD card with the Raspberry Pi OS (64-bit) image using Raspberry Pi Imager, and select `deploy/*.zip` as the custom image.
 
 > Note: A custom PeaPodOS image will be released in the future.
 
-### Raspberry Pi First-Time Setup
+### Raspberry Pi 400 First-Time Setup
 
-1. Plug in a keyboard and display, insert the microSD card, and power on the Raspberry Pi Zero 2 W.
+1. Plug in a keyboard, display, and mouse, insert the included microSD card (if not already inserted), and power on the Raspberry Pi 400.
 
-The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and monitor:
+The following are performed on the Raspberry Pi 400, with a keyboard, mouse, and monitor:
 
-2. Login.
+2. Login. If using the graphical desktop, open a terminal.
 3. Execute `sudo raspi-config` and perform these steps to setup the Pi:
    1. *System Options > Wireless Lan* - Setup WiFi and connect to the Internet (if not set from within imager)
    2. *System Options > Hostname* - Set a unique hostname, e.g. `peapod` (if not set from within imager)
    3. *System Options > Boot/Auto Login* - Select `Console Autologin` (B2)
    4. *Interface Options > SSH* - `Enable` SSH Server (if not set from within imager)
    5. *Interface Options > Serial Port* - `Disable` serial login shell, but `Enable` the serial port hardware
-   6. *Performance Options > GPU Memory* - 256 MB (to support the camera module, if used)
-   7. *Localisation Options > Locale* (i.e. `en_US.UTF-8`)
-   8. *Localisation Options > Timezone* (i.e. `US` > `Eastern`)
-   9. *Localisation Options > Keyboard* (i.e. `Generic 105-key` > `English (US)` > `Default` > `No compose key`)
-   10. Optional: *Advanced Options > Expand Filesystem*
-   11. Reboot to save: `sudo reboot -f` 
+   6. *Localisation Options > Locale* (i.e. `en_US.UTF-8`)
+   7. *Localisation Options > Timezone* (i.e. `US` > `Eastern`)
+   8. *Localisation Options > Keyboard* (i.e. `Generic 105-key` > `English (US)` > `Default` > `No compose key`)
+   9. Optional: *Advanced Options > Expand Filesystem*
+   10. Reboot to save: `sudo reboot -f` 
 
 > You can now SSH into the Raspberry Pi to perform the rest of the setup, or continue with the keyboard and monitor.
 
@@ -160,10 +159,10 @@ The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and mo
 1. Update package listings, upgrade existing packages: `sudo apt update && sudo apt full-upgrade -y`
 
 2. Install Node.JS, the Node package manager, and Python dependencies: `sudo apt install -y nodejs npm python3-venv python3-dev`
-<!-- 3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save` -->
+3. Install main software package: `sudo npm i -g @peapodtech/peapodos --save`
 <!-- 4. If using a Raspberry Pi Camera, install the camera package: `sudo apt install -y libcamera-apps` -->
 
-3. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
+4. Install [PlatformIO Core](https://docs.platformio.org/en/latest/core/installation/methods/installer-script.html#super-quick-macos-linux)
 <!-- 
 1. Create a custom configuration file for the AVR flash utility *avrdude* to be able to program the Arduino Nano via ICSP over the Raspberry Pi's GPIO pins:
    1.  Create a local copy of the *avrdude* configuration file with `cp /etc/avrdude.conf ~/avrdude_gpio.conf`, then modify your copy with `nano ~/avrdude_gpio.conf`. Copy the following to the end of the file:
@@ -261,24 +260,22 @@ The following are performed on the Raspberry Pi Zero 2 W, with a keyboard and mo
     3.  Update packages: `sudo apt-get update`
     4.  Install the core library, the Raspberry Pi driver, extra scripts, adn WebRTC support: `sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc-armv6` -->
 
-4.  Populate a `~/.env` file based on `./.env.template` with Firebase configuration, Google and/or GitHub auth configuration, serial port configuration, and webserver configuration (if applicable).
+5.  Populate a `~/.env` file based on `./.env.template` with serial port and webserver configuration, and, if using Firebase, Firebase configuration and Google and/or GitHub auth configuration.
 
-5.  Unpack the `~/out.tar.gz` archive to the home directory: `tar -xzf ~/out.tar.gz -C ~`
+<!-- 2.  Unpack the `~/out.tar.gz` archive to the home directory: `tar -xzf ~/out.tar.gz -C ~` -->
 
-6.  Connect a USB cable from the computer (i.e. Raspberry Pi Zero 2 W) to the microcontroller (i.e. Adafruit ESP32 Feather V2), and verify that the serial port is available and openable by executing `node ~/serialtest.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
+6.  Connect a USB cable from the computer (i.e. Raspberry Pi 400) to the microcontroller (i.e. Adafruit ESP32 Feather V2), and verify that the serial port is available and openable by executing `peapodos` and following the prompt to select "Test Serial". The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART). Press *Ctrl-C* to exit the test when finished.
 
-7.  Perform first-time microcontroller firmware flashing by executing `node ~/flash.mjs` and following the prompts. The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
+7.  Perform first-time microcontroller firmware flashing by executing `peapodos` and following the prompt to select "Flash Firmware". The serial port should be something like `/dev/ttyACM0` (NOT `/dev/ttyS0`, this is the GPIO UART).
 
 ## Execution
 
-1. Run the main program by executing `node ~/server.mjs`.
+1. Run the main program by executing `peapodos` and following the prompt to select "Launch Server". You may exit at any time by pressing *Ctrl-C*.
 
-2. Follow the prompts to select a publishing mode (Local Filesystem, Firebase, and/or Dashboard), and if applicable, perform Firebase Device Flow Authentication.
+2. Follow the prompts to select publishing modes (Local Filesystem, Firebase, and/or Dashboard), and if applicable, perform [Firebase Device Flow](https://github.com/PeaPodTechnologies/FirebaseDeviceFlow) Authentication. 
 
-3. The webserver should start, making the dashboard accessible at the displayed hostname and port.
+3. Select the appropriate serial port (i.e. `/dev/ttyS0` for GPIO UART-Arduino `Serial1`, `/dev/ttyACM0` for USB-Arduino `Serial`) to connect to the microcontroller.
 
-4. Select the appropriate serial port (i.e. `/dev/ttyS0` for GPIO UART-Arduino `Serial1`, `/dev/ttyACM0` for USB-Arduino `Serial`) to connect to the microcontroller.
+4. If dashboard publishing was selected, enter a hostname and port when prompted (default is `0.0.0.0:3000`); the webserver should start, making the dashboard accessible at the displayed hostname and port.
 
 5. The console will begin printing raw telemetry and debugging information from the microcontroller.
-
-<!-- https://github.com/nebrius/raspi-io/wiki/Getting-a-Raspberry-Pi-ready-for-NodeBots#configuring-your-app-to-start-on-startup -->

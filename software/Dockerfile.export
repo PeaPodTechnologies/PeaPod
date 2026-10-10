@@ -1,4 +1,4 @@
-# Export a built tarball of the entire software project for upload to a development Raspberry Pi Zero 2 W
+# Export a built tarball of the entire software project for upload to a development Raspberry Pi
 FROM --platform=$BUILDPLATFORM node:20-bookworm-slim AS peapodos-export
 ARG TARGETPLATFORM
 WORKDIR /app

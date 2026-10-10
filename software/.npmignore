@@ -53,3 +53,10 @@ logs/*.txt
 scheduler.json
 
 deploy/**
+stage/**
+pi-gen/**
+config/**
+assets/**
+archive/**
+logs/**
+functions/**

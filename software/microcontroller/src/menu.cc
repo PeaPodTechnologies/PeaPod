@@ -5,8 +5,6 @@ using namespace PeaPod::Menu;
 i2cip_errorlevel_t PeaPod::Menu::errlev_lcd = I2CIP_ERR_NONE;
 i2cip_errorlevel_t PeaPod::Menu::errlev_encoder = I2CIP_ERR_NONE;
 
-LCD* PeaPod::Menu::lcd = nullptr;
-
 peapod_menustate_t PeaPod::Menu::_peapod_menustate_default = {
   .menu = PEAPOD_MENU_MAIN,
   .submenu = 0, 
@@ -16,10 +14,10 @@ peapod_menustate_t PeaPod::Menu::_peapod_menustate_default = {
 FSM::State<peapod_menustate_t> PeaPod::Menu::menu_state = FSM::State<peapod_menustate_t>(_peapod_menustate_default, "menu");
 
 i2cip_errorlevel_t PeaPod::Menu::initializeDevices(void) {
-  errlev_lcd = nomodule.operator()<MCP23008>(fqa_lcd, false, _i2cip_args_io_default, DebugJsonOut);
+  errlev_lcd = notamodule.operator()<MCP23008>(fqa_lcd, false, _i2cip_args_io_default, DebugJsonOut);
   I2CIP_ERR_BREAK(errlev_lcd);
 
-  errlev_encoder = nomodule.operator()<Seesaw>(fqa_encoder, false, _i2cip_args_io_default, DebugJsonOut);
+  errlev_encoder = notamodule.operator()<Seesaw>(fqa_encoder, false, _i2cip_args_io_default, DebugJsonOut);
   I2CIP_ERR_BREAK(errlev_encoder);
 
   if(errlev_lcd == I2CIP_ERR_NONE) {
@@ -34,11 +32,9 @@ i2cip_errorlevel_t PeaPod::Menu::initializeDevices(void) {
     MCP23008** dptr = (MCP23008**)devicetree.operator[](fqa_lcd);
     if(dptr && *dptr) {
       MCP23008* mcp = *dptr;
-      lcd = new LCD(mcp);
+      LCD lcd = LCD(mcp);
 
-      errlev_lcd = lcd->set(init, LCD_ARGS_NONE);
-    } else {
-      lcd = nullptr;
+      errlev_lcd = lcd.set(init, LCD_ARGS_NONE);
     }
 
     menu_state.addCallback(writeLCDMenu);
@@ -58,24 +54,26 @@ i2cip_errorlevel_t PeaPod::Menu::update(void) {
     initialized = true;
   }
 
-  errlev_encoder = nomodule.operator()<Seesaw>(fqa_encoder, true, _i2cip_args_io_default, DebugJsonOut);
+  errlev_encoder = notamodule.operator()<Seesaw>(fqa_encoder, true, _i2cip_args_io_default, DebugJsonOut);
   if(errlev_encoder == I2CIP_ERR_NONE) {
     // Read encoder state and update menu
     Device** dptr = devicetree[fqa_encoder];
     if(dptr && *dptr) {
       RotaryEncoder* encoder = (RotaryEncoder*)(*dptr);
       int32_t encoder_pos = encoder->getCache().encoder;
+      i2cip_state_pin_t button = encoder->getCache().button;
       if(encoder_pos != encoder_last) {
         onEncoderChange(encoder_last > encoder_pos);
       }
-      if(encoder->getCache().button == PIN_ON && !toggle) {
+      if(button == PIN_ON && !toggle) {
         onEncoderPress();
         toggle = true;
       }
-      if(encoder->getCache().button == PIN_OFF) {
+      if(button == PIN_OFF) {
         toggle = false;
       }
       encoder_last = encoder_pos;
+      errlev_encoder = notamodule.operator()<Seesaw>(fqa_encoder, true, _i2cip_args_io_default, DebugJsonOut); // Fixes Issue #139
     } else {
       // TODO: Ping and add
     }
@@ -87,8 +85,12 @@ i2cip_errorlevel_t PeaPod::Menu::update(void) {
     // i2cip_jhd1313_args_t rgb = JHD1313::randomRGBLCD();
     // i2cip_args_io_t args_lcd = { .a = nullptr, .s = nullptr, .b = &rgb };
     // errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
-    if(lcd != nullptr) errlev_lcd = lcd->set(fail, LCD_ARGS_NONE);
-    else errlev_lcd = I2CIP_ERR_SOFT;
+    MCP23008** dptr = (MCP23008**)devicetree.operator[](fqa_lcd);
+    if(dptr && *dptr) {
+      MCP23008* mcp = *dptr;
+      LCD lcd = LCD(mcp);
+      errlev_lcd = lcd.set(fail, LCD_ARGS_NONE);
+    } else errlev_lcd = I2CIP_ERR_SOFT;
   }
   return errlev_lcd;
 }
@@ -249,8 +251,14 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
   args.b = nullptr;
 
   // errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
-  if(lcd != nullptr) errlev_lcd = lcd->set(display, LCD_ARGS_NONE);
-  else errlev_lcd = I2CIP_ERR_SOFT;
+  // if(lcd != nullptr) errlev_lcd = lcd->set(display, LCD_ARGS_NONE);
+  // else errlev_lcd = I2CIP_ERR_SOFT;
+  MCP23008** dptr = (MCP23008**)devicetree.operator[](fqa_lcd);
+  if(dptr && *dptr) {
+    MCP23008* mcp = *dptr;
+    LCD lcd = LCD(mcp);
+    errlev_lcd = lcd.set(display, LCD_ARGS_NONE);
+  } else errlev_lcd = I2CIP_ERR_SOFT;
 }
 
 void PeaPod::Menu::onEncoderPress(void) {

@@ -39,8 +39,6 @@ namespace PeaPod {
     extern i2cip_errorlevel_t errlev_lcd;
     extern i2cip_errorlevel_t errlev_encoder;
 
-    extern LCD* lcd;
-
     void onEncoderChange(bool inc);
     void writeLCDMenu(bool _, const peapod_menustate_t& menu);
     void onEncoderPress(void);

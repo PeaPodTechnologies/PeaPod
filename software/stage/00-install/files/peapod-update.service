@@ -1,6 +1,10 @@
 [Unit]
 Description=PeaPod Update Service
-After=network.target
+Wants=NetworkManager-wait-online.service
+After=NetworkManager.service
+After=NetworkManager-wait-online.service
+StartLimitIntervalSec=300
+StartLimitBurst=6
 
 [Service]
 Type=oneshot
@@ -8,8 +12,6 @@ ExecStart=/usr/local/bin/peapod-update.sh
 RemainAfterExit=yes
 Restart=on-failure
 RestartSec=20
-StartLimitIntervalSec=300
-StartLimitBurst=6
 TimeoutStartSec=infinity
 StandardOutput=journal+console
 StandardError=journal+console

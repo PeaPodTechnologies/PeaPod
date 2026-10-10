@@ -9,7 +9,7 @@ void PeaPod::callback_temperature(bool _, const FSM::Number& v) {
     i2cip_ht16k33_data_t seg_data = { .f = (float)v };
     i2cip_args_io_t seg_args = { .g = false, .a = nullptr, .s = &seg_data, .b = &seg_mode };
 
-    I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, seg_args, DebugJsonBreakpoints);
+    notamodule.operator()<HT16K33>(fqa_sevenseg, true, seg_args, DebugJsonBreakpoints);
   }
   #endif
 }
@@ -23,7 +23,7 @@ void PeaPod::callback_humidity(bool _, const FSM::Number& v) {
     i2cip_ht16k33_data_t seg_data = { .f = (float)v };
     i2cip_args_io_t seg_args = { .g = false, .a = nullptr, .s = &seg_data, .b = &seg_mode };
 
-    I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, seg_args, DebugJsonBreakpoints);
+    notamodule.operator()<HT16K33>(fqa_sevenseg, true, seg_args, DebugJsonBreakpoints);
   }
   #endif
 }
@@ -37,7 +37,7 @@ void PeaPod::callback_co2(bool _, const FSM::Number& v) {
     i2cip_ht16k33_data_t seg_data = { .h = (unsigned)v };
     i2cip_args_io_t seg_args = { .g = false, .a = nullptr, .s = &seg_data, .b = &seg_mode };
 
-    I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, seg_args, DebugJsonBreakpoints);
+    notamodule.operator()<HT16K33>(fqa_sevenseg, true, seg_args, DebugJsonBreakpoints);
   }
   #endif
 }

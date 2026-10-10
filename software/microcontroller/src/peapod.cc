@@ -6,16 +6,15 @@
 
 #include <DebugJson.h>
 
-PeaPod::PeaPodModule PeaPod::nomodule = PeaPodModule(I2CIP_MUX_NUM_FAKE);
-
 FSM::Variable PeaPod::cycle = FSM::Variable(FSM::Number(0, false, false), "cycle");
 FSM::Variable PeaPod::fps = FSM::Variable(FSM::Number(0, false, false), "fps");
 bool PeaPod::pinModeSet[255] = { false };
+PeaPod::PeaPodNoModule PeaPod::notamodule(I2CIP_WIRENUM_PRIMARY);
 
 using namespace PeaPod;
 using namespace I2CIP;
 
-DeviceGroup* PeaPodModule::deviceGroupFactory(const i2cip_id_t& id) {
+DeviceGroup* PeaPodDeviceGroupsInterface::deviceGroupFactory(const i2cip_id_t& id) {
   DeviceGroup* dg = DeviceGroup::create<EEPROM>(id);
   if(dg != nullptr) return dg;
   dg = DeviceGroup::create<SHT45>(id);
@@ -253,11 +252,6 @@ template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaP
   if(I2CIP::MUX::pingMUX(PEAPOD_WIRENUM, M)) {
     if(I2CIP::modules[M] == nullptr) {
       I2CIP::modules[M] = new T();
-
-      // First Module - Add HT16K33
-      if(M == 0) {
-        I2CIP::modules[0]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, _i2cip_args_io_default, NullStream);
-      }
     }
 
     I2CIP::errlev[M] = I2CIP::modules[M]->operator()();

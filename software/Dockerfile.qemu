@@ -1,13 +1,14 @@
-# Builds the image for running the software with QEMU (Raspberry Pi 3B+ emulation)
-FROM node:20-bookworm-slim AS peapodos-qemu
+# Builds the image for running the software with QEMU (Raspberry Pi emulation)
+FROM archlinux:latest AS peapodos-qemu
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    qemu-system-arm \
-    qemu-utils \
+RUN sed -i '/^\[options\]/a DisableSandbox' /etc/pacman.conf \
+    && pacman -Syu --noconfirm --needed \
+    qemu-full \
     mtools \
     parted \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    bash \
+    && pacman -Scc --noconfirm
 
 
 COPY scripts/qemu.sh /usr/local/bin/boot-qemu

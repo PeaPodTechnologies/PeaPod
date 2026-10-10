@@ -6,6 +6,7 @@ set -euo pipefail
 
 IMAGE="${1:?Usage: $0 <image>}"
 BOOT_DIR="/tmp/qemu-boot"
+DTB_PATH="$BOOT_DIR/rpi.dtb"
 
 if [[ ! -f "$IMAGE" ]]; then
   echo "Image not found: $IMAGE" >&2
@@ -47,22 +48,39 @@ mcopy \
   "::kernel8.img" \
   "$BOOT_DIR/kernel8.img"
 
-mcopy \
-  -i "${IMAGE}@@${BOOT_OFFSET}" \
-  "::bcm2710-rpi-3-b.dtb" \
-  "$BOOT_DIR/bcm2710-rpi-3-b.dtb"
+# Prefer Pi 400 DTB, then fall back to Pi 4B DTB if needed.
+DTB_CANDIDATES=(
+  "bcm2711-rpi-400.dtb"
+  "bcm2711-rpi-4-b.dtb"
+)
+
+DTB_FOUND=""
+for dtb in "${DTB_CANDIDATES[@]}"; do
+  if mcopy -i "${IMAGE}@@${BOOT_OFFSET}" "::${dtb}" "$DTB_PATH" 2>/dev/null; then
+    DTB_FOUND="$dtb"
+    break
+  fi
+done
+
+if [[ -z "$DTB_FOUND" ]]; then
+  echo "Could not find a Pi 400/Pi 4 DTB in the boot partition." >&2
+  exit 1
+fi
+
+echo "Using device tree: $DTB_FOUND"
 
 echo "Starting QEMU..."
 
+# Should be 4GB mem but QEMU only allows 2GB
 qemu-system-aarch64 \
-  -machine raspi3b \
-  -cpu cortex-a53 \
+  -machine raspi4b \
+  -cpu cortex-a72 \
   -smp 4 \
-  -m 1G \
+  -m 2G \
   -kernel "$BOOT_DIR/kernel8.img" \
-  -dtb "$BOOT_DIR/bcm2710-rpi-3-b.dtb" \
+  -dtb "$DTB_PATH" \
   -drive "file=$IMAGE,format=raw,if=sd" \
-  -append "mem=512M earlycon=pl011,0x3f201000 console=ttyAMA1,115200 loglevel=7 systemd.show_status=1 systemd.mask=systemd-networkd-wait-online.service systemd.watchdog_device=/dev/watchdog-do-not-use systemd.runtime_watchdog_sec=0 systemd.reboot_watchdog_sec=0 systemd.kexec_watchdog_sec=0 root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait" \
+  -append "mem=2G earlycon=pl011,0xfe201000 console=ttyAMA1,115200 loglevel=7 ignore_loglevel systemd.show_status=1 systemd.log_target=console systemd.log_level=info systemd.journald.forward_to_console=1 systemd.getty_auto=console systemd.mask=regenerate_ssh_host_keys.service systemd.mask=systemd-networkd.service systemd.mask=systemd-networkd.socket systemd.mask=systemd-networkd-wait-online.service systemd.mask=rpi-usb-gadget-ics.service systemd.wants=NetworkManager.service systemd.wants=NetworkManager-wait-online.service modules-load=usbnet,cdc_ether,cdc_ncm,rndis_host,asix,ax88179_178a,r8152,smsc95xx systemd.watchdog_device=/dev/watchdog-do-not-use systemd.runtime_watchdog_sec=0 systemd.reboot_watchdog_sec=0 systemd.kexec_watchdog_sec=0 root=/dev/mmcblk1p2 rootfstype=ext4 rw rootwait" \
   -serial stdio \
   -monitor none \
   -display none \

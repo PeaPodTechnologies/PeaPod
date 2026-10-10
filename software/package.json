@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "0.3.8",
+  "version": "0.4.2",
   "description": "Main software for PeaPod.",
   "main": "./index.mjs",
   "exports": {
@@ -50,8 +50,8 @@
     "startsim": "node index.mjs --simulator",
     "lint": "next lint --fix",
     "deploy_functions": "firebase deploy --only functions",
-    "prepublishOnly": "./scripts/pack.sh",
-    "publish": "npm publish ./dist/peapodos.tgz --access public"
+    "prepublishOnly": "echo 'Direct npm publish is blocked. Use npm run release instead.' >&2; exit 1",
+    "release": "./scripts/pack.sh && npm publish ./dist/peapodos.tgz --access public"
   },
   "repository": {
     "type": "git",

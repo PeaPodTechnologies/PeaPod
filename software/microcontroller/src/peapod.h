@@ -46,32 +46,49 @@
 // #define PEAPOD_PROGRAM_DEFAULT 1 // Uncomment to enable default program on startup
 
 namespace PeaPod {
-  class PeaPodModule : public I2CIP::JsonModule {
-    private:
-    HashTable<FSM::Flag> flags = HashTable<FSM::Flag>();
-    HashTable<FSM::Variable> variables = HashTable<FSM::Variable>();
-    HashTable<bool> locker = HashTable<bool>();
+
+  class PeaPodDeviceGroupsInterface {
     protected:
-    I2CIP::DeviceGroup* deviceGroupFactory(const i2cip_id_t& id) override;
+      I2CIP::DeviceGroup* deviceGroupFactory(const i2cip_id_t& id);
+  };
+  
+  class PeaPodModule : public I2CIP::JsonModule, public PeaPodDeviceGroupsInterface {
+    private:
+      HashTable<FSM::Flag> flags = HashTable<FSM::Flag>();
+      HashTable<FSM::Variable> variables = HashTable<FSM::Variable>();
+      HashTable<bool> locker = HashTable<bool>();
+
+    protected:
+      I2CIP::DeviceGroup* deviceGroupFactory(const i2cip_id_t& id) override { return PeaPodDeviceGroupsInterface::deviceGroupFactory(id); }
 
     public:
-    PeaPodModule(const uint8_t& mux) : JsonModule(PEAPOD_WIRENUM, mux) { }
-    
-    void handleCommand(JsonObject command, Print& out) override;
-    
-    void handleConfig(JsonObject config, Print& out) override;
-    
-    void registerFlag(FSM::Flag* flag, bool locked = false);
-    void registerVariable(FSM::Variable* variable, bool locked = false);
+      PeaPodModule(const uint8_t& mux) : JsonModule(PEAPOD_WIRENUM, mux) { }
+      
+      void handleCommand(JsonObject command, Print& out) override;
+      
+      void handleConfig(JsonObject config, Print& out) override;
+      
+      void registerFlag(FSM::Flag* flag, bool locked = false);
+      void registerVariable(FSM::Variable* variable, bool locked = false);
 
-    FSM::Flag* getFlagByIndex(uint8_t index) const;
-    FSM::Variable* getVariableByIndex(uint8_t index) const;
+      FSM::Flag* getFlagByIndex(uint8_t index) const;
+      FSM::Variable* getVariableByIndex(uint8_t index) const;
 
-    uint8_t getNumFlags(void) const { return this->flags.size(); }
-    uint8_t getNumVariables(void) const { return this->variables.size(); }
+      uint8_t getNumFlags(void) const { return this->flags.size(); }
+      uint8_t getNumVariables(void) const { return this->variables.size(); }
   };
 
-  extern PeaPodModule nomodule;
+  class PeaPodNoModule : public I2CIP::NotAModule, public PeaPodDeviceGroupsInterface {
+    protected:
+      I2CIP::DeviceGroup* deviceGroupFactory(const i2cip_id_t& id) override { return PeaPodDeviceGroupsInterface::deviceGroupFactory(id); }
+    public:
+      PeaPodNoModule(const uint8_t& wire) : I2CIP::NotAModule(wire) { }
+  };
+
+  extern PeaPodNoModule notamodule;
+
+  const i2cip_fqa_t fqa_sevenseg = notamodule.createFQA(I2CIP_HT16K33_ADDRESS);
+  extern i2cip_errorlevel_t errlev_sevenseg;
 
   // Global States
   extern FSM::Variable cycle;

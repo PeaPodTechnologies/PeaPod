@@ -16,15 +16,73 @@ has_nameserver() {
 	grep -Eq '^nameserver[[:space:]]+[0-9a-fA-F:.]+' /etc/resolv.conf 2>/dev/null
 }
 
+ensure_usb_net_stack() {
+	if ! command -v modprobe >/dev/null 2>&1; then
+		return
+	fi
+
+	# Try common USB Ethernet drivers used by QEMU and Raspberry Pi images.
+	for module in usbnet cdc_ether cdc_ncm rndis_host asix ax88179_178a r8152 smsc95xx; do
+		modprobe "${module}" >/dev/null 2>&1 || true
+	done
+
+	if command -v udevadm >/dev/null 2>&1; then
+		udevadm trigger --subsystem-match=usb --action=add >/dev/null 2>&1 || true
+		udevadm settle >/dev/null 2>&1 || true
+	fi
+}
+
+configure_nm_managed_mode() {
+	if ! command -v nmcli >/dev/null 2>&1; then
+		return
+	fi
+
+	mkdir -p /etc/NetworkManager/conf.d
+	cat > /etc/NetworkManager/conf.d/10-peapod-managed.conf <<'EOF'
+[ifupdown]
+managed=true
+EOF
+
+	nmcli general reload >/dev/null 2>&1 || true
+}
+
+default_route_iface() {
+	ip -o route show default 2>/dev/null | awk '{print $5; exit}'
+}
+
 find_candidate_iface() {
-	for n in eth0 usb0 enx0 wlan0; do
+	local route_iface
+	route_iface="$(default_route_iface)"
+	if [[ -n "${route_iface}" ]]; then
+		echo "${route_iface}"
+		return
+	fi
+
+	# Prefer likely uplink names first; leave usb0 last to avoid gadget-only paths.
+	for n in eth0 enx0 wlan0 usb0; do
 		if ip link show "$n" >/dev/null 2>&1; then
 			echo "$n"
 			return
 		fi
 	done
 
-	ip -o link show | awk -F': ' '$2 != "lo" { print $2; exit }'
+	ip -o link show | awk -F': ' '$2 != "lo" && $2 !~ /^docker/ && $2 !~ /^veth/ { print $2; exit }'
+}
+
+request_nm_connect() {
+	local iface
+	iface="$1"
+
+	if ! command -v nmcli >/dev/null 2>&1; then
+		return
+	fi
+
+	nmcli networking on >/dev/null 2>&1 || true
+	nmcli device set "${iface}" managed yes >/dev/null 2>&1 || true
+	if ! nmcli -t -f NAME,DEVICE connection show --active 2>/dev/null | grep -q ":${iface}$"; then
+		nmcli connection add type ethernet ifname "${iface}" con-name "peapod-${iface}" ipv4.method auto ipv6.method ignore >/dev/null 2>&1 || true
+	fi
+	nmcli device connect "${iface}" >/dev/null 2>&1 || true
 }
 
 request_dhcp_lease() {
@@ -56,13 +114,21 @@ repair_network() {
 	iface="$(find_candidate_iface)"
 
 	if [[ -z "${iface}" ]]; then
+		ensure_usb_net_stack
+		iface="$(find_candidate_iface)"
+	fi
+
+	if [[ -z "${iface}" ]]; then
 		return
 	fi
 
 	ip link set dev "${iface}" up >/dev/null 2>&1 || true
+	request_nm_connect "${iface}"
 	request_dhcp_lease "${iface}"
 	sleep "${REPAIR_DELAY_SEC}"
 }
+
+configure_nm_managed_mode
 
 for i in $(seq 1 "${MAX_ATTEMPTS}"); do
 	repair_network
