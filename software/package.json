@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Main software for PeaPod.",
   "main": "./index.mjs",
   "exports": {
@@ -13,6 +13,7 @@
     "microcontroller/lib/I2CIP/lib/**/*.cpp",
     "microcontroller/lib/I2CIP/lib/**/*.h",
     "microcontroller/lib/I2CIP/lib/**/*.hpp",
+    "microcontroller/lib/I2CIP/lib/**/*.tpp",
     "microcontroller/lib/I2CIP/lib/**/library.json",
     "microcontroller/lib/I2CIP/lib/**/library.properties",
     "microcontroller/lib/I2CIP/lib/**/LICENSE",
