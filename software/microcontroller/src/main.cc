@@ -38,7 +38,7 @@ void setup(void) {
 
   // Initialize non-module devices
   #ifdef PEAPOD_USEMENU
-    if(Menu::initializeDevices() != I2CIP_ERR_NONE) {
+    if(Menu::initialize() != I2CIP_ERR_NONE) {
       // TODO - print to seven segment?
     }
   #endif

@@ -39,6 +39,8 @@ DeviceGroup* PeaPodDeviceGroupsInterface::deviceGroupFactory(const i2cip_id_t& i
   return dg;
 }
 
+PeaPodModule::~PeaPodModule() { }
+
 void PeaPodModule::handleCommand(JsonObject command, Print& out) {
   JsonDocument doc;
   doc["timestamp"] = millis();
@@ -141,13 +143,12 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
 
     if(!doc["data"][key].isNull()) continue; // Already handled
 
-    bool* locked = locker[key];
-    if(locked && *locked) continue; // Locked, skip
-
     JsonVariant value = kv.value();
 
     FSM::Flag* flag = flags[key];
     if(flag != nullptr) {
+      bool* locked = locker_flags[key];
+      if(locked && *locked) continue; // Locked, skip
       if(value.is<bool>()) {
         flag->set(value.as<bool>());
       }
@@ -157,6 +158,8 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
 
     FSM::Variable* variable = variables[key];
     if(variable != nullptr) {
+      bool* locked = locker_variables[key];
+      if(locked && *locked) continue; // Locked, skip
       if(value.is<unsigned>()) {
         variable->set(FSM::Number(value.as<double>(), false, false));
       } else if(value.is<int>()) {
@@ -193,12 +196,41 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
 }
 
 void PeaPodModule::registerFlag(FSM::Flag* flag, bool locked) {
+  if(flag == nullptr) return;
   this->flags.set(flag->getKey(), flag);
-  this->locker.set(flag->getKey(), new bool(locked)); // TODO: Memory leak?
+  this->locker_flags.set(flag->getKey(), new bool(locked)); // TODO: Memory leak?
 }
 void PeaPodModule::registerVariable(FSM::Variable* variable, bool locked) {
+  if(variable == nullptr) return;
   this->variables.set(variable->getKey(), variable);
-  this->locker.set(variable->getKey(), new bool(locked)); // TODO: Memory leak?
+  this->locker_variables.set(variable->getKey(), new bool(locked)); // TODO: Memory leak?
+}
+void PeaPodModule::registerInterval(FSM::IntervalCallback* interval, bool locked) {
+  if(interval == nullptr) return;
+  this->intervals.set(interval->getKey(), interval);
+  this->locker_intervals.set(interval->getKey(), new bool(locked)); // TODO: Memory leak?
+}
+void PeaPodModule::registerEvent(FSM::ChronoEvent* event, bool locked) {
+  if(event == nullptr) return;
+  this->events.set(event->getKey(), event);
+  this->locker_events.set(event->getKey(), new bool(locked)); // TODO: Memory leak?
+}
+
+void PeaPodModule::unregisterFlag(FSM::Flag* flag) {
+  if(flag == nullptr) return;
+  this->locker_flags.remove(flag->getKey());
+}
+void PeaPodModule::unregisterVariable(FSM::Variable* variable) {
+  if(variable == nullptr) return;
+  this->locker_variables.remove(variable->getKey());
+}
+void PeaPodModule::unregisterInterval(FSM::IntervalCallback* interval) {
+  if(interval == nullptr) return;
+  this->locker_intervals.remove(interval->getKey());
+}
+void PeaPodModule::unregisterEvent(FSM::ChronoEvent* event) {
+  if(event == nullptr) return;
+  this->locker_events.remove(event->getKey());
 }
 
 FSM::Flag* PeaPodModule::getFlagByIndex(uint8_t index) const {
@@ -206,6 +238,12 @@ FSM::Flag* PeaPodModule::getFlagByIndex(uint8_t index) const {
 }
 FSM::Variable* PeaPodModule::getVariableByIndex(uint8_t index) const {
   return this->variables.getByFirstOccurrence(index);
+}
+FSM::IntervalCallback* PeaPodModule::getIntervalByIndex(uint8_t index) const {
+  return this->intervals.getByFirstOccurrence(index);
+}
+FSM::ChronoEvent* PeaPodModule::getEventByIndex(uint8_t index) const {
+  return this->events.getByFirstOccurrence(index);
 }
 
 void PeaPod::configRouter(JsonObject command, Print& out) {
@@ -244,23 +282,4 @@ void PeaPod::callback_heartbeat(bool _, const FSM::fsm_timestamp_t& __) {
   DebugJson::revision(I2CIP_REVISION, PEAPOD_SERIAL);
   DebugJson::telemetry(millis(), (unsigned)PeaPod::fps.get(), "fps", PEAPOD_SERIAL);
   DebugJson::telemetry(millis(), (unsigned)PeaPod::cycle.get(), "cycle", PEAPOD_SERIAL);
-}
-
-template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaPod::PeaPodModule, T>::value, int>::type = 0> void PeaPod::callback_module(bool _, const FSM::fsm_timestamp_t& __) {
-  if(M >= I2CIP_MUX_COUNT) return;
-
-  if(I2CIP::MUX::pingMUX(PEAPOD_WIRENUM, M)) {
-    if(I2CIP::modules[M] == nullptr) {
-      I2CIP::modules[M] = new T();
-    }
-
-    I2CIP::errlev[M] = I2CIP::modules[M]->operator()();
-  } else {
-    I2CIP::errlev[M] = I2CIP_ERR_HARD;
-  }
-
-  if(I2CIP::modules[M] != nullptr && I2CIP::errlev[M] == I2CIP_ERR_HARD) {
-    delete I2CIP::modules[M];
-    I2CIP::modules[M] = nullptr;
-  }
 }

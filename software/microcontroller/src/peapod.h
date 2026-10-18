@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 // Select a Serial port for output
-// #define PEAPOD_SERIAL Serial // USB
-#define PEAPOD_SERIAL Serial1 // GPIO TX/RX
+#define PEAPOD_SERIAL Serial // USB
+// #define PEAPOD_SERIAL Serial1 // GPIO TX/RX
 
 #define DEBUG_SERIAL PEAPOD_SERIAL // For DebugJson
 
@@ -38,12 +38,12 @@
 #define PEAPOD_DELTA_MODULECHECK 100
 
 #define PEAPOD_MODULENUM_SEVENSEG 0
-#define PEAPOD_SEVENSEG_TEMPERATURE 1 // Uncomment to enable 7-segment display for temperature
+// #define PEAPOD_SEVENSEG_TEMPERATURE 1 // Uncomment to enable 7-segment display for temperature
 // #define PEAPOD_SEVENSEG_HUMIDITY 1 // Uncomment to enable 7-segment display for humidity
 // #define PEAPOD_SEVENSEG_CO2 1 // Uncomment to enable 7-segment display for CO2
 // #define PEAPOD_SEVENSEG_ADC 1 // Uncomment to enable 7-segment display for ADC voltage
 
-// #define PEAPOD_PROGRAM_DEFAULT 1 // Uncomment to enable default program on startup
+#define PEAPOD_PROGRAM_DEFAULT 1 // Uncomment to enable default program on startup
 
 namespace PeaPod {
 
@@ -56,13 +56,21 @@ namespace PeaPod {
     private:
       HashTable<FSM::Flag> flags = HashTable<FSM::Flag>();
       HashTable<FSM::Variable> variables = HashTable<FSM::Variable>();
-      HashTable<bool> locker = HashTable<bool>();
+      HashTable<FSM::IntervalCallback> intervals = HashTable<FSM::IntervalCallback>();
+      HashTable<FSM::ChronoEvent> events = HashTable<FSM::ChronoEvent>();
+
+      // Owns = true; bools are deleted on entry destruction
+      HashTable<bool> locker_flags = HashTable<bool>(true);
+      HashTable<bool> locker_variables = HashTable<bool>(true);
+      HashTable<bool> locker_intervals = HashTable<bool>(true);
+      HashTable<bool> locker_events = HashTable<bool>(true);
 
     protected:
       I2CIP::DeviceGroup* deviceGroupFactory(const i2cip_id_t& id) override { return PeaPodDeviceGroupsInterface::deviceGroupFactory(id); }
 
     public:
       PeaPodModule(const uint8_t& mux) : JsonModule(PEAPOD_WIRENUM, mux) { }
+      virtual ~PeaPodModule();
       
       void handleCommand(JsonObject command, Print& out) override;
       
@@ -70,12 +78,23 @@ namespace PeaPod {
       
       void registerFlag(FSM::Flag* flag, bool locked = false);
       void registerVariable(FSM::Variable* variable, bool locked = false);
+      void registerInterval(FSM::IntervalCallback* interval, bool locked = false);
+      void registerEvent(FSM::ChronoEvent* event, bool locked = false);
+
+      void unregisterFlag(FSM::Flag* flag);
+      void unregisterVariable(FSM::Variable* variable);
+      void unregisterInterval(FSM::IntervalCallback* interval);
+      void unregisterEvent(FSM::ChronoEvent* event);
 
       FSM::Flag* getFlagByIndex(uint8_t index) const;
       FSM::Variable* getVariableByIndex(uint8_t index) const;
+      FSM::IntervalCallback* getIntervalByIndex(uint8_t index) const;
+      FSM::ChronoEvent* getEventByIndex(uint8_t index) const;
 
       uint8_t getNumFlags(void) const { return this->flags.size(); }
       uint8_t getNumVariables(void) const { return this->variables.size(); }
+      uint8_t getNumIntervals(void) const { return this->intervals.size(); }
+      uint8_t getNumEvents(void) const { return this->events.size(); }
   };
 
   class PeaPodNoModule : public I2CIP::NotAModule, public PeaPodDeviceGroupsInterface {

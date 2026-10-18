@@ -5,10 +5,11 @@
 
 #include <peapod.h>
 
-#define PEAPOD_MENU_SUBMENUS_MAIN 5 // Summary, Select Module & Device & Flag & Variable = 5
+#define PEAPOD_MENU_SUBMENUS_MAIN 7 // Summary, Select Module & Device & Flag & Variable & Interval & Event = 7
 #define PEAPOD_MENU_SUBMENUS_MODULE 9 // 8 Modules + Back
 #define PEAPOD_MENU_STR_INITIALIZING "PeaPod\nInitializing..."
 #define PEAPOD_MENU_STR_ENCODERFAIL "PeaPod\nENCODER FAIL"
+#define PEAPOD_ENCODER_HOLD_THRESHOLD 3000
 
 using namespace I2CIP;
 
@@ -20,14 +21,18 @@ namespace PeaPod {
       PEAPOD_MENU_DEVICE = 2,
       PEAPOD_MENU_FLAG = 3,
       PEAPOD_MENU_VARIABLE = 4,
-      PEAPOD_MENU_SET = 5,
+      PEAPOD_MENU_INTERVAL = 5,
+      PEAPOD_MENU_EVENT = 6,
     } PEAPOD_MENU_T;
 
     extern struct peapod_menustate_s {
       PEAPOD_MENU_T menu; // Top-level functionality selection
       uint8_t submenu;  // Ordinal of the selected item in the current menu, 0 is always "BACK"
       uint8_t module_idx;
+      bool setting; // Indicates if the menu is currently in a setting state
     } _peapod_menustate_default;
+
+    extern uint32_t code;
 
     typedef struct peapod_menustate_s peapod_menustate_t;
 
@@ -38,12 +43,15 @@ namespace PeaPod {
 
     extern i2cip_errorlevel_t errlev_lcd;
     extern i2cip_errorlevel_t errlev_encoder;
+    extern i2cip_errorlevel_t errlev_sevenseg;
 
     void onEncoderChange(bool inc);
     void writeLCDMenu(bool _, const peapod_menustate_t& menu);
+    void writeSevenSegmentCode(void);
     void onEncoderPress(void);
+    void onEncoderHold(void);
 
-    i2cip_errorlevel_t initializeDevices(void);
+    i2cip_errorlevel_t initialize(void);
 
     // Reads encoder, triggers state update, LCD write callback
     i2cip_errorlevel_t update(void);

@@ -46,14 +46,19 @@ PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPo
     // #endif
 
     #ifdef PEAPOD_PROGRAM_DEFAULT
-    interval_lighting_on = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_LIGHTING_DELTA, 0, &enable_lighting, false);
-    interval_lighting_off = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_LIGHTING_DELTA, PEAPOD_MODULE_LIGHTING_PHASE, &enable_lighting, true);
-    pwm_lighting_blue.set(FSM::Number(4096 * PEAPOD_MODULE_LIGHTING_DUTY_BLUE, true));
-    pwm_lighting_red.set(FSM::Number(4096 * PEAPOD_MODULE_LIGHTING_DUTY_RED, true));
+      interval_lighting_on = FSM::Chronos.addIntervalFlag("i_lighting_on", PEAPOD_MODULE_LIGHTING_DELTA, 0, &enable_lighting, false);
+      interval_lighting_off = FSM::Chronos.addIntervalFlag("i_lighting_off", PEAPOD_MODULE_LIGHTING_DELTA, PEAPOD_MODULE_LIGHTING_PHASE, &enable_lighting, true);
+      pwm_lighting_blue.set(FSM::Number(4096 * PEAPOD_MODULE_LIGHTING_DUTY_BLUE, true));
+      pwm_lighting_red.set(FSM::Number(4096 * PEAPOD_MODULE_LIGHTING_DUTY_RED, true));
+
+      registerInterval(interval_lighting_on);
+      registerInterval(interval_lighting_off);
     #endif
 
     // ADC
-    interval_adc = FSM::Chronos.addInterval(PEAPOD_MODULE_LIGHTING_ADC_DELTA, 0, callback_adc_read<PEAPOD_MODULE_LIGHTING_ADC_FQA, PEAPOD_MODULE_LIGHTING_ADC_CHANNEL>, false);
+    interval_adc = FSM::Chronos.addInterval("i_lighting_adc", PEAPOD_MODULE_LIGHTING_ADC_DELTA, 0, callback_adc_read<PEAPOD_MODULE_LIGHTING_ADC_FQA, PEAPOD_MODULE_LIGHTING_ADC_CHANNEL>, false);
+
+    registerInterval(interval_adc, true);
   }
 
   // enable_lighting.addLatchingConditional(true, false, callback_lighting_onoff);
@@ -85,6 +90,9 @@ PeaPod::PeaPodModuleLighting::~PeaPodModuleLighting() {
   enable_lighting.set(false);
   enable_camera.set(false);
 
+  unregisterInterval(interval_adc);
+  unregisterInterval(interval_lighting_on);
+  unregisterInterval(interval_lighting_off);
   FSM::Chronos.removeInterval(interval_adc);
   FSM::Chronos.removeInterval(interval_lighting_on);
   FSM::Chronos.removeInterval(interval_lighting_off);

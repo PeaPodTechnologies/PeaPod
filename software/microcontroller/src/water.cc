@@ -3,8 +3,10 @@
 PeaPod::PeaPodModuleWatering::PeaPodModuleWatering(bool chronoCallbacks) : PeaPodModule(PEAPOD_MODULENUM_WATERING) {
   if(chronoCallbacks) {
     #ifdef PEAPOD_PROGRAM_DEFAULT
-    interval_watering_on = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_WATERING_DELTA, 0, &enable_watering, false);
-    interval_watering_off = FSM::Chronos.addIntervalFlag(PEAPOD_MODULE_WATERING_DELTA, PEAPOD_MODULE_WATERING_PHASE, &enable_watering, true);
+      interval_watering_on = FSM::Chronos.addIntervalFlag("i_watering_on", PEAPOD_MODULE_WATERING_DELTA, 0, &enable_watering, false);
+      interval_watering_off = FSM::Chronos.addIntervalFlag("i_watering_off", PEAPOD_MODULE_WATERING_DELTA, PEAPOD_MODULE_WATERING_PHASE, &enable_watering, true);
+      registerInterval(interval_watering_on);
+      registerInterval(interval_watering_off);
     #endif
   }
 
@@ -18,6 +20,8 @@ PeaPod::PeaPodModuleWatering::PeaPodModuleWatering(bool chronoCallbacks) : PeaPo
 PeaPod::PeaPodModuleWatering::~PeaPodModuleWatering() {
   enable_watering.set(false);
   
+  unregisterInterval(interval_watering_on);
+  unregisterInterval(interval_watering_off);
   FSM::Chronos.removeInterval(interval_watering_on);
   FSM::Chronos.removeInterval(interval_watering_off);
   interval_watering_on = nullptr;

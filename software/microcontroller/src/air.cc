@@ -44,8 +44,11 @@ void PeaPod::callback_co2(bool _, const FSM::Number& v) {
 
 PeaPod::PeaPodModuleAir::PeaPodModuleAir(bool chronoCallbacks) : PeaPodModule(PEAPOD_MODULENUM_AIR) {
   if(chronoCallbacks) {
-    interval_sht45 = FSM::Chronos.addInterval(PEAPOD_SHT45_DELTA, PeaPodModuleAir::callback_sht45_mean<PEAPOD_MODULENUM_AIR>);
-    interval_k30 = FSM::Chronos.addInterval(PEAPOD_K30_DELTA, PeaPodModuleAir::callback_k30_mean<PEAPOD_MODULENUM_AIR>);
+    interval_sht45 = FSM::Chronos.addInterval("i_air_sht45_read", PEAPOD_SHT45_DELTA, PeaPodModuleAir::callback_sht45_mean<PEAPOD_MODULENUM_AIR>);
+    interval_k30 = FSM::Chronos.addInterval("i_air_k30_read", PEAPOD_K30_DELTA, PeaPodModuleAir::callback_k30_mean<PEAPOD_MODULENUM_AIR>);
+
+    registerInterval(interval_sht45, true);
+    registerInterval(interval_k30, true);
   }
 
   air_temperature.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_temperature);
@@ -58,6 +61,8 @@ PeaPod::PeaPodModuleAir::PeaPodModuleAir(bool chronoCallbacks) : PeaPodModule(PE
 }
 
 PeaPod::PeaPodModuleAir::~PeaPodModuleAir() {
+  unregisterInterval(interval_sht45);
+  unregisterInterval(interval_k30);
   FSM::Chronos.removeInterval(interval_sht45);
   FSM::Chronos.removeInterval(interval_k30);
   interval_sht45 = nullptr;

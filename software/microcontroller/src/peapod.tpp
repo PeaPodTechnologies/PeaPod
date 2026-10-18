@@ -7,6 +7,25 @@
 #ifndef PEAPOD_T_
 #define PEAPOD_T_
 
+template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaPod::PeaPodModule, T>::value, int>::type = 0> void PeaPod::callback_module(bool _, const FSM::fsm_timestamp_t& __) {
+  if(M < 0 || M >= I2CIP_MUX_COUNT) return;
+
+  if(I2CIP::MUX::pingMUX(PEAPOD_WIRENUM, M)) {
+    if(I2CIP::modules[M] == nullptr) {
+      I2CIP::modules[M] = new T();
+    }
+
+    I2CIP::errlev[M] = I2CIP::modules[M]->operator()();
+  } else {
+    I2CIP::errlev[M] = I2CIP_ERR_HARD;
+  }
+
+  if(I2CIP::modules[M] != nullptr && I2CIP::errlev[M] == I2CIP_ERR_HARD) {
+    delete I2CIP::modules[M];
+    I2CIP::modules[M] = nullptr;
+  }
+}
+
 template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_mcp23017_digitalWrite(bool _, const bool& v) {
   if(P > PIN_B7) return; // Invalid Pin
   if(I2CIP::errlev[I2CIP_FQA_SEG_MODULE(F)] == I2CIP_ERR_NONE && I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)] != nullptr) {
