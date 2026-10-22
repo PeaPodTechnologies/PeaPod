@@ -75,6 +75,10 @@ namespace PeaPod {
       void handleCommand(JsonObject command, Print& out) override;
       
       void handleConfig(JsonObject config, Print& out) override;
+
+      void handleInterval(JsonObject interval, Print& out) override;
+
+      void handleEvent(JsonObject event, Print& out) override;
       
       void registerFlag(FSM::Flag* flag, bool locked = false);
       void registerVariable(FSM::Variable* variable, bool locked = false);
@@ -115,6 +119,8 @@ namespace PeaPod {
 
   void registerCallbacks(void);
   void configRouter(JsonObject command, Print& out);
+  void intervalRouter(JsonObject interval, Print& out);
+  void eventRouter(JsonObject event, Print& out);
 
   // Callbacks
   void callback_cycle(bool _, const FSM::Number& __);

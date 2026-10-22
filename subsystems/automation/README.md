@@ -15,6 +15,7 @@ Optional, but recommended:
 - Helping Hands (for soldering)
 - Multimeter (for testing connections)
 - Oscilloscope (for testing signal integrity)
+- Heat shrink tubing (for insulating soldered connections)
 
 ### Purchasing
 
@@ -56,17 +57,17 @@ See `./hardware/fabrication/` for 3D-printed parts.
 7. Mount the Adafruit Stemma QT Rotary Encoder Breakout to the case lid using the included M2.5 screws and nuts. Fasten the knob to the rotary encoder.
 8. Connect one end of an Adafruit Stemma QT JST SH 4-pin cable to the Adafruit ESP32 Feather V2 I2C port. Connect the other end to the Adafruit Stemma QT 3V to 5V Level Booster Breakout, and then in series to the Adafruit LTC4311 I2C Extender/Active Terminator using another Stemma QT cable. Connect the active terminator to three Adafruit Stemma QT 5-Port Hubs in series, making a total of ten open active Stemma QT ports.
 9. Cut and strip four Adafruit Stemma QT JST SH 4-pin cables, making eight one-ended connectors. Cut the male ends off of the eight Adafruit Ethernet Round Panel-Mount Extension Cables and strip the RJ45 wires. Solder the stripped wires to the one-ended connectors as follows:
-    - Red (5V) to RJ45 orange pair
-    - Black (GND) to RJ45 brown pair
-    - Blue (SDA) to RJ45 blue pair
-    - Yellow (SCL) to RJ45 green pair
+    - Blue (SDA) to RJ45 blue pair (same colour)
+    - Red (5V) to RJ45 orange pair (similar colour)
+    - Black (GND) to RJ45 green pair (green can be ground in some contexts)
+    - Yellow (SCL) to RJ45 brown pair
 10. Connect the eight one-ended connectors to eight of the open ports on the 5-Port Hubs. Connect the screen backpack to any open port on the 5-Port Hubs. Connect the Adafruit Stemma QT Rotary Encoder Breakout to any open port on the 5-Port Hubs.
 11. Mount the Adafruit 7-Segment Display Featherwing directly to the Adafruit ESP32 Feather V2 stacking headers.
 12. Flash the Adafruit ESP32 Feather V2 with the `/software/microcontroller/` firmware according to the instructions in `/software/README.md`.
 <!-- 14. Attach the small end of the orange-colored camera flex cable to the Raspberry Pi Zero 2 W camera port. Attach the large end to the coupling board. Attach one end of the long camera flex cable to the coupling board, and the other end to the camera module. Ensure that all cables are oriented such that the metal connectors on the cable are facing the PCB. -->
-13.  Connect a display to the micro-HDMI port on the Raspberry Pi 400.
+1.   Connect a display to the micro-HDMI port on the Raspberry Pi 400.
 <!-- 15. Connect the USB hub to the micro-USB port labelled "USB" on the Raspberry Pi Zero 2 W. Connect the keyboard to the USB hub. -->
-14.  Connect the power supply to the USB-C port on the Raspberry Pi 400.
+1.   Connect the power supply to the USB-C port on the Raspberry Pi 400.
 
 # Testing
 

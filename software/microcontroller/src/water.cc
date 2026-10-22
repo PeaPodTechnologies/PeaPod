@@ -9,16 +9,22 @@ PeaPod::PeaPodModuleWatering::PeaPodModuleWatering(bool chronoCallbacks) : PeaPo
       registerInterval(interval_watering_off);
     #endif
   }
+  
+  #ifdef PEAPOD_MODULE_WATERING_GPIO_PUMP
+  enable_pump.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PEAPOD_MODULE_WATERING_GPIO_FQA, PEAPOD_MODULE_WATERING_GPIO_PUMP>);
+  #endif
+  enable_pump.set(true);
 
-  enable_watering.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PEAPOD_MODULE_WATERING_GPIO_FQA, PEAPOD_MODULE_WATERING_GPIO_PIN>);
-
+  enable_watering.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PEAPOD_MODULE_WATERING_GPIO_FQA, PEAPOD_MODULE_WATERING_GPIO_SOLENOID>);
   enable_watering.set(false);
 
   registerFlag(&enable_watering);
+  registerFlag(&enable_pump);
 }
 
 PeaPod::PeaPodModuleWatering::~PeaPodModuleWatering() {
   enable_watering.set(false);
+  enable_pump.set(false);
   
   unregisterInterval(interval_watering_on);
   unregisterInterval(interval_watering_off);

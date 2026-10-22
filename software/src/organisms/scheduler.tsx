@@ -15,14 +15,19 @@ import { useSocket } from '../contexts/socket';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid/DataGrid';
 import { GridColDef } from '@mui/x-data-grid';
-import { DebugJsonInstruction, DebugJsonMessage } from '../../api/types';
-import { parseTimestamp, SchedulerEntry } from '../../api/types';
+import { DebugJsonInstruction } from '../../api/types';
+import { parseTimestamp } from '../../api/types';
 import {
   Box,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   SpeedDial,
   SpeedDialAction,
   TextField,
@@ -32,97 +37,98 @@ import AddIcon from '@mui/icons-material/Add';
 import { Event, Restore } from '@mui/icons-material';
 import { v4 as uuid } from 'uuid';
 import { useStates } from '@/contexts/states';
+import { useEvents } from '@/contexts/events';
 
-const validateInstruction = (
-  instruction: DebugJsonInstruction,
-  states: Record<string, any>
-): boolean => {
-  if (instruction.type === 'config') {
-    if (Object.keys(instruction.data).length === 0) {
-      alert('Config instructions: must have data');
-      return false;
-    }
-    if (
-      !Object.keys(instruction.data).every((key) => {
-        if (states[key] === undefined) {
-          alert(`Config instructions: state "${key}" does not exist`);
-          return false;
-        }
-        return true;
-      })
-    )
-      return false;
-  } else if (instruction.type === 'command') {
-    if (!instruction.data) {
-      alert('Command instructions: empty data');
-      return false;
-    }
-    if (!instruction.data.fqa) {
-      alert('Command instructions: no FQA provided');
-      return false;
-    }
-    if (
-      !['g', 'a', 's', 'b'].some((key) => instruction.data[key] !== undefined)
-    ) {
-      alert(
-        'Command instructions: no valid command parameters provided (must have at least one of g, a, s, b)'
-      );
-      return false;
-    }
-  } else {
-    alert('Instruction type must be either "config" or "command"');
-    return false;
-  }
-  return true;
-};
+// const validateInstruction = (
+//   instruction: DebugJsonInstruction,
+//   states: Record<string, any>
+// ): boolean => {
+//   if (instruction.type === 'config') {
+//     if (Object.keys(instruction.data).length === 0) {
+//       alert('Config instructions: must have data');
+//       return false;
+//     }
+//     if (
+//       !Object.keys(instruction.data).every((key) => {
+//         if (states[key] === undefined) {
+//           alert(`Config instructions: state "${key}" does not exist`);
+//           return false;
+//         }
+//         return true;
+//       })
+//     )
+//       return false;
+//   } else if (instruction.type === 'command') {
+//     if (!instruction.data) {
+//       alert('Command instructions: empty data');
+//       return false;
+//     }
+//     if (!instruction.data.fqa) {
+//       alert('Command instructions: no FQA provided');
+//       return false;
+//     }
+//     if (
+//       !['g', 'a', 's', 'b'].some((key) => instruction.data[key] !== undefined)
+//     ) {
+//       alert(
+//         'Command instructions: no valid command parameters provided (must have at least one of g, a, s, b)'
+//       );
+//       return false;
+//     }
+//   } else {
+//     alert('Instruction type must be either "config" or "command"');
+//     return false;
+//   }
+//   return true;
+// };
 
 const EventModal: FC<{
   open: boolean;
   onClose: () => void;
   id: string | null;
 }> = ({ open, onClose, id }) => {
-  const { messages, socket } = useSocket();
-  const { states } = useStates();
-  const event =
-    (
-      messages['scheduler'] as
-        | (SchedulerEntry & { entry: 'event' })[]
-        | undefined
-    )?.find((entry) => entry.id === id && entry.entry === 'event') ?? null;
+  const { socket } = useSocket();
+  const { flags, rebuild } = useStates();
+  const { events, rebuild: rebuildEvents } = useEvents();
+  const event = id ? (events[id] ?? null) : null;
+  //   (
+  //     messages['scheduler'] as
+  //       | (SchedulerEntry & { entry: 'event' })[]
+  //       | undefined
+  //   )?.find((entry) => entry.id === id && entry.entry === 'event') ?? null;
 
-  const [title, setTitle] = useState(event?.title ?? '');
-  const [description, setDescription] = useState(event?.description ?? '');
-  const [date, setDate] = useState(event?.date ?? null);
-  const [instruction, setInstruction] = useState<DebugJsonInstruction>(
-    event?.instruction ?? { type: 'config', data: {} }
-  );
+  const [title, setTitle] = useState(event?.key ?? '');
+  // const [description, setDescription] = useState(event?.description ?? '');
+  // const [date, setDate] = useState(event?.date ?? null);
+  const [delta, setDelta] = useState(event?.delta ?? 0);
+  // const [instruction, setInstruction] = useState<DebugJsonInstruction>(
+  //   event?.instruction ?? { type: 'config', data: {} }
+  // );
+  const [flag, setFlag] = useState(event?.flag ?? '');
+  const [invert, setInvert] = useState(event?.invert ?? false);
 
   useEffect(() => {
-    setTitle(event?.title ?? '');
-    setDescription(event?.description ?? '');
-    setDate(event?.date ?? null);
-    setInstruction(
-      event?.instruction ?? {
-        type: 'config',
-        data: {},
-      }
-    );
+    setTitle(event?.key ?? '');
+    setDelta(event?.delta ?? 0);
+    setFlag(event?.flag ?? '');
   }, [event]);
 
   const resetAndClose = () => {
     setTitle('');
-    setDescription('');
-    setDate(null);
-    setInstruction({ type: 'config', data: {} });
+    // setDescription('');
+    // setDate(null);
+    // setInstruction({ type: 'config', data: {} });
+    setDelta(0);
+    setFlag('');
     onClose();
   };
 
   const submitAndClose = () => {
-    if (!title || !date || !instruction) {
-      alert('Please fill out all required fields (Title, Date, Instruction)');
+    if (!title || !delta || !flag) {
+      alert('Please fill out all required fields (Title, Delta, Flag)');
       return;
     }
-    if (!validateInstruction(instruction, states)) return;
+    // if (!validateInstruction(instruction, states)) return;
     const eventData = {
       id: id ?? uuid(),
       entry: 'event',
@@ -159,7 +165,7 @@ const EventModal: FC<{
           fullWidth
           margin="normal"
         />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
             views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
             sx={{ mt: 2 }}
@@ -169,8 +175,8 @@ const EventModal: FC<{
               setDate(newValue?.toDate() ?? new Date());
             }}
           />
-        </LocalizationProvider>
-        <JsonEditor
+        </LocalizationProvider> */}
+        {/* <JsonEditor
           data={instruction}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           setData={(data: any) => {
@@ -197,7 +203,25 @@ const EventModal: FC<{
             console.log('Setting Instruction:', data);
             setInstruction(data as DebugJsonInstruction);
           }}
-        />
+        /> */}
+        <Select
+          label="Flag"
+          value={flag}
+          onChange={(e) => setFlag(e.target.value)}
+        >
+          {Object.keys(flags).map((key) => (
+            <MenuItem key={key} value={key}>
+              {key}
+            </MenuItem>
+          ))}
+        </Select>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="flag-label">Invert?</InputLabel>
+          <Checkbox
+            checked={invert}
+            onChange={(e) => setInvert(e.target.checked)}
+          />
+        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={resetAndClose} autoFocus>
@@ -205,6 +229,24 @@ const EventModal: FC<{
         </Button>
         <Button variant="contained" onClick={submitAndClose}>
           Submit
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            rebuild(({ error }) => {
+              if (error) {
+                alert(`State rebuild failed: ${error}`);
+              }
+            });
+            rebuildEvents(({ error }) => {
+              if (error) {
+                alert(`Event rebuild failed: ${error}`);
+              }
+            });
+          }}
+        >
+          Rebuild
         </Button>
       </DialogActions>
     </Dialog>

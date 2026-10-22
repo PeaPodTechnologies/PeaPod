@@ -133,6 +133,7 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
   JsonDocument doc;
   doc["timestamp"] = millis();
   doc["type"] = "config";
+  doc["errlev"] = I2CIP_ERR_NONE; // TODO: better error level indication
 
   bool list = false;
   for (JsonPair kv : config) {
@@ -195,6 +196,216 @@ void PeaPodModule::handleConfig(JsonObject config, Print& out) {
   DebugJson::jsonPrintln(doc, out);
 }
 
+void PeaPodModule::handleInterval(JsonObject interval, Print& out) {
+  JsonDocument doc;
+  doc["timestamp"] = millis();
+  doc["type"] = "interval";
+  
+  FSM::IntervalCallback* theInterval = nullptr;
+  bool interval_set = false;
+  FSM::Flag* flag = nullptr;
+  
+  bool invert = false; // OFF by default
+  // bool flagstate_set = false;
+  FSM::fsm_timestamp_t phase = 0;
+  FSM::fsm_timestamp_t delta = 0;
+  bool phase_set = false;
+  bool delta_set = false;
+  
+  bool list = false;
+  for (JsonPair kv : interval) {
+    const char* key = kv.key().c_str();
+
+    if(strcmp(key, "timestamp") == 0) continue; // Reserved key
+    if(strcmp(key, "list") == 0) { list = true; continue; } // Reserved key
+
+    if(!doc["data"][key].isNull()) continue; // Already handled
+
+    JsonVariant value = kv.value();
+
+    if(strcmp(key, "flag") == 0) {
+      flag = flags[value.as<const char*>()];
+      continue;
+    }
+
+    if(strcmp(key, "interval") == 0) {
+      theInterval = intervals[value.as<const char*>()];
+      interval_set = true;
+      continue;
+    }
+
+    if(strcmp(key, "delta") == 0) {
+      delta = value.as<FSM::fsm_timestamp_t>();
+      delta_set = true;
+      continue;
+    }
+
+    if(strcmp(key, "phase") == 0) {
+      phase = value.as<FSM::fsm_timestamp_t>();
+      phase_set = true;
+      continue;
+    }
+
+    if(strcmp(key, "invert") == 0) {
+      invert = value.as<bool>();
+      // flagstate_set = true;
+      continue;
+    }
+  }
+
+  if(theInterval != nullptr) {
+    // Interval exists
+    bool* locked = locker_intervals[theInterval->getKey()];
+    if(locked == nullptr || !*locked) {
+      if(delta_set) theInterval->setDelta(delta);
+      if(phase_set) theInterval->setPhase(phase);
+    }
+    doc["data"]["key"] = theInterval->getKey();
+    doc["data"]["delta"] = theInterval->getDelta();
+    doc["data"]["phase"] = theInterval->getPhase();
+    doc["data"]["invert"] = theInterval->getInvert();
+    if(flag != nullptr) doc["data"]["flag"] = flag->getKey();
+    doc["msg"] = "INTERVAL UPDATE";
+  } else if(flag != nullptr && !interval_set && delta_set && phase_set) {
+    // Interval does not yet exist and was not requested, create it (matching flag key)
+    bool* locked = locker_flags[flag->getKey()];
+    if(locked == nullptr || !*locked) {
+      String newkey = "i_" + String(flag->getKey()) + "_" + String(millis() % 1000000);
+      FSM::IntervalCallback* newInterval = FSM::Chronos.addIntervalFlag(newkey.c_str(), delta, phase, flag, invert); // Invert defaults to false unless specified true
+      intervals.set(newInterval->getKey(), newInterval); // Add to hashtable
+      doc["data"]["key"] = newkey;
+      doc["data"]["delta"] = delta;
+      doc["data"]["phase"] = phase;
+      doc["data"]["invert"] = invert;
+    }
+    doc["msg"] = "INTERVAL CREATE";
+  } else {
+    // Neither interval nor flag, ENOENT
+    doc["type"] = "error";
+    doc["msg"] = "INTERVAL EINVAL";
+    doc["errlev"] = I2CIP_ERR_SOFT;
+    DebugJson::jsonPrintln(doc, out);
+    return; // Stop further processing since the interval was not found
+  }
+
+  if(list) {
+    String* intervalkeys = intervals.keys();
+    uint8_t intervalcount = intervals.size();
+
+    for(uint8_t i = 0; i < intervalcount; i++) {
+      if(doc["data"][intervalkeys[i]].isNull()) {
+        doc["data"][intervalkeys[i]]["phase"] = intervals[intervalkeys[i].c_str()]->getPhase();
+        doc["data"][intervalkeys[i]]["delta"] = intervals[intervalkeys[i].c_str()]->getDelta();
+      }
+    }
+
+    delete[] intervalkeys;
+  }
+
+  doc["errlev"] = I2CIP_ERR_NONE;
+
+  DebugJson::jsonPrintln(doc, out);
+}
+
+void PeaPodModule::handleEvent(JsonObject event, Print& out) {
+  JsonDocument doc;
+  doc["timestamp"] = millis();
+  doc["type"] = "event";
+
+  FSM::ChronoEvent* theEvent = nullptr;
+  bool event_set = false;
+  FSM::Flag* flag = nullptr;
+  
+  bool invert = false; // OFF by default
+  // bool flagstate_set = false;
+  FSM::fsm_timestamp_t delta = 0;
+  bool delta_set = false;
+  
+  bool list = false;
+  for (JsonPair kv : event) {
+    const char* key = kv.key().c_str();
+
+    if(strcmp(key, "timestamp") == 0) continue; // Reserved key
+    if(strcmp(key, "list") == 0) { list = true; continue; } // Reserved key
+
+    if(!doc["data"][key].isNull()) continue; // Already handled
+
+    JsonVariant value = kv.value();
+
+    if(strcmp(key, "flag") == 0) {
+      flag = flags[value.as<const char*>()];
+      continue;
+    }
+
+    if(strcmp(key, "event") == 0) {
+      theEvent = events[value.as<const char*>()];
+      event_set = true;
+      continue;
+    }
+
+    if(strcmp(key, "delta") == 0) {
+      delta = value.as<FSM::fsm_timestamp_t>();
+      delta_set = true;
+      continue;
+    }
+
+    if(strcmp(key, "invert") == 0) {
+      invert = value.as<bool>();
+      // flagstate_set = true;
+      continue;
+    }
+  }
+
+  if(theEvent != nullptr) {
+    // Interval exists, don't change behaviour
+    bool* locked = locker_intervals[theEvent->getKey()];
+    if(locked == nullptr && !*locked) {
+      if(delta_set) theEvent->setTimestamp(delta);
+    }
+    doc["data"]["key"] = theEvent->getKey();
+    doc["data"]["delta"] = theEvent->getTimestamp();
+    doc["data"]["invert"] = theEvent->getInvert();
+    if(flag != nullptr) doc["data"]["flag"] = flag->getKey();
+    doc["msg"] = "EVENT UPDATE";
+  } else if(flag != nullptr && !event_set && delta_set) {
+    // Interval does not yet exist and was not requested, create it (matching flag key)
+    bool* locked = locker_flags[flag->getKey()];
+    if(locked == nullptr || !*locked) {
+      String newkey = "e_" + String(flag->getKey()) + "_" + String(millis() % 1000000);
+      FSM::ChronoEvent* newEvent = FSM::Chronos.addEventFlag(newkey.c_str(), delta, flag, invert); // Invert defaults to false unless specified true
+      events.set(newEvent->getKey(), newEvent);
+      doc["data"]["key"] = newkey;
+      doc["data"]["delta"] = delta;
+      doc["data"]["invert"] = invert;
+    }
+    doc["msg"] = "EVENT CREATE";
+  } else {
+    // Neither event nor flag, ENOENT
+    doc["type"] = "error";
+    doc["msg"] = "EVENT EINVAL";
+    doc["errlev"] = I2CIP_ERR_SOFT;
+    DebugJson::jsonPrintln(doc, out);
+    return; // Stop further processing since the event was not found
+  }
+
+  if(list) {
+    String* eventkeys = events.keys();
+    uint8_t eventcount = events.size();
+
+    for(uint8_t i = 0; i < eventcount; i++) {
+      if(doc["data"][eventkeys[i]].isNull()) {
+        doc["data"][eventkeys[i]] = events[eventkeys[i].c_str()]->getTimestamp();
+      }
+    }
+
+    delete[] eventkeys;
+  }
+
+  doc["errlev"] = I2CIP_ERR_NONE;
+
+  DebugJson::jsonPrintln(doc, out);
+}
+
 void PeaPodModule::registerFlag(FSM::Flag* flag, bool locked) {
   if(flag == nullptr) return;
   this->flags.set(flag->getKey(), flag);
@@ -246,6 +457,22 @@ FSM::ChronoEvent* PeaPodModule::getEventByIndex(uint8_t index) const {
   return this->events.getByFirstOccurrence(index);
 }
 
+void PeaPod::eventRouter(JsonObject event, Print& out) {
+  for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
+    if(I2CIP::modules[i] != nullptr) {
+      I2CIP::modules[i]->handleEvent(event, out);
+    }
+  }
+}
+
+void PeaPod::intervalRouter(JsonObject interval, Print& out) {
+  for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
+    if(I2CIP::modules[i] != nullptr) {
+      I2CIP::modules[i]->handleInterval(interval, out);
+    }
+  }
+}
+
 void PeaPod::configRouter(JsonObject command, Print& out) {
   for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
     if(I2CIP::modules[i] != nullptr) {
@@ -273,7 +500,7 @@ void PeaPod::callback_cycle(bool _, const FSM::Number& __) {
   last = millis();
 
   while(PEAPOD_SERIAL.available() > 0) { // With baud 115200, this should not block
-    DebugJson::update(PEAPOD_SERIAL, I2CIP::commandRouter, PeaPod::configRouter);
+    DebugJson::update(PEAPOD_SERIAL, I2CIP::commandRouter, PeaPod::configRouter, PeaPod::intervalRouter, PeaPod::eventRouter);
   }
 }
 

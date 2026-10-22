@@ -13,6 +13,23 @@ peapod_menustate_t PeaPod::Menu::_peapod_menustate_default = {
   .module_idx = 0
 };
 
+#ifndef PEAPOD_SEVENSEG_TEMPERATURE
+#ifndef PEAPOD_SEVENSEG_HUMIDITY
+#ifndef PEAPOD_SEVENSEG_CO2
+#ifndef PEAPOD_SEVENSEG_ADC
+void writeSevenSegmentErrorCode() {
+  // Clear the last 3 bits and set based on error levels
+  code = code & ~0b111 |
+    (errlev_sevenseg > I2CIP_ERR_NONE ? 0b1 : 0) | 
+    (errlev_lcd > I2CIP_ERR_NONE ? 0b10 : 0) | 
+    (errlev_encoder > I2CIP_ERR_NONE ? 0b100 : 0);
+  writeSevenSegmentCode();
+}
+#endif
+#endif
+#endif
+#endif
+
 FSM::State<peapod_menustate_t> PeaPod::Menu::menu_state = FSM::State<peapod_menustate_t>(_peapod_menustate_default, "menu");
 
 i2cip_errorlevel_t PeaPod::Menu::initialize(void) {
@@ -67,6 +84,23 @@ i2cip_errorlevel_t PeaPod::Menu::update(void) {
       i2cip_state_pin_t button = encoder->getCache().button;
 
       code = code & ~0x10 | (button == PIN_ON ? 0x10 : 0); // Show encoder button state on 7-segment display position 2
+      if(encoder_pos > encoder_last) {
+        code = code & ~0x1100 | ((1 << 8) & 0x1100); // Show encoder advance on 7-segment display position 3
+      } else if(encoder_pos < encoder_last) {
+        code = code & ~0x1100 | ((1 << 12) & 0x1100); // Show encoder reverse on 7-segment display position 4
+      } else {
+        code = code & ~0x1100; // Clear encoder advance/reverse indicators on 7-segment display positions 3 and 4
+      }
+
+      #ifndef PEAPOD_SEVENSEG_TEMPERATURE
+      #ifndef PEAPOD_SEVENSEG_HUMIDITY
+      #ifndef PEAPOD_SEVENSEG_CO2
+      #ifndef PEAPOD_SEVENSEG_ADC
+        writeSevenSegmentErrorCode();
+      #endif
+      #endif
+      #endif
+      #endif
 
       if (encoder_pos != encoder_last) {
         onEncoderChange(encoder_last > encoder_pos);
@@ -119,11 +153,6 @@ i2cip_errorlevel_t PeaPod::Menu::update(void) {
   #ifndef PEAPOD_SEVENSEG_HUMIDITY
   #ifndef PEAPOD_SEVENSEG_CO2
   #ifndef PEAPOD_SEVENSEG_ADC
-    // Clear the last 3 bits and set based on error levels
-    code = code & ~0b111 |
-      (errlev_sevenseg > I2CIP_ERR_NONE ? 0b1 : 0) | 
-      (errlev_lcd > I2CIP_ERR_NONE ? 0b10 : 0) | 
-      (errlev_encoder > I2CIP_ERR_NONE ? 0b100 : 0);
     writeSevenSegmentCode();
   #endif
   #endif
@@ -138,21 +167,21 @@ void PeaPod::Menu::onEncoderChange(bool inc)  {
 
   unsigned numDevices = devicetree.size();
   PeaPodModule* currentModule = (PeaPodModule*)modules[menu.module_idx];
-  Serial.print("-> Encoder change (");
-  if(inc) Serial.print("+");
-  else Serial.print("-");
-  Serial.println(")");
-  Serial.println("-> Current module index: " + String(menu.module_idx) + String(currentModule == nullptr ? " (null)" : " (valid)"));
+  // Serial.print("-> Encoder change (");
+  // if(inc) Serial.print("+");
+  // else Serial.print("-");
+  // Serial.println(")");
+  // Serial.println("-> Current module index: " + String(menu.module_idx) + String(currentModule == nullptr ? " (null)" : " (valid)"));
 
   uint8_t moduleNumFlags = currentModule == nullptr ? 0 : currentModule->getNumFlags();
   uint8_t moduleNumVariables = currentModule == nullptr ? 0 : currentModule->getNumVariables();
   uint8_t moduleNumIntervals = currentModule == nullptr ? 0 : currentModule->getNumIntervals();
   uint8_t moduleNumEvents = currentModule == nullptr ? 0 : currentModule->getNumEvents();
 
-  Serial.println("-> Current module number of flags: " + String(moduleNumFlags));
-  Serial.println("-> Current module number of variables: " + String(moduleNumVariables));
-  Serial.println("-> Current module number of intervals: " + String(moduleNumIntervals));
-  Serial.println("-> Current module number of events: " + String(moduleNumEvents));
+  // Serial.println("-> Current module number of flags: " + String(moduleNumFlags));
+  // Serial.println("-> Current module number of variables: " + String(moduleNumVariables));
+  // Serial.println("-> Current module number of intervals: " + String(moduleNumIntervals));
+  // Serial.println("-> Current module number of events: " + String(moduleNumEvents));
   FSM::Variable* variable = currentModule == nullptr ? nullptr : currentModule->getVariableByIndex(menu.submenu - 1);
   FSM::IntervalCallback* interval = currentModule == nullptr ? nullptr : currentModule->getIntervalByIndex(menu.submenu - 1);
   FSM::ChronoEvent* event = currentModule == nullptr ? nullptr : currentModule->getEventByIndex(menu.submenu - 1);
@@ -516,6 +545,10 @@ void PeaPod::Menu::onEncoderHold(void) {
 }
 
 void PeaPod::Menu::writeSevenSegmentCode(void) {
+  code = code & ~0b111 |
+    (errlev_sevenseg > I2CIP_ERR_NONE ? 0b1 : 0) | 
+    (errlev_lcd > I2CIP_ERR_NONE ? 0b10 : 0) | 
+    (errlev_encoder > I2CIP_ERR_NONE ? 0b100 : 0);
   i2cip_ht16k33_data_t data = { .h = (int32_t)PeaPod::Menu::code };
   i2cip_ht16k33_mode_t mode = SEG_HEX16;
   i2cip_args_io_t args_sevenseg = { .g = false, .a = nullptr, .s = &data, .b = &mode };

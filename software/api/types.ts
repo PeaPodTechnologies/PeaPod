@@ -3,9 +3,11 @@ export type DebugJsonMessageTypes =
   | 'info'
   | 'warn'
   | 'error'
-  | 'event'
+  | 'telemetry'
   | 'command'
   | 'config'
+  | 'interval'
+  | 'event'
   | 'revision'
   | 'tree';
 
@@ -38,7 +40,7 @@ export type DebugJsonInstruction = {
 
 export function parseType(type: DebugJsonMessageTypes): string {
   switch (type) {
-  case 'event':
+  case 'telemetry':
     return 'Telemetry'; // 'event' is used bi-directionally; Controller-to-Host is telemetry (i.e. component states, program flow), Host-to-Controller is for state changes (non-component/ not command, setting component-state e.g. on/off; targeted/ not config, e.g. setting up the camera lighting component-state as part of the Controller API; instead: specific and programmatic (e.g. enabling/disabling specific component-states mid-program, tuning non-component-state control parameters)
   default:
     return type.toUpperCase().charAt(0) + type.slice(1);
@@ -75,18 +77,3 @@ export function parseTimestamp(ms: number): string {
 
   return `${hoursString}:${minutesString}:${secondsString}.${msString}`;
 };
-
-export type SchedulerEntry = {
-  id: string;
-  date: Date;
-  title: string;
-  description?: string;
-  instruction: DebugJsonInstruction;
-} & (
-  | { entry: 'event' }
-  | {
-      entry: 'interval';
-      endDate: Date;
-      interval: number;
-    }
-);

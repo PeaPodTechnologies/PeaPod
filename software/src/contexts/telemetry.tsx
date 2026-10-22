@@ -40,7 +40,7 @@ const TelemetryProvider = ({
         messages[sock]
           .filter(
             (msg) =>
-              msg['type'] === 'event' &&
+              msg['type'] === 'telemetry' &&
               msg['data'] &&
               Object.values(msg['data']).every(
                 (datum) => typeof datum === 'number'
