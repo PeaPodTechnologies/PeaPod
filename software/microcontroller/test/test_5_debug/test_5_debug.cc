@@ -307,7 +307,7 @@ unsigned long i = 0;
 
 void loop() {
 
-  PeaPod::cycle.set(PeaPod::cycle.get()++);
+  PeaPod::cycle.set(PeaPod::cycle.get() + FSM::Number(1, false, false));
   
   RUN_TEST(test_menu_update);
   delay(100);

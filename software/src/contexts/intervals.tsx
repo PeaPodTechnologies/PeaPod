@@ -8,8 +8,9 @@ import React, {
 } from 'react';
 import { useSocket } from './socket';
 
-type IntervalTree = {
+export type IntervalTree = {
   [key: string]: {
+    timestamp: number;
     key: string;
     delta: number;
     phase: number;
@@ -50,7 +51,19 @@ const IntervalsProvider = ({
           .reduce(
             (acc, msg) => ({
               ...acc,
-              ...(msg['data'].key ? { [msg['data'].key]: msg['data'] } : {}),
+              ...(msg['data']
+                ? Object.keys(msg['data']).reduce(
+                    (acc, key) => ({
+                      ...acc,
+                      [key]: {
+                        ...msg['data'][key],
+                        key,
+                        timestamp: msg['timestamp'],
+                      },
+                    }),
+                    {}
+                  )
+                : {}),
             }),
             {}
           )
@@ -59,6 +72,7 @@ const IntervalsProvider = ({
 
   useEffect(() => {
     if (messages && table) {
+      console.log('intervals', table);
       setIntervals(table as IntervalTree);
     }
   }, [table, messages]);

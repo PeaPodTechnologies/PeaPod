@@ -8,8 +8,9 @@ import React, {
 } from 'react';
 import { useSocket } from './socket';
 
-type EventTree = {
+export type EventTree = {
   [key: string]: {
+    timestamp: number;
     key: string;
     delta: number;
     flag: string;
@@ -49,7 +50,19 @@ const EventsProvider = ({
           .reduce(
             (acc, msg) => ({
               ...acc,
-              ...(msg['data'].key ? { [msg['data'].key]: msg['data'] } : {}),
+              ...(msg['data']
+                ? Object.keys(msg['data']).reduce(
+                    (acc, key) => ({
+                      ...acc,
+                      [key]: {
+                        ...msg['data'][key],
+                        key,
+                        timestamp: msg['timestamp'],
+                      },
+                    }),
+                    {}
+                  )
+                : {}),
             }),
             {}
           )
@@ -58,6 +71,7 @@ const EventsProvider = ({
 
   useEffect(() => {
     if (messages && table) {
+      console.log('events', table);
       setEvents(table as EventTree);
     }
   }, [table, messages]);

@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "0.4.3",
+  "version": "0.5.1",
   "description": "Main software for PeaPod.",
   "main": "./index.mjs",
   "exports": {
@@ -43,8 +43,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "dev": "yarn buildapi && yarn start",
-    "devsim": "yarn buildapi && yarn startsim",
+    "dev": "export NODE_ENV=development && yarn buildapi && yarn start",
+    "devsim": "export NODE_ENV=development && yarn buildapi && yarn startsim",
     "build": "yarn buildapi && next build",
     "buildapi": "rm -f api/*.mjs index.mjs server.mjs serialtest.mjs flash.mjs && node api.esbuild.mjs",
     "start": "node index.mjs",

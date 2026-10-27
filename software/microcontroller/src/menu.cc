@@ -33,6 +33,8 @@ void writeSevenSegmentErrorCode() {
 FSM::State<peapod_menustate_t> PeaPod::Menu::menu_state = FSM::State<peapod_menustate_t>(_peapod_menustate_default, "menu");
 
 i2cip_errorlevel_t PeaPod::Menu::initialize(void) {
+  if(I2CIP::modules[I2CIP_MUX_NUM_FAKE] == nullptr) I2CIP::modules[I2CIP_MUX_NUM_FAKE] = &notamodule; // Register `notamodule` as the faked-out module
+
   errlev_lcd = notamodule.operator()<MCP23008>(fqa_lcd, false, _i2cip_args_io_default, DebugJsonOut);
   I2CIP_ERR_BREAK(errlev_lcd);
 

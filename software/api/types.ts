@@ -72,8 +72,8 @@ export function parseTimestamp(ms: number): string {
 
   const msString = (ms % 1000).toString().padStart(3, '0');
   const secondsString = (seconds % 60).toString().padStart(2, '0');
-  const minutesString = (minutes % 60).toString().padStart(2, '0');
-  const hoursString = hours.toString().padStart(2, '0');
+  const minutesString = minutes > 0 ? (minutes % 60).toString().padStart(2, '0') : '';
+  const hoursString = hours > 0 ? hours.toString().padStart(2, '0') : '';
 
-  return `${hoursString}:${minutesString}:${secondsString}.${msString}`;
+  return `${hoursString}${minutesString}${secondsString}.${msString}`;
 };

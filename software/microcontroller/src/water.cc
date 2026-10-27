@@ -15,7 +15,9 @@ PeaPod::PeaPodModuleWatering::PeaPodModuleWatering(bool chronoCallbacks) : PeaPo
   #endif
   enable_pump.set(true);
 
+  #ifdef PEAPOD_MODULE_WATERING_GPIO_SOLENOID
   enable_watering.addLatchingConditional(true, false, callback_mcp23017_digitalWrite<PEAPOD_MODULE_WATERING_GPIO_FQA, PEAPOD_MODULE_WATERING_GPIO_SOLENOID>);
+  #endif
   enable_watering.set(false);
 
   registerFlag(&enable_watering);

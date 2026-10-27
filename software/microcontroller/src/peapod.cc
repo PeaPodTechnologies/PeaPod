@@ -279,7 +279,7 @@ void PeaPodModule::handleInterval(JsonObject interval, Print& out) {
       doc["data"]["invert"] = invert;
     }
     doc["msg"] = "INTERVAL CREATE";
-  } else {
+  } else if (!list) {
     // Neither interval nor flag, ENOENT
     doc["type"] = "error";
     doc["msg"] = "INTERVAL EINVAL";
@@ -379,7 +379,7 @@ void PeaPodModule::handleEvent(JsonObject event, Print& out) {
       doc["data"]["invert"] = invert;
     }
     doc["msg"] = "EVENT CREATE";
-  } else {
+  } else if (!list) {
     // Neither event nor flag, ENOENT
     doc["type"] = "error";
     doc["msg"] = "EVENT EINVAL";
@@ -429,18 +429,22 @@ void PeaPodModule::registerEvent(FSM::ChronoEvent* event, bool locked) {
 
 void PeaPodModule::unregisterFlag(FSM::Flag* flag) {
   if(flag == nullptr) return;
+  this->flags.remove(flag->getKey());
   this->locker_flags.remove(flag->getKey());
 }
 void PeaPodModule::unregisterVariable(FSM::Variable* variable) {
   if(variable == nullptr) return;
+  this->variables.remove(variable->getKey());
   this->locker_variables.remove(variable->getKey());
 }
 void PeaPodModule::unregisterInterval(FSM::IntervalCallback* interval) {
   if(interval == nullptr) return;
+  this->intervals.remove(interval->getKey());
   this->locker_intervals.remove(interval->getKey());
 }
 void PeaPodModule::unregisterEvent(FSM::ChronoEvent* event) {
   if(event == nullptr) return;
+  this->events.remove(event->getKey());
   this->locker_events.remove(event->getKey());
 }
 
@@ -481,10 +485,40 @@ void PeaPod::configRouter(JsonObject command, Print& out) {
   }
 }
 
+void PeaPod::rebuildStates(Print& out) {
+  JsonDocument doc;
+  doc["list"] = true;
+  for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
+    if(I2CIP::modules[i] != nullptr) {
+      I2CIP::modules[i]->handleConfig(doc.as<JsonObject>(), out);
+    }
+  }
+}
+void PeaPod::rebuildEvents(Print& out) {
+  JsonDocument doc;
+  doc["list"] = true;
+  for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
+    if(I2CIP::modules[i] != nullptr) {
+      I2CIP::modules[i]->handleEvent(doc.as<JsonObject>(), out);
+    }
+  }
+}
+
+void PeaPod::rebuildIntervals(Print& out) {
+  JsonDocument doc;
+  doc["list"] = true;
+  for(unsigned int i = 0; i < I2CIP_MUX_COUNT; i++) {
+    if(I2CIP::modules[i] != nullptr) {
+      I2CIP::modules[i]->handleInterval(doc.as<JsonObject>(), out);
+    }
+  }
+}
+
 void PeaPod::registerCallbacks(void)  {
   cycle.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_cycle);
 
   FSM::Chronos.addInterval(PEAPOD_DELTA_HEARTBEAT, PeaPod::callback_heartbeat);
+  FSM::Chronos.addInterval(PEAPOD_DELTA_REFRESH, PeaPod::callback_rebuild);
   
   FSM::Chronos.addInterval(PEAPOD_DELTA_MODULECHECK, PeaPod::callback_module<PEAPOD_MODULENUM_AIR, PeaPodModuleAir>);
   FSM::Chronos.addInterval(PEAPOD_DELTA_MODULECHECK, PeaPod::callback_module<PEAPOD_MODULENUM_WATERING, PeaPodModuleWatering>);
@@ -492,7 +526,7 @@ void PeaPod::registerCallbacks(void)  {
 }
 
 unsigned long last = 0;
-void PeaPod::callback_cycle(bool _, const FSM::Number& __) {
+void PeaPod::callback_cycle(bool _, const FSM::Number& cycle) {
   FSM::Chronos.set(millis());
 
   unsigned long delta = millis() - last;
@@ -509,4 +543,11 @@ void PeaPod::callback_heartbeat(bool _, const FSM::fsm_timestamp_t& __) {
   DebugJson::revision(I2CIP_REVISION, PEAPOD_SERIAL);
   DebugJson::telemetry(millis(), (unsigned)PeaPod::fps.get(), "fps", PEAPOD_SERIAL);
   DebugJson::telemetry(millis(), (unsigned)PeaPod::cycle.get(), "cycle", PEAPOD_SERIAL);
+}
+
+void PeaPod::callback_rebuild(bool _, const FSM::fsm_timestamp_t& __) {
+  I2CIP::rebuildTree(PEAPOD_SERIAL, true);
+  rebuildStates(PEAPOD_SERIAL);
+  rebuildIntervals(PEAPOD_SERIAL);
+  rebuildEvents(PEAPOD_SERIAL);
 }

@@ -36,6 +36,7 @@
 
 #define PEAPOD_DELTA_HEARTBEAT 5000
 #define PEAPOD_DELTA_MODULECHECK 100
+#define PEAPOD_DELTA_REFRESH 10000 // 10 seconds
 
 #define PEAPOD_MODULENUM_SEVENSEG 0
 // #define PEAPOD_SEVENSEG_TEMPERATURE 1 // Uncomment to enable 7-segment display for temperature
@@ -118,13 +119,19 @@ namespace PeaPod {
   extern FSM::Variable fps;
 
   void registerCallbacks(void);
+
   void configRouter(JsonObject command, Print& out);
   void intervalRouter(JsonObject interval, Print& out);
   void eventRouter(JsonObject event, Print& out);
 
+  void rebuildStates(Print& out);
+  void rebuildIntervals(Print& out);
+  void rebuildEvents(Print& out);
+
   // Callbacks
   void callback_cycle(bool _, const FSM::Number& __);
   void callback_heartbeat(bool _ = true, const FSM::fsm_timestamp_t& __ = 0);
+  void callback_rebuild(bool _ = true, const FSM::fsm_timestamp_t& __ = 0);
   template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaPod::PeaPodModule, T>::value, int>::type = 0> void callback_module(bool _ = true, const FSM::fsm_timestamp_t& __ = 0);
 
   template <i2cip_fqa_t F, unsigned char P> void callback_mcp23017_digitalWrite(bool _, const bool& v);

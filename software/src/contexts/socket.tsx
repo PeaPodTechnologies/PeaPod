@@ -18,6 +18,7 @@ export type SocketContextType = {
   socket: Socket | null;
   sockets: string[]; // List of connected sockets
   messages: { [key: string]: any[] };
+  latestTimestamp: number;
   stopSocket: () => void;
   startSocket: () => void;
 };
@@ -27,6 +28,7 @@ const SocketContext = createContext<SocketContextType>({
   socket: null,
   sockets: [],
   messages: {},
+  latestTimestamp: 0,
   stopSocket: () => {},
   startSocket: () => {},
 });
@@ -47,6 +49,7 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
   const [sockets, setSockets] = useState<{ [key: string]: boolean }>({});
   const [messages, setMessages] = useState<{ [key: string]: any[] }>({});
   const [enabled, setEnabled] = useState(true);
+  const [latestTimestamp, setLatestTimestamp] = useState(0);
 
   // const clearMessages = (label: string) => {
   //   setMessages((prev) => {
@@ -59,6 +62,9 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
     const addMessage = (label: string, msg: any) => {
       setMessages((prev) => {
         // console.log(prev);
+        if (label === 'microcontroller' && msg.timestamp) {
+          setLatestTimestamp(msg.timestamp);
+        }
         return {
           ...prev,
           [label]: [msg, ...(prev[label] ?? [])].slice(0, SOCKET_MESSAGES_MAX),
@@ -135,6 +141,7 @@ const DebugSocketProvider: FC<PropsWithChildren> = ({ children }) => {
         socket: isConnected ? socket : null,
         sockets: isConnected ? listSockets() : [],
         messages,
+        latestTimestamp,
         stopSocket: () => {
           console.log('Stopping Socket');
           setEnabled(false);

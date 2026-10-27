@@ -29,6 +29,8 @@ void setup(void) {
   
   delay(100);
   
+  if(I2CIP::modules[I2CIP_MUX_NUM_FAKE] == nullptr) I2CIP::modules[I2CIP_MUX_NUM_FAKE] = &notamodule; // Register `notamodule` as the faked-out module
+  
   // Instantiate modules ahead of time
   PeaPod::callback_module<PEAPOD_MODULENUM_AIR, PeaPodModuleAir>();
   PeaPod::callback_module<PEAPOD_MODULENUM_WATERING, PeaPodModuleWatering>();
@@ -66,7 +68,7 @@ void loop(void) {
   // I2CIP_DEBUG_SERIAL.println(I2CIP::devicetree.toString());
   // I2CIP_DEBUG_SERIAL.println(modules[PEAPOD_MODULENUM]->toString());
 
-  PeaPod::cycle.set(PeaPod::cycle.get()++);
+  PeaPod::cycle.set(++PeaPod::cycle.get());
 
   #ifdef PEAPOD_USEMENU
     if(Menu::update() != I2CIP_ERR_NONE) {
