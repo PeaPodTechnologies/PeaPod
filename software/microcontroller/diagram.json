@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "author": "MysticGMAN",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 67.2,
+      "left": -263.96,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "air_sensor",
+      "top": -76.5,
+      "left": -82.2,
+      "attrs": { "temperature": "24", "humidity": "60" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "co2_knob",
+      "top": -241.3,
+      "left": -278.6,
+      "attrs": { "value": "400" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "adc_knob",
+      "top": -212.5,
+      "left": -182.6,
+      "attrs": { "value": "512" }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "watering_switch",
+      "top": 215.6,
+      "left": -457.7,
+      "attrs": { "value": "" }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "lighting_switch",
+      "top": 215.6,
+      "left": -515.3,
+      "attrs": { "value": "" }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "camera_switch",
+      "top": 215.6,
+      "left": -572.9,
+      "attrs": { "value": "" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "watering_led",
+      "top": 226.8,
+      "left": -25,
+      "attrs": { "color": "blue", "label": "Watering" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "red_led",
+      "top": 274.8,
+      "left": -25,
+      "attrs": { "color": "red", "label": "Red grow light" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "blue_led",
+      "top": 342,
+      "left": -25,
+      "attrs": { "color": "blue", "label": "Blue grow light" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "camera_led",
+      "top": 409.2,
+      "left": -25,
+      "attrs": { "color": "white", "label": "Camera light" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_watering",
+      "top": 243.95,
+      "left": -96,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_red",
+      "top": 311.45,
+      "left": 17.8,
+      "rotate": 180,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_blue",
+      "top": 378.65,
+      "left": 17.8,
+      "rotate": 180,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_camera",
+      "top": 445.85,
+      "left": 17.8,
+      "rotate": 180,
+      "attrs": { "value": "220" }
+    }
+  ],
+  "connections": [
+    ["air_sensor:VCC", "esp:3V3", "red", ["h-19.2", "v-19.2", "h-153.75"]],
+    ["air_sensor:GND", "esp:GND.1", "black", ["v9.6", "h-249.6", "v172.8"]],
+    ["air_sensor:SDA", "esp:4", "green", ["h0.1", "v124.8"]],
+    ["co2_knob:VCC", "esp:3V3", "red", ["v38.4", "h-77.6", "v233.2"]],
+    ["co2_knob:GND", "esp:GND.1", "black", ["v19.2", "h-67.2", "v348.4"]],
+    ["co2_knob:SIG", "esp:34", "orange", ["v28.8", "h-86.8", "v252.4"]],
+    ["adc_knob:VCC", "esp:3V3", "red", ["v67.2", "h-135.2", "v175.6"]],
+    ["adc_knob:GND", "esp:GND.1", "black", ["v38.4", "h-144", "v329.2"]],
+    ["adc_knob:SIG", "esp:35", "orange", ["v48", "h-134.8", "v242.8"]],
+    ["watering_switch:1", "esp:GND.1", "black", ["v38.4", "h153.6", "v-67.2"]],
+    ["watering_switch:2", "esp:25", "green", ["v28.8", "h67.3", "v-105.6"]],
+    ["watering_switch:3", "esp:3V3", "red", ["h19.4", "v-163.2"]],
+    ["lighting_switch:1", "esp:GND.1", "black", ["v38.4", "h211.2", "v-67.2"]],
+    ["lighting_switch:3", "esp:3V3", "red", ["h19.4", "v-153.6"]],
+    ["camera_switch:1", "esp:GND.1", "black", ["v38.4", "h268.8", "v-67.2"]],
+    ["camera_switch:2", "esp:27", "green", ["v28.8", "h182.5", "v-86.4"]],
+    ["camera_switch:3", "esp:3V3", "red", ["h19.4", "v-153.6", "h268.65"]],
+    ["esp:13", "r_watering:1", "blue", ["h-19.05", "v57.6", "h537.6"]],
+    ["r_watering:2", "watering_led:A", "blue", ["v-28.8", "h66", "v48"]],
+    [
+      "watering_led:C",
+      "esp:GND.1",
+      "black",
+      ["h-28.4", "v28.8", "h-249.6", "v-76.8"]
+    ],
+    ["esp:18", "r_red:1", "red", ["h240", "v163.2"]],
+    ["r_red:2", "red_led:A", "red", []],
+    [
+      "red_led:C",
+      "esp:GND.1",
+      "black",
+      ["h-18.8", "v-19.2", "h-259.2", "v-76.8"]
+    ],
+    ["esp:19", "r_blue:1", "blue", ["h249.6", "v240"]],
+    ["r_blue:2", "blue_led:A", "blue", []],
+    [
+      "blue_led:C",
+      "esp:GND.1",
+      "black",
+      ["h-28.4", "v-86.4", "h-249.6", "v-76.8"]
+    ],
+    ["esp:23", "r_camera:1", "green", ["h19.2", "v48", "h240", "v326.4"]],
+    ["r_camera:2", "camera_led:A", "green", []],
+    [
+      "camera_led:C",
+      "esp:GND.1",
+      "black",
+      ["h-38", "v-153.6", "h-240", "v-76.8"]
+    ]
+  ],
+  "dependencies": {}
+}

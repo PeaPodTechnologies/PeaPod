@@ -126,3 +126,31 @@ Defines one namespaced Module class: `PeaPodModuleLighting`, that extends `PeaPo
 - on destruction:
   - sets the `enable_lighting` flag to false, setting the PWM outputs off, and disabling the lighting system,
   - removes the Chronograph intervals from the Chronograph scheduler.
+
+# Wokwi Simulation Environment
+
+The `[env:wokwi]` target is a GPIO-level behavior model, not a simulation of the production I2C drivers. It uses documented Wokwi parts and compiles only `src/wokwi_sim.cpp`, leaving the production firmware target unchanged.
+
+| PeaPod behavior                                     | Wokwi model                                       |
+| --------------------------------------------------- | ------------------------------------------------- |
+| Air temperature and humidity                        | DHT22 with editable temperature/humidity controls |
+| CO2 concentration                                   | Potentiometer scaled to 400-2000 ppm              |
+| ADC voltage                                         | Potentiometer scaled to 0-3.3 V                   |
+| Watering, lighting, camera flags                    | Three slide switches                              |
+| Watering output, red/blue grow lights, camera light | Four ESP32-driven LEDs                            |
+
+## Run
+
+Run these commands from `software/microcontroller` after installing PlatformIO:
+
+```sh
+pio run -e wokwi
+```
+
+With the Wokwi VS Code extension, open `diagram.json` and run **Wokwi: Start Simulator**. With the Wokwi CLI installed and authenticated, run `wokwi-cli .` from this directory. `wokwi-server --diagram-file diagram.json` is not the documented project launch command.
+
+Use the DHT22 popup to change air temperature/humidity, turn the two potentiometers to change CO2/ADC readings, and move the switches to observe the output LEDs and serial telemetry.
+
+## Fidelity
+
+Wokwi does not provide native models for the PeaPod TCA9548A module muxes, module EEPROM discovery, MCP23017, PCA9685, ADS1115, SHT45, and K30 combination used by I2CIP. Those unsupported parts have intentionally been removed from the diagram rather than left as un-loadable components. The GPIO model lets you exercise subsystem behavior, but it does not validate production I2C wiring or drivers. Matching the physical I2C network requires Wokwi custom-chip models for the muxes and peripheral devices, including the EEPROM device maps.
