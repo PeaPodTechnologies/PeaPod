@@ -1,0 +1,24 @@
+@startuml
+' Combined overview - edit the focused diagrams instead:
+'   uml-modules.puml - PeaPodModule + Air/Watering/Lighting
+'   uml-states.puml  - global FSM states + callbacks
+'   uml-menu.puml    - LCD/encoder menu
+' Also includes the I2CIP library diagrams (../lib/I2CIP/docs)
+' and the FiniteStateMachine diagrams (../lib/I2CIP/lib/FiniteStateMachine/docs).
+' The runtime flow lives in uml-runtime.puml (page 2).
+left to right direction
+!include uml-modules.puml
+!include uml-states.puml
+!include uml-menu.puml
+!include ../../lib/I2CIP/docs/uml-device.puml
+!include ../../lib/I2CIP/docs/uml-module.puml
+!include ../../lib/I2CIP/docs/uml-containers.puml
+!include ../../lib/I2CIP/lib/FiniteStateMachine/docs/uml-state.puml
+!include ../../lib/I2CIP/lib/FiniteStateMachine/docs/uml-conditionals.puml
+!include ../../lib/I2CIP/lib/FiniteStateMachine/docs/uml-chrono.puml
+title PeaPod Firmware Architecture
+@enduml
+
+@startuml
+!include uml-runtime.puml
+@enduml

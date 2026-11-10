@@ -1,0 +1,68 @@
+@startuml
+title PeaPod - Menu (LCD + Rotary Encoder)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+hide empty members
+
+package "PeaPod::Menu" {
+  enum PEAPOD_MENU_T {
+    PEAPOD_MENU_MAIN = 0
+    PEAPOD_MENU_MODULE = 1
+    PEAPOD_MENU_DEVICE = 2
+    PEAPOD_MENU_FLAG = 3
+    PEAPOD_MENU_VARIABLE = 4
+    PEAPOD_MENU_SET = 5
+  }
+
+  class peapod_menustate_t <<struct>> {
+    +menu: PEAPOD_MENU_T
+    +submenu: uint8_t
+    +module_idx: uint8_t
+  }
+
+  object "menu_state" as MenuState <<State<peapod_menustate_t>>>
+
+  object "Menu API" as MenuAPI {
+    initializeDevices(): i2cip_errorlevel_t
+    update(): i2cip_errorlevel_t
+    --
+    onEncoderChange(inc: bool)
+    onEncoderPress()
+    writeLCDMenu(menu: peapod_menustate_t)
+    --
+    fqa_lcd: i2cip_fqa_t (MCP23008, fake MUX)
+    fqa_encoder: i2cip_fqa_t (Seesaw, fake MUX)
+    errlev_lcd / errlev_encoder: i2cip_errorlevel_t
+    lcd: LCD*
+  }
+}
+
+class LCD
+
+MenuState ..> peapod_menustate_t : wraps
+MenuState ..> PEAPOD_MENU_T
+MenuAPI ..> MenuState : encoder events set state
+MenuState ..> MenuAPI : writeLCDMenu callback
+MenuAPI ..> LCD : render
+
+note right of MenuState
+FSM::State specialized for the menu struct:
+compare() always returns true, so every
+set() unconditionally fires writeLCDMenu
+(pure event-driven redraw).
+end note
+
+note bottom of MenuAPI
+update() runs every loop iteration:
+1) read Seesaw encoder (delta + button)
+2) translate to onEncoderChange/onEncoderPress
+3) menu_state.set(...) -> LCD redraw
+
+Menu hierarchy: Main -> Module -> Device,
+or Main -> Flag/Variable -> Set (edit value).
+Both devices sit on the fake (direct-wire) MUX.
+end note
+
+@enduml

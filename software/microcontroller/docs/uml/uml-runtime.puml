@@ -1,0 +1,50 @@
+@startuml
+title PeaPod firmware - runtime flow
+
+skinparam linetype ortho
+
+start
+partition setup() {
+  :pinMode(LED_BUILTIN); PEAPOD_SERIAL.begin(115200);
+  :instantiate modules
+  callback_module<M,T> for AIR / WATERING / LIGHTING;
+  :Menu::initializeDevices()
+  (LCD + encoder on fake MUX);
+  :DebugJson::revision();
+  :registerCallbacks()
+  - cycle conditional -> callback_cycle
+  - Chronos interval 5 s -> callback_heartbeat
+  - Chronos interval 100 ms -> callback_module x3;
+}
+
+repeat
+  partition loop() {
+    :cycle.set(cycle + 1);
+    note right
+      triggers callback_cycle:
+      - Chronos.set(millis())
+      - update fps
+      - DebugJson::update(serial)
+        -> I2CIP::commandRouter
+        -> PeaPod::configRouter
+    end note
+    :Chronos tick evaluates intervals;
+    split
+      :callback_heartbeat (5 s)
+      heartbeat + telemetry out;
+    split again
+      :callback_module<M,T> (100 ms)
+      ping MUX -> (re)create module
+      -> module self-check operator()()
+      -> delete on hard error;
+    split again
+      :module intervals
+      SHT45/K30 polls, ADC sample,
+      watering + lighting schedules;
+    end split
+    :Menu::update()
+    encoder -> menu_state.set() -> LCD redraw;
+  }
+repeat while (forever)
+
+@enduml
