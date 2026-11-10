@@ -50,6 +50,11 @@ namespace PeaPod {
       PeaPodModuleLighting(bool chronoCallbacks = true);
 
       ~PeaPodModuleLighting();
+
+      void initialize() override {
+        enable_lighting.set(false);
+        enable_camera.set(false);
+      }; 
   };
 }
 

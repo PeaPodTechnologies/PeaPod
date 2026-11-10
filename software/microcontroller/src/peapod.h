@@ -72,6 +72,8 @@ namespace PeaPod {
     public:
       PeaPodModule(const uint8_t& mux) : JsonModule(PEAPOD_WIRENUM, mux) { }
       virtual ~PeaPodModule();
+
+      virtual void initialize(void) { };
       
       void handleCommand(JsonObject command, Print& out) override;
       

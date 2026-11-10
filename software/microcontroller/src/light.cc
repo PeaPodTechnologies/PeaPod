@@ -76,8 +76,6 @@ PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPo
 
   // pwm_lighting_red.set(FSM::Number(0, true));
   // pwm_lighting_blue.set(FSM::Number(0, true));
-  enable_lighting.set(false);
-  enable_camera.set(false);
 
   registerVariable(&adc_voltage, true); // LOCKED
   registerVariable(&pwm_lighting_red);

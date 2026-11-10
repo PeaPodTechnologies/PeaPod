@@ -38,7 +38,7 @@ namespace PeaPod {
 
     extern FSM::State<peapod_menustate_t> menu_state;
 
-    const i2cip_fqa_t fqa_lcd = createFQA(PEAPOD_WIRENUM, I2CIP_MUX_NUM_FAKE, I2CIP_MUX_BUS_FAKE, I2CIP_MCP23008_ADDRESS);
+    const i2cip_fqa_t fqa_lcd = createFQA(PEAPOD_WIRENUM, I2CIP_MUX_NUM_FAKE, I2CIP_MUX_BUS_FAKE, I2CIP_MCP23008_LCD_ADDRESS);
     const i2cip_fqa_t fqa_encoder = createFQA(PEAPOD_WIRENUM, I2CIP_MUX_NUM_FAKE, I2CIP_MUX_BUS_FAKE, I2CIP_SEESAW_ADDRESS);
 
     extern i2cip_errorlevel_t errlev_lcd;
