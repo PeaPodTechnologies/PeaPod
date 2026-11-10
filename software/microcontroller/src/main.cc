@@ -11,11 +11,9 @@
 #include <water.h>
 #include <light.h>
 
-#ifndef PEAPOD_USEMENU
 #define PEAPOD_USEMENU 1 // Enable menu functionality by default (requires MCP23008 LCD and Seesaw encoder)
-#endif
 
-#if PEAPOD_USEMENU
+#ifdef PEAPOD_USEMENU
   #include "menu.h"
 #endif
 
@@ -39,7 +37,7 @@ void setup(void) {
   delay(100);
 
   // Initialize non-module devices
-  #if PEAPOD_USEMENU
+  #ifdef PEAPOD_USEMENU
     if(Menu::initializeDevices() != I2CIP_ERR_NONE) {
       // TODO - print to seven segment?
     }
@@ -70,7 +68,7 @@ void loop(void) {
 
   PeaPod::cycle.set(PeaPod::cycle.get()++);
 
-  #if PEAPOD_USEMENU
+  #ifdef PEAPOD_USEMENU
     if(Menu::update() != I2CIP_ERR_NONE) {
       // TODO - print to seven segment?
     }
