@@ -71,11 +71,12 @@ const dateFormat = (d: Date) => (`${d.getFullYear()}-${d.getMonth()+1}-${d.getDa
 type CameraCaptureOptions = {
   width?: number;
   height?: number;
+  device?: string;
   // TODO: Add more options
 };
 
 const PATHSTEM_IMAGES = 'capture';
-const CAMERATIMEOUT = 3000;
+// const CAMERATIMEOUT = 3000;
 
 // Returns a path to the JPEG image.
 export function cameraCapture(options?: CameraCaptureOptions): Promise<string> {
@@ -85,7 +86,8 @@ export function cameraCapture(options?: CameraCaptureOptions): Promise<string> {
     if (!existsSync('./images/')) {
       mkdirSync('./images/', { recursive: true });
     }
-    execute(`rpicam-still -o ${p}.jpg -n --timeout ${CAMERATIMEOUT}`)
+
+    execute(`ffmpeg -hide_banner -loglevel warning -nostdin -y -f v4l2 -input_format mjpeg -video_size ${options?.width ?? 1920}x${options?.height ?? 1080} -framerate 30 -i ${options?.device ?? '/dev/video0'} -vf "select='gte(n,60)'" -frames:v 1 -q:v 2 -update 1 ${p}.jpg`)
       .catch(err => {
         if (!existsSync('./logs/')) {
           mkdirSync('./logs/', { recursive: true });

@@ -7,7 +7,6 @@ import React, {
   useMemo,
 } from 'react';
 import { useSocket } from './socket';
-import { DeviceID } from '../devicetypes';
 
 type StateTree = {
   [key: string]: number | boolean;
@@ -15,11 +14,15 @@ type StateTree = {
 
 type StatesContextType = {
   states: StateTree;
+  flags: Record<string, boolean>;
+  variables: Record<string, number>;
   rebuild: (cb?: (response: { error?: string }) => void) => void;
 };
 
 const StatesContext = createContext<StatesContextType>({
   states: {},
+  flags: {},
+  variables: {},
   rebuild: () => {},
 });
 
@@ -63,8 +66,22 @@ const StatesProvider = ({
     socket.emit('serialinput', instruction, cb);
   };
 
+  const flags = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(states).filter(([_, value]) => typeof value === 'boolean')
+    ) as Record<string, boolean>;
+  }, [states]);
+
+  const variables = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(states).filter(([_, value]) => typeof value === 'number')
+    ) as Record<string, number>;
+  }, [states]);
+
   return (
-    <StatesContext.Provider value={{ states, rebuild: handleRebuild }}>
+    <StatesContext.Provider
+      value={{ states, flags, variables, rebuild: handleRebuild }}
+    >
       {children}
     </StatesContext.Provider>
   );

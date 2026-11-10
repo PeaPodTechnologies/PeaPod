@@ -1,6 +1,6 @@
 {
   "name": "@peapodtech/peapodos",
-  "version": "0.3.8",
+  "version": "0.5.1",
   "description": "Main software for PeaPod.",
   "main": "./index.mjs",
   "exports": {
@@ -13,6 +13,7 @@
     "microcontroller/lib/I2CIP/lib/**/*.cpp",
     "microcontroller/lib/I2CIP/lib/**/*.h",
     "microcontroller/lib/I2CIP/lib/**/*.hpp",
+    "microcontroller/lib/I2CIP/lib/**/*.tpp",
     "microcontroller/lib/I2CIP/lib/**/library.json",
     "microcontroller/lib/I2CIP/lib/**/library.properties",
     "microcontroller/lib/I2CIP/lib/**/LICENSE",
@@ -42,16 +43,16 @@
     "lib": "lib"
   },
   "scripts": {
-    "dev": "yarn buildapi && yarn start",
-    "devsim": "yarn buildapi && yarn startsim",
+    "dev": "export NODE_ENV=development && yarn buildapi && yarn start",
+    "devsim": "export NODE_ENV=development && yarn buildapi && yarn startsim",
     "build": "yarn buildapi && next build",
     "buildapi": "rm -f api/*.mjs index.mjs server.mjs serialtest.mjs flash.mjs && node api.esbuild.mjs",
     "start": "node index.mjs",
     "startsim": "node index.mjs --simulator",
     "lint": "next lint --fix",
     "deploy_functions": "firebase deploy --only functions",
-    "prepublishOnly": "./scripts/pack.sh",
-    "publish": "npm publish ./dist/peapodos.tgz --access public"
+    "prepublishOnly": "echo 'Direct npm publish is blocked. Use npm run release instead.' >&2; exit 1",
+    "release": "./scripts/pack.sh && npm publish ./dist/peapodos.tgz --access public"
   },
   "repository": {
     "type": "git",
@@ -96,7 +97,7 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.11",
-    "uuid": "^11.0.3",
+    "uuid": "^14.0.3",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

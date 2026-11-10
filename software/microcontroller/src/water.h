@@ -3,14 +3,16 @@
 
 #include <peapod.h>
 
-#define PEAPOD_MODULE_WATERING_EEPROM_CONTENTS {"[{\"24LC32\":[80],\"MCP23017\":[" STR(I2CIP_MCP23017_ADDRESS) "]}]"}
-#define PEAPOD_MODULE_WATERING_GPIO_FQA I2CIP_FQA_CREATE(PEAPOD_WIRENUM, PEAPOD_MODULENUM_WATERING, 0, I2CIP_MCP23017_ADDRESS)
-#define PEAPOD_MODULE_WATERING_GPIO_PIN PIN_B0
-#define PEAPOD_MODULE_WATERING_DELTA 1800000 // 30 minutes
-#define PEAPOD_MODULE_WATERING_PHASE 5000 // 5 seconds
+#define PEAPOD_MODULE_WATERING_EEPROM_CONTENTS {"[{\"24LC32\":[80],\"MCP23017\":[" STR(I2CIP_MCP23XXX_ADDRESS) "]}]"}
+#define PEAPOD_MODULE_WATERING_GPIO_FQA I2CIP_FQA_CREATE(PEAPOD_WIRENUM, PEAPOD_MODULENUM_WATERING, 0, I2CIP_MCP23XXX_ADDRESS)
+#define PEAPOD_MODULE_WATERING_GPIO_PUMP PIN_B1 // Uncomment to link pump relay to MCP23017 GPIO
+#define PEAPOD_MODULE_WATERING_GPIO_SOLENOID PIN_B0 // Uncomment to link solenoid relay to MCP23017 GPIO
+#define PEAPOD_MODULE_WATERING_DELTA 600000 // 10 minutes
+#define PEAPOD_MODULE_WATERING_PHASE 10000 // 10 seconds
 
 namespace PeaPod {
   
+  extern FSM::Flag enable_pump;
   extern FSM::Flag enable_watering;
 
   class PeaPodModuleWatering : public PeaPodModule {
@@ -21,6 +23,11 @@ namespace PeaPod {
       PeaPodModuleWatering(bool chronoCallbacks = true);
 
       ~PeaPodModuleWatering();
+
+      void initialize() override {
+        enable_pump.set(true);
+        enable_watering.set(false);
+      }; 
   };
 }
 

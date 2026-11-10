@@ -1,25 +1,25 @@
 #!/bin/bash
 set -euo pipefail
 
-echo "PeaPod Preinstall: initializing 1 GB swap file"
+# echo "PeaPod Preinstall: initializing 1 GB swap file"
 
-if [ ! -f /swapfile ]; then
-	fallocate -l 1G /swapfile
-	chmod 600 /swapfile
-	mkswap /swapfile
-fi
+# if [ ! -f /swapfile ]; then
+# 	fallocate -l 1G /swapfile
+# 	chmod 600 /swapfile
+# 	mkswap /swapfile
+# fi
 
-# Persist swap for the finished image.
-if ! grep -q '^/swapfile ' /etc/fstab; then
-	echo '/swapfile none swap sw 0 0' >> /etc/fstab
-fi
+# # Persist swap for the finished image.
+# if ! grep -q '^/swapfile ' /etc/fstab; then
+# 	echo '/swapfile none swap sw 0 0' >> /etc/fstab
+# fi
 
-# Enable swap now so it can be used by npm during the image build.
-swapon /swapfile
+# # Enable swap now so it can be used by npm during the image build.
+# swapon /swapfile
 
-echo "PeaPod Preinstall: swap status"
-swapon --show
-free -h
+# echo "PeaPod Preinstall: swap status"
+# swapon --show
+# free -h
 
 echo "PeaPod Preinstall: installing latest npm"
 

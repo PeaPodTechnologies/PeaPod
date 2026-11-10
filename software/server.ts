@@ -33,7 +33,7 @@ ui.log(`PeaPodOS: Launching Server in ${packageRoot}`);
 
 loadDotEnv(`${packageRoot}/.env`);
 
-const SCHEDULER_INTERVAL = 5000; // ms - How often to check the scheduler for pending tasks
+// const SCHEDULER_INTERVAL = 5000; // ms - How often to check the scheduler for pending tasks
 
 enum PublishingMode {
 	FIREBASE = 'Firebase (CloudPonics)',
@@ -81,7 +81,7 @@ console.error = _errRedirect;
 let _msg_print_count = 0;
 
 const intervals: { [key: string]: NodeJS.Timeout } = {}; // { [key: instruction string]: NodeJS.Timeout} - Scheduled tasks
-const scheduler : {entry: SchedulerEntry & ({entry: 'event', executed: boolean} | {entry: 'interval', last: number}), interval: NodeJS.Timeout, instruction: DebugJsonInstruction}[] = []; // Scheduler Entries
+// const scheduler : {entry: SchedulerEntry & ({entry: 'event', executed: boolean} | {entry: 'interval', last: number}), interval: NodeJS.Timeout, instruction: DebugJsonInstruction}[] = []; // Scheduler Entries
 const linker: {
   [key: string]: Linker[]
 } = {};
@@ -173,7 +173,7 @@ const findController = async (simulator?: boolean): Promise<Controller | void> =
 };
 
 let io: Server | undefined = undefined;
-let schedulerInterval: NodeJS.Timeout | undefined = undefined;
+// let schedulerInterval: NodeJS.Timeout | undefined = undefined;
 
 // ===== MAIN =====
 async function main() {
@@ -280,7 +280,10 @@ async function main() {
     
     // Message Handling
     messages.forEach((msg) => {
-
+      ui.log(`CONTROLLER JSON[${_msg_print_count}]: ${JSON.stringify(msg)}`);
+      // }
+      _msg_print_count++;
+      
       // 1. Emit to WebSocket Clients
       if(pms.includes(PublishingMode.FRONTEND) && !!io) io.emit('microcontroller', msg);
 
@@ -318,9 +321,6 @@ async function main() {
     if(pms.includes(PublishingMode.FIREBASE)) pushDebugMessages(messages, 'microcontroller');
     
     // if (_msg_print_count % _msg_print_delta === 0) {
-    ui.log(`CONTROLLER JSON[${_msg_print_count}]: ${JSON.stringify(messages[0])}`);
-    // }
-    _msg_print_count++;
 
     // const timestamp = messages.reduce((max, msg) => ((msg['timestamp'] ? (msg['timestamp'] > max ? msg['timestamp'] : max) : max)), 0);
     // if(timestamp) microcontroller.write({
@@ -516,83 +516,92 @@ async function main() {
 
         // SCHEDULER
 
-        const deleteScheduledById = (id: string) => {
-          const index = scheduler.findIndex((item) => item.entry.id === id);
-          if(index !== -1) {
-            const item = scheduler[index];
-            if(item.interval) clearInterval(item.interval);
-            scheduler.splice(index, 1);
-            schedulerEmit();
-          }
-        };
+        // const deleteScheduledById = (id: string) => {
+        //   const index = scheduler.findIndex((item) => item.entry.id === id);
+        //   if(index !== -1) {
+        //     const item = scheduler[index];
+        //     if(item.interval) clearInterval(item.interval);
+        //     scheduler.splice(index, 1);
+        //     schedulerEmit();
+        //   }
+        // };
 
-        const schedulerEmit = () => {
-          scheduler.forEach((item) => {
-            socket.emit('scheduler', item.entry);
-          });
-          console.log(`SCHEDULER EMIT (${scheduler.length} entries)`);
-        };
+        // const schedulerEmit = () => {
+        //   scheduler.forEach((item) => {
+        //     socket.emit('scheduler', item.entry);
+        //   });
+        //   console.log(`SCHEDULER EMIT (${scheduler.length} entries)`);
+        // };
 
         socket.on('scheduler-save', (callback: (error?: {error: string}) => void) => {
-          ui.log(`SCHEDULER SAVE ${JSON.stringify(scheduler.map((item) => item.entry))} => scheduler.json`);
-          try {
-            const data = JSON.stringify(scheduler.map((item) => item.entry));
-            writeFileSync('scheduler.json', data, 'utf-8');
-            ui.succeed('SCHEDULER SAVE SUCCESSFUL');
-            callback();
-          } catch (err) {
-            ui.fail(`SCHEDULER SAVE ERROR: ${err}`);
-            socket.emit('server', {type: 'error', msg: `Scheduler Save Error: ${err}`});
-            callback({error: `Scheduler Save Error: ${err}`});
-          }
+          ui.log('SCHEDULER SAVE scheduler.json');
+          // try {
+          //   const data = JSON.stringify(scheduler.map((item) => item.entry));
+          //   writeFileSync('scheduler.json', data, 'utf-8');
+          //   ui.succeed('SCHEDULER SAVE SUCCESSFUL');
+          //   callback();
+          // } catch (err) {
+          //   ui.fail(`SCHEDULER SAVE ERROR: ${err}`);
+          //   socket.emit('server', {type: 'error', msg: `Scheduler Save Error: ${err}`});
+          //   callback({error: `Scheduler Save Error: ${err}`});
+          // }
+
+          // TODO
+          // Get list of intervals from controller
+          // Get list of events from controller
+          // Combine intervals and events into a single scheduler list
+          // Save to disk
         });
 
-        const addSchedulerEntry = (data: SchedulerEntry) => {
-          scheduler.push({entry: {...data, date: new Date(data.date), endDate: data.entry === 'interval' ? new Date(data.endDate) : undefined, executed: data.entry === 'event' ? false : undefined, last: data.entry === 'interval' ? Date.now() : undefined}, instruction: data.instruction, interval: data.entry === 'interval' ? setTimeout(() => {
-            try{
-              ui.log(`SCHEDULER INTERVAL START: ${JSON.stringify(data)}`);
-              controller.write(data.instruction);
-              setInterval(() => {
-                try {
-                  ui.log(`SCHEDULER INTERVAL TRIGGER: ${JSON.stringify(data)}`);
-                  controller.write(data.instruction);
-                } catch (err) {
-                  ui.fail(`SCHEDULER INTERVAL ERROR: ${err}`);
-                  socket.emit('server', {type: 'error', msg: `Scheduler Interval TX Error: ${err}`});
-                  deleteScheduledById(data.id);
-                }
-              }, data.interval);
-            } catch (err) {
-              ui.fail(`SCHEDULER INTERVAL ERROR: ${err}`);
-              socket.emit('server', {type: 'error', msg: `Scheduler Interval TX Error: ${err}`});
-              deleteScheduledById(data.id);
-            }
-          }, new Date(data.date).getTime() - Date.now()) : data.entry === 'event' ? setTimeout(() => {
-            try {
-              ui.log(`SCHEDULER EVENT TRIGGER: ${JSON.stringify(data)}`);
-              controller.write(data.instruction);
-            }
-            catch (err) {
-              ui.fail(`SCHEDULER EVENT ERROR: ${err}`);
-              socket.emit('server', {type: 'error', msg: `Scheduler Event TX Error: ${err}`});
-            }
-            deleteScheduledById(data.id);
-          }, new Date(data.date).getTime() - Date.now()) : undefined});
-        };
+        // const addSchedulerEntry = (data: SchedulerEntry) => {
+        //   scheduler.push({entry: {...data, date: new Date(data.date), endDate: data.entry === 'interval' ? new Date(data.endDate) : undefined, executed: data.entry === 'event' ? false : undefined, last: data.entry === 'interval' ? Date.now() : undefined}, instruction: data.instruction, interval: data.entry === 'interval' ? setTimeout(() => {
+        //     try{
+        //       ui.log(`SCHEDULER INTERVAL START: ${JSON.stringify(data)}`);
+        //       controller.write(data.instruction);
+        //       setInterval(() => {
+        //         try {
+        //           ui.log(`SCHEDULER INTERVAL TRIGGER: ${JSON.stringify(data)}`);
+        //           controller.write(data.instruction);
+        //         } catch (err) {
+        //           ui.fail(`SCHEDULER INTERVAL ERROR: ${err}`);
+        //           socket.emit('server', {type: 'error', msg: `Scheduler Interval TX Error: ${err}`});
+        //           deleteScheduledById(data.id);
+        //         }
+        //       }, data.interval);
+        //     } catch (err) {
+        //       ui.fail(`SCHEDULER INTERVAL ERROR: ${err}`);
+        //       socket.emit('server', {type: 'error', msg: `Scheduler Interval TX Error: ${err}`});
+        //       deleteScheduledById(data.id);
+        //     }
+        //   }, new Date(data.date).getTime() - Date.now()) : data.entry === 'event' ? setTimeout(() => {
+        //     try {
+        //       ui.log(`SCHEDULER EVENT TRIGGER: ${JSON.stringify(data)}`);
+        //       controller.write(data.instruction);
+        //     }
+        //     catch (err) {
+        //       ui.fail(`SCHEDULER EVENT ERROR: ${err}`);
+        //       socket.emit('server', {type: 'error', msg: `Scheduler Event TX Error: ${err}`});
+        //     }
+        //     deleteScheduledById(data.id);
+        //   }, new Date(data.date).getTime() - Date.now()) : undefined});
+        // };
 
         socket.on('scheduler-load', (callback: (error?: {error: string}) => void) => {
           // Overwrite entire scheduler with loaded data from scheduler.json
           ui.log('SCHEDULER LOAD scheduler.json');
           try {
             const data = readFileSync('scheduler.json', 'utf-8');
-            const entries = JSON.parse(data);
-            scheduler.length = 0;
-            entries.forEach((entry: SchedulerEntry) => {
-              addSchedulerEntry(entry);
-            });
+            const { events, intervals } = JSON.parse(data);
+            if(!events || !intervals) {
+              throw new Error('Invalid scheduler data');
+            }
+            // scheduler.length = 0;
+            // entries.forEach((entry: SchedulerEntry) => {
+            //   addSchedulerEntry(entry);
+            // });
             ui.succeed('SCHEDULER LOAD SUCCESSFUL');
             callback();
-            schedulerEmit();
+            // schedulerEmit();
           } catch (err) {
             ui.fail(`SCHEDULER LOAD ERROR: ${err}`);
             socket.emit('server', {type: 'error', msg: `Scheduler Load Error: ${err}`});
@@ -600,43 +609,43 @@ async function main() {
           }
         });
 
-        socket.on('scheduler-post', (data: SchedulerEntry, callback: (error?: {error: string}) => void) => {
-          ui.log(`SCHEDULER CREATE ${data.entry === 'interval' ? 'INTERVAL' : 'EVENT'}: ${JSON.stringify(data)}`);
-          if(!data || !data.id || !data.entry || !data.instruction || !data.instruction.type || !data.instruction.data) {
-            ui.fail(`SCHEDULER CREATE ERROR: Invalid Data ${JSON.stringify(data)}`);
-            socket.emit('server', {type: 'error', msg: 'Scheduler Create Error: Invalid Data'});
-            callback({error: 'Invalid Scheduler Data'});
-            return;
-          }
+        // socket.on('scheduler-post', (data: SchedulerEntry, callback: (error?: {error: string}) => void) => {
+        //   ui.log(`SCHEDULER CREATE ${data.entry === 'interval' ? 'INTERVAL' : 'EVENT'}: ${JSON.stringify(data)}`);
+        //   if(!data || !data.id || !data.entry || !data.instruction || !data.instruction.type || !data.instruction.data) {
+        //     ui.fail(`SCHEDULER CREATE ERROR: Invalid Data ${JSON.stringify(data)}`);
+        //     socket.emit('server', {type: 'error', msg: 'Scheduler Create Error: Invalid Data'});
+        //     callback({error: 'Invalid Scheduler Data'});
+        //     return;
+        //   }
 
-          const idx = scheduler.findIndex((item) => item.entry.id === data.id);
-          if(idx !== -1) {
-            ui.fail(`SCHEDULER CREATE: ID "${data.id}" already exists; replacing...`);
-            deleteScheduledById(data.id);
-          }
+        //   const idx = scheduler.findIndex((item) => item.entry.id === data.id);
+        //   if(idx !== -1) {
+        //     ui.fail(`SCHEDULER CREATE: ID "${data.id}" already exists; replacing...`);
+        //     deleteScheduledById(data.id);
+        //   }
 
-          addSchedulerEntry(data);
-          callback();
-          schedulerEmit();
-        });
+        //   addSchedulerEntry(data);
+        //   callback();
+        //   schedulerEmit();
+        // });
 
-        socket.on('scheduler-delete', (id: string, callback: (error?: {error: string}) => void) => {
-          ui.log(`SCHEDULER DELETE: ${id}`);
-          const index = scheduler.findIndex((item) => item.entry.id === id);
-          if(index === -1) {
-            ui.fail(`SCHEDULER DELETE ERROR: No such id "${id}"`);
-            socket.emit('server', {type: 'error', msg: `Scheduler Delete Error: No such id "${id}"`});
-            callback({error: `No such id "${id}"`});
-            return;
-          }
-          const item = scheduler[index];
-          if(item.interval) clearInterval(item.interval);
-          scheduler.splice(index, 1);
-          callback();
-          schedulerEmit();
-        });
+        // socket.on('scheduler-delete', (id: string, callback: (error?: {error: string}) => void) => {
+        //   ui.log(`SCHEDULER DELETE: ${id}`);
+        //   const index = scheduler.findIndex((item) => item.entry.id === id);
+        //   if(index === -1) {
+        //     ui.fail(`SCHEDULER DELETE ERROR: No such id "${id}"`);
+        //     socket.emit('server', {type: 'error', msg: `Scheduler Delete Error: No such id "${id}"`});
+        //     callback({error: `No such id "${id}"`});
+        //     return;
+        //   }
+        //   const item = scheduler[index];
+        //   if(item.interval) clearInterval(item.interval);
+        //   scheduler.splice(index, 1);
+        //   callback();
+        //   schedulerEmit();
+        // });
 
-        schedulerInterval = setInterval(schedulerEmit, SCHEDULER_INTERVAL);
+        // schedulerInterval = setInterval(schedulerEmit, SCHEDULER_INTERVAL);
       });
     }
   });

@@ -10,6 +10,6 @@ TIMEZONE_DEFAULT="America/Toronto"
 DISABLE_FIRST_BOOT_USER_RENAME=1
 WPA_COUNTRY="CA"
 ENABLE_SSH=1
-STAGE_LIST="stage0 stage1 stage2 /stage-peapod"
+STAGE_LIST="stage0 stage1 stage2 stage3 /stage-peapod stage4 stage5"
 USE_QEMU=1
 DEPLOY_COMPRESSION=none

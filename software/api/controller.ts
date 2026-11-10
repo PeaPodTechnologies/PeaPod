@@ -333,7 +333,7 @@ export type SimulatorConfig = {
  * A simulated controller for generating random data.
  */
 export class SimulatedController implements Controller {
-  #intervals: NodeJS.Timeout[] = [];
+  #telemetry: NodeJS.Timeout[] = [];
   readonly #startDate: number = Date.now();
   #booleans: {[key: string]: boolean} = {};
   #numbers: {[key: string]: number} = {};
@@ -354,7 +354,7 @@ export class SimulatedController implements Controller {
     // Save the 
     this.output = onMessage;
     for (const label of Object.keys(this.parameters)) {
-      this.#intervals.push(
+      this.#telemetry.push(
         setInterval(() => {
           // Update values if locked state (simulate sensor readings)
           if(this.parameters[label].locked) {
@@ -381,7 +381,7 @@ export class SimulatedController implements Controller {
     }
   }
   write(instructions: DebugJsonMessage): void {
-    switch(instructions.type) {
+    switch(instructions.type) { // TODO: handle events, intervals
     case 'command':
       if(instructions.data && Object.keys(instructions.data).includes('rebuild')) {
         ui.info('SIMULATED CONTROLLER REBUILD TREE');
@@ -397,11 +397,12 @@ export class SimulatedController implements Controller {
             }
           ]);
         }
-        break;
       }
+      break;
     case 'config':
       if(instructions.data) {
         Object.keys(instructions.data).forEach(key => {
+          if(key === 'list') return; // Skip the 'list' key as it is handled separately
           if(Object.keys(this.parameters).includes(key)) {
             const value = instructions.data ? instructions.data[key] : undefined;
             if(typeof value === 'number' && this.parameters[key].type === 'number') {
@@ -428,15 +429,15 @@ export class SimulatedController implements Controller {
             } as DebugJsonMessage]);
           }
         }
-        break;
       }
+      break;
     default:
       ui.info(`SIMULATED CONTROLLER WRITE: ${JSON.stringify(instructions)}`);
       break;
     }
   }
   stop(): Promise<void> {
-    for (const interval of this.#intervals) {
+    for (const interval of this.#telemetry) {
       clearInterval(interval);
     }
     return Promise.resolve();

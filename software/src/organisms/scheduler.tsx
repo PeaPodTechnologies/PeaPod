@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 import dayjs from 'dayjs';
 import Paper from '@mui/material/Paper';
@@ -15,14 +15,19 @@ import { useSocket } from '../contexts/socket';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid/DataGrid';
 import { GridColDef } from '@mui/x-data-grid';
-import { DebugJsonInstruction, DebugJsonMessage } from '../../api/types';
-import { parseTimestamp, SchedulerEntry } from '../../api/types';
+import { DebugJsonInstruction } from '../../api/types';
+import { parseTimestamp } from '../../api/types';
 import {
   Box,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   SpeedDial,
   SpeedDialAction,
   TextField,
@@ -32,107 +37,112 @@ import AddIcon from '@mui/icons-material/Add';
 import { Event, Restore } from '@mui/icons-material';
 import { v4 as uuid } from 'uuid';
 import { useStates } from '@/contexts/states';
+import { EventTree, useEvents } from '@/contexts/events';
+import { IntervalTree, useIntervals } from '@/contexts/intervals';
 
-const validateInstruction = (
-  instruction: DebugJsonInstruction,
-  states: Record<string, any>
-): boolean => {
-  if (instruction.type === 'config') {
-    if (Object.keys(instruction.data).length === 0) {
-      alert('Config instructions: must have data');
-      return false;
-    }
-    if (
-      !Object.keys(instruction.data).every((key) => {
-        if (states[key] === undefined) {
-          alert(`Config instructions: state "${key}" does not exist`);
-          return false;
-        }
-        return true;
-      })
-    )
-      return false;
-  } else if (instruction.type === 'command') {
-    if (!instruction.data) {
-      alert('Command instructions: empty data');
-      return false;
-    }
-    if (!instruction.data.fqa) {
-      alert('Command instructions: no FQA provided');
-      return false;
-    }
-    if (
-      !['g', 'a', 's', 'b'].some((key) => instruction.data[key] !== undefined)
-    ) {
-      alert(
-        'Command instructions: no valid command parameters provided (must have at least one of g, a, s, b)'
-      );
-      return false;
-    }
-  } else {
-    alert('Instruction type must be either "config" or "command"');
-    return false;
-  }
-  return true;
-};
+// const validateInstruction = (
+//   instruction: DebugJsonInstruction,
+//   states: Record<string, any>
+// ): boolean => {
+//   if (instruction.type === 'config') {
+//     if (Object.keys(instruction.data).length === 0) {
+//       alert('Config instructions: must have data');
+//       return false;
+//     }
+//     if (
+//       !Object.keys(instruction.data).every((key) => {
+//         if (states[key] === undefined) {
+//           alert(`Config instructions: state "${key}" does not exist`);
+//           return false;
+//         }
+//         return true;
+//       })
+//     )
+//       return false;
+//   } else if (instruction.type === 'command') {
+//     if (!instruction.data) {
+//       alert('Command instructions: empty data');
+//       return false;
+//     }
+//     if (!instruction.data.fqa) {
+//       alert('Command instructions: no FQA provided');
+//       return false;
+//     }
+//     if (
+//       !['g', 'a', 's', 'b'].some((key) => instruction.data[key] !== undefined)
+//     ) {
+//       alert(
+//         'Command instructions: no valid command parameters provided (must have at least one of g, a, s, b)'
+//       );
+//       return false;
+//     }
+//   } else {
+//     alert('Instruction type must be either "config" or "command"');
+//     return false;
+//   }
+//   return true;
+// };
 
 const EventModal: FC<{
   open: boolean;
   onClose: () => void;
   id: string | null;
 }> = ({ open, onClose, id }) => {
-  const { messages, socket } = useSocket();
-  const { states } = useStates();
-  const event =
-    (
-      messages['scheduler'] as
-        | (SchedulerEntry & { entry: 'event' })[]
-        | undefined
-    )?.find((entry) => entry.id === id && entry.entry === 'event') ?? null;
+  const { socket, latestTimestamp } = useSocket();
+  const { flags } = useStates();
+  const { events } = useEvents();
+  const event = id ? (events[id] ?? null) : null;
 
-  const [title, setTitle] = useState(event?.title ?? '');
-  const [description, setDescription] = useState(event?.description ?? '');
-  const [date, setDate] = useState(event?.date ?? null);
-  const [instruction, setInstruction] = useState<DebugJsonInstruction>(
-    event?.instruction ?? { type: 'config', data: {} }
-  );
+  //   (
+  //     messages['scheduler'] as
+  //       | (SchedulerEntry & { entry: 'event' })[]
+  //       | undefined
+  //   )?.find((entry) => entry.id === id && entry.entry === 'event') ?? null;
+
+  // const [title, setTitle] = useState(event?.key ?? '');
+  // const [description, setDescription] = useState(event?.description ?? '');
+  // const [date, setDate] = useState(event?.date ?? null);
+  const [delta, setDelta] = useState(event?.delta ?? latestTimestamp);
+  // const [instruction, setInstruction] = useState<DebugJsonInstruction>(
+  //   event?.instruction ?? { type: 'config', data: {} }
+  // );
+  const [flag, setFlag] = useState(event?.flag ?? '');
+  const [invert, setInvert] = useState(event?.invert ?? false);
 
   useEffect(() => {
-    setTitle(event?.title ?? '');
-    setDescription(event?.description ?? '');
-    setDate(event?.date ?? null);
-    setInstruction(
-      event?.instruction ?? {
-        type: 'config',
-        data: {},
-      }
-    );
-  }, [event]);
+    // setTitle(event?.key ?? '');
+    setDelta(event?.delta ?? latestTimestamp);
+    setFlag(event?.flag ?? '');
+    setInvert(event?.invert ?? false);
+  }, [event, latestTimestamp]);
 
   const resetAndClose = () => {
-    setTitle('');
-    setDescription('');
-    setDate(null);
-    setInstruction({ type: 'config', data: {} });
+    // setTitle('');
+    // setDescription('');
+    // setDate(null);
+    // setInstruction({ type: 'config', data: {} });
+    setDelta(0);
+    setFlag('');
+    setInvert(false);
     onClose();
   };
 
   const submitAndClose = () => {
-    if (!title || !date || !instruction) {
-      alert('Please fill out all required fields (Title, Date, Instruction)');
+    if (!delta || !flag) {
+      alert('Please fill out all required fields (Delta, Flag)');
       return;
     }
-    if (!validateInstruction(instruction, states)) return;
+    // if (!validateInstruction(instruction, states)) return;
     const eventData = {
-      id: id ?? uuid(),
-      entry: 'event',
-      title,
-      description,
-      date,
-      instruction,
-    } as SchedulerEntry & { entry: 'event' };
+      type: 'event',
+      // title,
+      // description,
+      // date,
+      // instruction,
+      data: { delta, flag, invert },
+    };
     console.log('Submitting Event:', eventData);
-    socket?.emit('scheduler-post', eventData, (error?: { error: string }) => {
+    socket?.emit('serialinput', eventData, (error?: { error: string }) => {
       if (error) {
         alert(`Error submitting event: ${error.error}`);
       } else {
@@ -143,23 +153,23 @@ const EventModal: FC<{
 
   return (
     <Dialog open={open} onClose={() => {}}>
-      <DialogTitle>{id ? 'Edit Event' : 'New Event'}</DialogTitle>
+      <DialogTitle>Event</DialogTitle>
       <DialogContent>
-        <TextField
+        {/* <TextField
           label="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
           margin="normal"
-        />
-        <TextField
+        /> */}
+        {/* <TextField
           label="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           fullWidth
           margin="normal"
-        />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        /> */}
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
             views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
             sx={{ mt: 2 }}
@@ -169,8 +179,16 @@ const EventModal: FC<{
               setDate(newValue?.toDate() ?? new Date());
             }}
           />
-        </LocalizationProvider>
-        <JsonEditor
+        </LocalizationProvider> */}
+        <TextField
+          label="Timestamp"
+          type="number"
+          value={delta}
+          onChange={(e) => setDelta(Number(e.target.value))}
+          fullWidth
+          margin="normal"
+        />
+        {/* <JsonEditor
           data={instruction}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           setData={(data: any) => {
@@ -197,7 +215,28 @@ const EventModal: FC<{
             console.log('Setting Instruction:', data);
             setInstruction(data as DebugJsonInstruction);
           }}
-        />
+        /> */}
+        <FormControl fullWidth>
+          <InputLabel id="flag-label">Flag</InputLabel>
+          <Select
+            label="Flag"
+            value={flag}
+            onChange={(e) => setFlag(e.target.value)}
+          >
+            {Object.keys(flags).map((key) => (
+              <MenuItem key={key} value={key}>
+                {key}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="flag-label">Invert?</InputLabel>
+          <Checkbox
+            checked={invert}
+            onChange={(e) => setInvert(e.target.checked)}
+          />
+        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={resetAndClose} autoFocus>
@@ -216,81 +255,76 @@ const IntervalModal: FC<{
   onClose: () => void;
   id: string | null;
 }> = ({ open, onClose, id }) => {
-  const { messages, socket } = useSocket();
-  const { states } = useStates();
-  const event =
-    (
-      messages['scheduler'] as
-        | ((SchedulerEntry & { entry: 'interval' }) | undefined)[]
-        | undefined
-    )?.find((entry) => entry?.id === id && entry?.entry === 'interval') ?? null;
+  const { socket } = useSocket();
+  const { flags } = useStates();
+  const { intervals } = useIntervals();
+  const interval = id ? (intervals[id] ?? null) : null;
+  //   (
+  //     messages['scheduler'] as
+  //       | (SchedulerEntry & { entry: 'event' })[]
+  //       | undefined
+  //   )?.find((entry) => entry.id === id && entry.entry === 'event') ?? null;
+
+  // const [title, setTitle] = useState(event?.key ?? '');
+  // const [description, setDescription] = useState(event?.description ?? '');
+  // const [date, setDate] = useState(event?.date ?? null);
+  const [delta, setDelta] = useState(interval?.delta ?? 0);
+  const [phase, setPhase] = useState(interval?.phase ?? 0);
+  // const [instruction, setInstruction] = useState<DebugJsonInstruction>(
+  //   event?.instruction ?? { type: 'config', data: {} }
+  // );
+  const [flag, setFlag] = useState(interval?.flag ?? '');
+  const [invert, setInvert] = useState(interval?.invert ?? false);
 
   useEffect(() => {
-    setTitle(event?.title ?? '');
-    setDescription(event?.description ?? '');
-    setDate(event?.date ?? null);
-    setInstruction(
-      event?.instruction ?? {
-        type: 'config',
-        data: {},
-      }
-    );
-    setInterval(event?.interval ?? 0);
-  }, [event]);
-
-  const [title, setTitle] = useState(event?.title ?? '');
-  const [description, setDescription] = useState(event?.description ?? '');
-  const [date, setDate] = useState(event?.date ?? null);
-  const [instruction, setInstruction] = useState<DebugJsonInstruction>(
-    event?.instruction ?? { type: 'config', data: {} }
-  );
-  const [interval, setInterval] = useState(event?.interval ?? 0);
+    // setTitle(event?.key ?? '');
+    setDelta(interval?.delta ?? 0);
+    setPhase(interval?.phase ?? 0);
+    setFlag(interval?.flag ?? '');
+    setInvert(interval?.invert ?? false);
+  }, [interval]);
 
   const resetAndClose = () => {
-    setTitle('');
-    setDescription('');
-    setDate(null);
-    setInstruction({ type: 'config', data: {} });
-    setInterval(0);
+    // setTitle('');
+    // setDescription('');
+    // setDate(null);
+    // setInstruction({ type: 'config', data: {} });
+    setDelta(0);
+    setPhase(0);
+    setFlag('');
+    setInvert(false);
     onClose();
   };
 
   const submitAndClose = () => {
-    if (!title || !date || !instruction || !interval) {
-      alert(
-        'Please fill out all required fields (Title, Date, Instruction, Interval)'
-      );
+    if (!delta || !flag) {
+      alert('Please fill out all required fields (Delta, Flag)');
       return;
     }
-    if (!validateInstruction(instruction, states)) return;
-    const intervalData = {
-      id: id ?? uuid(),
-      entry: 'interval',
-      title,
-      description,
-      date,
-      instruction,
-      interval,
-    } as SchedulerEntry & { entry: 'interval' };
-    console.log('Submitting Interval:', intervalData);
-    socket?.emit(
-      'scheduler-post',
-      intervalData,
-      (error?: { error: string }) => {
-        if (error) {
-          alert(`Error submitting interval: ${error.error}`);
-        } else {
-          resetAndClose();
-        }
+    // if (!validateInstruction(instruction, states)) return;
+    const eventData = {
+      type: 'interval',
+      // title,
+      // description,
+      // date,
+      // instruction,
+      data: { delta, phase, flag, invert },
+    };
+    console.log('Submitting Interval:', eventData);
+    socket?.emit('serialinput', eventData, (error?: { error: string }) => {
+      if (error) {
+        alert(`Error submitting event: ${error.error}`);
+      } else {
+        resetAndClose();
       }
-    );
+    });
   };
 
   return (
     <Dialog open={open} onClose={() => {}}>
-      <DialogTitle>{id ? 'Edit Interval' : 'New Interval'}</DialogTitle>
+      <DialogTitle>Interval</DialogTitle>
       <DialogContent>
-        <TextField
+        {/* <TextField
           label="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -314,16 +348,24 @@ const IntervalModal: FC<{
               setDate(newValue?.toDate() ?? new Date());
             }}
           />
-        </LocalizationProvider>
+        </LocalizationProvider> */}
         <TextField
           label="Interval (ms)"
-          value={interval}
-          onChange={(e) => setInterval(Number(e.target.value))}
+          value={delta}
+          onChange={(e) => setDelta(Number(e.target.value))}
           fullWidth
           type="number"
           margin="normal"
         />
-        <JsonEditor
+        <TextField
+          label="Phase (ms)"
+          value={phase}
+          onChange={(e) => setPhase(Number(e.target.value))}
+          fullWidth
+          type="number"
+          margin="normal"
+        />
+        {/* <JsonEditor
           data={instruction}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           setData={(data: any) => {
@@ -350,7 +392,28 @@ const IntervalModal: FC<{
             console.log('Setting Instruction:', data);
             setInstruction(data as DebugJsonInstruction);
           }}
-        />
+        /> */}
+        <FormControl fullWidth>
+          <InputLabel id="flag-label">Flag</InputLabel>
+          <Select
+            label="Flag"
+            value={flag}
+            onChange={(e) => setFlag(e.target.value)}
+          >
+            {Object.keys(flags).map((key) => (
+              <MenuItem key={key} value={key}>
+                {key}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="flag-label">Invert?</InputLabel>
+          <Checkbox
+            checked={invert}
+            onChange={(e) => setInvert(e.target.checked)}
+          />
+        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={resetAndClose} autoFocus>
@@ -365,7 +428,7 @@ const IntervalModal: FC<{
 };
 
 const Scheduler: FC = () => {
-  const [date, setDate] = useState<Date | null>(null);
+  // const [date, setDate] = useState<Date | null>(null);
 
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   const [selectedInterval, setSelectedInterval] = useState<string | null>(null);
@@ -373,11 +436,22 @@ const Scheduler: FC = () => {
   const [intervalModal, setIntervalModal] = useState(false);
   const [dial, setDial] = useState(false);
 
-  const { messages, socket, startSocket, stopSocket } = useSocket();
+  const { socket, startSocket, stopSocket } = useSocket();
   const { rebuild: rebuildStates } = useStates();
+  const { events, rebuild: rebuildEvents } = useEvents();
+  const { intervals, rebuild: rebuildIntervals } = useIntervals();
 
   const openEventModal = (id?: string) => {
-    rebuildStates();
+    rebuildStates((response) => {
+      if (response && response.error) {
+        alert(`State rebuild failed: ${response.error}`);
+      }
+    });
+    rebuildEvents((response) => {
+      if (response && response.error) {
+        alert(`Event rebuild failed: ${response.error}`);
+      }
+    });
     setTimeout(stopSocket, 1000);
     setSelectedEvent(id ?? null);
     setEventModal(true);
@@ -390,7 +464,16 @@ const Scheduler: FC = () => {
   };
 
   const openIntervalModal = (id?: string) => {
-    rebuildStates();
+    rebuildStates((response) => {
+      if (response && response.error) {
+        alert(`State rebuild failed: ${response.error}`);
+      }
+    });
+    rebuildIntervals((response) => {
+      if (response && response.error) {
+        alert(`Interval rebuild failed: ${response.error}`);
+      }
+    });
     setTimeout(stopSocket, 1000);
     setSelectedInterval(id ?? null);
     setIntervalModal(true);
@@ -402,11 +485,11 @@ const Scheduler: FC = () => {
     startSocket();
   };
 
-  const resetSchedulerMessages = () => (messages['scheduler'] = []);
+  // const resetSchedulerMessages = () => (messages['scheduler'] = []);
 
   const deleteEvent = (id: string) => {
     if (!window.confirm('Are you sure you want to delete this entry?')) return;
-    resetSchedulerMessages(); // Temp fix
+    // resetSchedulerMessages(); // Temp fix
     if (!socket) {
       alert('No socket connection');
       return;
@@ -418,13 +501,35 @@ const Scheduler: FC = () => {
     });
   };
 
-  const deduped = Array.from(
-    new Map(messages['scheduler']?.map((item) => [item.id, item])).values()
-  );
+  // const deduped = Array.from(
+  //   new Map(messages['scheduler']?.map((item) => [item.id, item])).values()
+  // );
 
-  const todayMessages: SchedulerEntry[] = date
-    ? deduped?.filter((entry) => dayjs(entry.date).isSame(dayjs(date), 'day'))
-    : deduped || [];
+  // const todayMessages: SchedulerEntry[] = date
+  //   ? deduped?.filter((entry) => dayjs(entry.date).isSame(dayjs(date), 'day'))
+  //   : deduped || [];
+
+  type SchedulerEntry =
+    | (EventTree[string] & { entry: 'event' })
+    | (IntervalTree[string] & { entry: 'interval' });
+
+  const entries: SchedulerEntry[] = useMemo(() => {
+    const eventEntries = Object.entries(events).map<SchedulerEntry>(
+      ([id, event]) => ({
+        ...event,
+        entry: 'event',
+      })
+    );
+    const intervalEntries = Object.entries(intervals).map<SchedulerEntry>(
+      ([id, interval]) => ({
+        ...interval,
+        entry: 'interval',
+      })
+    );
+    return [...eventEntries, ...intervalEntries].sort((a, b) => {
+      return a.timestamp - b.timestamp;
+    });
+  }, [events, intervals]);
 
   const DATAGRID_COLUMNS: GridColDef<SchedulerEntry>[] = [
     {
@@ -439,7 +544,7 @@ const Scheduler: FC = () => {
                 variant="outlined"
                 size="small"
                 onClick={() => {
-                  openEventModal(params.row.id);
+                  openEventModal(params.row.key);
                 }}
               >
                 View
@@ -451,7 +556,7 @@ const Scheduler: FC = () => {
                 variant="outlined"
                 size="small"
                 onClick={() => {
-                  openIntervalModal(params.row.id);
+                  openIntervalModal(params.row.key);
                 }}
               >
                 View
@@ -475,7 +580,7 @@ const Scheduler: FC = () => {
                 variant="outlined"
                 size="small"
                 onClick={() => {
-                  deleteEvent(params.row.id);
+                  deleteEvent(params.row.key);
                 }}
               >
                 Delete
@@ -502,24 +607,40 @@ const Scheduler: FC = () => {
     },
     {
       field: 'title',
-      headerName: 'Title',
+      headerName: 'Key',
       width: 150,
+      valueGetter: (value, row) => {
+        switch (row.entry) {
+          case 'event':
+            return row.key;
+          case 'interval':
+            return row.key;
+        }
+      },
     },
     {
-      field: 'description',
-      headerName: 'Description',
+      field: 'flag',
+      headerName: 'Flag',
       width: 150,
+      valueGetter: (value, row) => {
+        switch (row.entry) {
+          case 'event':
+            return row.flag || 'N/A';
+          case 'interval':
+            return row.flag || 'N/A';
+        }
+      },
     },
     {
       field: 'date',
-      headerName: 'Date',
+      headerName: 'Timestamp',
       width: 600,
       valueGetter: (value, row) => {
         switch (row.entry) {
           case 'event':
-            return `${new Date(row.date)?.toDateString()} ${new Date(row.date)?.toLocaleTimeString()}`;
+            return `${parseTimestamp(row.delta)} Since Program Start`;
           case 'interval':
-            return `Every ${parseTimestamp(row.interval)} Starting ${new Date(row.date)?.toDateString()} ${new Date(row.date)?.toLocaleTimeString()} Until ${new Date(row.endDate)?.toDateString()} ${new Date(row.endDate)?.toLocaleTimeString()}`;
+            return `Delta: ${parseTimestamp(row.delta)}, Phase: ${parseTimestamp(row.phase)} Since Program Start`;
         }
       },
     },
@@ -528,7 +649,7 @@ const Scheduler: FC = () => {
   return (
     <Paper elevation={3} square={false} sx={{ padding: 2 }}>
       <Typography variant="h6">Scheduler</Typography>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
           value={date ? dayjs(date) : null}
           onChange={(newValue) => setDate(newValue ? newValue.toDate() : null)}
@@ -581,12 +702,13 @@ const Scheduler: FC = () => {
         >
           Show Today
         </Button>
-      </LocalizationProvider>
+      </LocalizationProvider> */}
       <DataGrid
-        rows={todayMessages}
+        // rows={todayMessages}
+        rows={entries || []}
         columns={DATAGRID_COLUMNS}
         autoHeight
-        getRowId={(row) => row.id}
+        getRowId={(row) => row.key}
       />
       <EventModal
         open={eventModal}
@@ -594,6 +716,28 @@ const Scheduler: FC = () => {
         id={selectedEvent}
       />
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            rebuildStates((response) => {
+              if (response && response.error) {
+                alert(`State rebuild failed: ${response.error}`);
+              }
+            });
+            rebuildEvents((response) => {
+              if (response && response.error) {
+                alert(`Event rebuild failed: ${response.error}`);
+              }
+            });
+            rebuildIntervals((response) => {
+              if (response && response.error) {
+                alert(`Interval rebuild failed: ${response.error}`);
+              }
+            });
+          }}
+        >
+          Rebuild
+        </Button>
         <Button
           variant="contained"
           onClick={() =>
