@@ -1,0 +1,109 @@
+@startuml
+title PeaPod - Global States and Callbacks
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+hide empty members
+
+' Cross-diagram references (see FSM docs in ../lib/I2CIP/lib/FiniteStateMachine/docs)
+package "FSM" {
+  class Flag
+  class Variable
+!if %not(%variable_exists("$CHRONOS_DEFINED"))
+!$CHRONOS_DEFINED = 1
+  object Chronos <<global instance>>
+!endif
+}
+
+' Cross-diagram references (see ../lib/I2CIP/docs/uml-module.puml)
+package "I2CIP Namespace" {
+  object RuntimeAPI
+}
+
+package "PeaPod" {
+  object "Global States" as GlobalStates {
+    cycle : Variable (loop counter)
+    fps : Variable (moving average)
+    --
+    air_temperature : Variable
+    air_humidity : Variable
+    air_co2 : Variable
+    --
+    enable_watering : Flag
+    --
+    adc_voltage : Variable
+    pwm_lighting_red : Variable
+    pwm_lighting_blue : Variable
+    enable_lighting : Flag
+    enable_camera : Flag
+  }
+
+  object "Core Callbacks" as CoreCallbacks {
+    registerCallbacks(): void
+    configRouter(command: JsonObject, out: Print): void
+    --
+    callback_cycle(Number)
+    callback_heartbeat(fsm_timestamp_t)
+    callback_module<M,T>(fsm_timestamp_t)
+    --
+    callback_temperature(Number)
+    callback_humidity(Number)
+    callback_co2(Number)
+    callback_adc_read<F,C>(fsm_timestamp_t)
+    callback_adc_voltage(Number)
+  }
+
+  object "Device Write Callbacks" as DeviceCallbacks {
+    callback_mcp23017_digitalWrite<F,P>(bool)
+    callback_pca9685_analogWrite<F,P>(Number)
+    callback_pca9685_onOff<F,P>(bool)
+  }
+
+  object "Onboard GPIO Helpers" as GpioHelpers {
+    controlPin<P>(s: bool)
+    controlPWM<P>(v: uint8_t | Number)
+    --
+    pinModeSet: bool[255]
+  }
+}
+
+object DebugJson <<library>>
+
+GlobalStates ..> CoreCallbacks : conditionals trigger
+CoreCallbacks ..> Chronos : Chronos.set(millis())\n+ addInterval()
+CoreCallbacks ..> RuntimeAPI : DebugJson::update ->\ncommandRouter/configRouter
+CoreCallbacks ..> DebugJson : heartbeat/telemetry/revision
+GlobalStates ..> DeviceCallbacks : flag/variable writes
+GlobalStates ..> GpioHelpers : direct pin control
+
+note bottom of GlobalStates
+Defined in states.cc / peapod.cc.
+Each is an FSM state node; attaching conditionals
+is how sensing and actuation are wired together.
+end note
+
+note bottom of CoreCallbacks
+callback_cycle (on every loop iteration):
+1) Chronos.set(millis()) - drives all intervals
+2) update fps moving average
+3) drain serial via DebugJson::update()
+   -> I2CIP::commandRouter (commands)
+   -> PeaPod::configRouter (config)
+
+callback_heartbeat (every 5 s):
+DebugJson heartbeat + revision + fps/cycle telemetry.
+
+callback_module<M,T> (every 100 ms):
+ping MUX M; construct module T on first contact;
+operator()() self-check; delete on hard error
+(hot-plug behavior).
+end note
+
+note bottom of DeviceCallbacks
+Template-bound writers: attach to a Flag/Variable
+to forward state changes to a specific device
+(FQA F, pin/channel P) via the I2CIP devicetree.
+end note
+
+@enduml

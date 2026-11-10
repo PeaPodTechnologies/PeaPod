@@ -1,0 +1,111 @@
+@startuml
+title PeaPod - Module Implementations
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+hide empty members
+
+' Cross-diagram references (see ../lib/I2CIP/docs/uml-module.puml)
+package "Topology and Grouping" {
+  class JsonModule
+  class DeviceGroup
+}
+
+' Cross-diagram references (see FSM docs in ../lib/I2CIP/lib/FiniteStateMachine/docs)
+package "FSM" {
+  class Flag
+  class Variable
+  class IntervalCallback
+}
+
+package "PeaPod" {
+  class PeaPodModule {
+    -flags: HashTable<FSM::Flag>
+    -variables: HashTable<FSM::Variable>
+    -locker: HashTable<bool>
+    --
+    +PeaPodModule(mux: uint8_t)
+    #deviceGroupFactory(id: i2cip_id_t): DeviceGroup* <<override>>
+    +handleCommand(command: JsonObject, out: Print) <<override>>
+    +handleConfig(config: JsonObject, out: Print) <<override>>
+    +registerFlag(flag: FSM::Flag*, locked: bool=false)
+    +registerVariable(variable: FSM::Variable*, locked: bool=false)
+    +getFlagByIndex(index: uint8_t): FSM::Flag*
+    +getVariableByIndex(index: uint8_t): FSM::Variable*
+    +getNumFlags(): uint8_t
+    +getNumVariables(): uint8_t
+  }
+
+  class PeaPodModuleAir {
+    -interval_sht45: FSM::IntervalCallback*
+    -interval_k30: FSM::IntervalCallback*
+    +PeaPodModuleAir(chronoCallbacks: bool=true)
+    {static} +callback_sht45_mean<M>(...)
+    {static} +callback_k30_mean<M>(...)
+  }
+
+  class PeaPodModuleWatering {
+    -interval_watering_on: FSM::IntervalCallback*
+    -interval_watering_off: FSM::IntervalCallback*
+    +PeaPodModuleWatering(chronoCallbacks: bool=true)
+  }
+
+  class PeaPodModuleLighting {
+    -interval_adc: FSM::IntervalCallback*
+    -interval_lighting_on: FSM::IntervalCallback*
+    -interval_lighting_off: FSM::IntervalCallback*
+    {static} -callback_lighting_modulate<P>(pwm: Number)
+    {static} -callback_lighting_gate(onoff: bool)
+    {static} -callback_lighting_camera(onoff: bool)
+    +PeaPodModuleLighting(chronoCallbacks: bool=true)
+  }
+
+  object nomodule <<global instance>>
+}
+
+PeaPodModule --|> JsonModule
+PeaPodModuleAir --|> PeaPodModule
+PeaPodModuleWatering --|> PeaPodModule
+PeaPodModuleLighting --|> PeaPodModule
+
+PeaPodModule o-- Flag : flags registry
+PeaPodModule o-- Variable : variables registry
+PeaPodModule ..> DeviceGroup : deviceGroupFactory()
+PeaPodModuleAir *-- IntervalCallback : SHT45/K30 polling
+PeaPodModuleWatering *-- IntervalCallback : on/off schedule
+PeaPodModuleLighting *-- IntervalCallback : ADC poll + photoperiod
+nomodule ..> PeaPodModule : fake-MUX instance
+
+note bottom of PeaPodModule
+Base class for all PeaPod subnet modules (one per MUX number):
+- AIR=0, WATERING=1, LIGHTING=2, CONTROL=3
+- Owns ID-indexed registries of FSM Flags/Variables
+  (locker marks states that config may not overwrite)
+- handleCommand(): FQA-addressed device GET/SET via devicetree
+- handleConfig(): bulk state writes from JSON config
+- deviceGroupFactory(): tries each known driver by ID:
+  EEPROM, SHT45, K30, HT16K33, PCA9685, MCP23008,
+  RotaryEncoder, MCP23017, Nunchuck, ADS1115
+end note
+
+note right of PeaPodModuleAir
+Polls SHT45 (temperature/humidity, 250ms)
+and K30 (CO2, 3s); pushes mean readings
+into air_* global Variables.
+end note
+
+note right of PeaPodModuleWatering
+Periodic watering schedule via MCP23017 GPIO:
+30 min interval, 5 s on-phase
+(see enable_watering Flag).
+end note
+
+note right of PeaPodModuleLighting
+24 h photoperiod (16 h on) driving PCA9685 PWM
+channels (red/blue/camera) gated by
+enable_lighting/enable_camera; samples ADS1115
+light sensor every 100 ms.
+end note
+
+@enduml

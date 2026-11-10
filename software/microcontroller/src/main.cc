@@ -11,7 +11,7 @@
 #include <water.h>
 #include <light.h>
 
-#define PEAPOD_USEMENU 1 // Uncomment to enable menu functionality (requires JHD1313 LCD and Seesaw Rotary Encoder with Push Button)
+#define PEAPOD_USEMENU 1 // Enable menu functionality by default (requires MCP23008 LCD and Seesaw encoder)
 
 #ifdef PEAPOD_USEMENU
   #include "menu.h"
