@@ -13,10 +13,11 @@ template <unsigned char M, class T, typename std::enable_if<std::is_base_of<PeaP
   if(I2CIP::MUX::pingMUX(PEAPOD_WIRENUM, M)) {
     if(I2CIP::modules[M] == nullptr) {
       I2CIP::modules[M] = new T();
-      ((PeaPodModule*)I2CIP::modules[M])->initialize();
+      I2CIP::errlev[M] = I2CIP::modules[M]->operator()();
+      if(I2CIP::errlev[M] == I2CIP_ERR_NONE) I2CIP::errlev[M] = ((PeaPodModule*)I2CIP::modules[M])->initialize();
+    } else {
+      I2CIP::errlev[M] = I2CIP::modules[M]->operator()();
     }
-
-    I2CIP::errlev[M] = I2CIP::modules[M]->operator()();
   } else {
     I2CIP::errlev[M] = I2CIP_ERR_HARD;
   }

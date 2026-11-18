@@ -4,19 +4,39 @@ FSM::Number calculate_pwm(const double& dutycycle) {
   return FSM::Number(4096.0 * constrain(dutycycle, 0.0, 1.0), true);
 }
 
-void PeaPod::callback_adc_voltage(bool _, const FSM::Number& v) {
-  DebugJson::telemetry(millis(), (double)v, adc_voltage.getKey());
+// template <i2cip_fqa_t F, unsigned char C> void PeaPod::callback_adc_read(bool _, const FSM::fsm_timestamp_t& __) {
+//   if(C > ADS1115_CHANNEL_3) return; // Invalid Channel
+//   if(I2CIP::errlev[I2CIP_FQA_SEG_MODULE(F)] == I2CIP_ERR_NONE && I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)] != nullptr) {
 
-  #ifdef PEAPOD_SEVENSEG_ADC
-  if(I2CIP::errlev[PEAPOD_MODULENUM_SEVENSEG] == I2CIP_ERR_NONE && I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG] != nullptr) {
-    i2cip_ht16k33_mode_t seg_mode = SEG_2F;
-    i2cip_ht16k33_data_t seg_data = { .f = (float)v };
-    i2cip_args_io_t seg_args = { .g = false, .a = nullptr, .s = &seg_data, .b = &seg_mode };
+//     i2cip_ads1115_chsel_t channel = (i2cip_ads1115_chsel_t)C;
+//     i2cip_args_io_t args = { .g = true, .a = nullptr, .s = nullptr, .b = &channel };
 
-    I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, seg_args, DebugJsonBreakpoints);
-  }
-  #endif
-}
+//     i2cip_errorlevel_t errlev = I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)]->operator()<ADS1115>(F, true, args, DebugJsonBreakpoints);
+
+//     if(errlev == I2CIP_ERR_NONE){
+//       Device** dptr = I2CIP::devicetree[F];
+//       if(dptr != nullptr && *dptr != nullptr) {
+//         ADS1115* ads = (ADS1115*)(*dptr);
+//         float voltage = ads->getCache();
+//         adc_voltage.set(FSM::Number((double)voltage, true, false));
+//       }
+//     }
+//   }
+// }
+
+// void PeaPod::callback_adc_voltage(bool _, const FSM::Number& v) {
+//   DebugJson::telemetry(millis(), (double)v, adc_voltage.getKey());
+
+//   #ifdef PEAPOD_SEVENSEG_ADC
+//   if(I2CIP::errlev[PEAPOD_MODULENUM_SEVENSEG] == I2CIP_ERR_NONE && I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG] != nullptr) {
+//     i2cip_ht16k33_mode_t seg_mode = SEG_2F;
+//     i2cip_ht16k33_data_t seg_data = { .f = (float)v };
+//     i2cip_args_io_t seg_args = { .g = false, .a = nullptr, .s = &seg_data, .b = &seg_mode };
+
+//     I2CIP::modules[PEAPOD_MODULENUM_SEVENSEG]->operator()<HT16K33>(I2CIP::sevenSegmentFQA, true, seg_args, DebugJsonBreakpoints);
+//   }
+//   #endif
+// }
 
 // void PeaPod::PeaPodModuleLighting::callback_pwm_cycle(bool _, const FSM::fsm_timestamp_t& __) {
 //   double pwm = ((cos((FSM::Chronos.get() % PEAPOD_MODULE_LIGHTING_PWMCYCLE_DELTA) / ((double)PEAPOD_MODULE_LIGHTING_PWMCYCLE_DELTA) * 2.0 * M_PI) + 1.0) * 2048.0 * PEAPOD_MODULE_LIGHTING_DUTY); // 0 to PEAPOD_MODULE_LIGHTING_DUTY over PEAPOD_MODULE_LIGHTING_PWMCYCLE_DELTA milliseconds
@@ -56,14 +76,14 @@ PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPo
     #endif
 
     // ADC
-    interval_adc = FSM::Chronos.addInterval("i_lighting_adc", PEAPOD_MODULE_LIGHTING_ADC_DELTA, 0, callback_adc_read<PEAPOD_MODULE_LIGHTING_ADC_FQA, PEAPOD_MODULE_LIGHTING_ADC_CHANNEL>, false);
+    // interval_adc = FSM::Chronos.addInterval("i_lighting_adc", PEAPOD_MODULE_LIGHTING_ADC_DELTA, 0, callback_adc_read<PEAPOD_MODULE_LIGHTING_ADC_FQA, PEAPOD_MODULE_LIGHTING_ADC_CHANNEL>, false);
 
-    registerInterval(interval_adc, true);
+    // registerInterval(interval_adc, true);
   }
 
   // enable_lighting.addLatchingConditional(true, false, callback_lighting_onoff);
   
-  adc_voltage.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_adc_voltage);
+  // adc_voltage.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_adc_voltage);
   enable_lighting.addLatchingConditional(true, false, callback_lighting_gate);
   enable_camera.addLatchingConditional(true, false, callback_lighting_camera);
   pwm_lighting_red.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_lighting_modulate<PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_RED>);
@@ -77,7 +97,7 @@ PeaPod::PeaPodModuleLighting::PeaPodModuleLighting(bool chronoCallbacks) : PeaPo
   // pwm_lighting_red.set(FSM::Number(0, true));
   // pwm_lighting_blue.set(FSM::Number(0, true));
 
-  registerVariable(&adc_voltage, true); // LOCKED
+  // registerVariable(&adc_voltage, true); // LOCKED
   registerVariable(&pwm_lighting_red);
   registerVariable(&pwm_lighting_blue);
   registerFlag(&enable_lighting);
@@ -88,14 +108,14 @@ PeaPod::PeaPodModuleLighting::~PeaPodModuleLighting() {
   enable_lighting.set(false);
   enable_camera.set(false);
 
-  unregisterInterval(interval_adc);
+  // unregisterInterval(interval_adc);
   unregisterInterval(interval_lighting_on);
   unregisterInterval(interval_lighting_off);
-  FSM::Chronos.removeInterval(interval_adc);
+  // FSM::Chronos.removeInterval(interval_adc);
   FSM::Chronos.removeInterval(interval_lighting_on);
   FSM::Chronos.removeInterval(interval_lighting_off);
   // FSM::Chronos.removeInterval(interval_pwmcycle);
-  interval_adc = nullptr;
+  // interval_adc = nullptr;
   interval_lighting_on = nullptr;
   interval_lighting_off = nullptr;
   // interval_pwmcycle = nullptr;

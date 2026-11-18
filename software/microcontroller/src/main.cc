@@ -8,7 +8,7 @@
 
 #include <peapod.h>
 #include <air.h>
-#include <water.h>
+#include <aeroponics.h>
 #include <light.h>
 
 #define PEAPOD_USEMENU 1 // Enable menu functionality by default (requires MCP23008 LCD and Seesaw encoder)
@@ -27,16 +27,16 @@ void setup(void) {
   PEAPOD_SERIAL.begin(115200);
   while(!PEAPOD_SERIAL) { digitalWrite(LED_BUILTIN, HIGH); delay(100); digitalWrite(LED_BUILTIN, LOW); delay(100); }
   
-  delay(100);
+  delay(1000);
   
   if(I2CIP::modules[I2CIP_MUX_NUM_FAKE] == nullptr) I2CIP::modules[I2CIP_MUX_NUM_FAKE] = &notamodule; // Register `notamodule` as the faked-out module
   
   // Instantiate modules ahead of time
   PeaPod::callback_module<PEAPOD_MODULENUM_AIR, PeaPodModuleAir>();
-  PeaPod::callback_module<PEAPOD_MODULENUM_WATERING, PeaPodModuleWatering>();
+  PeaPod::callback_module<PEAPOD_MODULENUM_AEROPONICS, PeaPodModuleAeroponics>();
   PeaPod::callback_module<PEAPOD_MODULENUM_LIGHTING, PeaPodModuleLighting>();
 
-  delay(100);
+  delay(1000);
 
   // Initialize non-module devices
   #ifdef PEAPOD_USEMENU
@@ -58,7 +58,7 @@ void setup(void) {
 
   PeaPod::registerCallbacks();
 
-  delay(100);
+  delay(1000);
 }
 
 // LOOP GLOBALS

@@ -5,7 +5,7 @@
 
 #include <peapod.h>
 
-#define PEAPOD_MENU_SUBMENUS_MAIN 7 // Summary, Select Module & Device & Flag & Variable & Interval & Event = 7
+#define PEAPOD_MENU_SUBMENUS_MAIN 8 // Summary & Select Module & Device & Flag & Variable & Interval & Event & Seven Segment = 8
 #define PEAPOD_MENU_SUBMENUS_MODULE 9 // 8 Modules + Back
 #define PEAPOD_MENU_STR_INITIALIZING "PeaPod\nInitializing..."
 #define PEAPOD_MENU_STR_ENCODERFAIL "PeaPod\nENCODER FAIL"
@@ -23,6 +23,7 @@ namespace PeaPod {
       PEAPOD_MENU_VARIABLE = 4,
       PEAPOD_MENU_INTERVAL = 5,
       PEAPOD_MENU_EVENT = 6,
+      PEAPOD_MENU_SEVENSEG = 7,
     } PEAPOD_MENU_T;
 
     extern struct peapod_menustate_s {
@@ -30,6 +31,7 @@ namespace PeaPod {
       uint8_t submenu;  // Ordinal of the selected item in the current menu, 0 is always "BACK"
       uint8_t module_idx;
       bool setting; // Indicates if the menu is currently in a setting state
+      uint8_t sevenseg_idx; // Index of the variable to display on the current module, PLUS ONE (zero is ALWAYS `code`) - reset to zero on module change
     } _peapod_menustate_default;
 
     extern uint32_t code;
@@ -48,6 +50,7 @@ namespace PeaPod {
     void onEncoderChange(bool inc);
     void writeLCDMenu(bool _, const peapod_menustate_t& menu);
     void writeSevenSegmentCode(void);
+    void writeSevenSegment(void);
     void onEncoderPress(void);
     void onEncoderHold(void);
 

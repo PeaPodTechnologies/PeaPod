@@ -13,23 +13,6 @@ peapod_menustate_t PeaPod::Menu::_peapod_menustate_default = {
   .module_idx = 0
 };
 
-#ifndef PEAPOD_SEVENSEG_TEMPERATURE
-#ifndef PEAPOD_SEVENSEG_HUMIDITY
-#ifndef PEAPOD_SEVENSEG_CO2
-#ifndef PEAPOD_SEVENSEG_ADC
-void writeSevenSegmentErrorCode() {
-  // Clear the last 3 bits and set based on error levels
-  code = code & ~0b111 |
-    (errlev_sevenseg > I2CIP_ERR_NONE ? 0b1 : 0) | 
-    (errlev_lcd > I2CIP_ERR_NONE ? 0b10 : 0) | 
-    (errlev_encoder > I2CIP_ERR_NONE ? 0b100 : 0);
-  writeSevenSegmentCode();
-}
-#endif
-#endif
-#endif
-#endif
-
 FSM::State<peapod_menustate_t> PeaPod::Menu::menu_state = FSM::State<peapod_menustate_t>(_peapod_menustate_default, "menu");
 
 i2cip_errorlevel_t PeaPod::Menu::initialize(void) {
@@ -94,15 +77,7 @@ i2cip_errorlevel_t PeaPod::Menu::update(void) {
         code = code & ~0x1100; // Clear encoder advance/reverse indicators on 7-segment display positions 3 and 4
       }
 
-      #ifndef PEAPOD_SEVENSEG_TEMPERATURE
-      #ifndef PEAPOD_SEVENSEG_HUMIDITY
-      #ifndef PEAPOD_SEVENSEG_CO2
-      #ifndef PEAPOD_SEVENSEG_ADC
-        writeSevenSegmentErrorCode();
-      #endif
-      #endif
-      #endif
-      #endif
+      writeSevenSegment();
 
       if (encoder_pos != encoder_last) {
         onEncoderChange(encoder_last > encoder_pos);
@@ -151,15 +126,7 @@ i2cip_errorlevel_t PeaPod::Menu::update(void) {
     } else errlev_lcd = I2CIP_ERR_SOFT;
   }
 
-  #ifndef PEAPOD_SEVENSEG_TEMPERATURE
-  #ifndef PEAPOD_SEVENSEG_HUMIDITY
-  #ifndef PEAPOD_SEVENSEG_CO2
-  #ifndef PEAPOD_SEVENSEG_ADC
-    writeSevenSegmentCode();
-  #endif
-  #endif
-  #endif
-  #endif
+  writeSevenSegment();
 
   return errlev_lcd;
 }
@@ -199,11 +166,11 @@ void PeaPod::Menu::onEncoderChange(bool inc)  {
       if(newSubmenu >= PEAPOD_MENU_SUBMENUS_MODULE) newSubmenu = 0;
       break;
     case PEAPOD_MENU_DEVICE:
-      if(newSubmenu < 0) newSubmenu = numDevices > 0 ? numDevices - 1 : 0;
+      if(newSubmenu < 0) newSubmenu = numDevices;
       if(newSubmenu > numDevices) newSubmenu = 0;
       break;
     case PEAPOD_MENU_FLAG:
-      if(newSubmenu < 0) newSubmenu = moduleNumFlags > 0 ? moduleNumFlags - 1 : 0;
+      if(newSubmenu < 0) newSubmenu = moduleNumFlags;
       if(newSubmenu > moduleNumFlags) newSubmenu = 0;
       break;
     case PEAPOD_MENU_VARIABLE:
@@ -219,7 +186,7 @@ void PeaPod::Menu::onEncoderChange(bool inc)  {
           variable->set(val);
         }
       } else {
-        if(newSubmenu < 0) newSubmenu = moduleNumVariables > 0 ? moduleNumVariables - 1 : 0;
+        if(newSubmenu < 0) newSubmenu = moduleNumVariables;
         if(newSubmenu > moduleNumVariables) newSubmenu = 0;
       }
       break;
@@ -236,7 +203,7 @@ void PeaPod::Menu::onEncoderChange(bool inc)  {
           interval->setDelta(val);
         }
       } else {
-        if(newSubmenu < 0) newSubmenu = moduleNumIntervals > 0 ? moduleNumIntervals - 1 : 0;
+        if(newSubmenu < 0) newSubmenu = moduleNumIntervals;
         if(newSubmenu > moduleNumIntervals) newSubmenu = 0;
       }
       break;
@@ -253,9 +220,13 @@ void PeaPod::Menu::onEncoderChange(bool inc)  {
           event->setTimestamp(val);
         }
       } else {
-        if(newSubmenu < 0) newSubmenu = moduleNumEvents > 0 ? moduleNumEvents - 1 : 0;
+        if(newSubmenu < 0) newSubmenu = moduleNumEvents;
         newSubmenu %= (moduleNumEvents + 1); // All Events for the selected module + Back
       }
+      break;
+    case PEAPOD_MENU_SEVENSEG:
+      if(newSubmenu < 0) newSubmenu = moduleNumVariables + 1; // no decrement; 0 is always `code`
+      if(newSubmenu > moduleNumVariables + 1) newSubmenu = 0; // added increment; account for `code` at index 0
       break;
   }
 
@@ -294,6 +265,9 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
           break;
         case PEAPOD_MENU_EVENT:
           line2 = "Select Event";
+          break;
+        case PEAPOD_MENU_SEVENSEG:
+          line2 = "Seven-Segment";
           break;
       }
       break;
@@ -339,8 +313,9 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
         line2 = "BACK";
         break;
       }
-      flag = ((PeaPodModule*)modules[menu.module_idx])->getFlagByIndex(menu.submenu - 1);
-      line1 = String("F ") + (flag == nullptr ? "ENOENT" : flag->getKey());
+
+      flag = modules[menu.module_idx] == nullptr ? nullptr : ((PeaPodModule*)modules[menu.module_idx])->getFlagByIndex(menu.submenu - 1);
+      line1 = String("F") + (menu.submenu - 1) + " " + (flag == nullptr ? "ENOENT" : flag->getKey());
       if(flag == nullptr) {
         line2 = "ENOENT";
         break;
@@ -353,22 +328,22 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
         line2 = "BACK";
         break;
       }
-      variable = ((PeaPodModule*)modules[menu.module_idx])->getVariableByIndex(menu.submenu - 1);
+      variable = modules[menu.module_idx] == nullptr ? nullptr : ((PeaPodModule*)modules[menu.module_idx])->getVariableByIndex(menu.submenu - 1);
       if(menu.setting) {
-        line1 = String("V? ") + (variable == nullptr ? "ENOENT" : variable->getKey());
+        line1 = String("V") + (menu.submenu - 1) + "? " + (variable == nullptr ? "ENOENT" : variable->getKey());
         if(variable == nullptr) {
           line2 = "ENOENT";
           break;
         }
-        line2 = String(variable->get(), 3); // 3 decimal places
+        line2 = variable->get().toString();
       } else {
-        line1 = String("V ") + (variable == nullptr ? "ENOENT" : variable->getKey());
+        line1 = String("V") + (menu.submenu - 1) + " " + (variable == nullptr ? "ENOENT" : variable->getKey());
         
         if(variable == nullptr) {
           line2 = "ENOENT";
           break;
         }
-        line2 = String(variable->get(), 3); // 3 decimal places
+        line2 = variable->get().toString();
       }
       break;
     case PEAPOD_MENU_INTERVAL:
@@ -377,16 +352,16 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
         line2 = "BACK";
         break;
       }
-      interval = ((PeaPodModule*)modules[menu.module_idx])->getIntervalByIndex(menu.submenu - 1);
+      interval = modules[menu.module_idx] == nullptr ? nullptr : ((PeaPodModule*)modules[menu.module_idx])->getIntervalByIndex(menu.submenu - 1);
       if(menu.setting) {
-        line1 = String("I? ") + (interval == nullptr ? "ENOENT" : interval->getKey());
+        line1 = String("I") + (menu.submenu - 1) + "? " + (interval == nullptr ? "ENOENT" : interval->getKey());
         if(interval == nullptr) {
           line2 = "ENOENT";
           break;
         }
         line2 = FSM::timestampToString(interval->getDelta());
       } else {
-        line1 = String("I ") + (interval == nullptr ? "ENOENT" : interval->getKey());
+        line1 = String("I") + (menu.submenu - 1) + " " + (interval == nullptr ? "ENOENT" : interval->getKey());
         if(interval == nullptr) {
           line2 = "ENOENT";
           break;
@@ -400,9 +375,9 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
         line2 = "BACK";
         break;
       }
-      event = ((PeaPodModule*)modules[menu.module_idx])->getEventByIndex(menu.submenu - 1);
+      event = modules[menu.module_idx] == nullptr ? nullptr : ((PeaPodModule*)modules[menu.module_idx])->getEventByIndex(menu.submenu - 1);
       if(menu.setting) {
-        line1 = String("E? ") + (event == nullptr ? "ENOENT" : event->getKey());
+        line1 = String("E") + (menu.submenu - 1) + "? " + (event == nullptr ? "ENOENT" : event->getKey());
         if(event == nullptr) {
           line2 = "ENOENT";
           break;
@@ -410,7 +385,7 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
         // line2 = String(event->get(), 3); // 3 decimal places
         line2 = FSM::timestampToString(event->getTimestamp());
       } else {
-        line1 = String("E ") + (event == nullptr ? "ENOENT" : event->getKey());
+        line1 = String("E") + (menu.submenu - 1) + " " + (event == nullptr ? "ENOENT" : event->getKey());
         if(event == nullptr) {
           line2 = "ENOENT";
           break;
@@ -419,14 +394,27 @@ void PeaPod::Menu::writeLCDMenu(bool _, const peapod_menustate_t& menu) {
         line2 = FSM::timestampToString(event->getTimestamp());
       }
       break;
+    case PEAPOD_MENU_SEVENSEG:
+      if(menu.submenu == 0) {
+        line1 = "Seven-Segment";
+        line2 = "BACK";
+      } else if (menu.submenu == 1) {
+        line1 = "Seven-Segment";
+        line2 = "CODE";
+      } else {
+        variable = modules[menu.module_idx] == nullptr ? nullptr : ((PeaPodModule*)modules[menu.module_idx])->getVariableByIndex(menu.submenu - 2);
+        line1 = String("S") + (menu.submenu - 2) + " " + (variable == nullptr ? "ENOENT" : variable->getKey());
+        line2 = variable == nullptr ? "ENOENT" : variable->get().toString();
+      }
+      break;
   }
 
-  String display = line1 + "\n" + line2 + "\n\nCurrent Module: " + String(menu.module_idx);
+  String display = line1 + "\n" + line2 + "\n\nCurrent Module " + menu.module_idx;
 
-  i2cip_args_io_t args = _i2cip_args_io_default;
-  args.g = false;
-  args.s = &display;
-  args.b = nullptr;
+  // i2cip_args_io_t args = _i2cip_args_io_default;
+  // args.g = false;
+  // args.s = &display;
+  // args.b = nullptr;
 
   // errlev_lcd = nomodule.operator()<JHD1313>(fqa_lcd, true, args, DebugJsonOut);
   // if(lcd != nullptr) errlev_lcd = lcd->set(display, LCD_ARGS_NONE);
@@ -466,6 +454,9 @@ void PeaPod::Menu::onEncoderPress(void) {
           case PEAPOD_MENU_EVENT:
             menu.menu = PEAPOD_MENU_EVENT;
             break;
+          case PEAPOD_MENU_SEVENSEG:
+            menu.menu = PEAPOD_MENU_SEVENSEG;
+            break;
           default:
             break;
         }
@@ -478,6 +469,7 @@ void PeaPod::Menu::onEncoderPress(void) {
         menu.submenu = 0;
       } else {
         menu.module_idx = menu.submenu - 1; // Set selected module index for use in the flag/variable menu
+        menu.sevenseg_idx = 0; // Reset 7-segment index when selecting a module
         menu.submenu = 0;
         break;
       }
@@ -528,6 +520,14 @@ void PeaPod::Menu::onEncoderPress(void) {
         menu.setting = !menu.setting;
       }
       break;
+    case PEAPOD_MENU_SEVENSEG:
+      if(menu.submenu == 0) {
+        menu.menu = PEAPOD_MENU_MAIN; // Back to main menu
+        menu.submenu = 0;
+      } else {
+        menu.sevenseg_idx = menu.submenu - 1; // 0 is always `code`
+      }
+      break;
   }
 
   menu_state.set(menu);
@@ -544,6 +544,44 @@ void PeaPod::Menu::onEncoderHold(void) {
   //   default:
   //     break;
   // }
+}
+
+void PeaPod::Menu::writeSevenSegment(void) {
+  peapod_menustate_t menu = menu_state.get();
+  uint8_t variable_idx = menu.sevenseg_idx;
+
+  if(variable_idx == 0) {
+    writeSevenSegmentCode();
+  } else {
+    if(I2CIP::modules[menu.module_idx] != nullptr && I2CIP::errlev[menu.module_idx] == I2CIP_ERR_NONE) {
+      PeaPodModule* m = (PeaPodModule*)I2CIP::modules[menu.module_idx];
+      if(variable_idx - 1 < m->getNumVariables()) {
+        FSM::Variable* var = m->getVariableByIndex(variable_idx - 1);
+        if(var != nullptr) {
+          FSM::Number value = var->get();
+          if(value.isNaN()) {
+            // Handle NaN value for the variable
+            i2cip_ht16k33_data_t data = { .h = ' ' << 24 | 'N' << 16 | 'A' << 8 | 'N' }; // Display ASCII " NAN"
+            i2cip_ht16k33_mode_t mode = SEG_ASCII;
+            i2cip_args_io_t args_sevenseg = { .g = false, .a = nullptr, .s = &data, .b = &mode };
+            errlev_sevenseg = PeaPod::notamodule.operator()<HT16K33>(fqa_sevenseg, true, args_sevenseg, DebugJsonOut);
+          } else if(value.getIsFloating()) {
+            // Handle floating-point value for the variable
+            i2cip_ht16k33_data_t data = { .f = (float)value };
+            i2cip_ht16k33_mode_t mode = SEG_1F;
+            i2cip_args_io_t args_sevenseg = { .g = false, .a = nullptr, .s = &data, .b = &mode };
+            errlev_sevenseg = PeaPod::notamodule.operator()<HT16K33>(fqa_sevenseg, true, args_sevenseg, DebugJsonOut);
+          } else {
+            // Handle integer value for the variable
+            i2cip_ht16k33_data_t data = { .h = (int32_t)value };
+            i2cip_ht16k33_mode_t mode = SEG_INT;
+            i2cip_args_io_t args_sevenseg = { .g = false, .a = nullptr, .s = &data, .b = &mode };
+            errlev_sevenseg = PeaPod::notamodule.operator()<HT16K33>(fqa_sevenseg, true, args_sevenseg, DebugJsonOut);
+          }
+        }
+      }
+    }
+  }
 }
 
 void PeaPod::Menu::writeSevenSegmentCode(void) {

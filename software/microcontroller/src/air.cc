@@ -1,6 +1,6 @@
 #include <air.h>
 
-void PeaPod::callback_temperature(bool _, const FSM::Number& v) {
+void PeaPod::callback_air_temperature(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, air_temperature.getKey());
 
   #ifdef PEAPOD_SEVENSEG_TEMPERATURE
@@ -14,7 +14,7 @@ void PeaPod::callback_temperature(bool _, const FSM::Number& v) {
   #endif
 }
 
-void PeaPod::callback_humidity(bool _, const FSM::Number& v) {
+void PeaPod::callback_air_humidity(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, air_humidity.getKey());
 
   #ifdef PEAPOD_SEVENSEG_HUMIDITY
@@ -28,7 +28,7 @@ void PeaPod::callback_humidity(bool _, const FSM::Number& v) {
   #endif
 }
 
-void PeaPod::callback_co2(bool _, const FSM::Number& v) {
+void PeaPod::callback_air_co2(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (unsigned)v, air_co2.getKey());
 
   #ifdef PEAPOD_SEVENSEG_CO2
@@ -51,9 +51,9 @@ PeaPod::PeaPodModuleAir::PeaPodModuleAir(bool chronoCallbacks) : PeaPodModule(PE
     registerInterval(interval_k30, true);
   }
 
-  air_temperature.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_temperature);
-  air_humidity.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_humidity);
-  air_co2.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_co2);
+  air_temperature.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_air_temperature);
+  air_humidity.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_air_humidity);
+  air_co2.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_air_co2);
 
   registerVariable(&air_temperature, true); // LOCKED
   registerVariable(&air_humidity, true); // LOCKED

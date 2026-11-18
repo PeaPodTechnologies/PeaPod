@@ -10,10 +10,10 @@
 #define PEAPOD_MODULE_LIGHTING_PWM_CHANNEL_CAMERA PCA9685_CH2
 #define PEAPOD_MODULE_LIGHTING_PWM_FQA I2CIP_FQA_CREATE(PEAPOD_WIRENUM, PEAPOD_MODULENUM_LIGHTING, 0, I2CIP_PCA9685_ADDRESS)
 
-#define PEAPOD_MODULE_LIGHTING_ADC_CHANNEL ADS1115_CHANNEL_0
-#define PEAPOD_MODULE_LIGHTING_ADC_FQA I2CIP_FQA_CREATE(PEAPOD_WIRENUM, PEAPOD_MODULENUM_LIGHTING, 0, I2CIP_ADS1115_ADDRESS)
+// #define PEAPOD_MODULE_LIGHTING_ADC_CHANNEL ADS1115_CHANNEL_0
+// #define PEAPOD_MODULE_LIGHTING_ADC_FQA I2CIP_FQA_CREATE(PEAPOD_WIRENUM, PEAPOD_MODULENUM_LIGHTING, 0, I2CIP_ADS1115_ADDRESS)
 
-#define PEAPOD_MODULE_LIGHTING_ADC_DELTA 100
+// #define PEAPOD_MODULE_LIGHTING_ADC_DELTA 100
 #define PEAPOD_MODULE_LIGHTING_PWMCYCLE_DELTA 2500
 #define PEAPOD_MODULE_LIGHTING_DELTA 86400000 // 24 hours
 #define PEAPOD_MODULE_LIGHTING_PHASE 57600000 // 16 hours on
@@ -22,14 +22,14 @@
 #define PEAPOD_MODULE_LIGHTING_DUTY_CAMERA 0.5 // 50% Duty Cycle
 
 namespace PeaPod {
-  extern FSM::Variable adc_voltage;
+  // extern FSM::Variable adc_voltage;
   extern FSM::Variable pwm_lighting_red;
   extern FSM::Variable pwm_lighting_blue;
   extern FSM::Flag enable_lighting;
   extern FSM::Flag enable_camera;
 
-  template <i2cip_fqa_t F, unsigned char C> void callback_adc_read(bool _, const FSM::fsm_timestamp_t& __);
-  void callback_adc_voltage(bool _, const FSM::Number& v);
+  // template <i2cip_fqa_t F, unsigned char C> void callback_adc_read(bool _, const FSM::fsm_timestamp_t& __);
+  // void callback_adc_voltage(bool _, const FSM::Number& v);
 
   class PeaPodModuleLighting : public PeaPodModule {
     private:
@@ -51,9 +51,10 @@ namespace PeaPod {
 
       ~PeaPodModuleLighting();
 
-      void initialize() override {
+      i2cip_errorlevel_t initialize() override {
         enable_lighting.set(false);
         enable_camera.set(false);
+        return I2CIP_ERR_NONE;
       }; 
   };
 }

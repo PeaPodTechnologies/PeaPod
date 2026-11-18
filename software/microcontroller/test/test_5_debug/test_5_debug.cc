@@ -22,11 +22,11 @@ bool button = false;
 FSM::Variable air_temperature;
 FSM::Variable air_humidity;
 
-void callback_temperature(bool _, const FSM::Number& v) {
+void callback_air_temperature(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, air_temperature.getKey());
 }
 
-void callback_humidity(bool _, const FSM::Number& v) {
+void callback_air_humidity(bool _, const FSM::Number& v) {
   DebugJson::telemetry(millis(), (double)v, air_humidity.getKey());
 }
 
@@ -42,8 +42,8 @@ class PeaPodModuleDebug : public PeaPod::PeaPodModule {
         registerInterval(interval_sht45); // NOT LOCKED
       #endif
 
-      air_temperature.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_temperature);
-      air_humidity.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_humidity);
+      air_temperature.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_air_temperature);
+      air_humidity.addConditional(FSM::CMP_NEQ, FSM::notanumber, callback_air_humidity);
 
       registerVariable(&air_temperature, true); // LOCKED
       registerVariable(&air_humidity, true); // LOCKED

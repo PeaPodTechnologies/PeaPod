@@ -30,7 +30,7 @@
 #define PEAPOD_WIRENUM 0
 
 #define PEAPOD_MODULENUM_AIR 0
-#define PEAPOD_MODULENUM_WATERING 1
+#define PEAPOD_MODULENUM_AEROPONICS 1
 #define PEAPOD_MODULENUM_LIGHTING 2
 #define PEAPOD_MODULENUM_CONTROL 3
 
@@ -39,10 +39,6 @@
 #define PEAPOD_DELTA_REFRESH 10000 // 10 seconds
 
 #define PEAPOD_MODULENUM_SEVENSEG 0
-// #define PEAPOD_SEVENSEG_TEMPERATURE 1 // Uncomment to enable 7-segment display for temperature
-// #define PEAPOD_SEVENSEG_HUMIDITY 1 // Uncomment to enable 7-segment display for humidity
-// #define PEAPOD_SEVENSEG_CO2 1 // Uncomment to enable 7-segment display for CO2
-// #define PEAPOD_SEVENSEG_ADC 1 // Uncomment to enable 7-segment display for ADC voltage
 
 #define PEAPOD_PROGRAM_DEFAULT 1 // Uncomment to enable default program on startup
 
@@ -73,7 +69,7 @@ namespace PeaPod {
       PeaPodModule(const uint8_t& mux) : JsonModule(PEAPOD_WIRENUM, mux) { }
       virtual ~PeaPodModule();
 
-      virtual void initialize(void) { };
+      virtual i2cip_errorlevel_t initialize(void) { return I2CIP_ERR_NONE; };
       
       void handleCommand(JsonObject command, Print& out) override;
       

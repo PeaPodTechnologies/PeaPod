@@ -23,7 +23,7 @@ void test_eeprom_overwrite(void) {
   EEPROM& eeprom = (I2CIP::modules[PEAPOD_MODULENUM_WATERING]->operator EEPROM &());
 
   i2cip_errorlevel_t result = I2CIP_ERR_NONE;
-  const char* msg = PEAPOD_MODULE_WATERING_EEPROM_CONTENTS;
+  const char* msg = PEAPOD_MODULE_AEROPONICS_EEPROM_CONTENTS;
   size_t len = strlen(msg);
 
   result = eeprom.getOutput()->set(&msg, &len);
@@ -52,7 +52,7 @@ void test_devicegroups(void) {
 void setup() {
   Serial.begin(115200); 
 
-  I2CIP::modules[PEAPOD_MODULENUM_WATERING] = new PeaPod::PeaPodModuleWatering(false);
+  I2CIP::modules[PEAPOD_MODULENUM_WATERING] = new PeaPod::PeaPodModuleAeroponics(false);
 
   delay(2000);
 

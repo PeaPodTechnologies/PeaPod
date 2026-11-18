@@ -1,7 +1,7 @@
 #include <peapod.h>
 
 #include <air.h>
-#include <water.h>
+#include <aeroponics.h>
 #include <light.h>
 
 #include <DebugJson.h>
@@ -521,7 +521,7 @@ void PeaPod::registerCallbacks(void)  {
   FSM::Chronos.addInterval(PEAPOD_DELTA_REFRESH, PeaPod::callback_rebuild);
   
   FSM::Chronos.addInterval(PEAPOD_DELTA_MODULECHECK, PeaPod::callback_module<PEAPOD_MODULENUM_AIR, PeaPodModuleAir>);
-  FSM::Chronos.addInterval(PEAPOD_DELTA_MODULECHECK, PeaPod::callback_module<PEAPOD_MODULENUM_WATERING, PeaPodModuleWatering>);
+  FSM::Chronos.addInterval(PEAPOD_DELTA_MODULECHECK, PeaPod::callback_module<PEAPOD_MODULENUM_AEROPONICS, PeaPodModuleAeroponics>);
   FSM::Chronos.addInterval(PEAPOD_DELTA_MODULECHECK, PeaPod::callback_module<PEAPOD_MODULENUM_LIGHTING, PeaPodModuleLighting>);
 }
 
