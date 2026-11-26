@@ -36,7 +36,7 @@ template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_mcp23017_digital
     i2cip_mcp23017_t gpio_data = v ? (1 << P) : 0;
     i2cip_args_io_t gpio_args = { .g = false, .a = nullptr, .s = &gpio_data, .b = &gpio_mask };
 
-    modules[I2CIP_FQA_SEG_MODULE(F)]->operator()<MCP23017>(F, true, gpio_args, DebugJsonBreakpoints);
+    modules[I2CIP_FQA_SEG_MODULE(F)]->operator()<MCP23017>(F, true, gpio_args, DebugJsonOut);
   }
 }
 
@@ -48,7 +48,7 @@ template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_pca9685_analogWr
       i2cip_pca9685_t data = (uint16_t)max(0, min(4096, (int)v));
       i2cip_args_io_t args = { .g = false, .a = nullptr, .s = &data, .b = &channel };
 
-      I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)]->operator()<PCA9685>(F, true, args, DebugJsonBreakpoints);
+      I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)]->operator()<PCA9685>(F, true, args, DebugJsonOut);
     }
   }
 
@@ -60,7 +60,7 @@ template <i2cip_fqa_t F, unsigned char P> void PeaPod::callback_pca9685_analogWr
       i2cip_pca9685_t data = v ? 4096 : 0;
       i2cip_args_io_t args = { .g = false, .a = nullptr, .s = &data, .b = &channel };
 
-      I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)]->operator()<PCA9685>(F, true, args, DebugJsonBreakpoints);
+      I2CIP::modules[I2CIP_FQA_SEG_MODULE(F)]->operator()<PCA9685>(F, true, args, DebugJsonOut);
     }
   }
 

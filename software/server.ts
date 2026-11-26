@@ -287,9 +287,6 @@ async function main() {
       // 1. Emit to WebSocket Clients
       if(pms.includes(PublishingMode.FRONTEND) && !!io) io.emit('microcontroller', msg);
 
-      // 2. (aka 4B.) Local Filesystem Logging
-      if(pms.includes(PublishingMode.LOCAL)) appendFileSync(`logs/${argv.simulator ? 'simulator_' : ''}${(new Date()).toISOString().split('T')[0]}.txt`, JSON.stringify(msg) + '\n');
-
       // LINKER HANDLER
       if(msg.data) {
         Object.keys(linker).forEach((key) => {
@@ -332,6 +329,10 @@ async function main() {
     //   }
     // });
 
+  }, (s) => {
+    // 2. (aka 4B.) Local Filesystem Logging
+    const logPath = `logs/${argv.simulator ? 'simulator_' : ''}${(new Date()).toISOString().split('T')[0]}.txt`;
+    if(pms.includes(PublishingMode.LOCAL)) appendFileSync(logPath, s + '\n');
   }).catch((err) => {
     if(!!io) io.emit('server', {type: 'error', msg: `Lost Controller: ${err}`});
     ui.fail(err);

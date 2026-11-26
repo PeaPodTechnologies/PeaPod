@@ -24,7 +24,7 @@ template <unsigned char M> void PeaPod::PeaPodModuleAir::callback_sht45_mean(boo
       SHT45* d = (SHT45*)(dg_sht45->getDevice(i));
       if(d == nullptr) continue;
 
-      i2cip_errorlevel_t errlev_sht45 = I2CIP::modules[M]->operator()<SHT45>(d->getFQA(), true, _i2cip_args_io_default, DebugJsonBreakpoints);
+      i2cip_errorlevel_t errlev_sht45 = I2CIP::modules[M]->operator()<SHT45>(d->getFQA(), true, _i2cip_args_io_default, DebugJsonOut);
       if(errlev_sht45 != I2CIP_ERR_NONE) continue;
 
       th.temperature += d->getCache().temperature;
@@ -56,7 +56,7 @@ template <unsigned char M> void PeaPod::PeaPodModuleAir::callback_k30_mean(bool 
       K30* d = (K30*)(dg_k30->getDevice(i));
       if(d == nullptr) continue;
 
-      i2cip_errorlevel_t errlev_k30 = I2CIP::modules[M]->operator()<K30>(d->getFQA(), true, _i2cip_args_io_default, DebugJsonBreakpoints);
+      i2cip_errorlevel_t errlev_k30 = I2CIP::modules[M]->operator()<K30>(d->getFQA(), true, _i2cip_args_io_default, DebugJsonOut);
       if(errlev_k30 != I2CIP_ERR_NONE) continue;
 
       co2 += d->getCache();

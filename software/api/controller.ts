@@ -4,6 +4,7 @@ import { ControllerTXError, DebugJsonSerialportError } from './errors';
 import { DebugJsonConsole as ui } from './ui';
 import { DebugJsonMessage, DebugJsonMessageTypes } from './types';
 import { updateMicrocontroller } from './utils';
+import { on } from 'node:events';
 
 // import { Gpio } from 'onoff';
 
@@ -72,7 +73,7 @@ export type Controller = {
    * @throws If received message is invalid (JSON parsing fails).
    */
   // start(onMessage: (msg: ControllerMessage) => void): Promise<void>;
-  start(onMessages: (messages: DebugJsonMessage[]) => void): Promise<void>;
+  start(onMessages: (messages: DebugJsonMessage[]) => void, onSerial?: (s: string) => void): Promise<void>;
 
   /**
    * Write instructions to the Controller.
@@ -157,7 +158,7 @@ export class MicroController implements Controller {
   }
 
   // Starts serial (newline parser) and resolves when RX revision is correct
-  async start(onMessage: (messages: DebugJsonMessage[]) => void): Promise<void> {
+  async start(onMessage: (messages: DebugJsonMessage[]) => void, onSerial?: (s: string) => void): Promise<void> {
     this.pauseTimeout(true); // Don't want it interrupting the start sequence
     // Reset listeners
     this.parser.removeAllListeners('data');
@@ -184,6 +185,7 @@ export class MicroController implements Controller {
     ui.start('CONTROLLER REVISION...');
     await new Promise<void>((resolve) => {
       this.parser.on('data', async (msgtxt) => {
+        if(onSerial) onSerial(msgtxt);
         this.resetTimeout();
         this.#count++;
         
@@ -350,9 +352,12 @@ export class SimulatedController implements Controller {
     });
   }
 
-  async start(onMessage: (msg: DebugJsonMessage[]) => void): Promise<void> {
+  async start(onMessage: (msg: DebugJsonMessage[]) => void, onSerial?: (s: string) => void): Promise<void> {
     // Save the 
-    this.output = onMessage;
+    this.output = (msg: DebugJsonMessage[]) => { 
+      onMessage(msg);
+      if(onSerial) onSerial(JSON.stringify(msg));
+    };
     for (const label of Object.keys(this.parameters)) {
       this.#telemetry.push(
         setInterval(() => {
@@ -367,7 +372,7 @@ export class SimulatedController implements Controller {
             }
           }
           // Publish message
-          onMessage(
+          if(this.output) this.output(
             [{
               type: 'event',
               timestamp: Date.now() - this.#startDate,
