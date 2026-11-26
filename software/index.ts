@@ -3,7 +3,7 @@ import { updateMicrocontroller } from './api/utils';
 import main from './server';
 import select from '@inquirer/select';
 
-const BAUDRATE = 115200;
+const BAUDRATE = 460800;
 const TIMEOUT_MS = 5000;
 
 enum Launch {

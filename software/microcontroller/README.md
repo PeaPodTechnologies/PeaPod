@@ -16,7 +16,7 @@ Makes use of I2CIP, FSM, and DebugJson libraries for QOS-2 I2C device state mana
 
 **Setup**:
 
-1. Initialize Serial communication (115200 baud).
+1. Initialize Serial communication (460800 baud).
 2. Wait for Serial connection.
 3. Instantiate PeaPod modules (Air, Watering, Lighting; See Module Callbacks).
 4. Instantiate non-module devices:

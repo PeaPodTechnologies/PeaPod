@@ -50,7 +50,7 @@ void test_devicegroups(void) {
 }
 
 void setup() {
-  Serial.begin(115200); 
+  Serial.begin(460800); 
 
   I2CIP::modules[PEAPOD_MODULENUM_LIGHTING] = new PeaPod::PeaPodModuleLighting(false);
 

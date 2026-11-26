@@ -533,7 +533,7 @@ void PeaPod::callback_cycle(bool _, const FSM::Number& cycle) {
   PeaPod::fps.set(((unsigned)PeaPod::fps.get() + 1000.f / max(1.f, (float)delta))/2); // Old FPS plus new FPS over two (moving average)
   last = millis();
 
-  while(PEAPOD_SERIAL.available() > 0) { // With baud 115200, this should not block
+  while(PEAPOD_SERIAL.available() > 0) { // With baud 460800, this should not block
     DebugJson::update(PEAPOD_SERIAL, I2CIP::commandRouter, PeaPod::configRouter, PeaPod::intervalRouter, PeaPod::eventRouter);
   }
 }

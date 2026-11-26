@@ -24,7 +24,7 @@ void setup(void) {
   // Builtin LED Pinmode; Serial Begin
 
   pinMode(LED_BUILTIN, OUTPUT);
-  PEAPOD_SERIAL.begin(115200);
+  PEAPOD_SERIAL.begin(460800);
   while(!PEAPOD_SERIAL) { digitalWrite(LED_BUILTIN, HIGH); delay(100); digitalWrite(LED_BUILTIN, LOW); delay(100); }
   
   delay(1000);

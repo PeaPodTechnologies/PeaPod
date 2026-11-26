@@ -13,7 +13,7 @@ import { on } from 'node:events';
 /**
  * Baud rate for serial communication. Must match that found in microcontroller code.
  */
-const BAUDRATE = 115200;
+const BAUDRATE = 460800;
 
 /**
  * Microcontroller software revision matching this software.

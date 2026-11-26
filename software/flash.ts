@@ -2,7 +2,7 @@ import { SerialPort, ReadlineParser } from 'serialport';
 import select from '@inquirer/select';
 import { updateMicrocontroller } from './api/utils';
 
-const BAUDRATE = 115200;
+const BAUDRATE = 460800;
 const TIMEOUT_MS = 5000;
 
 // eslint-disable-next-line prefer-const

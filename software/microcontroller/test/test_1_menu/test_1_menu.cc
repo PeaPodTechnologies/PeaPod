@@ -66,7 +66,7 @@ void test_menu_init(void) {
 }
 
 void setup() {
-  Serial.begin(115200); 
+  Serial.begin(460800); 
 
   delay(2000);
   

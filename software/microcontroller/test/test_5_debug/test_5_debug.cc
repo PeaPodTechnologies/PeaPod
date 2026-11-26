@@ -268,7 +268,7 @@ void test_event_off(void) {
 }
 
 void setup() {
-  Serial.begin(115200); 
+  Serial.begin(460800); 
 
   delay(2000);
   
